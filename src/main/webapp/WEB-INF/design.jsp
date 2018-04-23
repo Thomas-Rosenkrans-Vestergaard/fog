@@ -174,7 +174,7 @@
         </div>
         <div class="row">
             <div class="input-field col s12">
-                <input name="customer-telephone" id="customer-telephone" type="tel" minlength="12" class="validate"
+                <input name="customer-telephone" id="customer-telephone" type="tel" data-length="12" class="validate"
                        required>
                 <label for="customer-telephone">Telefon</label>
             </div>
@@ -206,7 +206,7 @@
         <script>
             $(document).ready(function () {
                 $('select').material_select();
-                $('input#input_text, textarea#textarea1').characterCounter();
+                $('input#customer-name, input#customer-mail, input#customer-telephone').characterCounter();
             });
         </script>
     </form>
