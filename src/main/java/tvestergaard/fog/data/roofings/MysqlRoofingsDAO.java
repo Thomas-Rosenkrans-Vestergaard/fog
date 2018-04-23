@@ -1,6 +1,7 @@
 package tvestergaard.fog.data.roofings;
 
 import com.mysql.cj.jdbc.MysqlDataSource;
+import tvestergaard.fog.data.AbstractMysqlDAO;
 import tvestergaard.fog.data.MysqlDataAccessException;
 
 import java.sql.PreparedStatement;
@@ -9,13 +10,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MysqlRoofingsDAO implements RoofingsDAO
+public class MysqlRoofingsDAO extends AbstractMysqlDAO implements RoofingsDAO
 {
-
-    /**
-     * The {@link MysqlDataSource} that provides the connection used by the {@link MysqlRoofingsDAO}.
-     */
-    private final MysqlDataSource source;
 
     /**
      * Creates a new {@link MysqlRoofingsDAO}.
@@ -24,7 +20,7 @@ public class MysqlRoofingsDAO implements RoofingsDAO
      */
     public MysqlRoofingsDAO(MysqlDataSource source)
     {
-        this.source = source;
+        super(source);
     }
 
     /**
@@ -36,9 +32,9 @@ public class MysqlRoofingsDAO implements RoofingsDAO
     @Override public List<Roofing> getAll() throws MysqlDataAccessException
     {
         try {
-            List<Roofing> roofings = new ArrayList<>();
-            final String  SQL      = "SELECT * FROM roofings";
-            try (PreparedStatement statement = source.getConnection().prepareStatement(SQL)) {
+            final List<Roofing> roofings = new ArrayList<>();
+            final String        SQL      = "SELECT * FROM roofings";
+            try (PreparedStatement statement = getConnection().prepareStatement(SQL)) {
                 ResultSet resultSet = statement.executeQuery();
                 while (resultSet.next())
                     roofings.add(createRoofing(resultSet));
@@ -69,7 +65,10 @@ public class MysqlRoofingsDAO implements RoofingsDAO
         );
     }
 
-    public class MysqlRoofing implements Roofing
+    /**
+     * The implementation of {@link Roofing} returned by the {@link MysqlRoofingsDAO}.
+     */
+    private class MysqlRoofing implements Roofing
     {
 
         /**
@@ -129,7 +128,7 @@ public class MysqlRoofingsDAO implements RoofingsDAO
          */
         @Override public int getId()
         {
-            return 0;
+            return id;
         }
 
         /**
@@ -139,7 +138,7 @@ public class MysqlRoofingsDAO implements RoofingsDAO
          */
         @Override public String getName()
         {
-            return null;
+            return name;
         }
 
         /**
@@ -149,7 +148,7 @@ public class MysqlRoofingsDAO implements RoofingsDAO
          */
         @Override public String getDescription()
         {
-            return null;
+            return description;
         }
 
         /**
@@ -159,7 +158,7 @@ public class MysqlRoofingsDAO implements RoofingsDAO
          */
         @Override public int getMinimumSlope()
         {
-            return 0;
+            return minimumSlope;
         }
 
         /**
@@ -169,7 +168,7 @@ public class MysqlRoofingsDAO implements RoofingsDAO
          */
         @Override public int getMaximumSlope()
         {
-            return 0;
+            return maximumSlope;
         }
 
         /**
@@ -179,7 +178,7 @@ public class MysqlRoofingsDAO implements RoofingsDAO
          */
         @Override public int getPricePerSquareMeter()
         {
-            return 0;
+            return pricePerSquareMeter;
         }
     }
 }

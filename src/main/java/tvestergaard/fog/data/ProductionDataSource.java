@@ -12,6 +12,7 @@ public class ProductionDataSource
         if (source == null) {
             source = new MysqlDataSource();
             source.setDatabaseName("fog");
+            source.setUser("fog");
         }
 
         return source;

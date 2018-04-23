@@ -4,7 +4,7 @@ USE `fog`;
 --
 -- Host: 127.0.0.1    Database: fog
 -- ------------------------------------------------------
--- Server version	5.7.20-log
+-- Server version	5.6.37
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -69,6 +69,32 @@ CREATE TABLE `bom_materials` (
 LOCK TABLES `bom_materials` WRITE;
 /*!40000 ALTER TABLE `bom_materials` DISABLE KEYS */;
 /*!40000 ALTER TABLE `bom_materials` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `cladding`
+--
+
+DROP TABLE IF EXISTS `cladding`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `cladding` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL,
+  `description` text NOT NULL,
+  `price_per_square_meter` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `cladding`
+--
+
+LOCK TABLES `cladding` WRITE;
+/*!40000 ALTER TABLE `cladding` DISABLE KEYS */;
+/*!40000 ALTER TABLE `cladding` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -155,6 +181,32 @@ CREATE TABLE `employees_roles` (
 LOCK TABLES `employees_roles` WRITE;
 /*!40000 ALTER TABLE `employees_roles` DISABLE KEYS */;
 /*!40000 ALTER TABLE `employees_roles` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `flooring`
+--
+
+DROP TABLE IF EXISTS `floors`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `floors` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL,
+  `description` text NOT NULL,
+  `price_per_square_meter` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `flooring`
+--
+
+LOCK TABLES `floors` WRITE;
+/*!40000 ALTER TABLE `flooring` DISABLE KEYS */;
+/*!40000 ALTER TABLE `flooring` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -248,4 +300,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-04-22  1:17:50
+-- Dump completed on 2018-04-23 10:25:02
