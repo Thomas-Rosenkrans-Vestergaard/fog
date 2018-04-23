@@ -44,4 +44,20 @@ public interface Roofing
      * @return The price of the {@link Roofing} per square meter (in øre).
      */
     int getPricePerSquareMeter();
+
+    /**
+     * Checks that this {@link Roofing} equals another provided object. The two objects are considered equal when
+     * both are an instance of {@link Roofing}, and their ids are the same.
+     *
+     * @param other The object to compare with.
+     * @return {@code true} if the two objects are considered equal.
+     */
+    abstract boolean equals(Object other);
+
+    /**
+     * Returns the hashCode representing the {@link Roofing}. The hashCode should be the id of the {@link Roofing}.
+     *
+     * @return The hashCode representing the {@link Roofing}.
+     */
+    abstract int hashCode();
 }

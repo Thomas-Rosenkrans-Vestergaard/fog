@@ -32,7 +32,7 @@ public class MysqlCladdingsDAO extends AbstractMysqlDAO implements CladdingsDAO
     {
         try {
             final List<Cladding> floors = new ArrayList<>();
-            final String      SQL    = "SELECT * FROM floors";
+            final String         SQL    = "SELECT * FROM floors";
             try (java.sql.PreparedStatement statement = getConnection().prepareStatement(SQL)) {
                 ResultSet resultSet = statement.executeQuery();
                 while (resultSet.next())
@@ -142,6 +142,21 @@ public class MysqlCladdingsDAO extends AbstractMysqlDAO implements CladdingsDAO
         @Override public int getPricePerSquareMeter()
         {
             return pricePerSquareMeter;
+        }
+
+        @Override public boolean equals(Object o)
+        {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+
+            MysqlCladding that = (MysqlCladding) o;
+
+            return id == that.id;
+        }
+
+        @Override public int hashCode()
+        {
+            return id;
         }
     }
 }

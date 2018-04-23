@@ -32,7 +32,7 @@ public class MysqlFlooringsDAO extends AbstractMysqlDAO implements FlooringsDAO
     {
         try {
             final List<Flooring> floors = new ArrayList<>();
-            final String      SQL    = "SELECT * FROM floors";
+            final String         SQL    = "SELECT * FROM floors";
             try (java.sql.PreparedStatement statement = getConnection().prepareStatement(SQL)) {
                 ResultSet resultSet = statement.executeQuery();
                 while (resultSet.next())
@@ -142,6 +142,21 @@ public class MysqlFlooringsDAO extends AbstractMysqlDAO implements FlooringsDAO
         @Override public int getPricePerSquareMeter()
         {
             return pricePerSquareMeter;
+        }
+
+        @Override public boolean equals(Object o)
+        {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+
+            MysqlFlooring that = (MysqlFlooring) o;
+
+            return id == that.id;
+        }
+
+        @Override public int hashCode()
+        {
+            return id;
         }
     }
 }

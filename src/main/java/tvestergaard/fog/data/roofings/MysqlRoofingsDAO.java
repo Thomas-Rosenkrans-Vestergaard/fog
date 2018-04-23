@@ -180,5 +180,20 @@ public class MysqlRoofingsDAO extends AbstractMysqlDAO implements RoofingsDAO
         {
             return pricePerSquareMeter;
         }
+
+        @Override public boolean equals(Object o)
+        {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+
+            MysqlRoofing that = (MysqlRoofing) o;
+
+            return id == that.id;
+        }
+
+        @Override public int hashCode()
+        {
+            return id;
+        }
     }
 }
