@@ -12,6 +12,7 @@ public class TestDataSource
         if (source == null) {
             source = new MysqlDataSource();
             source.setDatabaseName("fog-test");
+            source.setUser("fog");
         }
 
         return source;

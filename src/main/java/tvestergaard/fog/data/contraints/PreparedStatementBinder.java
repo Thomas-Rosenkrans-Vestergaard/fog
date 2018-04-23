@@ -22,12 +22,25 @@ public class PreparedStatementBinder
      * @param constraints The {@link Constraint}s to set the prepared parameters of.
      * @throws SQLException When a database exception occurs.
      */
-    public void setParameters(PreparedStatement statement, int begin, Constraint... constraints) throws SQLException
+    public void bind(PreparedStatement statement, int begin, Constraint... constraints) throws SQLException
     {
         currentParameterIndex = begin;
         for (Constraint constraint : constraints) {
-            setParameters(statement, constraint);
+            bind(statement, constraint);
         }
+    }
+
+    /**
+     * Sets the prepared parameters on the provided {@link PreparedStatement} needed by the provided {@link Constraint}s.
+     * Begins binding from parameter index 1.
+     *
+     * @param statement   The statement to set the prepared parameters on.
+     * @param constraints The {@link Constraint}s to set the prepared parameters of.
+     * @throws SQLException When a database exception occurs.
+     */
+    public void bind(PreparedStatement statement, Constraint... constraints) throws SQLException
+    {
+        bind(statement, 1, constraints);
     }
 
     /**
@@ -37,10 +50,10 @@ public class PreparedStatementBinder
      * @param constraint The {@link Constraint} to set the prepared parameters of.
      * @throws SQLException When a database exception occurs.
      */
-    private void setParameters(PreparedStatement statement, Constraint constraint) throws SQLException
+    private void bind(PreparedStatement statement, Constraint constraint) throws SQLException
     {
         if (constraint instanceof WhereConstraint) {
-            setParameters(statement, (WhereConstraint) constraint);
+            bind(statement, (WhereConstraint) constraint);
             return;
         }
 
@@ -62,10 +75,10 @@ public class PreparedStatementBinder
      * @param constraint The {@link Constraint} to set the prepared parameters of.
      * @throws SQLException When a database exception occurs.
      */
-    private void setParameters(PreparedStatement statement, WhereConstraint constraint) throws SQLException
+    private void bind(PreparedStatement statement, WhereConstraint constraint) throws SQLException
     {
         for (WhereCondition condition : constraint.getConditions()) {
-            setParameters(statement, condition);
+            bind(statement, condition);
         }
     }
 
@@ -76,28 +89,28 @@ public class PreparedStatementBinder
      * @param condition The {@link WhereCondition} to set the prepared parameters of.
      * @throws SQLException When a database exception occurs.
      */
-    private void setParameters(PreparedStatement statement, WhereCondition condition) throws SQLException
+    private void bind(PreparedStatement statement, WhereCondition condition) throws SQLException
     {
 
         if (condition instanceof BinaryOrCondition) {
-            setParameters(statement, ((BinaryOrCondition) condition).left);
-            setParameters(statement, ((BinaryOrCondition) condition).right);
+            bind(statement, ((BinaryOrCondition) condition).left);
+            bind(statement, ((BinaryOrCondition) condition).right);
             return;
         }
 
         if (condition instanceof UnaryOrCondition) {
-            setParameters(statement, ((UnaryOrCondition) condition).operand);
+            bind(statement, ((UnaryOrCondition) condition).operand);
             return;
         }
 
         if (condition instanceof BinaryAndCondition) {
-            setParameters(statement, ((BinaryAndCondition) condition).left);
-            setParameters(statement, ((BinaryAndCondition) condition).right);
+            bind(statement, ((BinaryAndCondition) condition).left);
+            bind(statement, ((BinaryAndCondition) condition).right);
             return;
         }
 
         if (condition instanceof UnaryAndCondition) {
-            setParameters(statement, ((UnaryAndCondition) condition).operand);
+            bind(statement, ((UnaryAndCondition) condition).operand);
             return;
         }
 
