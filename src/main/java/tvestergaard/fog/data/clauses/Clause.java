@@ -100,7 +100,7 @@ public interface Clause
      * @param value  The value to use in the {@link tvestergaard.fog.data.clauses.WhereClause.EqualsCondition}.
      * @return The newly created instance of {@link tvestergaard.fog.data.clauses.WhereClause.EqualsCondition}.
      */
-    public static WhereCondition eq(String column, Object value)
+    public static WhereClause.EqualsCondition eq(String column, Object value)
     {
         return new WhereClause.EqualsCondition(column, value);
     }
@@ -113,32 +113,55 @@ public interface Clause
      * @param value  The value to use in the {@link tvestergaard.fog.data.clauses.WhereClause.LikeCondition}.
      * @return The newly created instance of {@link tvestergaard.fog.data.clauses.WhereClause.LikeCondition}.
      */
-    public static WhereCondition like(String column, String value)
+    public static WhereClause.LikeCondition like(String column, String value)
     {
         return new WhereClause.LikeCondition(column, value);
     }
 
     /**
-     * Creates a new {@link tvestergaard.fog.data.clauses.WhereClause.AndCondition} using the provided operands.
+     * Creates a new {@link WhereClause.BinaryAndCondition} using the provided operands.
      *
      * @param left  The left operand.
      * @param right The right operand.
-     * @return The newly created {@link tvestergaard.fog.data.clauses.WhereClause.AndCondition}.
+     * @return The newly created {@link WhereClause.BinaryAndCondition}.
      */
-    public static WhereCondition and(WhereCondition left, WhereCondition right)
+    public static WhereClause.BinaryAndCondition and(WhereCondition left, WhereCondition right)
     {
-        return new WhereClause.AndCondition(left, right);
+        return new WhereClause.BinaryAndCondition(left, right);
     }
 
     /**
-     * Creates a new {@link tvestergaard.fog.data.clauses.WhereClause.OrCondition} using the provided operands.
+     * Creates a new {@link tvestergaard.fog.data.clauses.WhereClause.UnaryAndCondition}.
+     *
+     * @param operand The operand provided to the {@link tvestergaard.fog.data.clauses.WhereClause.UnaryAndCondition}.
+     * @return The newly created instance of {@link tvestergaard.fog.data.clauses.WhereClause.UnaryAndCondition}.
+     */
+    public static WhereClause.UnaryAndCondition and(WhereCondition operand)
+    {
+        return new WhereClause.UnaryAndCondition(operand);
+    }
+
+    /**
+     * Creates a new {@link WhereClause.BinaryOrCondition} using the provided operands.
      *
      * @param left  The left operand.
      * @param right The right operand.
-     * @return The newly created {@link tvestergaard.fog.data.clauses.WhereClause.OrCondition}.
+     * @return The newly created {@link WhereClause.BinaryOrCondition}.
      */
-    public static WhereCondition or(WhereCondition left, WhereCondition right)
+    public static WhereClause.BinaryOrCondition or(WhereCondition left, WhereCondition right)
     {
-        return new WhereClause.OrCondition(left, right);
+        return new WhereClause.BinaryOrCondition(left, right);
+    }
+
+
+    /**
+     * Creates a new {@link tvestergaard.fog.data.clauses.WhereClause.UnaryOrCondition}.
+     *
+     * @param operand The operand provided to the {@link tvestergaard.fog.data.clauses.WhereClause.UnaryOrCondition}.
+     * @return The newly created instance of {@link tvestergaard.fog.data.clauses.WhereClause.UnaryOrCondition}.
+     */
+    public static WhereClause.UnaryOrCondition or(WhereCondition operand)
+    {
+        return new WhereClause.UnaryOrCondition(operand);
     }
 }

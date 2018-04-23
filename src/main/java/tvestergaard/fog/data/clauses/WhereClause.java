@@ -64,7 +64,7 @@ public class WhereClause implements Clause
     /**
      * Represents the AND operator in SQL.
      */
-    public static class AndCondition implements WhereCondition
+    public static class BinaryAndCondition implements WhereCondition
     {
 
         /**
@@ -78,12 +78,12 @@ public class WhereClause implements Clause
         private final WhereCondition right;
 
         /**
-         * Creates a new {@link AndCondition}.
+         * Creates a new {@link BinaryAndCondition}.
          *
          * @param left  The left hand operand.
          * @param right The right hand operand.
          */
-        public AndCondition(WhereCondition left, WhereCondition right)
+        public BinaryAndCondition(WhereCondition left, WhereCondition right)
         {
             this.left = left;
             this.right = right;
@@ -122,7 +122,7 @@ public class WhereClause implements Clause
     /**
      * Represents the OR operator in SQL.
      */
-    public static class OrCondition implements WhereCondition
+    public static class BinaryOrCondition implements WhereCondition
     {
 
         /**
@@ -136,12 +136,12 @@ public class WhereClause implements Clause
         private final WhereCondition right;
 
         /**
-         * Creates a new {@link OrCondition}.
+         * Creates a new {@link BinaryOrCondition}.
          *
          * @param left  The left hand operator.
          * @param right The right hand operator.
          */
-        public OrCondition(WhereCondition left, WhereCondition right)
+        public BinaryOrCondition(WhereCondition left, WhereCondition right)
         {
             this.left = left;
             this.right = right;
@@ -174,6 +174,97 @@ public class WhereClause implements Clause
         {
             left.setParameters(statement, parameterIndex);
             right.setParameters(statement, parameterIndex);
+        }
+    }
+
+    /**
+     * Represents a unary AND operator in SQL of the form OR {operand}.
+     */
+    public static class UnaryAndCondition implements WhereCondition
+    {
+
+        /**
+         * The operand.
+         */
+        private final WhereCondition operand;
+
+        /**
+         * Creates a new {@link UnaryAndCondition}.
+         *
+         * @param operand The operand provided to the {@link UnaryAndCondition}.
+         */
+        public UnaryAndCondition(WhereCondition operand)
+        {
+            this.operand = operand;
+        }
+
+        /**
+         * Appends the SQL representation of the {@link WhereCondition} to the provided {@code StringBuilder}.
+         *
+         * @param builder The {@code StringBuilder} to append the string representation onto.
+         */
+        @Override public void appendSQL(StringBuilder builder)
+        {
+            builder.append(" AND ?");
+        }
+
+        /**
+         * Sets the parameters needed by the {@link WhereCondition}.
+         *
+         * @param statement      The statement to set the parameters upon.
+         * @param parameterIndex The object containing the current index to set.
+         * @throws SQLException When a database exception occurs.
+         */
+        @Override
+        public void setParameters(PreparedStatement statement, Generator.ParameterIndex parameterIndex) throws SQLException
+        {
+            statement.setObject(parameterIndex.index++, operand);
+        }
+    }
+
+
+    /**
+     * Represents a unary OR operator in SQL of the form OR {operand}.
+     */
+    public static class UnaryOrCondition implements WhereCondition
+    {
+
+        /**
+         * The operand.
+         */
+        private final WhereCondition operand;
+
+        /**
+         * Creates a new {@link UnaryOrCondition}.
+         *
+         * @param operand The operand provided to the {@link UnaryOrCondition}.
+         */
+        public UnaryOrCondition(WhereCondition operand)
+        {
+            this.operand = operand;
+        }
+
+        /**
+         * Appends the SQL representation of the {@link WhereCondition} to the provided {@code StringBuilder}.
+         *
+         * @param builder The {@code StringBuilder} to append the string representation onto.
+         */
+        @Override public void appendSQL(StringBuilder builder)
+        {
+            builder.append(" OR ?");
+        }
+
+        /**
+         * Sets the parameters needed by the {@link WhereCondition}.
+         *
+         * @param statement      The statement to set the parameters upon.
+         * @param parameterIndex The object containing the current index to set.
+         * @throws SQLException When a database exception occurs.
+         */
+        @Override
+        public void setParameters(PreparedStatement statement, Generator.ParameterIndex parameterIndex) throws SQLException
+        {
+            statement.setObject(parameterIndex.index++, operand);
         }
     }
 
