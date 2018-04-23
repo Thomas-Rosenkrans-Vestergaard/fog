@@ -10,15 +10,15 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MysqlRoofingsDAO extends AbstractMysqlDAO implements RoofingsDAO
+public class MysqlRoofingDAO extends AbstractMysqlDAO implements RoofingDAO
 {
 
     /**
-     * Creates a new {@link MysqlRoofingsDAO}.
+     * Creates a new {@link MysqlRoofingDAO}.
      *
-     * @param source The {@link MysqlDataSource} that provides the connection used by the {@link MysqlRoofingsDAO}.
+     * @param source The {@link MysqlDataSource} that provides the connection used by the {@link MysqlRoofingDAO}.
      */
-    public MysqlRoofingsDAO(MysqlDataSource source)
+    public MysqlRoofingDAO(MysqlDataSource source)
     {
         super(source);
     }
@@ -29,7 +29,7 @@ public class MysqlRoofingsDAO extends AbstractMysqlDAO implements RoofingsDAO
      * @return The complete list of the {@link Roofing}s in the system.
      * @throws MysqlDataAccessException When an exception occurs while performing the operation.
      */
-    @Override public List<Roofing> getAll() throws MysqlDataAccessException
+    @Override public List<Roofing> get() throws MysqlDataAccessException
     {
         try {
             final List<Roofing> roofings = new ArrayList<>();
@@ -66,7 +66,7 @@ public class MysqlRoofingsDAO extends AbstractMysqlDAO implements RoofingsDAO
     }
 
     /**
-     * The implementation of {@link Roofing} returned by the {@link MysqlRoofingsDAO}.
+     * The implementation of {@link Roofing} returned by the {@link MysqlRoofingDAO}.
      */
     private class MysqlRoofing implements Roofing
     {

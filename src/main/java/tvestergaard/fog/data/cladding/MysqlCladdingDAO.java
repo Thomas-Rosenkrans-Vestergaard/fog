@@ -1,4 +1,4 @@
-package tvestergaard.fog.data.flooring;
+package tvestergaard.fog.data.cladding;
 
 import com.mysql.cj.jdbc.MysqlDataSource;
 import tvestergaard.fog.data.AbstractMysqlDAO;
@@ -9,34 +9,34 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MysqlFlooringsDAO extends AbstractMysqlDAO implements FlooringsDAO
+public class MysqlCladdingDAO extends AbstractMysqlDAO implements CladdingDAO
 {
 
     /**
-     * Creates a new {@link MysqlFlooringsDAO}.
+     * Creates a new {@link MysqlCladdingDAO}.
      *
-     * @param source The {@link MysqlDataSource} that provides the connection used by the {@link MysqlFlooringsDAO}.
+     * @param source The {@link MysqlDataSource} that provides the connection used by the {@link MysqlCladdingDAO}.
      */
-    public MysqlFlooringsDAO(MysqlDataSource source)
+    public MysqlCladdingDAO(MysqlDataSource source)
     {
         super(source);
     }
 
     /**
-     * Returns a complete list of the {@link Flooring}s in the system.
+     * Returns a complete list of the {@link Cladding}s in the system.
      *
-     * @return The complete list of the {@link Flooring}s in the system.
+     * @return The complete list of the {@link Cladding}s in the system.
      * @throws MysqlDataAccessException When an exception occurs while performing the operation.
      */
-    @Override public List<Flooring> getAll() throws MysqlDataAccessException
+    @Override public List<Cladding> get() throws MysqlDataAccessException
     {
         try {
-            final List<Flooring> floors = new ArrayList<>();
+            final List<Cladding> floors = new ArrayList<>();
             final String         SQL    = "SELECT * FROM floors";
             try (java.sql.PreparedStatement statement = getConnection().prepareStatement(SQL)) {
                 ResultSet resultSet = statement.executeQuery();
                 while (resultSet.next())
-                    floors.add(createFlooring(resultSet));
+                    floors.add(createCladding(resultSet));
 
                 return floors;
             }
@@ -46,15 +46,15 @@ public class MysqlFlooringsDAO extends AbstractMysqlDAO implements FlooringsDAO
     }
 
     /**
-     * Creates a new {@link Flooring} using the provided {@code ResultSet}.
+     * Creates a new {@link Cladding} using the provided {@code ResultSet}.
      *
-     * @param resultSet The {@code ResultSet} from which to create the isntance of {@link Flooring}.
-     * @return The newly created instance of {@link Flooring}.
+     * @param resultSet The {@code ResultSet} from which to create the isntance of {@link Cladding}.
+     * @return The newly created instance of {@link Cladding}.
      * @throws SQLException
      */
-    private Flooring createFlooring(ResultSet resultSet) throws SQLException
+    private Cladding createCladding(ResultSet resultSet) throws SQLException
     {
-        return new MysqlFlooring(
+        return new MysqlCladding(
                 resultSet.getInt("id"),
                 resultSet.getString("name"),
                 resultSet.getString("description"),
@@ -63,40 +63,40 @@ public class MysqlFlooringsDAO extends AbstractMysqlDAO implements FlooringsDAO
     }
 
     /**
-     * The {@link Flooring} implementation returned by the {@link MysqlFlooringsDAO}.
+     * The {@link Cladding} implementation returned by the {@link MysqlCladdingDAO}.
      */
-    private class MysqlFlooring implements Flooring
+    private class MysqlCladding implements Cladding
     {
 
         /**
-         * The unique identifier of the {@link Flooring}.
+         * The unique identifier of the {@link Cladding}.
          */
         private final int id;
 
         /**
-         * The name of the {@link Flooring}.
+         * The name of the {@link Cladding}.
          */
         private final String name;
 
         /**
-         * The description of the {@link Flooring}.
+         * The description of the {@link Cladding}.
          */
         private final String description;
 
         /**
-         * The price of the {@link Flooring} per square meter (in øre).
+         * The price of the {@link Cladding} per square meter (in øre).
          */
         private final int pricePerSquareMeter;
 
         /**
-         * Creates a new {@link MysqlFlooringsDAO}.
+         * Creates a new {@link MysqlCladdingDAO}.
          *
-         * @param id                  The unique identifier of the {@link Flooring}.
-         * @param name                The name of the {@link Flooring}.
-         * @param description         The description of the {@link Flooring}.
-         * @param pricePerSquareMeter The price of the {@link Flooring} per square meter (in øre).
+         * @param id                  The unique identifier of the {@link Cladding}.
+         * @param name                The name of the {@link Cladding}.
+         * @param description         The description of the {@link Cladding}.
+         * @param pricePerSquareMeter The price of the {@link Cladding} per square meter (in øre).
          */
-        public MysqlFlooring(int id, String name, String description, int pricePerSquareMeter)
+        public MysqlCladding(int id, String name, String description, int pricePerSquareMeter)
         {
             this.id = id;
             this.name = name;
@@ -105,9 +105,9 @@ public class MysqlFlooringsDAO extends AbstractMysqlDAO implements FlooringsDAO
         }
 
         /**
-         * Returns the unique identifier of the {@link Flooring}.
+         * Returns the unique identifier of the {@link Cladding}.
          *
-         * @return The unique identifier of the {@link Flooring}.
+         * @return The unique identifier of the {@link Cladding}.
          */
         @Override public int getId()
         {
@@ -115,9 +115,9 @@ public class MysqlFlooringsDAO extends AbstractMysqlDAO implements FlooringsDAO
         }
 
         /**
-         * Returns the name of the {@link Flooring}.
+         * Returns the name of the {@link Cladding}.
          *
-         * @return The name of the {@link Flooring}.
+         * @return The name of the {@link Cladding}.
          */
         @Override public String getName()
         {
@@ -125,9 +125,9 @@ public class MysqlFlooringsDAO extends AbstractMysqlDAO implements FlooringsDAO
         }
 
         /**
-         * Returns the description of the {@link Flooring}.
+         * Returns the description of the {@link Cladding}.
          *
-         * @return The description of the {@link Flooring}.
+         * @return The description of the {@link Cladding}.
          */
         @Override public String getDescription()
         {
@@ -135,9 +135,9 @@ public class MysqlFlooringsDAO extends AbstractMysqlDAO implements FlooringsDAO
         }
 
         /**
-         * Returns the price of the {@link Flooring} per square meter (in øre).
+         * Returns the price of the {@link Cladding} per square meter (in øre).
          *
-         * @return The price of the {@link Flooring} per square meter (in øre).
+         * @return The price of the {@link Cladding} per square meter (in øre).
          */
         @Override public int getPricePerSquareMeter()
         {
@@ -149,7 +149,7 @@ public class MysqlFlooringsDAO extends AbstractMysqlDAO implements FlooringsDAO
             if (this == o) return true;
             if (o == null || getClass() != o.getClass()) return false;
 
-            MysqlFlooring that = (MysqlFlooring) o;
+            MysqlCladding that = (MysqlCladding) o;
 
             return id == that.id;
         }

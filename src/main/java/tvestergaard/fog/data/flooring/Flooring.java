@@ -38,12 +38,12 @@ public interface Flooring
      * @param other The object to compare with.
      * @return {@code true} if the two objects are considered equal.
      */
-    abstract boolean equals(Object other);
+    boolean equals(Object other);
 
     /**
      * Returns the hashCode representing the {@link Flooring}. The hashCode should be the id of the {@link Flooring}.
      *
      * @return The hashCode representing the {@link Flooring}.
      */
-    abstract int hashCode();
+    int hashCode();
 }

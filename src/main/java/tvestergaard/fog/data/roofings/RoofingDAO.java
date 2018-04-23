@@ -4,7 +4,7 @@ import tvestergaard.fog.data.DataAccessException;
 
 import java.util.List;
 
-public interface RoofingsDAO
+public interface RoofingDAO
 {
 
     /**
@@ -13,5 +13,5 @@ public interface RoofingsDAO
      * @return The complete list of the {@link Roofing}s in the system.
      * @throws DataAccessException When an exception occurs while performing the operation.
      */
-    public List<Roofing> getAll() throws DataAccessException;
+    List<Roofing> get() throws DataAccessException;
 }

@@ -4,7 +4,7 @@ import tvestergaard.fog.data.DataAccessException;
 
 import java.util.List;
 
-public interface FlooringsDAO
+public interface FlooringDAO
 {
 
     /**
@@ -13,5 +13,5 @@ public interface FlooringsDAO
      * @return The complete list of the {@link Flooring}s in the system.
      * @throws DataAccessException When an exception occurs while performing the operation.
      */
-    public List<Flooring> getAll() throws DataAccessException;
+    List<Flooring> get() throws DataAccessException;
 }

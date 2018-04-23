@@ -2,12 +2,12 @@ package tvestergaard.fog.presentation.servlets;
 
 import tvestergaard.fog.data.DataAccessException;
 import tvestergaard.fog.data.ProductionDataSource;
-import tvestergaard.fog.data.cladding.CladdingsDAO;
-import tvestergaard.fog.data.cladding.MysqlCladdingsDAO;
-import tvestergaard.fog.data.flooring.FlooringsDAO;
-import tvestergaard.fog.data.flooring.MysqlFlooringsDAO;
-import tvestergaard.fog.data.roofings.MysqlRoofingsDAO;
-import tvestergaard.fog.data.roofings.RoofingsDAO;
+import tvestergaard.fog.data.cladding.CladdingDAO;
+import tvestergaard.fog.data.cladding.MysqlCladdingDAO;
+import tvestergaard.fog.data.flooring.FlooringDAO;
+import tvestergaard.fog.data.flooring.MysqlFlooringDAO;
+import tvestergaard.fog.data.roofings.MysqlRoofingDAO;
+import tvestergaard.fog.data.roofings.RoofingDAO;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -21,19 +21,19 @@ public class DesignServlet extends HttpServlet
 {
 
     /**
-     * The {@link RoofingsDAO} used when displaying possible roof choices to the customer.
+     * The {@link RoofingDAO} used when displaying possible roof choices to the customer.
      */
-    private final RoofingsDAO roofingsDAO = new MysqlRoofingsDAO(ProductionDataSource.getSource());
+    private final RoofingDAO roofingsDAO = new MysqlRoofingDAO(ProductionDataSource.getSource());
 
     /**
-     * The {@link FlooringsDAO} used when displaying possible floor choices to the customer.
+     * The {@link FlooringDAO} used when displaying possible floor choices to the customer.
      */
-    private final FlooringsDAO flooringsDAO = new MysqlFlooringsDAO(ProductionDataSource.getSource());
+    private final FlooringDAO flooringsDAO = new MysqlFlooringDAO(ProductionDataSource.getSource());
 
     /**
-     * The {@link CladdingsDAO} used when displaying possible cladding choices to the customer.
+     * The {@link CladdingDAO} used when displaying possible cladding choices to the customer.
      */
-    private final CladdingsDAO claddingsDAO = new MysqlCladdingsDAO(ProductionDataSource.getSource());
+    private final CladdingDAO claddingsDAO = new MysqlCladdingDAO(ProductionDataSource.getSource());
 
     /**
      * Displays the /design page, where customers can design their own garage.
@@ -47,9 +47,9 @@ public class DesignServlet extends HttpServlet
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException
     {
         try {
-            req.setAttribute("roofings", roofingsDAO.getAll());
-            req.setAttribute("floors", flooringsDAO.getAll());
-            req.setAttribute("claddings", claddingsDAO.getAll());
+            req.setAttribute("roofings", roofingsDAO.get());
+            req.setAttribute("floors", flooringsDAO.get());
+            req.setAttribute("claddings", claddingsDAO.get());
 
             req.getRequestDispatcher("/WEB-INF/design.jsp").forward(req, resp);
         } catch (DataAccessException e) {
