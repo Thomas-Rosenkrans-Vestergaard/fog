@@ -224,7 +224,7 @@ CREATE TABLE `roofings` (
   `description` text NOT NULL,
   `minimum_slope` tinyint(3) unsigned NOT NULL,
   `maximum_slope` tinyint(3) unsigned NOT NULL,
-  `price_per_meter_square` decimal(10,2) NOT NULL,
+  `price_per_square_meter` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
