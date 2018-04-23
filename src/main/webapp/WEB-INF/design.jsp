@@ -8,38 +8,82 @@
 <div class="row">
     <form class="col s12">
         <div class="row">
-            <div class="input-field col s12">
-                <input id="height" type="text" class="validate">
-                <label for="height">Height</label>
-            </div>
-        </div>
-        <div class="row">
-            <div class="input-field col s12">
-                <input disabled value="I am not editable" id="disabled" type="text" class="validate">
-                <label for="disabled">Disabled</label>
-            </div>
-        </div>
-        <div class="row">
-            <div class="input-field col s12">
-                <input id="password" type="password" class="validate">
-                <label for="password">Password</label>
-            </div>
-        </div>
-        <div class="row">
-            <div class="input-field col s12">
-                <input id="email" type="email" class="validate">
-                <label for="email">Email</label>
+            <div class="col s4">
+                <select id="type" name="type">
+                    <option value="GARAGE" selected>Carport</option>
+                    <option value="SHED">Redskabsskur</option>
+                </select>
+                <label for="type">Konstruktionstype</label>
             </div>
         </div>
         <div class="row">
             <div class="col s12">
-                This is an inline input field:
-                <div class="input-field inline">
-                    <input id="email" type="email" class="validate">
-                    <label for="email" data-error="wrong" data-success="right">Email</label>
-                </div>
+                <h3>Konstruktionsstørrelser</h3>
             </div>
         </div>
+        <div class="row">
+            <div class="col s4">
+                <select id="width" name="width">
+                    <option value="" disabled selected>Choose your option</option>
+                    <option value="240">240 cm</option>
+                    <option value="270">270 cm</option>
+                    <option value="300">300 cm</option>
+                    <option value="330">330 cm</option>
+                    <option value="360">360 cm</option>
+                    <option value="390">390 cm</option>
+                    <option value="420">420 cm</option>
+                    <option value="450">450 cm</option>
+                    <option value="480">480 cm</option>
+                    <option value="510">510 cm</option>
+                    <option value="540">540 cm</option>
+                    <option value="570">570 cm</option>
+                    <option value="600">600 cm</option>
+                    <option value="630">630 cm</option>
+                    <option value="660">660 cm</option>
+                    <option value="690">690 cm</option>
+                    <option value="720">720 cm</option>
+                    <option value="750">750 cm</option>
+                </select>
+                <label for="width">Bredde</label>
+            </div>
+            <div class="col s4">
+                <select id="length" name="length">
+                    <option value="" disabled selected>Choose your option</option>
+                    <option value="240">240 cm</option>
+                    <option value="270">270 cm</option>
+                    <option value="300">300 cm</option>
+                    <option value="330">330 cm</option>
+                    <option value="360">360 cm</option>
+                    <option value="390">390 cm</option>
+                    <option value="420">420 cm</option>
+                    <option value="450">450 cm</option>
+                    <option value="480">480 cm</option>
+                    <option value="510">510 cm</option>
+                    <option value="540">540 cm</option>
+                    <option value="570">570 cm</option>
+                    <option value="600">600 cm</option>
+                    <option value="630">630 cm</option>
+                    <option value="660">660 cm</option>
+                    <option value="690">690 cm</option>
+                    <option value="720">720 cm</option>
+                    <option value="750">750 cm</option>
+                    <option value="780">780 cm</option>
+                </select>
+                <label for="length">Længde</label>
+            </div>
+            <div class="col s4">
+                <select id="height" name="height">
+                    <option value="" disabled selected>Choose your option</option>
+                    <option value="180">180 cm</option>
+                    <option value="210">210 cm</option>
+                    <option value="240">240 cm</option>
+                    <option value="270">270 cm</option>
+                    <option value="300">300 cm</option>
+                </select>
+                <label for="length">Højde</label>
+            </div>
+        </div>
+
     </form>
 </div>
 <%@ include file="includes/bottom.jspf" %>
