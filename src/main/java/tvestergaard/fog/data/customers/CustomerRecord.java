@@ -1,5 +1,7 @@
 package tvestergaard.fog.data.customers;
 
+import java.time.LocalDateTime;
+
 /**
  * The default {@link Customer} implementation.
  */
@@ -47,6 +49,11 @@ public class CustomerRecord implements Customer
     private boolean active;
 
     /**
+     * The moment in time when the {@link Customer} was created.
+     */
+    private LocalDateTime createdAt;
+
+    /**
      * Creates a new {@link Customer}.
      *
      * @param id            The unique identifier of the {@link Customer}.
@@ -57,8 +64,9 @@ public class CustomerRecord implements Customer
      * @param password      The password of the {@link Customer}.
      * @param contactMethod The preferred contact method of the {@link Customer}.
      * @param active        Whether or not the {@link Customer} is active.
+     * @param createdAt     The moment in time when the {@link Customer} was created.
      */
-    public CustomerRecord(int id, String name, String address, String email, String phone, String password, ContactMethod contactMethod, boolean active)
+    public CustomerRecord(int id, String name, String address, String email, String phone, String password, ContactMethod contactMethod, boolean active, LocalDateTime createdAt)
     {
         this.id = id;
         this.name = name;
@@ -198,5 +206,15 @@ public class CustomerRecord implements Customer
     @Override public void setContactMethod(ContactMethod method)
     {
         this.contactMethod = method;
+    }
+
+    /**
+     * Returns the {@code LocalDateTime} representing the moment when the {@link Customer} was created.
+     *
+     * @return The {@code LocalDateTime} representing the moment when the {@link Customer} was created.
+     */
+    @Override public LocalDateTime getCreatedAt()
+    {
+        return this.createdAt;
     }
 }

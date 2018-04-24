@@ -6,7 +6,7 @@ import java.sql.SQLException;
 /**
  * Binds the parameters of a provided {@code PreparedStatement} using the provided {@link Constraint}s.
  */
-public class PreparedStatementBinder
+public class StatementBinder
 {
 
     /**

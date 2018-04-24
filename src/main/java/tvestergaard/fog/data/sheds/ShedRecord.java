@@ -141,4 +141,19 @@ public class ShedRecord implements Shed
     {
         this.flooring = flooring;
     }
+
+    @Override public boolean equals(Object o)
+    {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        ShedRecord that = (ShedRecord) o;
+
+        return id == that.id;
+    }
+
+    @Override public int hashCode()
+    {
+        return id;
+    }
 }

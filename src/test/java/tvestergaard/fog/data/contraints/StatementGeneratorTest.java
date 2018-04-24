@@ -5,10 +5,10 @@ import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 import static tvestergaard.fog.data.contraints.Constraint.*;
 
-public class PreparedStatementGeneratorTest
+public class StatementGeneratorTest
 {
 
-    private PreparedStatementGenerator generator = new PreparedStatementGenerator();
+    private StatementGenerator generator = new StatementGenerator();
 
     @Test
     public void whereEquals() throws Exception

@@ -86,6 +86,7 @@ CREATE TABLE `customers` (
   `password` varchar(255) DEFAULT NULL,
   `contact_method` tinyint(3) unsigned NOT NULL,
   `active` bit(1) NOT NULL DEFAULT b'1',
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -264,4 +265,4 @@ CREATE TABLE `sheds` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-04-24 13:21:17
+-- Dump completed on 2018-04-24 14:58:35

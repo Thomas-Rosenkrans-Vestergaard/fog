@@ -5,7 +5,7 @@ import tvestergaard.fog.data.customers.Customer;
 import tvestergaard.fog.data.roofing.Roofing;
 import tvestergaard.fog.data.sheds.Shed;
 
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 public interface Order
 {
@@ -151,11 +151,11 @@ public interface Order
     void setShed(Shed shed);
 
     /**
-     * Returns a timestamp representing the moment in time when the {@link Customer} placed the {@link Order}.
+     * Returns a {@link LocalDateTime} representing the moment in time when the {@link Customer} placed the {@link Order}.
      *
-     * @return The timestamp.
+     * @return The {@link LocalDateTime}.
      */
-    Timestamp getCreatedAt();
+    LocalDateTime getCreatedAt();
 
     /**
      * Represents a type of {@link Order}.
@@ -193,13 +193,34 @@ public interface Order
         /**
          * The {@link Customer} receives rafters premade.
          */
-        PREMADE,
+        PREMADE(0),
 
         /**
          * The {@link Customer} makes the rafters themselves.
          */
-        SELFMADE;
+        SELFMADE(1);
 
+        /**
+         * Identifier representing the {@link RaftersType}.
+         */
+        private final int id;
+
+        /**
+         * Creates a new {@link RaftersType}.
+         *
+         * @param id Identifier representing the {@link RaftersType}.
+         */
+        RaftersType(int id)
+        {
+            this.id = id;
+        }
+
+        /**
+         * Returns the {@link RaftersType} with the provided id.
+         *
+         * @param id The identifier of the {@link RaftersType} to return.
+         * @return The {@link RaftersType} with the provided id.
+         */
         public static RaftersType from(int id)
         {
             if (id == 0)

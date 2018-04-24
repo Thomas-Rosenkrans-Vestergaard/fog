@@ -3,7 +3,7 @@ package tvestergaard.fog.data.contraints;
 /**
  * Generated a prepared statement from the provided {@link Constraint}s.
  */
-public class PreparedStatementGenerator
+public class StatementGenerator
 {
 
     /**

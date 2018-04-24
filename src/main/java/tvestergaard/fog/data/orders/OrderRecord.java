@@ -5,7 +5,7 @@ import tvestergaard.fog.data.customers.Customer;
 import tvestergaard.fog.data.roofing.Roofing;
 import tvestergaard.fog.data.sheds.Shed;
 
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 /**
  * The default {@link Order} implementation.
@@ -69,9 +69,9 @@ public class OrderRecord implements Order
     private Shed shed;
 
     /**
-     * The time when the {@link Order} was placed.
+     * The moment when the {@link Order} was placed.
      */
-    private Timestamp createdAt;
+    private LocalDateTime createdAt;
 
     /**
      * Creates a new {@link OrderRecord}.
@@ -89,7 +89,7 @@ public class OrderRecord implements Order
      * @param shed        The {@link Shed} included with the {@link Order}.
      * @param createdAt   The time when the {@link Order} was placed.
      */
-    public OrderRecord(int id, Customer customer, OrderType type, Cladding cladding, int width, int length, int height, Roofing roofing, int slope, RaftersType raftersType, Shed shed, Timestamp createdAt)
+    public OrderRecord(int id, Customer customer, OrderType type, Cladding cladding, int width, int length, int height, Roofing roofing, int slope, RaftersType raftersType, Shed shed, LocalDateTime createdAt)
     {
         this.id = id;
         this.customer = customer;
@@ -306,11 +306,11 @@ public class OrderRecord implements Order
     }
 
     /**
-     * Returns a timestamp representing the moment in time when the {@link Customer} placed the {@link Order}.
+     * Returns a {@code LocalDateTime} representing the moment in time when the {@link Customer} placed the {@link Order}.
      *
-     * @return The timestamp.
+     * @return The {@code LocalDateTime}.
      */
-    @Override public Timestamp getCreatedAt()
+    @Override public LocalDateTime getCreatedAt()
     {
         return createdAt;
     }

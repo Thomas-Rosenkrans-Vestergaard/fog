@@ -91,7 +91,8 @@ public abstract class AbstractMysqlDAO
                 resultSet.getString("customers.phone"),
                 resultSet.getString("customers.password"),
                 Customer.ContactMethod.from(resultSet.getInt("customers.contact_method")),
-                resultSet.getBoolean("customers.active")
+                resultSet.getBoolean("customers.active"),
+                resultSet.getTimestamp("customers.created_at").toLocalDateTime()
         );
     }
 
@@ -115,7 +116,7 @@ public abstract class AbstractMysqlDAO
     /**
      * Creates a new {@link Order} instance from the provided {@code ResultSet}.
      *
-     * @param resultSet The {@code ResultSet} from which to create the isntance of {@link Flooring}.
+     * @param resultSet The {@code ResultSet} from which to create the instance of {@link Flooring}.
      * @return The newly create instance of {@link Order}.
      * @throws SQLException
      */
@@ -133,7 +134,7 @@ public abstract class AbstractMysqlDAO
                 resultSet.getInt("orders.slope"),
                 Order.RaftersType.from(resultSet.getInt("orders.rafters_type")),
                 createShed(resultSet),
-                resultSet.getTimestamp("orders.created_at")
+                resultSet.getTimestamp("orders.created_at").toLocalDateTime()
         );
     }
 

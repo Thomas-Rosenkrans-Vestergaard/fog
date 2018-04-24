@@ -1,6 +1,7 @@
 package tvestergaard.fog.data.customers;
 
 import tvestergaard.fog.data.DataAccessException;
+import tvestergaard.fog.data.contraints.Constraint;
 
 import java.util.List;
 
@@ -8,10 +9,12 @@ public interface CustomerDAO
 {
 
     /**
-     * Returns a complete list of the {@link Customer}s in the system.
+     * Returns the {@link Customer}s in the system.
+     * The results can be constrained using the provided {@link Constraint}s.
      *
-     * @return The complete list.
-     * @throws DataAccessException When an exception occurs during the operation.
+     * @param constraints The {@link Constraint}s that modify the resulting list.
+     * @return The resulting {@link Customer}s.
+     * @throws DataAccessException When an exception occurs while performing the operation.
      */
-    List<Customer> get() throws DataAccessException;
+    List<Customer> get(Constraint... constraints) throws DataAccessException;
 }

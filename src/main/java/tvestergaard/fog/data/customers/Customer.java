@@ -1,5 +1,7 @@
 package tvestergaard.fog.data.customers;
 
+import java.time.LocalDateTime;
+
 public interface Customer
 {
 
@@ -95,28 +97,57 @@ public interface Customer
     void setContactMethod(ContactMethod method);
 
     /**
+     * Returns the {@code LocalDateTime} representing the moment when the {@link Customer} was created.
+     *
+     * @return The {@code LocalDateTime} representing the moment when the {@link Customer} was created.
+     */
+    LocalDateTime getCreatedAt();
+
+    /**
      * Represents a way the {@link Customer} can be contacted.
      */
     public enum ContactMethod
     {
+
+        /**
+         * The {@link Customer} prefers to be contacted by email.
+         */
         EMAIL(0),
+
+        /**
+         * The {@link Customer} prefers to be contacted by phone.
+         */
         PHONE(1);
 
-        private final int id;
+        /**
+         * The id representing the {@link ContactMethod}.
+         */
+        public final int id;
 
+        /**
+         * Creates a new {@link ContactMethod}.
+         *
+         * @param id The id representing the {@link ContactMethod}.
+         */
         ContactMethod(int id)
         {
             this.id = id;
         }
 
-        public static ContactMethod from(int id){
-            if(id == 0)
+        /**
+         * Returns the {@link ContactMethod} with the provided identifier.
+         *
+         * @param id The identifier.
+         * @return The {@link ContactMethod} with the provided identifier.
+         */
+        public static ContactMethod from(int id)
+        {
+            if (id == 0)
                 return EMAIL;
-
-            if(id == 1)
+            if (id == 1)
                 return PHONE;
 
-            throw new IllegalArgumentException("No contact method with provided id.l");
+            throw new IllegalArgumentException("No contact method with provided id.");
         }
     }
 }

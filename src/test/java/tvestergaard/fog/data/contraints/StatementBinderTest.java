@@ -14,10 +14,10 @@ import static org.junit.Assert.*;
 import static tvestergaard.fog.data.contraints.Constraint.eq;
 import static tvestergaard.fog.data.contraints.Constraint.where;
 
-public class PreparedStatementBinderTest
+public class StatementBinderTest
 {
-    private static final MysqlDataSource         source = TestDataSource.getSource();
-    private final        PreparedStatementBinder binder = new PreparedStatementBinder();
+    private static final MysqlDataSource source = TestDataSource.getSource();
+    private final        StatementBinder binder = new StatementBinder();
 
     @BeforeClass
     public static void before() throws Exception
