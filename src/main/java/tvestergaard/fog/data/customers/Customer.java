@@ -57,14 +57,14 @@ public interface Customer
      *
      * @return The phone number of the {@link Customer}.
      */
-    String getPhoneNumber();
+    String getPhone();
 
     /**
      * Sets the phone number of the {@link Customer}.
      *
      * @param phoneNumber The new phone number.
      */
-    void setPhoneNumber(String phoneNumber);
+    void setPhone(String phoneNumber);
 
     /**
      * Returns the password of the {@link Customer}.

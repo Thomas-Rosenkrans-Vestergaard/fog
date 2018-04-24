@@ -6,8 +6,8 @@ import tvestergaard.fog.data.cladding.CladdingDAO;
 import tvestergaard.fog.data.cladding.MysqlCladdingDAO;
 import tvestergaard.fog.data.flooring.FlooringDAO;
 import tvestergaard.fog.data.flooring.MysqlFlooringDAO;
-import tvestergaard.fog.data.roofings.MysqlRoofingDAO;
-import tvestergaard.fog.data.roofings.RoofingDAO;
+import tvestergaard.fog.data.roofing.MysqlRoofingDAO;
+import tvestergaard.fog.data.roofing.RoofingDAO;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;

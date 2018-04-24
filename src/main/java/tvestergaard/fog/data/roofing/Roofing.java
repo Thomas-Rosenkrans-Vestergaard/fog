@@ -1,4 +1,4 @@
-package tvestergaard.fog.data.roofings;
+package tvestergaard.fog.data.roofing;
 
 public interface Roofing
 {

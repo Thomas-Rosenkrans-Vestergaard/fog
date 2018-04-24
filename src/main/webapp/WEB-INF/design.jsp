@@ -16,6 +16,14 @@
                 <label for="type">Konstruktionstype</label>
             </div>
         </div>
+        <div class="input-field col s12 m6">
+            <select name="cladding" required>
+                <c:forEach items="${claddings}" var="cladding">
+                    <option value="${cladding.getId()}"><c:out value="${cladding.getName()}"/></option>
+                </c:forEach>
+            </select>
+            <label>Beklædning</label>
+        </div>
         <div class="row">
             <div class="col s12">
                 <p class="form-header">Konstruktionsstørrelser</p>
@@ -118,7 +126,7 @@
             <div class="col s12">
                 <div class="switch">
                     <label>
-                        <input type="checkbox" name="toolshed">
+                        <input type="checkbox" name="shed">
                         <span class="lever"></span>
                     </label>
                 </div>
@@ -126,19 +134,17 @@
         </div>
         <div class="row">
             <div class="input-field col s12 m6">
-                <input name="toolshed-width" id="toolshed-width" type="number" step="1" min="0" class="validate"
-                       required>
-                <label for="toolshed-width">Bredde</label>
+                <input name="shed-width" id="shed-width" type="number" step="1" min="0" class="validate" required>
+                <label for="shed-width">Bredde</label>
             </div>
             <div class="input-field col s12 m6">
-                <input name="toolshed-depth" id="toolshed-depth" type="number" step="1" min="0" class="validate"
-                       required>
-                <label for="toolshed-depth">Dybde</label>
+                <input name="shed-depth" id="shed-depth" type="number" step="1" min="0" class="validate" required>
+                <label for="shed-depth">Dybde</label>
             </div>
         </div>
         <div class="row">
             <div class="input-field col s12 m6">
-                <select name="flooring" required>
+                <select name="shed-flooring" required>
                     <c:forEach items="${floorings}" var="flooring">
                         <option value="${flooring.getId()}"><c:out value="${flooring.getName()}"/></option>
                     </c:forEach>
@@ -146,7 +152,7 @@
                 <label>Gulv</label>
             </div>
             <div class="input-field col s12 m6">
-                <select name="cladding" required>
+                <select name="shed-cladding" required>
                     <c:forEach items="${claddings}" var="cladding">
                         <option value="${cladding.getId()}"><c:out value="${cladding.getName()}"/></option>
                     </c:forEach>
@@ -168,15 +174,22 @@
         </div>
         <div class="row">
             <div class="input-field col s12">
-                <input name="customer-name" id="customer-mail" type="email" data-length="255" class="validate" required>
+                <input name="customer-address" id="customer-address" type="text" minlength="10" data-length="255"
+                       class="validate" required>
+                <label for="customer-address">Navn</label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="input-field col s12">
+                <input name="customer-mail" id="customer-mail" type="email" data-length="255" class="validate" required>
                 <label for="customer-mail">Mail</label>
             </div>
         </div>
         <div class="row">
             <div class="input-field col s12">
-                <input name="customer-telephone" id="customer-telephone" type="tel" data-length="12" class="validate"
+                <input name="customer-phone" id="customer-phone" type="tel" data-length="12" class="validate"
                        required>
-                <label for="customer-telephone">Telefon</label>
+                <label for="customer-phone">Telefon</label>
             </div>
         </div>
         <div class="row">
