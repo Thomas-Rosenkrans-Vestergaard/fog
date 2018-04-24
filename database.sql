@@ -107,11 +107,12 @@ DROP TABLE IF EXISTS `customers`;
 CREATE TABLE `customers` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(255) NOT NULL,
+  `address` varchar(255) NOT NULL,
   `email` varchar(255) NOT NULL,
-  `telephone` varchar(12) NOT NULL,
+  `phone` varchar(12) NOT NULL,
   `password` varchar(255) DEFAULT NULL,
   `contact_method` tinyint(3) unsigned NOT NULL,
-  `address` varchar(255) NOT NULL,
+  `active` bit(1) NOT NULL DEFAULT b'1',
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -300,4 +301,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-04-24  9:36:58
+-- Dump completed on 2018-04-24 10:36:47
