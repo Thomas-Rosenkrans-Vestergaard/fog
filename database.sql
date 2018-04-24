@@ -35,11 +35,6 @@ CREATE TABLE `bom` (
 -- Dumping data for table `bom`
 --
 
-LOCK TABLES `bom` WRITE;
-/*!40000 ALTER TABLE `bom` DISABLE KEYS */;
-/*!40000 ALTER TABLE `bom` ENABLE KEYS */;
-UNLOCK TABLES;
-
 --
 -- Table structure for table `bom_materials`
 --
@@ -66,10 +61,6 @@ CREATE TABLE `bom_materials` (
 -- Dumping data for table `bom_materials`
 --
 
-LOCK TABLES `bom_materials` WRITE;
-/*!40000 ALTER TABLE `bom_materials` DISABLE KEYS */;
-/*!40000 ALTER TABLE `bom_materials` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `cladding`
@@ -91,11 +82,6 @@ CREATE TABLE `cladding` (
 --
 -- Dumping data for table `cladding`
 --
-
-LOCK TABLES `cladding` WRITE;
-/*!40000 ALTER TABLE `cladding` DISABLE KEYS */;
-/*!40000 ALTER TABLE `cladding` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `customers`
@@ -119,11 +105,6 @@ CREATE TABLE `customers` (
 --
 -- Dumping data for table `customers`
 --
-
-LOCK TABLES `customers` WRITE;
-/*!40000 ALTER TABLE `customers` DISABLE KEYS */;
-/*!40000 ALTER TABLE `customers` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `employees`
@@ -149,11 +130,6 @@ CREATE TABLE `employees` (
 -- Dumping data for table `employees`
 --
 
-LOCK TABLES `employees` WRITE;
-/*!40000 ALTER TABLE `employees` DISABLE KEYS */;
-/*!40000 ALTER TABLE `employees` ENABLE KEYS */;
-UNLOCK TABLES;
-
 --
 -- Table structure for table `employees_roles`
 --
@@ -178,11 +154,6 @@ CREATE TABLE `employees_roles` (
 -- Dumping data for table `employees_roles`
 --
 
-LOCK TABLES `employees_roles` WRITE;
-/*!40000 ALTER TABLE `employees_roles` DISABLE KEYS */;
-/*!40000 ALTER TABLE `employees_roles` ENABLE KEYS */;
-UNLOCK TABLES;
-
 --
 -- Table structure for table `flooring`
 --
@@ -203,11 +174,6 @@ CREATE TABLE `floors` (
 --
 -- Dumping data for table `flooring`
 --
-
-LOCK TABLES `floors` WRITE;
-/*!40000 ALTER TABLE `flooring` DISABLE KEYS */;
-/*!40000 ALTER TABLE `flooring` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `materials`
@@ -233,11 +199,6 @@ CREATE TABLE `materials` (
 -- Dumping data for table `materials`
 --
 
-LOCK TABLES `materials` WRITE;
-/*!40000 ALTER TABLE `materials` DISABLE KEYS */;
-/*!40000 ALTER TABLE `materials` ENABLE KEYS */;
-UNLOCK TABLES;
-
 --
 -- Table structure for table `roles`
 --
@@ -256,12 +217,7 @@ CREATE TABLE `roles` (
 --
 -- Dumping data for table `roles`
 --
-
-LOCK TABLES `roles` WRITE;
-/*!40000 ALTER TABLE `roles` DISABLE KEYS */;
 INSERT INTO `roles` VALUES (1,'CENTERCHEF'),(2,'MATERIALEANSVARLIG'),(3,'SALGSMEDARBEJDER');
-/*!40000 ALTER TABLE `roles` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `roofings`
@@ -286,18 +242,5 @@ CREATE TABLE `roofings` (
 -- Dumping data for table `roofings`
 --
 
-LOCK TABLES `roofings` WRITE;
-/*!40000 ALTER TABLE `roofings` DISABLE KEYS */;
-/*!40000 ALTER TABLE `roofings` ENABLE KEYS */;
-UNLOCK TABLES;
-/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
-
-/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
-/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
-/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
-/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
 -- Dump completed on 2018-04-23 10:25:02
