@@ -18,7 +18,9 @@ public class ChangeOrdersServlet extends HttpServlet
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
 	{
+
 		request.getRequestDispatcher("/WEB-INF/changeOrders.jsp").forward(request, response);
+
 	}
 
 
