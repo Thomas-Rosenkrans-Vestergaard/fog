@@ -79,27 +79,27 @@ public class MysqlRoofingDAO extends AbstractMysqlDAO implements RoofingDAO
         /**
          * The name of the {@link Roofing}.
          */
-        private final String name;
+        private String name;
 
         /**
          * The description of the {@link Roofing}.
          */
-        private final String description;
+        private String description;
 
         /**
          * The minimum slope the {@link Roofing} must have.
          */
-        private final int minimumSlope;
+        private int minimumSlope;
 
         /**
          * The maximum slope the {@link Roofing} must have.
          */
-        private final int maximumSlope;
+        private int maximumSlope;
 
         /**
          * The price of the {@link Roofing} per square meter (in øre).
          */
-        private final int pricePerSquareMeter;
+        private int pricePerSquareMeter;
 
         /**
          * Creates a new {@link MysqlRoofing}.
@@ -142,6 +142,16 @@ public class MysqlRoofingDAO extends AbstractMysqlDAO implements RoofingDAO
         }
 
         /**
+         * Sets the name of the {@link Roofing}.
+         *
+         * @param name The new name.
+         */
+        @Override public void setName(String name)
+        {
+            this.name = name;
+        }
+
+        /**
          * Returns the description of the {@link Roofing}.
          *
          * @return The description of the {@link Roofing}.
@@ -149,6 +159,16 @@ public class MysqlRoofingDAO extends AbstractMysqlDAO implements RoofingDAO
         @Override public String getDescription()
         {
             return description;
+        }
+
+        /**
+         * Sets the description of the {@link Roofing}.
+         *
+         * @param description The new description.
+         */
+        @Override public void setDescription(String description)
+        {
+            this.description = description;
         }
 
         /**
@@ -162,6 +182,16 @@ public class MysqlRoofingDAO extends AbstractMysqlDAO implements RoofingDAO
         }
 
         /**
+         * Sets the minimum slope the {@link Roofing} must have.
+         *
+         * @param minimumSlope The new minimum slope. Range between 0 and 90 (exclusive).
+         */
+        @Override public void setMinimumSlope(int minimumSlope)
+        {
+            this.minimumSlope = minimumSlope;
+        }
+
+        /**
          * Returns the maximum slope the {@link Roofing} must have.
          *
          * @return The maximum slope the {@link Roofing} must have. Returns an integer between 0 and 90 (exclusive).
@@ -172,6 +202,16 @@ public class MysqlRoofingDAO extends AbstractMysqlDAO implements RoofingDAO
         }
 
         /**
+         * Sets the maximum slope the {@link Roofing} can have.
+         *
+         * @param maximumSlope The new maximum slope. Range between 0 and 90 (exclusive).
+         */
+        @Override public void setMaximumSlope(int maximumSlope)
+        {
+            this.maximumSlope = maximumSlope;
+        }
+
+        /**
          * Returns the price of the {@link Roofing} per square meter (in øre).
          *
          * @return The price of the {@link Roofing} per square meter (in øre).
@@ -179,6 +219,16 @@ public class MysqlRoofingDAO extends AbstractMysqlDAO implements RoofingDAO
         @Override public int getPricePerSquareMeter()
         {
             return pricePerSquareMeter;
+        }
+
+        /**
+         * Sets the price of the {@link Roofing} per square meter.
+         *
+         * @param price The new price (in øre).
+         */
+        @Override public void setPricePerSquareMeter(int price)
+        {
+            this.pricePerSquareMeter = price;
         }
 
         @Override public boolean equals(Object o)

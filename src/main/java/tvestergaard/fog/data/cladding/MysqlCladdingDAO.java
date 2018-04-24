@@ -76,17 +76,17 @@ public class MysqlCladdingDAO extends AbstractMysqlDAO implements CladdingDAO
         /**
          * The name of the {@link Cladding}.
          */
-        private final String name;
+        private String name;
 
         /**
          * The description of the {@link Cladding}.
          */
-        private final String description;
+        private String description;
 
         /**
          * The price of the {@link Cladding} per square meter (in øre).
          */
-        private final int pricePerSquareMeter;
+        private int pricePerSquareMeter;
 
         /**
          * Creates a new {@link MysqlCladdingDAO}.
@@ -125,6 +125,16 @@ public class MysqlCladdingDAO extends AbstractMysqlDAO implements CladdingDAO
         }
 
         /**
+         * Sets the name of the {@link Cladding}.
+         *
+         * @param name The updated name.
+         */
+        @Override public void setName(String name)
+        {
+            this.name = name;
+        }
+
+        /**
          * Returns the description of the {@link Cladding}.
          *
          * @return The description of the {@link Cladding}.
@@ -132,6 +142,17 @@ public class MysqlCladdingDAO extends AbstractMysqlDAO implements CladdingDAO
         @Override public String getDescription()
         {
             return description;
+        }
+
+
+        /**
+         * Sets the description of the {@lilnk Cladding}.
+         *
+         * @param description The new description.
+         */
+        @Override public void setDescription(String description)
+        {
+            this.description = description;
         }
 
         /**
@@ -142,6 +163,17 @@ public class MysqlCladdingDAO extends AbstractMysqlDAO implements CladdingDAO
         @Override public int getPricePerSquareMeter()
         {
             return pricePerSquareMeter;
+        }
+
+
+        /**
+         * Sets the price per square meter of {@link Cladding}.
+         *
+         * @param price The new price.
+         */
+        @Override public void setPricePerSquareMeter(int price)
+        {
+            this.pricePerSquareMeter = price;
         }
 
         @Override public boolean equals(Object o)
