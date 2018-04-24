@@ -17,8 +17,9 @@ public class ProductionDataSource
     {
         if (source == null) {
             source = new MysqlDataSource();
-            source.setDatabaseName("fog");
-            source.setUser("fog");
+            source.setDatabaseName("fogdb");
+            source.setUser("root");
+            source.setPassword("Hightech4u");
         }
 
         return source;
