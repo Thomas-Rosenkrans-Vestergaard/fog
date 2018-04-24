@@ -18,6 +18,13 @@ public interface Cladding
     String getName();
 
     /**
+     * Sets the name of the {@link Cladding}.
+     *
+     * @param name The updated name.
+     */
+    void setName(String name);
+
+    /**
      * Returns the description of the {@link Cladding}.
      *
      * @return The description of the {@link Cladding}.
@@ -25,11 +32,25 @@ public interface Cladding
     String getDescription();
 
     /**
+     * Sets the description of the {@lilnk Cladding}.
+     *
+     * @param description The new description.
+     */
+    void setDescription(String description);
+
+    /**
      * Returns the price of the {@link Cladding} per square meter (in øre).
      *
      * @return the price of the {@link Cladding} per square meter (in øre).
      */
     int getPricePerSquareMeter();
+
+    /**
+     * Sets the price per square meter of {@link Cladding}.
+     *
+     * @param price The new price.
+     */
+    void setPricePerSquareMeter(int price);
 
     /**
      * Checks that this {@link Cladding} equals another provided object. The two objects are considered equal when

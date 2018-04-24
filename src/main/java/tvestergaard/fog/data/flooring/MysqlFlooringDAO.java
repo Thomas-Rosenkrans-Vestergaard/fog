@@ -76,17 +76,17 @@ public class MysqlFlooringDAO extends AbstractMysqlDAO implements FlooringDAO
         /**
          * The name of the {@link Flooring}.
          */
-        private final String name;
+        private String name;
 
         /**
          * The description of the {@link Flooring}.
          */
-        private final String description;
+        private String description;
 
         /**
          * The price of the {@link Flooring} per square meter (in øre).
          */
-        private final int pricePerSquareMeter;
+        private int pricePerSquareMeter;
 
         /**
          * Creates a new {@link MysqlFlooringDAO}.
@@ -125,6 +125,16 @@ public class MysqlFlooringDAO extends AbstractMysqlDAO implements FlooringDAO
         }
 
         /**
+         * Sets the name of the {@link Flooring}.
+         *
+         * @param name The updated name.
+         */
+        @Override public void setName(String name)
+        {
+            this.name = name;
+        }
+
+        /**
          * Returns the description of the {@link Flooring}.
          *
          * @return The description of the {@link Flooring}.
@@ -135,6 +145,16 @@ public class MysqlFlooringDAO extends AbstractMysqlDAO implements FlooringDAO
         }
 
         /**
+         * Sets the description of the {@lilnk Flooring}.
+         *
+         * @param description The new description.
+         */
+        @Override public void setDescription(String description)
+        {
+            this.description = description;
+        }
+
+        /**
          * Returns the price of the {@link Flooring} per square meter (in øre).
          *
          * @return The price of the {@link Flooring} per square meter (in øre).
@@ -142,6 +162,16 @@ public class MysqlFlooringDAO extends AbstractMysqlDAO implements FlooringDAO
         @Override public int getPricePerSquareMeter()
         {
             return pricePerSquareMeter;
+        }
+
+        /**
+         * Sets the price per square meter of {@link Flooring}.
+         *
+         * @param price The new price.
+         */
+        @Override public void setPricePerSquareMeter(int price)
+        {
+            this.pricePerSquareMeter = price;
         }
 
         @Override public boolean equals(Object o)

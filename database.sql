@@ -111,6 +111,7 @@ CREATE TABLE `customers` (
   `telephone` varchar(12) NOT NULL,
   `password` varchar(255) DEFAULT NULL,
   `contact_method` tinyint(3) unsigned NOT NULL,
+  `address` varchar(255) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -184,7 +185,7 @@ LOCK TABLES `employees_roles` WRITE;
 UNLOCK TABLES;
 
 --
--- Table structure for table `flooring`
+-- Table structure for table `floors`
 --
 
 DROP TABLE IF EXISTS `floors`;
@@ -201,12 +202,12 @@ CREATE TABLE `floors` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `flooring`
+-- Dumping data for table `floors`
 --
 
 LOCK TABLES `floors` WRITE;
-/*!40000 ALTER TABLE `flooring` DISABLE KEYS */;
-/*!40000 ALTER TABLE `flooring` ENABLE KEYS */;
+/*!40000 ALTER TABLE `floors` DISABLE KEYS */;
+/*!40000 ALTER TABLE `floors` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -259,7 +260,6 @@ CREATE TABLE `roles` (
 
 LOCK TABLES `roles` WRITE;
 /*!40000 ALTER TABLE `roles` DISABLE KEYS */;
-INSERT INTO `roles` VALUES (1,'CENTERCHEF'),(2,'MATERIALEANSVARLIG'),(3,'SALGSMEDARBEJDER');
 /*!40000 ALTER TABLE `roles` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -300,4 +300,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-04-23 10:25:02
+-- Dump completed on 2018-04-24  9:36:58
