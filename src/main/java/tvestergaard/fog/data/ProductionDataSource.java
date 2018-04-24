@@ -7,9 +7,7 @@ import com.mysql.cj.jdbc.MysqlDataSource;
  */
 public class ProductionDataSource
 {
-    /**
-     *
-     */
+
     private static MysqlDataSource source;
 
     public static MysqlDataSource getSource()
@@ -17,8 +15,7 @@ public class ProductionDataSource
         if (source == null) {
             source = new MysqlDataSource();
             source.setDatabaseName("fog");
-            source.setUser("root");
-            source.setPassword("Hightech4u");
+            source.setUser("fog");
         }
 
         return source;
