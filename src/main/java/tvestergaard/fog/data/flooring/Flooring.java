@@ -1,7 +1,5 @@
 package tvestergaard.fog.data.flooring;
 
-import tvestergaard.fog.data.cladding.Cladding;
-
 public interface Flooring
 {
 
@@ -55,8 +53,22 @@ public interface Flooring
     void setPricePerSquareMeter(int price);
 
     /**
-     * Checks that this {@link Flooring} equals another provided object. The two objects are considered equal when
-     * both are an instance of {@link Flooring}, and their ids are the same.
+     * Returns {@code true} if the {@link Flooring} can currently be applied to new orders.
+     *
+     * @return {@link true} if the {@link Flooring} can currently be applied to new orders.
+     */
+    boolean isActive();
+
+    /**
+     * Sets the active status of the {@link Flooring}.
+     *
+     * @param active The new active status.
+     */
+    void setActive(boolean active);
+
+    /**
+     * Checks that this {@link Flooring} equals another provided object. The two objects are only considered equal when
+     * all the attributes of the two {@link Flooring}s are considered equal.
      *
      * @param other The object to compare with.
      * @return {@code true} if the two objects are considered equal.
@@ -64,9 +76,9 @@ public interface Flooring
     boolean equals(Object other);
 
     /**
-     * Returns the hashCode representing the {@link Flooring}. The hashCode should be the id of the {@link Flooring}.
+     * Returns the id of the {@link Flooring}.
      *
-     * @return The hashCode representing the {@link Flooring}.
+     * @return The id of the {@link Flooring}.
      */
     int hashCode();
 }

@@ -1,10 +1,29 @@
-package tvestergaard.fog.data.contraints;
+package tvestergaard.fog.data.constraints;
+
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.HashMap;
 
 /**
  * Generated a prepared statement from the provided {@link Constraint}s.
  */
 public class StatementGenerator
 {
+
+    /**
+     * Contains the ordering of contains.
+     *
+     * @see StatementGenerator#sort(Constraint[])
+     */
+    private final java.util.Map<Class<? extends Constraint>, Integer> constraintOrder = new HashMap<>();
+
+    public StatementGenerator()
+    {
+        constraintOrder.put(WhereConstraint.class, 0);
+        constraintOrder.put(OrderConstraint.class, 1);
+        constraintOrder.put(LimitConstraint.class, 2);
+        constraintOrder.put(OffsetConstraint.class, 4);
+    }
 
     /**
      * Generates the SQL representing the provided {@link Constraint}s. Returns the generated SQL appended to the provided
@@ -28,10 +47,21 @@ public class StatementGenerator
     public String generate(Constraint... constraints)
     {
         StringBuilder builder = new StringBuilder("");
+        sort(constraints);
         for (Constraint constraint : constraints)
             appendSQL(builder, constraint);
 
         return builder.toString();
+    }
+
+    /**
+     * Sorts the provided {@link Constraint}s, so they appear in the order required by SQL.
+     *
+     * @param constraints The constraints to sort. Mutates the provided array.
+     */
+    private void sort(Constraint[] constraints)
+    {
+        Arrays.sort(constraints, Comparator.comparingInt(c -> constraintOrder.get(c.getClass())));
     }
 
     /**

@@ -1,9 +1,24 @@
-package tvestergaard.fog.data.contraints;
+package tvestergaard.fog.data.constraints;
 
-import tvestergaard.fog.data.contraints.OrderConstraint.Direction;
+import tvestergaard.fog.data.constraints.OrderConstraint.Direction;
 
 public interface Constraint
 {
+
+    /**
+     * Appends the provided element to the provided array.
+     *
+     * @param array   The array to append the element to.
+     * @param element The element to append to the array.
+     * @return The extended array.
+     */
+    static Constraint[] append(Constraint[] array, Constraint element)
+    {
+        Constraint[] newArray = new Constraint[array.length + 1];
+        System.arraycopy(array, 0, newArray, 0, array.length);
+        newArray[array.length] = element;
+        return newArray;
+    }
 
     /**
      * Creates a new {@link LimitConstraint} using the provided numerical limit.

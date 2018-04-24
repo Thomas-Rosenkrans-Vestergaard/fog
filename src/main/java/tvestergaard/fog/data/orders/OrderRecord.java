@@ -6,6 +6,7 @@ import tvestergaard.fog.data.roofing.Roofing;
 import tvestergaard.fog.data.sheds.Shed;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 /**
  * The default {@link Order} implementation.
@@ -142,7 +143,7 @@ public class OrderRecord implements Order
      */
     @Override public void setOrderType(OrderType orderType)
     {
-        this.type = type;
+        this.type = orderType;
     }
 
     /**
@@ -152,7 +153,7 @@ public class OrderRecord implements Order
      */
     @Override public Cladding getCladding()
     {
-        return null;
+        return cladding;
     }
 
     /**
@@ -318,15 +319,24 @@ public class OrderRecord implements Order
     @Override public boolean equals(Object o)
     {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        OrderRecord that = (OrderRecord) o;
-
-        return id == that.id;
+        if (!(o instanceof Order)) return false;
+        Order that = (Order) o;
+        return getId() == that.getId() &&
+                getWidth() == that.getWidth() &&
+                getLength() == that.getLength() &&
+                getHeight() == that.getHeight() &&
+                getSlope() == that.getSlope() &&
+                Objects.equals(getCustomer(), that.getCustomer()) &&
+                type == that.getOrderType() &&
+                Objects.equals(getCladding(), that.getCladding()) &&
+                Objects.equals(getRoofing(), that.getRoofing()) &&
+                getRaftersType() == that.getRaftersType() &&
+                Objects.equals(getShed(), that.getShed()) &&
+                Objects.equals(getCreatedAt(), that.getCreatedAt());
     }
 
     @Override public int hashCode()
     {
-        return id;
+        return Objects.hash(getId());
     }
 }

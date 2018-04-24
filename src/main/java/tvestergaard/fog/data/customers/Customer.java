@@ -97,6 +97,20 @@ public interface Customer
     void setContactMethod(ContactMethod method);
 
     /**
+     * Returns {@code true} if the {@link Customer} is active.
+     *
+     * @return {@code true} if the {@link Customer} is active.
+     */
+    boolean isActive();
+
+    /**
+     * Sets the active state of the {@link Customer}.
+     *
+     * @param state The new state.
+     */
+    void setActive(boolean state);
+
+    /**
      * Returns the {@code LocalDateTime} representing the moment when the {@link Customer} was created.
      *
      * @return The {@code LocalDateTime} representing the moment when the {@link Customer} was created.
@@ -104,9 +118,25 @@ public interface Customer
     LocalDateTime getCreatedAt();
 
     /**
+     * Checks that this {@link Customer} equals another provided object. The two objects are only considered equal when
+     * all the attributes of the two {@link Customer}s are considered equal.
+     *
+     * @param other The object to compare with.
+     * @return {@code true} if the two objects are considered equal.
+     */
+    boolean equals(Object other);
+
+    /**
+     * Returns the id of the {@link Customer}.
+     *
+     * @return The id of the {@link Customer}.
+     */
+    int hashCode();
+
+    /**
      * Represents a way the {@link Customer} can be contacted.
      */
-    public enum ContactMethod
+    enum ContactMethod
     {
 
         /**

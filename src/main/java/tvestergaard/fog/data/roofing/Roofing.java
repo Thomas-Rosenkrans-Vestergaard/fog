@@ -1,5 +1,7 @@
 package tvestergaard.fog.data.roofing;
 
+import tvestergaard.fog.data.flooring.Flooring;
+
 public interface Roofing
 {
 
@@ -81,18 +83,32 @@ public interface Roofing
     void setPricePerSquareMeter(int price);
 
     /**
-     * Checks that this {@link Roofing} equals another provided object. The two objects are considered equal when
-     * both are an instance of {@link Roofing}, and their ids are the same.
+     * Returns {@code true} if the {@link Roofing} can currently be applied to new orders.
+     *
+     * @return {@link true} if the {@link Roofing} can currently be applied to new orders.
+     */
+    boolean isActive();
+
+    /**
+     * Sets the active status of the {@link Roofing}.
+     *
+     * @param active The new active status.
+     */
+    void setActive(boolean active);
+
+    /**
+     * Checks that this {@link Roofing} equals another provided object. The two objects are only considered equal when
+     * all the attributes of the two {@link Roofing}s are considered equal.
      *
      * @param other The object to compare with.
      * @return {@code true} if the two objects are considered equal.
      */
-    abstract boolean equals(Object other);
+    boolean equals(Object other);
 
     /**
-     * Returns the hashCode representing the {@link Roofing}. The hashCode should be the id of the {@link Roofing}.
+     * Returns the id of the {@link Roofing}.
      *
-     * @return The hashCode representing the {@link Roofing}.
+     * @return The id of the {@link Roofing}.
      */
-    abstract int hashCode();
+    int hashCode();
 }

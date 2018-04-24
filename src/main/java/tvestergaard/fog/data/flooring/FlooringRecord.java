@@ -1,5 +1,7 @@
 package tvestergaard.fog.data.flooring;
 
+import java.util.Objects;
+
 /**
  * The default {@link Flooring} implementation.
  */
@@ -27,19 +29,26 @@ public class FlooringRecord implements Flooring
     private int pricePerSquareMeter;
 
     /**
+     * Whether or not the {@link Flooring} can be applied to new orders.
+     */
+    private boolean active;
+
+    /**
      * Creates a new {@link MysqlFlooringDAO}.
      *
      * @param id                  The unique identifier of the {@link Flooring}.
      * @param name                The name of the {@link Flooring}.
      * @param description         The description of the {@link Flooring}.
      * @param pricePerSquareMeter The price of the {@link Flooring} per square meter (in øre).
+     * @param active              Whether or not the {@link Flooring} can be applied to new orders.
      */
-    public FlooringRecord(int id, String name, String description, int pricePerSquareMeter)
+    public FlooringRecord(int id, String name, String description, int pricePerSquareMeter, boolean active)
     {
         this.id = id;
         this.name = name;
         this.description = description;
         this.pricePerSquareMeter = pricePerSquareMeter;
+        this.active = active;
     }
 
     /**
@@ -112,18 +121,40 @@ public class FlooringRecord implements Flooring
         this.pricePerSquareMeter = price;
     }
 
+    /**
+     * Returns {@code true} if the {@link Flooring} can currently be applied to new orders.
+     *
+     * @return {@link true} if the {@link Flooring} can currently be applied to new orders.
+     */
+    @Override public boolean isActive()
+    {
+        return active;
+    }
+
+    /**
+     * Sets the active status of the {@link Flooring}.
+     *
+     * @param active The new active status.
+     */
+    @Override public void setActive(boolean active)
+    {
+        this.active = active;
+    }
+
     @Override public boolean equals(Object o)
     {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        FlooringRecord that = (FlooringRecord) o;
-
-        return id == that.id;
+        if (!(o instanceof Flooring)) return false;
+        Flooring that = (Flooring) o;
+        return id == that.getId() &&
+                pricePerSquareMeter == that.getPricePerSquareMeter() &&
+                active == that.isActive() &&
+                Objects.equals(name, that.getName()) &&
+                Objects.equals(description, that.getDescription());
     }
 
     @Override public int hashCode()
     {
-        return id;
+        return Objects.hash(getId());
     }
 }

@@ -3,9 +3,9 @@ package tvestergaard.fog.data.flooring;
 import com.mysql.cj.jdbc.MysqlDataSource;
 import tvestergaard.fog.data.AbstractMysqlDAO;
 import tvestergaard.fog.data.MysqlDataAccessException;
-import tvestergaard.fog.data.contraints.Constraint;
-import tvestergaard.fog.data.contraints.StatementBinder;
-import tvestergaard.fog.data.contraints.StatementGenerator;
+import tvestergaard.fog.data.constraints.Constraint;
+import tvestergaard.fog.data.constraints.StatementBinder;
+import tvestergaard.fog.data.constraints.StatementGenerator;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -36,7 +36,7 @@ public class MysqlFlooringDAO extends AbstractMysqlDAO implements FlooringDAO
     }
 
     /**
-     * Returns the {@link Flooring}s in the system.
+     * Returns the {@link Flooring}s in the data storage.
      * The results can be constrained using the provided {@link Constraint}s.
      *
      * @param constraints The {@link Constraint}s that modify the resulting list.
@@ -47,7 +47,7 @@ public class MysqlFlooringDAO extends AbstractMysqlDAO implements FlooringDAO
     {
         try {
             final List<Flooring> floors = new ArrayList<>();
-            final String         SQL    = generator.generate("SELECT * FROM floors", constraints);
+            final String         SQL    = generator.generate("SELECT * FROM floorings", constraints);
             try (java.sql.PreparedStatement statement = getConnection().prepareStatement(SQL)) {
                 binder.bind(statement, constraints);
                 ResultSet resultSet = statement.executeQuery();

@@ -1,4 +1,4 @@
-package tvestergaard.fog.data.contraints;
+package tvestergaard.fog.data.constraints;
 
 /**
  * Changes the ordering of some select operation.

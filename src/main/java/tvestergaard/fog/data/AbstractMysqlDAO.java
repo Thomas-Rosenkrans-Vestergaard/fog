@@ -60,17 +60,18 @@ public abstract class AbstractMysqlDAO
     /**
      * Creates a new {@link Cladding} using the provided {@code ResultSet}.
      *
-     * @param resultSet The {@code ResultSet} from which to create the isntance of {@link Cladding}.
+     * @param resultSet The {@code ResultSet} from which to create the instance of {@link Cladding}.
      * @return The newly created instance of {@link Cladding}.
      * @throws SQLException
      */
     public Cladding createCladding(ResultSet resultSet) throws SQLException
     {
         return new CladdingRecord(
-                resultSet.getInt("id"),
-                resultSet.getString("name"),
-                resultSet.getString("description"),
-                resultSet.getInt("price_per_square_meter")
+                resultSet.getInt("claddings.id"),
+                resultSet.getString("claddings.name"),
+                resultSet.getString("claddings.description"),
+                resultSet.getInt("claddings.price_per_square_meter"),
+                resultSet.getBoolean("claddings.active")
         );
     }
 
@@ -99,17 +100,18 @@ public abstract class AbstractMysqlDAO
     /**
      * Creates a new {@link Flooring} using the provided {@code ResultSet}.
      *
-     * @param resultSet The {@code ResultSet} from which to create the isntance of {@link Flooring}.
+     * @param resultSet The {@code ResultSet} from which to create the instance of {@link Flooring}.
      * @return The newly created instance of {@link Flooring}.
      * @throws SQLException
      */
     public Flooring createFlooring(ResultSet resultSet) throws SQLException
     {
         return new FlooringRecord(
-                resultSet.getInt("flooring.id"),
-                resultSet.getString("flooring.name"),
-                resultSet.getString("flooring.description"),
-                resultSet.getInt("flooring.price_per_square_meter")
+                resultSet.getInt("floorings.id"),
+                resultSet.getString("floorings.name"),
+                resultSet.getString("floorings.description"),
+                resultSet.getInt("floorings.price_per_square_meter"),
+                resultSet.getBoolean("floorings.active")
         );
     }
 
@@ -153,7 +155,8 @@ public abstract class AbstractMysqlDAO
                 resultSet.getString("roofings.description"),
                 resultSet.getInt("roofings.minimum_slope"),
                 resultSet.getInt("roofings.maximum_slope"),
-                resultSet.getInt("roofings.price_per_square_meter")
+                resultSet.getInt("roofings.price_per_square_meter"),
+                resultSet.getBoolean("roofings.active")
         );
     }
 

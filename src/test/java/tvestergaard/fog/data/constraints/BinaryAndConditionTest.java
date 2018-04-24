@@ -1,17 +1,17 @@
-package tvestergaard.fog.data.contraints;
+package tvestergaard.fog.data.constraints;
 
 import org.junit.Test;
 
 import static org.junit.Assert.assertSame;
 
-public class BinaryOrConditionTest
+public class BinaryAndConditionTest
 {
 
     @Test
     public void getLeft() throws Exception
     {
-        BinaryOrCondition left      = new BinaryOrCondition(null, null);
-        BinaryOrCondition condition = new BinaryOrCondition(left, null);
+        BinaryAndCondition left      = new BinaryAndCondition(null, null);
+        BinaryAndCondition condition = new BinaryAndCondition(left, null);
 
         assertSame(left, condition.left);
         assertSame(left, condition.getLeft());
@@ -20,8 +20,8 @@ public class BinaryOrConditionTest
     @Test
     public void getRight() throws Exception
     {
-        BinaryOrCondition right     = new BinaryOrCondition(null, null);
-        BinaryOrCondition condition = new BinaryOrCondition(null, right);
+        BinaryAndCondition right     = new BinaryAndCondition(null, null);
+        BinaryAndCondition condition = new BinaryAndCondition(null, right);
 
         assertSame(right, condition.right);
         assertSame(right, condition.getRight());

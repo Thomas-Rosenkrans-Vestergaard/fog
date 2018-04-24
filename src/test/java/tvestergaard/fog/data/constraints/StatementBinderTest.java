@@ -1,4 +1,4 @@
-package tvestergaard.fog.data.contraints;
+package tvestergaard.fog.data.constraints;
 
 import com.mysql.cj.jdbc.MysqlDataSource;
 import org.junit.Before;
@@ -11,8 +11,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
 import static org.junit.Assert.*;
-import static tvestergaard.fog.data.contraints.Constraint.eq;
-import static tvestergaard.fog.data.contraints.Constraint.where;
+import static tvestergaard.fog.data.constraints.Constraint.eq;
+import static tvestergaard.fog.data.constraints.Constraint.where;
 
 public class StatementBinderTest
 {

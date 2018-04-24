@@ -3,9 +3,9 @@ package tvestergaard.fog.data.sheds;
 import com.mysql.cj.jdbc.MysqlDataSource;
 import tvestergaard.fog.data.AbstractMysqlDAO;
 import tvestergaard.fog.data.MysqlDataAccessException;
-import tvestergaard.fog.data.contraints.Constraint;
-import tvestergaard.fog.data.contraints.StatementBinder;
-import tvestergaard.fog.data.contraints.StatementGenerator;
+import tvestergaard.fog.data.constraints.Constraint;
+import tvestergaard.fog.data.constraints.StatementBinder;
+import tvestergaard.fog.data.constraints.StatementGenerator;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -37,7 +37,7 @@ public class MysqlShedDAO extends AbstractMysqlDAO implements ShedDAO
     }
 
     /**
-     * Returns the {@link Shed}s in the system.
+     * Returns the {@link Shed}s in the data storage.
      * The results can be constrained using the provided {@link Constraint}s.
      *
      * @param constraints The {@link Constraint}s that modify the resulting list.

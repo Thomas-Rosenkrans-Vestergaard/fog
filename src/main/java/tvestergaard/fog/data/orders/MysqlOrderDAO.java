@@ -3,9 +3,9 @@ package tvestergaard.fog.data.orders;
 import com.mysql.cj.jdbc.MysqlDataSource;
 import tvestergaard.fog.data.AbstractMysqlDAO;
 import tvestergaard.fog.data.MysqlDataAccessException;
-import tvestergaard.fog.data.contraints.Constraint;
-import tvestergaard.fog.data.contraints.StatementBinder;
-import tvestergaard.fog.data.contraints.StatementGenerator;
+import tvestergaard.fog.data.constraints.Constraint;
+import tvestergaard.fog.data.constraints.StatementBinder;
+import tvestergaard.fog.data.constraints.StatementGenerator;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -37,7 +37,7 @@ public class MysqlOrderDAO extends AbstractMysqlDAO implements OrderDAO
     }
 
     /**
-     * Returns the {@link Order}s in the system.
+     * Returns the {@link Order}s in the data storage.
      * The results can be constrained using the provided {@link Constraint}s.
      *
      * @param constraints The {@link Constraint}s that modify the resulting list.
@@ -52,7 +52,7 @@ public class MysqlOrderDAO extends AbstractMysqlDAO implements OrderDAO
                                                   "INNER JOIN customers ON orders.customer = customers.id " +
                                                   "INNER JOIN claddings ON orders.cladding = claddings.id " +
                                                   "INNER JOIN roofings ON orders.roofing = roofings.id " +
-                                                  "INNER JOIN shed ON orders.shed = sheds.id", constraints);
+                                                  "LEFT OUTER JOIN shed ON orders.shed = sheds.id", constraints);
             try (PreparedStatement statement = getConnection().prepareStatement(SQL)) {
                 binder.bind(statement, constraints);
                 ResultSet resultSet = statement.executeQuery();

@@ -1,9 +1,9 @@
-package tvestergaard.fog.data.contraints;
+package tvestergaard.fog.data.constraints;
 
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
-import static tvestergaard.fog.data.contraints.Constraint.*;
+import static tvestergaard.fog.data.constraints.Constraint.*;
 
 public class StatementGeneratorTest
 {
@@ -106,9 +106,9 @@ public class StatementGeneratorTest
     {
         String expected = "WHERE `column` = ? ORDER BY `column` DESC LIMIT ? OFFSET ?";
         String actual = generator.generate(
-                where(eq("column", "")),
                 order("column", desc()),
                 Constraint.limit(1),
+                where(eq("column", "")),
                 Constraint.offset(5));
 
         assertEquals(clean(expected), clean(actual));

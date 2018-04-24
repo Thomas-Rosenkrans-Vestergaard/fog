@@ -9,7 +9,7 @@ import java.sql.Connection;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
-import static tvestergaard.fog.data.contraints.Constraint.*;
+import static tvestergaard.fog.data.constraints.Constraint.*;
 
 public class MysqlCustomersDAOTest
 {
@@ -24,19 +24,19 @@ public class MysqlCustomersDAOTest
         connection.createStatement().execute("DELETE FROM customers");
         connection.createStatement().execute(
                 "INSERT INTO customers (id, name, address, email, phone, password, contact_method, active) " +
-                "VALUES (1, 'name1', 'address1', 'email1', 'phone1', 'password1', 0, b'1')");
+                        "VALUES (1, 'name1', 'address1', 'email1', 'phone1', 'password1', 0, b'1')");
         connection.createStatement().execute(
                 "INSERT INTO customers (id, name, address, email, phone, password, contact_method, active) " +
-                "VALUES (2, 'name2', 'address2', 'email2', 'phone2', 'password2', 0, b'1')");
+                        "VALUES (2, 'name2', 'address2', 'email2', 'phone2', 'password2', 0, b'1')");
         connection.createStatement().execute(
                 "INSERT INTO customers (id, name, address, email, phone, password, contact_method, active)" +
-                " VALUES (3, 'name3', 'address3', 'email3', 'phone3', 'password3', 0, b'1')");
+                        " VALUES (3, 'name3', 'address3', 'email3', 'phone3', 'password3', 0, b'1')");
         connection.createStatement().execute(
                 "INSERT INTO customers (id, name, address, email, phone, password, contact_method, active)" +
-                " VALUES (4, 'name4', 'address4', 'email4', 'phone4', 'password4', 0, b'1')");
+                        " VALUES (4, 'name4', 'address4', 'email4', 'phone4', 'password4', 0, b'1')");
         connection.createStatement().execute(
                 "INSERT INTO customers (id, name, address, email, phone, password, contact_method, active)" +
-                " VALUES (5, 'name5', 'address5', 'email5', 'phone5', 'password5', 0, b'0')");
+                        " VALUES (5, 'name5', 'address5', 'email5', 'phone5', 'password5', 0, b'0')");
     }
 
     @Test
@@ -58,7 +58,15 @@ public class MysqlCustomersDAOTest
         List<Customer> customers = dao.get(where(eq("id", 1)));
 
         assertEquals(1, customers.size());
-        assertEquals(1, customers.get(0).getId());
+
+        Customer customer = customers.get(0);
+        assertEquals(1, customer.getId());
+        assertEquals("name1", customer.getName());
+        assertEquals("email1", customer.getEmail());
+        assertEquals("phone1", customer.getPhone());
+        assertEquals("password1", customer.getPassword());
+        assertEquals(Customer.ContactMethod.EMAIL, customer.getContactMethod());
+        assertEquals(true, customer.isActive());
     }
 
     @Test

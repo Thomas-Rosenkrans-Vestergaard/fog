@@ -53,18 +53,32 @@ public interface Cladding
     void setPricePerSquareMeter(int price);
 
     /**
-     * Checks that this {@link Cladding} equals another provided object. The two objects are considered equal when
-     * both are an instance of {@link Cladding}, and their ids are the same.
+     * Returns {@code true} if the {@link Cladding} can currently be applied to new orders.
+     *
+     * @return {@link true} if the {@link Cladding} can currently be applied to new orders.
+     */
+    boolean isActive();
+
+    /**
+     * Sets the active status of the {@link Cladding}.
+     *
+     * @param active The new active status.
+     */
+    void setActive(boolean active);
+
+    /**
+     * Checks that this {@link Cladding} equals another provided object. The two objects are only considered equal when
+     * all the attributes of the two {@link Cladding}s are considered equal.
      *
      * @param other The object to compare with.
      * @return {@code true} if the two objects are considered equal.
      */
-    abstract boolean equals(Object other);
+    boolean equals(Object other);
 
     /**
-     * Returns the hashCode representing the {@link Cladding}. The hashCode should be the id of the {@link Cladding}.
+     * Returns the id of the {@link Cladding}.
      *
-     * @return The hashCode representing the {@link Cladding}.
+     * @return The id of the {@link Cladding}.
      */
-    abstract int hashCode();
+    int hashCode();
 }

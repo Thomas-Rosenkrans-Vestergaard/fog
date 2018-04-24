@@ -1,6 +1,7 @@
 package tvestergaard.fog.data.customers;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 /**
  * The default {@link Customer} implementation.
@@ -76,6 +77,7 @@ public class CustomerRecord implements Customer
         this.password = password;
         this.contactMethod = contactMethod;
         this.active = active;
+        this.createdAt = createdAt;
     }
 
     /**
@@ -209,6 +211,26 @@ public class CustomerRecord implements Customer
     }
 
     /**
+     * Returns {@code true} if the {@link Customer} is active.
+     *
+     * @return {@code true} if the {@link Customer} is active.
+     */
+    @Override public boolean isActive()
+    {
+        return active;
+    }
+
+    /**
+     * Sets the active state of the {@link Customer}.
+     *
+     * @param state The new state.
+     */
+    @Override public void setActive(boolean state)
+    {
+        this.active = state;
+    }
+
+    /**
      * Returns the {@code LocalDateTime} representing the moment when the {@link Customer} was created.
      *
      * @return The {@code LocalDateTime} representing the moment when the {@link Customer} was created.
@@ -216,5 +238,26 @@ public class CustomerRecord implements Customer
     @Override public LocalDateTime getCreatedAt()
     {
         return this.createdAt;
+    }
+
+    @Override public boolean equals(Object o)
+    {
+        if (this == o) return true;
+        if (!(o instanceof Customer)) return false;
+        Customer that = (Customer) o;
+        return id == that.getId() &&
+                active == that.isActive() &&
+                Objects.equals(name, that.getName()) &&
+                Objects.equals(address, that.getAddress()) &&
+                Objects.equals(email, that.getEmail()) &&
+                Objects.equals(phone, that.getPhone()) &&
+                Objects.equals(password, that.getPassword()) &&
+                contactMethod == that.getContactMethod() &&
+                Objects.equals(createdAt, that.getCreatedAt());
+    }
+
+    @Override public int hashCode()
+    {
+        return Objects.hash(getId());
     }
 }

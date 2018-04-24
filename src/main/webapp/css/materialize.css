@@ -8704,7 +8704,7 @@ input[type=range]:focus::-ms-fill-upper {
 }
 
 /**
- * The month and year contraints.
+ * The month and year constraints.
  */
 .picker__select--month,
 .picker__select--year {

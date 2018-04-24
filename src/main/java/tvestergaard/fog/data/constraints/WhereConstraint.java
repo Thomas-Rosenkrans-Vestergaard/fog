@@ -1,4 +1,4 @@
-package tvestergaard.fog.data.contraints;
+package tvestergaard.fog.data.constraints;
 
 import java.util.Arrays;
 

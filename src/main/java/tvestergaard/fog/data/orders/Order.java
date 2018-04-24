@@ -125,7 +125,7 @@ public interface Order
     /**
      * Returns the choice of rafters made by the {@link Customer} who placed the {@link Order}.
      *
-     * @return The chaice of rafters made by the {@link Customer} who placed the {@link Order}.
+     * @return The choice of rafters made by the {@link Customer} who placed the {@link Order}.
      */
     RaftersType getRaftersType();
 
@@ -158,9 +158,25 @@ public interface Order
     LocalDateTime getCreatedAt();
 
     /**
+     * Checks that this {@link Order} equals another provided object. The two objects are only considered equal when
+     * all the attributes of the two {@link Order}s are considered equal.
+     *
+     * @param other The object to compare with.
+     * @return {@code true} if the two objects are considered equal.
+     */
+    boolean equals(Object other);
+
+    /**
+     * Returns the id of the {@link Order}.
+     *
+     * @return The id of the {@link Order}.
+     */
+    int hashCode();
+
+    /**
      * Represents a type of {@link Order}.
      */
-    public enum OrderType
+    enum OrderType
     {
 
         /**
@@ -187,7 +203,7 @@ public interface Order
     /**
      * Represents the rafters choice made by the {@link Customer}.
      */
-    public enum RaftersType
+    enum RaftersType
     {
 
         /**

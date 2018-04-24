@@ -1,5 +1,7 @@
 package tvestergaard.fog.data.roofing;
 
+import java.util.Objects;
+
 /**
  * The default implementation of {@link Roofing}.
  */
@@ -37,6 +39,11 @@ public class RoofingRecord implements Roofing
     private int pricePerSquareMeter;
 
     /**
+     * Whether or not the {@link Roofing} can currently be applied to new orders.
+     */
+    private boolean active;
+
+    /**
      * Creates a new {@link RoofingRecord}.
      *
      * @param id                  The unique identifier of the {@link Roofing}.
@@ -45,8 +52,9 @@ public class RoofingRecord implements Roofing
      * @param minimumSlope        The minimum slope the {@link Roofing} must have.
      * @param maximumSlope        The maximum slope the {@link Roofing} must have.
      * @param pricePerSquareMeter The price of the {@link Roofing} per square meter (in øre).
+     * @param active              Whether or not the {@link Roofing} can currently be applied to new orders.
      */
-    public RoofingRecord(int id, String name, String description, int minimumSlope, int maximumSlope, int pricePerSquareMeter)
+    public RoofingRecord(int id, String name, String description, int minimumSlope, int maximumSlope, int pricePerSquareMeter, boolean active)
     {
         this.id = id;
         this.name = name;
@@ -54,6 +62,7 @@ public class RoofingRecord implements Roofing
         this.minimumSlope = minimumSlope;
         this.maximumSlope = maximumSlope;
         this.pricePerSquareMeter = pricePerSquareMeter;
+        this.active = active;
     }
 
     /**
@@ -166,18 +175,42 @@ public class RoofingRecord implements Roofing
         this.pricePerSquareMeter = price;
     }
 
+    /**
+     * Returns {@code true} if the {@link Roofing} can currently be applied to new orders.
+     *
+     * @return {@link true} if the {@link Roofing} can currently be applied to new orders.
+     */
+    @Override public boolean isActive()
+    {
+        return active;
+    }
+
+    /**
+     * Sets the active status of the {@link Roofing}.
+     *
+     * @param active The new active status.
+     */
+    @Override public void setActive(boolean active)
+    {
+        this.active = active;
+    }
+
     @Override public boolean equals(Object o)
     {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        RoofingRecord that = (RoofingRecord) o;
-
-        return id == that.id;
+        if (!(o instanceof Roofing)) return false;
+        Roofing that = (Roofing) o;
+        return id == that.getId() &&
+                minimumSlope == that.getMinimumSlope() &&
+                maximumSlope == that.getMaximumSlope() &&
+                pricePerSquareMeter == that.getPricePerSquareMeter() &&
+                active == that.isActive() &&
+                Objects.equals(name, that.getName()) &&
+                Objects.equals(description, that.getDescription());
     }
 
     @Override public int hashCode()
     {
-        return id;
+        return Objects.hash(getId());
     }
 }

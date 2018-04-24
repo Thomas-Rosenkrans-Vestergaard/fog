@@ -1,4 +1,4 @@
-package tvestergaard.fog.data.contraints;
+package tvestergaard.fog.data.constraints;
 
 /**
  * Restricts the number of records returned by some select operation the object is provided to.
