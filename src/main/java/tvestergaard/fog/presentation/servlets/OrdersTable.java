@@ -25,7 +25,7 @@ public class OrdersTable implements Table<Order>
         this.columns.add(ColumnDefinition.<Order>of("Height", Order::getHeight));
         this.columns.add(ColumnDefinition.<Order>of("Tag", order -> HTML.link("roofings?id=" + order.getRoofing().getId(), order.getRoofing().getName())));
         this.columns.add(ColumnDefinition.<Order>of("Slope", Order::getSlope));
-        this.columns.add(ColumnDefinition.<Order>of("Spær", order -> order.getRaftersConstruction().getDisplayName()));
+        this.columns.add(ColumnDefinition.<Order>of("Spær", order -> order.getRafters().getDisplayName()));
         this.columns.add(ColumnDefinition.<Order>of("Redskabsskur", order -> HTML.link("sheds?id=" + order.getShed().getId(), Integer.toString(order.getShed().getId()))));
     }
 

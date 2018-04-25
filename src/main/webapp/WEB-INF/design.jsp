@@ -9,7 +9,7 @@
     <form class="col s12">
         <div class="row">
             <div class="col s12">
-                <select id="type" SQLname="type" required>
+                <select id="type" name="type" required>
                     <option value="GARAGE" selected>Carport</option>
                     <option value="SHED">Redskabsskur</option>
                 </select>
@@ -17,7 +17,7 @@
             </div>
         </div>
         <div class="input-field col s12 m6">
-            <select SQLname="cladding" required>
+            <select name="cladding" required>
                 <c:forEach items="${claddings}" var="cladding">
                     <option value="${cladding.getId()}"><c:out value="${cladding.getName()}"/></option>
                 </c:forEach>
@@ -31,7 +31,7 @@
         </div>
         <div class="row">
             <div class="col s12 m4">
-                <select id="width" SQLname="width" required>
+                <select id="width" name="width" required>
                     <option value="" disabled selected>Bredde</option>
                     <option value="240">240 cm</option>
                     <option value="270">270 cm</option>
@@ -54,7 +54,7 @@
                 </select>
             </div>
             <div class="col s12 m4">
-                <select id="length" SQLname="length" required>
+                <select id="length" name="length" required>
                     <option value="" disabled selected>Længde</option>
                     <option value="240">240 cm</option>
                     <option value="270">270 cm</option>
@@ -78,7 +78,7 @@
                 </select>
             </div>
             <div class="col s12 m4">
-                <select id="height" SQLname="height" required>
+                <select id="height" name="height" required>
                     <option value="" disabled selected>Højde</option>
                     <option value="180">180 cm</option>
                     <option value="210">210 cm</option>
@@ -95,7 +95,7 @@
         </div>
         <div class="row">
             <div class="input-field col s12 m6">
-                <select SQLname="roofing" required>
+                <select name="roofing" required>
                     <option value="" disabled selected>Vælg tagbeklædningen</option>
                     <c:forEach items="${roofings}" var="roofing">
                         <option value="${roofing.getId()}"><c:out value="${roofing.getName()}"/></option>
@@ -103,17 +103,17 @@
                 </select>
             </div>
             <div class="input-field col s12 m6">
-                <input SQLname="slope" id="slope" type="number" step="1" min="0" max="90" class="validate" required>
+                <input name="slope" id="slope" type="number" step="1" min="0" max="90" class="validate" required>
                 <label for="slope">Hældningsgraden</label>
             </div>
         </div>
         <div class="row">
             <p>
-                <input SQLname="rafters" type="radio" id="rafters-self" value="SELFBUILD" required/>
+                <input name="rafters" type="radio" id="rafters-self" value="SELFBUILD" required/>
                 <label for="rafters-self">Sevlbyg spær</label>
             </p>
             <p>
-                <input SQLname="rafters" type="radio" id="rafters-premade" value="PREMADE" checked="checked" required/>
+                <input name="rafters" type="radio" id="rafters-premade" value="PREMADE" checked="checked" required/>
                 <label for="rafters-premade">Færdiglavet spær</label>
             </p>
         </div>
@@ -126,7 +126,7 @@
             <div class="col s12">
                 <div class="switch">
                     <label>
-                        <input type="checkbox" SQLname="shed">
+                        <input type="checkbox" name="shed">
                         <span class="lever"></span>
                     </label>
                 </div>
@@ -134,17 +134,17 @@
         </div>
         <div class="row">
             <div class="input-field col s12 m6">
-                <input SQLname="shed-width" id="shed-width" type="number" step="1" min="0" class="validate" required>
+                <input name="shed-width" id="shed-width" type="number" step="1" min="0" class="validate" required>
                 <label for="shed-width">Bredde</label>
             </div>
             <div class="input-field col s12 m6">
-                <input SQLname="shed-depth" id="shed-depth" type="number" step="1" min="0" class="validate" required>
+                <input name="shed-depth" id="shed-depth" type="number" step="1" min="0" class="validate" required>
                 <label for="shed-depth">Dybde</label>
             </div>
         </div>
         <div class="row">
             <div class="input-field col s12 m6">
-                <select SQLname="shed-flooring" required>
+                <select name="shed-flooring" required>
                     <c:forEach items="${floorings}" var="flooring">
                         <option value="${flooring.getId()}"><c:out value="${flooring.getName()}"/></option>
                     </c:forEach>
@@ -152,7 +152,7 @@
                 <label>Gulv</label>
             </div>
             <div class="input-field col s12 m6">
-                <select SQLname="shed-cladding" required>
+                <select name="shed-cladding" required>
                     <c:forEach items="${claddings}" var="cladding">
                         <option value="${cladding.getId()}"><c:out value="${cladding.getName()}"/></option>
                     </c:forEach>
@@ -167,51 +167,46 @@
         </div>
         <div class="row">
             <div class="input-field col s12">
-                <input SQLname="customer-SQLname" id="customer-SQLname" type="text" minlength="10" data-length="255"
+                <input name="customer-name" id="customer-name" type="text" minlength="5" data-length="255"
                        class="validate" required>
-                <label for="customer-SQLname">Navn</label>
+                <label for="customer-name">Navn</label>
             </div>
         </div>
         <div class="row">
             <div class="input-field col s12">
-                <input SQLname="customer-address" id="customer-address" type="text" minlength="10" data-length="255"
+                <input name="customer-address" id="customer-address" type="text" minlength="10" data-length="255"
                        class="validate" required>
-                <label for="customer-address">Navn</label>
+                <label for="customer-address">Address</label>
             </div>
         </div>
         <div class="row">
             <div class="input-field col s12">
-                <input SQLname="customer-mail" id="customer-mail" type="email" data-length="255" class="validate" required>
+                <input name="customer-mail" id="customer-mail" type="email" data-length="255" class="validate"
+                       required>
                 <label for="customer-mail">Mail</label>
             </div>
         </div>
         <div class="row">
             <div class="input-field col s12">
-                <input SQLname="customer-phone" id="customer-phone" type="tel" data-length="12" class="validate"
+                <input name="customer-phone" id="customer-phone" type="tel" data-length="12" class="validate"
                        required>
                 <label for="customer-phone">Telefon</label>
             </div>
         </div>
         <div class="row">
-            <div class="input-field col s12">
-                <input SQLname="customer-password" id="customer-password" type="password" minlength="6" class="validate">
-                <label for="customer-password">Adgangskode (Valgfrit)</label>
-            </div>
-        </div>
-        <div class="row">
             <p>
-                <input SQLname="contact-method" type="radio" id="contact-method-telephone" value="TELEPHONE" required/>
+                <input name="contact-method" type="radio" id="contact-method-telephone" value="PHONE" required/>
                 <label for="contact-method-telephone">Telefon</label>
             </p>
             <p>
-                <input SQLname="contact-method" type="radio" id="contact-method-email" value="EMAIL" checked="checked"
+                <input name="contact-method" type="radio" id="contact-method-email" value="EMAIL" checked="checked"
                        required/>
                 <label for="contact-method-email">Email</label>
             </p>
         </div>
         <div class="row">
             <div class="col s12">
-                <button class="btn-large waves-effect waves-light" type="submit" SQLname="action">Bestil
+                <button class="btn-large waves-effect waves-light" type="submit" name="action">Bestil
                     <i class="material-icons right">send</i>
                 </button>
             </div>
@@ -219,7 +214,7 @@
         <script>
             $(document).ready(function () {
                 $('select').material_select();
-                $('input#customer-SQLname, input#customer-mail, input#customer-telephone').characterCounter();
+                $('input#customer-name, input#customer-mail, input#customer-telephone').characterCounter();
             });
         </script>
     </form>

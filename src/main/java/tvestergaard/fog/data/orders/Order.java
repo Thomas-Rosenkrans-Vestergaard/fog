@@ -127,14 +127,14 @@ public interface Order
      *
      * @return The choice of rafters made by the {@link Customer} who placed the {@link Order}.
      */
-    RaftersConstruction getRaftersConstruction();
+    Rafters getRafters();
 
     /**
-     * Sets the {@link RaftersConstruction} chosen by the {@link Customer} who placed the {@link Order}.
+     * Sets the {@link Rafters} chosen by the {@link Customer} who placed the {@link Order}.
      *
-     * @param type The new {@link RaftersConstruction}.
+     * @param type The new {@link Rafters}.
      */
-    void setRaftersConstruction(RaftersConstruction type);
+    void setRaftersConstruction(Rafters type);
 
     /**
      * Returns the {@link Shed} included in the {@link Order}. {@code null} means no {@link Shed} is included.
@@ -211,6 +211,11 @@ public interface Order
             this.displayName = displayName;
         }
 
+        public int getId()
+        {
+            return this.id;
+        }
+
         public static Type from(int id)
         {
             if (id == 0)
@@ -230,7 +235,7 @@ public interface Order
     /**
      * Represents the rafters choice made by the {@link Customer}.
      */
-    enum RaftersConstruction
+    enum Rafters
     {
 
         /**
@@ -244,28 +249,28 @@ public interface Order
         SELFMADE(1, "Selvbyg");
 
         /**
-         * Identifier representing the {@link RaftersConstruction}.
+         * Identifier representing the {@link Rafters}.
          */
         private final int id;
 
         /**
-         * The display name representing the {@link RaftersConstruction}.
+         * The display name representing the {@link Rafters}.
          */
         private final String displayName;
 
-        RaftersConstruction(int id, String displayName)
+        Rafters(int id, String displayName)
         {
             this.id = id;
             this.displayName = displayName;
         }
 
         /**
-         * Returns the {@link RaftersConstruction} with the provided id.
+         * Returns the {@link Rafters} with the provided id.
          *
-         * @param id The identifier of the {@link RaftersConstruction} to return.
-         * @return The {@link RaftersConstruction} with the provided id.
+         * @param id The identifier of the {@link Rafters} to return.
+         * @return The {@link Rafters} with the provided id.
          */
-        public static RaftersConstruction from(int id)
+        public static Rafters from(int id)
         {
             if (id == 0)
                 return PREMADE;

@@ -62,7 +62,7 @@ public class OrderRecord implements Order
     /**
      * The type of rafters chosen by the {@link Customer} who placed the {@link Order}.
      */
-    private RaftersConstruction raftersType;
+    private Rafters raftersType;
 
     /**
      * The {@link Shed} included with the {@link Order}.
@@ -90,7 +90,7 @@ public class OrderRecord implements Order
      * @param shed        The {@link Shed} included with the {@link Order}.
      * @param createdAt   The time when the {@link Order} was placed.
      */
-    public OrderRecord(int id, Customer customer, Type type, Cladding cladding, int width, int length, int height, Roofing roofing, int slope, RaftersConstruction raftersType, Shed shed, LocalDateTime createdAt)
+    public OrderRecord(int id, Customer customer, Type type, Cladding cladding, int width, int length, int height, Roofing roofing, int slope, Rafters raftersType, Shed shed, LocalDateTime createdAt)
     {
         this.id = id;
         this.customer = customer;
@@ -271,17 +271,17 @@ public class OrderRecord implements Order
      *
      * @return The chaice of rafters made by the {@link Customer} who placed the {@link Order}.
      */
-    @Override public RaftersConstruction getRaftersConstruction()
+    @Override public Rafters getRafters()
     {
         return raftersType;
     }
 
     /**
-     * Sets the {@link RaftersConstruction} chosen by the {@link Customer} who placed the {@link Order}.
+     * Sets the {@link Rafters} chosen by the {@link Customer} who placed the {@link Order}.
      *
-     * @param type The new {@link RaftersConstruction}.
+     * @param type The new {@link Rafters}.
      */
-    @Override public void setRaftersConstruction(RaftersConstruction type)
+    @Override public void setRaftersConstruction(Rafters type)
     {
         this.raftersType = raftersType;
     }
@@ -326,13 +326,13 @@ public class OrderRecord implements Order
                 getLength() == that.getLength() &&
                 getHeight() == that.getHeight() &&
                 getSlope() == that.getSlope() &&
-                Objects.equals(getCustomer(), that.getCustomer()) &&
+               Objects.equals(getCustomer(), that.getCustomer()) &&
                 type == that.getType() &&
-                Objects.equals(getCladding(), that.getCladding()) &&
-                Objects.equals(getRoofing(), that.getRoofing()) &&
-                getRaftersConstruction() == that.getRaftersConstruction() &&
-                Objects.equals(getShed(), that.getShed()) &&
-                Objects.equals(getCreatedAt(), that.getCreatedAt());
+               Objects.equals(getCladding(), that.getCladding()) &&
+               Objects.equals(getRoofing(), that.getRoofing()) &&
+               getRafters() == that.getRafters() &&
+               Objects.equals(getShed(), that.getShed()) &&
+               Objects.equals(getCreatedAt(), that.getCreatedAt());
     }
 
     @Override public int hashCode()

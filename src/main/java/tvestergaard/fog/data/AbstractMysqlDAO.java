@@ -65,7 +65,7 @@ public abstract class AbstractMysqlDAO
      * @return The newly created instance of {@link Cladding}.
      * @throws SQLException
      */
-    public Cladding createCladding(ResultSet resultSet) throws SQLException
+    protected Cladding createCladding(ResultSet resultSet) throws SQLException
     {
         return new CladdingRecord(
                 resultSet.getInt("claddings.id"),
@@ -83,7 +83,7 @@ public abstract class AbstractMysqlDAO
      * @return The newly created {@link Customer} instance.
      * @throws SQLException
      */
-    public Customer createCustomer(ResultSet resultSet) throws SQLException
+    protected Customer createCustomer(ResultSet resultSet) throws SQLException
     {
         return new CustomerRecord(
                 resultSet.getInt("customers.id"),
@@ -105,7 +105,7 @@ public abstract class AbstractMysqlDAO
      * @return The newly created instance of {@link Flooring}.
      * @throws SQLException
      */
-    public Flooring createFlooring(ResultSet resultSet) throws SQLException
+    protected Flooring createFlooring(ResultSet resultSet) throws SQLException
     {
         return new FlooringRecord(
                 resultSet.getInt("floorings.id"),
@@ -123,7 +123,7 @@ public abstract class AbstractMysqlDAO
      * @return The newly create instance of {@link Order}.
      * @throws SQLException
      */
-    public Order createOrder(ResultSet resultSet) throws SQLException
+    protected Order createOrder(ResultSet resultSet) throws SQLException
     {
         return new OrderRecord(
                 resultSet.getInt("orders.id"),
@@ -135,7 +135,7 @@ public abstract class AbstractMysqlDAO
                 resultSet.getInt("orders.height"),
                 createRoofing(resultSet),
                 resultSet.getInt("orders.slope"),
-                Order.RaftersConstruction.from(resultSet.getInt("orders.rafters_type")),
+                Order.Rafters.from(resultSet.getInt("orders.rafters_type")),
                 createShed(resultSet),
                 resultSet.getTimestamp("orders.created_at").toLocalDateTime()
         );
@@ -148,7 +148,7 @@ public abstract class AbstractMysqlDAO
      * @return The resulting instance of {@link Roofing}.
      * @throws SQLException
      */
-    public Roofing createRoofing(ResultSet resultSet) throws SQLException
+    protected Roofing createRoofing(ResultSet resultSet) throws SQLException
     {
         return new RoofingRecord(
                 resultSet.getInt("roofings.id"),
@@ -168,7 +168,7 @@ public abstract class AbstractMysqlDAO
      * @return The resulting instance of {@link Shed}.
      * @throws SQLException
      */
-    public Shed createShed(ResultSet resultSet) throws SQLException
+    protected Shed createShed(ResultSet resultSet) throws SQLException
     {
         return new ShedRecord(
                 resultSet.getInt("sheds.id"),
