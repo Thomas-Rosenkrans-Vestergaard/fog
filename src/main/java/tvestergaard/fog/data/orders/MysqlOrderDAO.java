@@ -53,7 +53,7 @@ public class MysqlOrderDAO extends AbstractMysqlDAO implements OrderDAO
                     "INNER JOIN customers ON orders.customer = customers.id " +
                     "INNER JOIN claddings ON orders.cladding = claddings.id " +
                     "INNER JOIN roofings ON orders.roofing = roofings.id " +
-                    "LEFT OUTER JOIN shed ON orders.shed = sheds.id", constraints);
+                    "LEFT OUTER JOIN sheds ON orders.shed = sheds.id", constraints);
             try (PreparedStatement statement = getConnection().prepareStatement(SQL)) {
                 binder.bind(statement, constraints);
                 ResultSet resultSet = statement.executeQuery();
