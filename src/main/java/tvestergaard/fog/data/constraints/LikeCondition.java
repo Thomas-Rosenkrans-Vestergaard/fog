@@ -3,13 +3,13 @@ package tvestergaard.fog.data.constraints;
 /**
  * Represents the LIKE operator from SQL.
  */
-public class LikeCondition implements WhereCondition
+public class LikeCondition<C extends Enum<C>> implements WhereCondition<C>
 {
 
     /**
      * The column to perform the like comparison upon.
      */
-    public final String column;
+    public final C column;
 
     /**
      * The operand provided to the like condition.
@@ -22,7 +22,7 @@ public class LikeCondition implements WhereCondition
      * @param column  The column to perform the like comparison upon.
      * @param operand The operand provided to the like condition.
      */
-    public LikeCondition(String column, String operand)
+    public LikeCondition(C column, String operand)
     {
         this.column = column;
         this.operand = operand;
@@ -33,7 +33,7 @@ public class LikeCondition implements WhereCondition
      *
      * @return The column to perform the like comparison upon.
      */
-    public String getColumn()
+    public C getColumn()
     {
         return this.column;
     }

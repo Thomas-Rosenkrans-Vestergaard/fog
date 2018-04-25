@@ -1,6 +1,6 @@
 package tvestergaard.fog.data.constraints;
 
-public interface WhereCondition
+public interface WhereCondition<C extends Enum<C>>
 {
 
 }

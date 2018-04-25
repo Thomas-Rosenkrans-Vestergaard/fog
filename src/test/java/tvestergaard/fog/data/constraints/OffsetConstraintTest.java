@@ -11,7 +11,7 @@ public class OffsetConstraintTest
     public void getOffset() throws Exception
     {
         for (int x = 0; x < 10; x++) {
-            OffsetConstraint selector = new OffsetConstraint(x);
+            OffsetConstraint<TestEnum> selector = new OffsetConstraint(x);
             assertEquals(x, selector.offset);
             assertEquals(x, selector.getOffset());
         }

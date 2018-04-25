@@ -18,7 +18,7 @@
                 <div class="col s12">
                     <form id="formChangeOrder" action="ChangeOrderServlet" method="post">
                         <input type="hidden" value="changeOrder">
-                        <input type="number" name="height">changeHeight</label>
+                        <input type="number" SQLname="height">changeHeight</label>
 
 
                     </form>

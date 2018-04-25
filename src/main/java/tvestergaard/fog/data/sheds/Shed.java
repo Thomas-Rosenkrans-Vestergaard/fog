@@ -68,4 +68,20 @@ public interface Shed
      * @param flooring The new {@link Flooring}.
      */
     void setFlooring(Flooring flooring);
+
+    /**
+     * Checks that this {@link Shed} equals another provided object. The two objects are only considered equal when
+     * all the attributes of the two {@link Shed}s are considered equal.
+     *
+     * @param other The object to compare with.
+     * @return {@code true} if the two objects are considered equal.
+     */
+    boolean equals(Object other);
+
+    /**
+     * Returns the id of the {@link Shed}.
+     *
+     * @return The id of the {@link Shed}.
+     */
+    int hashCode();
 }

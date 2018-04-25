@@ -2,7 +2,7 @@ package tvestergaard.fog.data.constraints;
 
 import tvestergaard.fog.data.constraints.OrderConstraint.Direction;
 
-public interface Constraint
+public interface Constraint<T extends Enum<T>>
 {
 
     /**
@@ -12,9 +12,9 @@ public interface Constraint
      * @param element The element to append to the array.
      * @return The extended array.
      */
-    static Constraint[] append(Constraint[] array, Constraint element)
+    static <C extends Enum<C>> Constraint<C>[] append(Constraint<C>[] array, Constraint<C> element)
     {
-        Constraint[] newArray = new Constraint[array.length + 1];
+        Constraint<C>[] newArray = (Constraint<C>[]) new Constraint[array.length + 1];
         System.arraycopy(array, 0, newArray, 0, array.length);
         newArray[array.length] = element;
         return newArray;
@@ -49,7 +49,7 @@ public interface Constraint
      * @param direction The direction to order in.
      * @return The newly created {@link OrderConstraint}.
      */
-    static OrderConstraint order(String column, Direction direction)
+    static <T extends Enum<T>> OrderConstraint<T> order(T column, Direction direction)
     {
         return new OrderConstraint(column, direction);
     }
@@ -68,11 +68,11 @@ public interface Constraint
     /**
      * Creates a new {@link EqualsCondition}.
      *
-     * @param column The name of the column used in the {@link EqualsCondition}.
+     * @param column The column used in the {@link EqualsCondition}.
      * @param value  The value to use in the {@link EqualsCondition}.
      * @return The newly created instance of {@link EqualsCondition}.
      */
-    static EqualsCondition eq(String column, Object value)
+    static <C extends Enum<C>> EqualsCondition eq(C column, Object value)
     {
         return new EqualsCondition(column, value);
     }
@@ -81,11 +81,11 @@ public interface Constraint
     /**
      * Creates a new {@link LikeCondition}.
      *
-     * @param column The name of the column used in the {@link LikeCondition}.
+     * @param column The column used in the {@link LikeCondition}.
      * @param value  The value to use in the {@link LikeCondition}.
      * @return The newly created instance of {@link LikeCondition}.
      */
-    static LikeCondition like(String column, String value)
+    static <C extends Enum<C>> LikeCondition like(C column, String value)
     {
         return new LikeCondition(column, value);
     }
@@ -97,7 +97,7 @@ public interface Constraint
      * @param right The right operand.
      * @return The newly created {@link BinaryAndCondition}.
      */
-    static BinaryAndCondition and(WhereCondition left, WhereCondition right)
+    static <C extends Enum<C>> BinaryAndCondition and(WhereCondition<C> left, WhereCondition<C> right)
     {
         return new BinaryAndCondition(left, right);
     }
@@ -108,7 +108,7 @@ public interface Constraint
      * @param operand The operand provided to the {@link UnaryAndCondition}.
      * @return The newly created instance of {@link UnaryAndCondition}.
      */
-    static UnaryAndCondition and(WhereCondition operand)
+    static <C extends Enum<C>> UnaryAndCondition and(WhereCondition<C> operand)
     {
         return new UnaryAndCondition(operand);
     }
@@ -120,7 +120,7 @@ public interface Constraint
      * @param right The right operand.
      * @return The newly created {@link BinaryOrCondition}.
      */
-    static BinaryOrCondition or(WhereCondition left, WhereCondition right)
+    static <C extends Enum<C>> BinaryOrCondition or(WhereCondition<C> left, WhereCondition<C> right)
     {
         return new BinaryOrCondition(left, right);
     }
@@ -132,7 +132,7 @@ public interface Constraint
      * @param operand The operand provided to the {@link UnaryOrCondition}.
      * @return The newly created instance of {@link UnaryOrCondition}.
      */
-    static UnaryOrCondition or(WhereCondition operand)
+    static <C extends Enum<C>> UnaryOrCondition or(WhereCondition<C> operand)
     {
         return new UnaryOrCondition(operand);
     }

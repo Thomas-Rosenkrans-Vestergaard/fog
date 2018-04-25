@@ -3,13 +3,13 @@ package tvestergaard.fog.data.constraints;
 /**
  * Changes the ordering of some select operation.
  */
-public class OrderConstraint implements Constraint
+public class OrderConstraint<C extends Enum<C>> implements Constraint<C>
 {
 
     /**
      * The column to order by.
      */
-    public final String column;
+    public final C column;
 
     /**
      * The direction to order in.
@@ -22,7 +22,7 @@ public class OrderConstraint implements Constraint
      * @param column    The column to order by.
      * @param direction The direction to order in.
      */
-    public OrderConstraint(String column, Direction direction)
+    public OrderConstraint(C column, Direction direction)
     {
         this.column = column;
         this.direction = direction;
@@ -33,7 +33,7 @@ public class OrderConstraint implements Constraint
      *
      * @return The column to order by.
      */
-    public String getColumn()
+    public C getColumn()
     {
         return this.column;
     }

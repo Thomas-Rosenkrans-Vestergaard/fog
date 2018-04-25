@@ -8,8 +8,10 @@ import tvestergaard.fog.data.TestDataSource;
 import java.sql.Connection;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 import static tvestergaard.fog.data.constraints.Constraint.*;
+import static tvestergaard.fog.data.roofing.RoofingColumn.ID;
+import static tvestergaard.fog.data.roofing.RoofingColumn.NAME;
 
 public class MysqlRoofingDAOTest
 {
@@ -17,26 +19,22 @@ public class MysqlRoofingDAOTest
     private static final MysqlDataSource source = TestDataSource.getSource();
     private static final MysqlRoofingDAO dao    = new MysqlRoofingDAO(source);
 
+    private Roofing roofing1;
+    private Roofing roofing2;
+    private Roofing roofing3;
+    private Roofing roofing4;
+    private Roofing roofing5;
+
     @Before
     public void createData() throws Exception
     {
         Connection connection = source.getConnection();
         connection.createStatement().execute("DELETE FROM roofings");
-        connection.createStatement().execute(
-                "INSERT INTO roofings (id, name, description, minimum_slope, maximum_slope, price_per_square_meter, active) " +
-                        "VALUES (1, 'name1', 'description1', 5, 5, 1, b'1')");
-        connection.createStatement().execute(
-                "INSERT INTO roofings (id, name, description, minimum_slope, maximum_slope, price_per_square_meter, active) " +
-                        "VALUES (2, 'name2', 'description2', 5, 5, 2, b'1')");
-        connection.createStatement().execute(
-                "INSERT INTO roofings (id, name, description, minimum_slope, maximum_slope, price_per_square_meter, active)" +
-                        " VALUES (3, 'name3', 'description3', 5, 5, 3, b'1')");
-        connection.createStatement().execute(
-                "INSERT INTO roofings (id, name, description, minimum_slope, maximum_slope, price_per_square_meter, active)" +
-                        " VALUES (4, 'name4', 'description4', 5, 5, 4, b'1')");
-        connection.createStatement().execute(
-                "INSERT INTO roofings (id, name, description, minimum_slope, maximum_slope, price_per_square_meter, active)" +
-                        " VALUES (5, 'name5', 'description5', 5, 5, 5, b'1')");
+        roofing1 = dao.create("name1", "description1", 1, 1, 1, true);
+        roofing2 = dao.create("name2", "description2", 2, 2, 2, false);
+        roofing3 = dao.create("name3", "description3", 3, 3, 3, true);
+        roofing4 = dao.create("name4", "description4", 4, 4, 4, false);
+        roofing5 = dao.create("name5", "description5", 5, 5, 5, true);
     }
 
     @Test
@@ -45,54 +43,46 @@ public class MysqlRoofingDAOTest
         List<Roofing> roofings = dao.get();
 
         assertEquals(5, roofings.size());
-        assertEquals(1, roofings.get(0).getId());
-        assertEquals(2, roofings.get(1).getId());
-        assertEquals(3, roofings.get(2).getId());
-        assertEquals(4, roofings.get(3).getId());
-        assertEquals(5, roofings.get(4).getId());
+        assertEquals(roofing1, roofings.get(0));
+        assertEquals(roofing2, roofings.get(1));
+        assertEquals(roofing3, roofings.get(2));
+        assertEquals(roofing4, roofings.get(3));
+        assertEquals(roofing5, roofings.get(4));
     }
 
     @Test
     public void getWhereEquals() throws Exception
     {
-        List<Roofing> roofings = dao.get(where(eq("id", 1)));
+        List<Roofing> roofings = dao.get(where(eq(ID, roofing1.getId())));
 
         assertEquals(1, roofings.size());
-
-        Roofing roofing = roofings.get(0);
-        assertEquals(1, roofing.getId());
-        assertEquals("name1", roofing.getName());
-        assertEquals("description1", roofing.getDescription());
-        assertEquals(5, roofing.getMinimumSlope());
-        assertEquals(5, roofing.getMaximumSlope());
-        assertEquals(1, roofing.getPricePerSquareMeter());
-        assertEquals(true, roofing.isActive());
+        assertEquals(roofing1, roofings.get(0));
     }
 
     @Test
     public void getWhereLike() throws Exception
     {
-        List<Roofing> roofings = dao.get(where(like("name", "name%")));
+        List<Roofing> roofings = dao.get(where(like(NAME, "name%")));
 
         assertEquals(5, roofings.size());
-        assertEquals("name1", roofings.get(0).getName());
-        assertEquals("name2", roofings.get(1).getName());
-        assertEquals("name3", roofings.get(2).getName());
-        assertEquals("name4", roofings.get(3).getName());
-        assertEquals("name5", roofings.get(4).getName());
+        assertEquals(roofing1, roofings.get(0));
+        assertEquals(roofing2, roofings.get(1));
+        assertEquals(roofing3, roofings.get(2));
+        assertEquals(roofing4, roofings.get(3));
+        assertEquals(roofing5, roofings.get(4));
     }
 
     @Test
     public void getOrderBy() throws Exception
     {
-        List<Roofing> roofings = dao.get(order("name", desc()));
+        List<Roofing> roofings = dao.get(order(RoofingColumn.NAME, desc()));
 
         assertEquals(5, roofings.size());
-        assertEquals("name5", roofings.get(0).getName());
-        assertEquals("name4", roofings.get(1).getName());
-        assertEquals("name3", roofings.get(2).getName());
-        assertEquals("name2", roofings.get(3).getName());
-        assertEquals("name1", roofings.get(4).getName());
+        assertEquals(roofing5, roofings.get(0));
+        assertEquals(roofing4, roofings.get(1));
+        assertEquals(roofing3, roofings.get(2));
+        assertEquals(roofing2, roofings.get(3));
+        assertEquals(roofing1, roofings.get(4));
     }
 
     @Test
@@ -101,8 +91,8 @@ public class MysqlRoofingDAOTest
         List<Roofing> roofings = dao.get(limit(2));
 
         assertEquals(2, roofings.size());
-        assertEquals(1, roofings.get(0).getId());
-        assertEquals(2, roofings.get(1).getId());
+        assertEquals(roofing1, roofings.get(0));
+        assertEquals(roofing2, roofings.get(1));
     }
 
     @Test
@@ -110,7 +100,48 @@ public class MysqlRoofingDAOTest
     {
         List<Roofing> roofings = dao.get(limit(2), offset(1));
 
-        assertEquals(2, roofings.get(0).getId());
-        assertEquals(3, roofings.get(1).getId());
+        assertEquals(roofing2, roofings.get(0));
+        assertEquals(roofing3, roofings.get(1));
+    }
+
+    @Test
+    public void first() throws Exception
+    {
+        assertEquals(roofing3, dao.first(where(eq(ID, roofing3.getId()))));
+        assertNull(dao.first(where(eq(ID, -1))));
+    }
+
+    @Test
+    public void create() throws Exception
+    {
+        String  name                = "some_random_name";
+        String  description         = "some_random_description";
+        int     minimumSlope        = 34;
+        int     maximumSlope        = 77;
+        int     pricePerSquareMeter = 234873;
+        boolean active              = false;
+        Roofing actual              = dao.create(name, description, minimumSlope, maximumSlope, pricePerSquareMeter, active);
+        assertEquals(name, actual.getName());
+        assertEquals(description, actual.getDescription());
+        assertEquals(minimumSlope, actual.getMinimumSlope());
+        assertEquals(maximumSlope, actual.getMaximumSlope());
+        assertEquals(pricePerSquareMeter, actual.getPricePerSquareMeter());
+        assertEquals(active, actual.isActive());
+    }
+
+    @Test
+    public void update() throws Exception
+    {
+        roofing1.setName("new_name");
+        roofing1.setDescription("new_description");
+        roofing1.setMinimumSlope(45);
+        roofing1.setMaximumSlope(90);
+        roofing1.setPricePerSquareMeter(2897342);
+        roofing1.setActive(true);
+
+        assertTrue(dao.update(roofing1));
+
+        List<Roofing> actual = dao.get(where(eq(ID, roofing1.getId())));
+        assertEquals(roofing1, actual.get(0));
     }
 }

@@ -2,7 +2,6 @@ package tvestergaard.fog.data.cladding;
 
 import com.mysql.cj.jdbc.MysqlDataSource;
 import tvestergaard.fog.data.AbstractMysqlDAO;
-import tvestergaard.fog.data.DataAccessException;
 import tvestergaard.fog.data.MysqlDataAccessException;
 import tvestergaard.fog.data.constraints.Constraint;
 import tvestergaard.fog.data.constraints.StatementBinder;
@@ -19,12 +18,12 @@ public class MysqlCladdingDAO extends AbstractMysqlDAO implements CladdingDAO
 {
 
     /**
-     * The generator used to generate SQL for the {@link Constraint}s provided to this DAO.
+     * The generator used to generate SQL for the constraints provided to this DAO.
      */
     private final StatementGenerator generator = new StatementGenerator();
 
     /**
-     * The binder used to bind prepared variables for the {@link Constraint}s provided to this DAO.
+     * The binder used to bind prepared variables for the constraints provided to this DAO.
      */
     private final StatementBinder binder = new StatementBinder();
 
@@ -39,14 +38,14 @@ public class MysqlCladdingDAO extends AbstractMysqlDAO implements CladdingDAO
     }
 
     /**
-     * Returns the {@link Cladding}s in the data storage.
-     * The results can be constrained using the provided {@link Constraint}s.
+     * Returns the claddings in the data storage.
+     * The results can be constrained using the provided constraints.
      *
-     * @param constraints The {@link Constraint}s that modify the resulting list.
-     * @return The resulting {@link Cladding}s.
+     * @param constraints The constraints that modify the resulting list.
+     * @return The resulting claddings.
      * @throws MysqlDataAccessException When an exception occurs while performing the operation.
      */
-    @Override public List<Cladding> get(Constraint... constraints) throws MysqlDataAccessException
+    @Override public List<Cladding> get(Constraint<CladdingColumn>... constraints) throws MysqlDataAccessException
     {
         try {
             final List<Cladding> floors = new ArrayList<>();
@@ -65,14 +64,14 @@ public class MysqlCladdingDAO extends AbstractMysqlDAO implements CladdingDAO
     }
 
     /**
-     * Returns the first cladding matching the provided {@link Constraint}s.
+     * Returns the first cladding matching the provided constraints.
      *
      * @param constraints The constraints that modify the resulting list.
-     * @return The first {@link Cladding} matching the provided {@link Constraint}s. Returns {@code null} when no
-     * {@link Constraint}s matches the provided {@link Constraint}s.
-     * @throws DataAccessException When an exception occurs while performing the operation.
+     * @return The first cladding matching the provided constraints. Returns {@code null} when no
+     * constraints matches the provided constraints.
+     * @throws MysqlDataAccessException When an exception occurs while performing the operation.
      */
-    @Override public Cladding first(Constraint... constraints) throws DataAccessException
+    @Override public Cladding first(Constraint<CladdingColumn>... constraints) throws MysqlDataAccessException
     {
         constraints = append(constraints, limit(1));
 
@@ -92,13 +91,13 @@ public class MysqlCladdingDAO extends AbstractMysqlDAO implements CladdingDAO
     }
 
     /**
-     * Inserts a new {@link Cladding} into the data storage.
+     * Inserts a new cladding into the data storage.
      *
-     * @param name                The name of the {@link Cladding} to create.
-     * @param description         The description of the {@link Cladding} to create.
-     * @param pricePerSquareMeter The price per square meter of {@link Cladding} (in øre).
-     * @param active              Whether or not the {@link Cladding} can be applied to orders.
-     * @return The {@link Cladding} instance representing the newly created {@link Cladding}.
+     * @param name                The name of the cladding to create.
+     * @param description         The description of the cladding to create.
+     * @param pricePerSquareMeter The price per square meter of cladding (in øre).
+     * @param active              Whether or not the cladding can be applied to orders.
+     * @return The cladding instance representing the newly created cladding.
      * @throws MysqlDataAccessException When an exception occurs while performing the operation.
      */
     @Override public Cladding create(String name, String description, int pricePerSquareMeter, boolean active)
@@ -119,6 +118,9 @@ public class MysqlCladdingDAO extends AbstractMysqlDAO implements CladdingDAO
                 ResultSet generated = statement.getGeneratedKeys();
                 generated.first();
                 return new CladdingRecord(generated.getInt(1), name, description, pricePerSquareMeter, active);
+            } catch (SQLException e) {
+                connection.rollback();
+                throw e;
             }
         } catch (SQLException e) {
             throw new MysqlDataAccessException(e);
@@ -128,7 +130,7 @@ public class MysqlCladdingDAO extends AbstractMysqlDAO implements CladdingDAO
     /**
      * Updates the entity in the data storage to match the provided {@code cladding}.
      *
-     * @param cladding The {@link Cladding} to update the entity in the data storage to.
+     * @param cladding The cladding to update the entity in the data storage to.
      * @return {@link true} if the record was updated.
      * @throws MysqlDataAccessException When an exception occurs while performing the operation.
      */
@@ -146,6 +148,9 @@ public class MysqlCladdingDAO extends AbstractMysqlDAO implements CladdingDAO
                 int updated = statement.executeUpdate();
                 connection.commit();
                 return updated != 0;
+            } catch (SQLException e) {
+                connection.rollback();
+                throw e;
             }
         } catch (SQLException e) {
             throw new MysqlDataAccessException(e);

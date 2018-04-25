@@ -25,9 +25,9 @@ public class OrderRecord implements Order
     private Customer customer;
 
     /**
-     * The {@link OrderType} of the {@link Order}.
+     * The {@link Type} of the {@link Order}.
      */
-    private OrderType type;
+    private Type type;
 
     /**
      * The {@link Cladding} used on the {@link Order}.
@@ -62,7 +62,7 @@ public class OrderRecord implements Order
     /**
      * The type of rafters chosen by the {@link Customer} who placed the {@link Order}.
      */
-    private RaftersType raftersType;
+    private RaftersConstruction raftersType;
 
     /**
      * The {@link Shed} included with the {@link Order}.
@@ -79,7 +79,7 @@ public class OrderRecord implements Order
      *
      * @param id          The unique identifier of the {@link Order}.
      * @param customer    The {@link Customer} who placed the {@link Order}.
-     * @param type        The {@link OrderType} of the {@link Order}.
+     * @param type        The {@link Type} of the {@link Order}.
      * @param cladding    The {@link Cladding} used on the {@link Order}.
      * @param width       The width of the {@link Order}.
      * @param length      The length of the {@link Order}.
@@ -90,7 +90,7 @@ public class OrderRecord implements Order
      * @param shed        The {@link Shed} included with the {@link Order}.
      * @param createdAt   The time when the {@link Order} was placed.
      */
-    public OrderRecord(int id, Customer customer, OrderType type, Cladding cladding, int width, int length, int height, Roofing roofing, int slope, RaftersType raftersType, Shed shed, LocalDateTime createdAt)
+    public OrderRecord(int id, Customer customer, Type type, Cladding cladding, int width, int length, int height, Roofing roofing, int slope, RaftersConstruction raftersType, Shed shed, LocalDateTime createdAt)
     {
         this.id = id;
         this.customer = customer;
@@ -127,23 +127,23 @@ public class OrderRecord implements Order
     }
 
     /**
-     * Returns the {@link OrderType} of the {@link Order}.
+     * Returns the {@link Type} of the {@link Order}.
      *
-     * @return The {@link OrderType} of the {@link Order}.
+     * @return The {@link Type} of the {@link Order}.
      */
-    @Override public OrderType getOrderType()
+    @Override public Type getType()
     {
         return type;
     }
 
     /**
-     * Sets the {@link OrderType} of the {@link Order}.
+     * Sets the {@link Type} of the {@link Order}.
      *
-     * @param orderType The new {@link OrderType}.
+     * @param type The new {@link Type}.
      */
-    @Override public void setOrderType(OrderType orderType)
+    @Override public void setType(Type type)
     {
-        this.type = orderType;
+        this.type = type;
     }
 
     /**
@@ -271,17 +271,17 @@ public class OrderRecord implements Order
      *
      * @return The chaice of rafters made by the {@link Customer} who placed the {@link Order}.
      */
-    @Override public RaftersType getRaftersType()
+    @Override public RaftersConstruction getRaftersConstruction()
     {
         return raftersType;
     }
 
     /**
-     * Sets the {@link RaftersType} chosen by the {@link Customer} who placed the {@link Order}.
+     * Sets the {@link RaftersConstruction} chosen by the {@link Customer} who placed the {@link Order}.
      *
-     * @param type The new {@link RaftersType}.
+     * @param type The new {@link RaftersConstruction}.
      */
-    @Override public void setRaftersType(RaftersType type)
+    @Override public void setRaftersConstruction(RaftersConstruction type)
     {
         this.raftersType = raftersType;
     }
@@ -327,10 +327,10 @@ public class OrderRecord implements Order
                 getHeight() == that.getHeight() &&
                 getSlope() == that.getSlope() &&
                 Objects.equals(getCustomer(), that.getCustomer()) &&
-                type == that.getOrderType() &&
+                type == that.getType() &&
                 Objects.equals(getCladding(), that.getCladding()) &&
                 Objects.equals(getRoofing(), that.getRoofing()) &&
-                getRaftersType() == that.getRaftersType() &&
+                getRaftersConstruction() == that.getRaftersConstruction() &&
                 Objects.equals(getShed(), that.getShed()) &&
                 Objects.equals(getCreatedAt(), that.getCreatedAt());
     }

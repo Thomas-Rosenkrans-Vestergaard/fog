@@ -9,12 +9,12 @@ public interface OrderDAO
 {
 
     /**
-     * Returns the {@link Order}s in the data storage.
-     * The results can be constrained using the provided {@link Constraint}s.
+     * Returns the orders in the data storage.
+     * The results can be constrained using the provided constraints.
      *
-     * @param constraints The {@link Constraint}s that modify the resulting list.
-     * @return The resulting {@link Order}s.
+     * @param constraints The constraints that modify the resulting list.
+     * @return The resulting orders.
      * @throws DataAccessException When an exception occurs while performing the operation.
      */
-    List<Order> getOrders(Constraint... constraints) throws DataAccessException;
+    List<Order> get(Constraint<OrderColumn>... constraints) throws DataAccessException;
 }

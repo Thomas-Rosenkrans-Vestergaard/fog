@@ -10,18 +10,16 @@ public class EqualsConditionTest
     @Test
     public void getColumn() throws Exception
     {
-        String          column    = "some_string";
-        EqualsCondition condition = new EqualsCondition(column, null);
-        assertSame(column, condition.column);
-        assertSame(column, condition.getColumn());
+        EqualsCondition<TestEnum> condition = new EqualsCondition(TestEnum.COLUMN_ONE, null);
+        assertSame(TestEnum.COLUMN_ONE, condition.column);
+        assertSame(TestEnum.COLUMN_ONE, condition.getColumn());
     }
 
     @Test
     public void getValue() throws Exception
     {
-        String          value     = "some_string";
-        EqualsCondition condition = new EqualsCondition(null, value);
-        assertSame(value, condition.value);
-        assertSame(value, condition.getValue());
+        EqualsCondition<TestEnum> condition = new EqualsCondition(null, TestEnum.COLUMN_THREE);
+        assertSame(TestEnum.COLUMN_THREE, condition.value);
+        assertSame(TestEnum.COLUMN_THREE, condition.getValue());
     }
 }

@@ -8,8 +8,10 @@ import tvestergaard.fog.data.TestDataSource;
 import java.sql.Connection;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 import static tvestergaard.fog.data.constraints.Constraint.*;
+import static tvestergaard.fog.data.flooring.FlooringColumn.ID;
+import static tvestergaard.fog.data.flooring.FlooringColumn.NAME;
 
 public class MysqlFlooringDAOTest
 {
@@ -17,80 +19,70 @@ public class MysqlFlooringDAOTest
     private static final MysqlDataSource  source = TestDataSource.getSource();
     private static final MysqlFlooringDAO dao    = new MysqlFlooringDAO(source);
 
+    private Flooring flooring1;
+    private Flooring flooring2;
+    private Flooring flooring3;
+    private Flooring flooring4;
+    private Flooring flooring5;
+
     @Before
     public void createData() throws Exception
     {
         Connection connection = source.getConnection();
         connection.createStatement().execute("DELETE FROM floorings");
-        connection.createStatement().execute(
-                "INSERT INTO floorings (id, name, description, price_per_square_meter, active) " +
-                        "VALUES (1, 'name1', 'description1', 1, b'1')");
-        connection.createStatement().execute(
-                "INSERT INTO floorings (id, name, description, price_per_square_meter, active) " +
-                        "VALUES (2, 'name2', 'description2', 2, b'1')");
-        connection.createStatement().execute(
-                "INSERT INTO floorings (id, name, description, price_per_square_meter, active)" +
-                        " VALUES (3, 'name3', 'description3', 3, b'1')");
-        connection.createStatement().execute(
-                "INSERT INTO floorings (id, name, description, price_per_square_meter, active)" +
-                        " VALUES (4, 'name4', 'description4', 4, b'1')");
-        connection.createStatement().execute(
-                "INSERT INTO floorings (id, name, description, price_per_square_meter, active)" +
-                        " VALUES (5, 'name5', 'description5', 5, b'1')");
+        flooring1 = dao.create("name1", "description1", 1, true);
+        flooring2 = dao.create("name2", "description2", 2, false);
+        flooring3 = dao.create("name3", "description3", 3, false);
+        flooring4 = dao.create("name4", "description4", 4, true);
+        flooring5 = dao.create("name5", "description5", 5, false);
     }
 
     @Test
-    public void getAll() throws Exception
+    public void get() throws Exception
     {
         List<Flooring> floorings = dao.get();
 
         assertEquals(5, floorings.size());
-        assertEquals(1, floorings.get(0).getId());
-        assertEquals(2, floorings.get(1).getId());
-        assertEquals(3, floorings.get(2).getId());
-        assertEquals(4, floorings.get(3).getId());
-        assertEquals(5, floorings.get(4).getId());
+        assertEquals(flooring1, floorings.get(0));
+        assertEquals(flooring2, floorings.get(1));
+        assertEquals(flooring3, floorings.get(2));
+        assertEquals(flooring4, floorings.get(3));
+        assertEquals(flooring5, floorings.get(4));
     }
 
     @Test
     public void getWhereEquals() throws Exception
     {
-        List<Flooring> floorings = dao.get(where(eq("id", 1)));
+        List<Flooring> floorings = dao.get(where(eq(ID, flooring1.getId())));
 
         assertEquals(1, floorings.size());
-
-        Flooring flooring = floorings.get(0);
-        assertEquals(1, flooring.getId());
-        assertEquals("name1", flooring.getName());
-        assertEquals("description1", flooring.getDescription());
-        assertEquals(1, flooring.getPricePerSquareMeter());
-        assertEquals(true, flooring.isActive());
+        assertEquals(flooring1, floorings.get(0));
     }
 
     @Test
     public void getWhereLike() throws Exception
     {
-        List<Flooring> floorings = dao.get(where(like("name", "name%")));
+        List<Flooring> floorings = dao.get(where(like(NAME, "name%")));
 
         assertEquals(5, floorings.size());
-        assertEquals("name1", floorings.get(0).getName());
-        assertEquals("name2", floorings.get(1).getName());
-        assertEquals("name3", floorings.get(2).getName());
-        assertEquals("name4", floorings.get(3).getName());
-        assertEquals("name5", floorings.get(4).getName());
+        assertEquals(flooring1, floorings.get(0));
+        assertEquals(flooring2, floorings.get(1));
+        assertEquals(flooring3, floorings.get(2));
+        assertEquals(flooring4, floorings.get(3));
+        assertEquals(flooring5, floorings.get(4));
     }
 
     @Test
     public void getOrderBy() throws Exception
     {
-        List<Flooring> floorings = dao.get(order("name", desc()));
+        List<Flooring> floorings = dao.get(order(NAME, desc()));
 
         assertEquals(5, floorings.size());
-        assertEquals("name5", floorings.get(0).getName());
-        assertEquals("name4", floorings.get(1).getName());
-        assertEquals("name3", floorings.get(2).getName());
-        assertEquals("name2", floorings.get(3).getName());
-        assertEquals("name1", floorings.get(4).getName());
+        assertEquals(flooring5, floorings.get(0));
+        assertEquals(flooring4, floorings.get(1));
+        assertEquals(flooring3, floorings.get(2));
+        assertEquals(flooring2, floorings.get(3));
+        assertEquals(flooring1, floorings.get(4));
     }
 
     @Test
@@ -99,8 +91,8 @@ public class MysqlFlooringDAOTest
         List<Flooring> floorings = dao.get(limit(2));
 
         assertEquals(2, floorings.size());
-        assertEquals(1, floorings.get(0).getId());
-        assertEquals(2, floorings.get(1).getId());
+        assertEquals(flooring1, floorings.get(0));
+        assertEquals(flooring2, floorings.get(1));
     }
 
     @Test
@@ -108,7 +100,42 @@ public class MysqlFlooringDAOTest
     {
         List<Flooring> floorings = dao.get(limit(2), offset(1));
 
-        assertEquals(2, floorings.get(0).getId());
-        assertEquals(3, floorings.get(1).getId());
+        assertEquals(flooring2, floorings.get(0));
+        assertEquals(flooring3, floorings.get(1));
+    }
+
+    @Test
+    public void first() throws Exception
+    {
+        assertEquals(flooring3, dao.first(where(eq(ID, flooring3.getId()))));
+        assertNull(dao.first(where(eq(ID, -1))));
+    }
+
+    @Test
+    public void create() throws Exception
+    {
+        String   name                = "some_random_name";
+        String   description         = "some_random_description";
+        int      pricePerSquareMeter = 234873;
+        boolean  active              = false;
+        Flooring actual              = dao.create(name, description, pricePerSquareMeter, active);
+        assertEquals(name, actual.getName());
+        assertEquals(description, actual.getDescription());
+        assertEquals(pricePerSquareMeter, actual.getPricePerSquareMeter());
+        assertEquals(active, actual.isActive());
+    }
+
+    @Test
+    public void update() throws Exception
+    {
+        flooring1.setName("new_name");
+        flooring1.setDescription("new_description");
+        flooring1.setPricePerSquareMeter(2897342);
+        flooring1.setActive(true);
+
+        assertTrue(dao.update(flooring1));
+
+        List<Flooring> actual = dao.get(where(eq(ID, flooring1.getId())));
+        assertEquals(flooring1, actual.get(0));
     }
 }

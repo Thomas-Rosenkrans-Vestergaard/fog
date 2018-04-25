@@ -110,7 +110,7 @@ CREATE TABLE `customers` (
   `name` varchar(255) NOT NULL,
   `address` varchar(255) NOT NULL,
   `email` varchar(255) NOT NULL,
-  `phone` varchar(12) NOT NULL,
+  `phone` varchar(30) NOT NULL,
   `password` varchar(255) DEFAULT NULL,
   `contact_method` tinyint(3) unsigned NOT NULL,
   `active` bit(1) NOT NULL DEFAULT b'1',
@@ -376,4 +376,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-04-24 19:30:06
+-- Dump completed on 2018-04-25  0:10:54

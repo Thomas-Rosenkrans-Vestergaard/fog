@@ -3,13 +3,13 @@ package tvestergaard.fog.data.constraints;
 /**
  * Represents the equals (=) operator.
  */
-public class EqualsCondition implements WhereCondition
+public class EqualsCondition<C extends Enum<C>> implements WhereCondition<C>
 {
 
     /**
      * The column to use in the equals comparison.
      */
-    public final String column;
+    public final C column;
 
     /**
      * The value to use in the equals comparison.
@@ -22,7 +22,7 @@ public class EqualsCondition implements WhereCondition
      * @param column The column to use in the equals comparison.
      * @param value  The value to use in the equals comparison.
      */
-    public EqualsCondition(String column, Object value)
+    public EqualsCondition(C column, Object value)
     {
         this.column = column;
         this.value = value;
@@ -33,7 +33,7 @@ public class EqualsCondition implements WhereCondition
      *
      * @return The column to use in the equals comparison.
      */
-    public String getColumn()
+    public C getColumn()
     {
         return this.column;
     }

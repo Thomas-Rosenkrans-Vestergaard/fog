@@ -7,7 +7,7 @@ import java.util.HashMap;
 /**
  * Generated a prepared statement from the provided {@link Constraint}s.
  */
-public class StatementGenerator
+public class StatementGenerator<T extends Enum<T> & MysqlColumn>
 {
 
     /**
@@ -33,7 +33,7 @@ public class StatementGenerator
      * @param constraints The constraints to generate into SQL.
      * @return The SQL representing the provided {@link Constraint}s appended to the provided {@code statement}.
      */
-    public String generate(String statement, Constraint... constraints)
+    public String generate(String statement, Constraint<T>... constraints)
     {
         return statement + generate(constraints);
     }
@@ -44,12 +44,12 @@ public class StatementGenerator
      * @param constraints The constraints to generate into SQL.
      * @return The SQL representing the provided {@link Constraint}s.
      */
-    public String generate(Constraint... constraints)
+    public String generate(Constraint<T>... constraints)
     {
         StringBuilder builder = new StringBuilder("");
         sort(constraints);
         for (Constraint constraint : constraints)
-            appendSQL(builder, constraint);
+            appendConstraintSQL(builder, constraint);
 
         return builder.toString();
     }
@@ -59,7 +59,7 @@ public class StatementGenerator
      *
      * @param constraints The constraints to sort. Mutates the provided array.
      */
-    private void sort(Constraint[] constraints)
+    private void sort(Constraint<T>[] constraints)
     {
         Arrays.sort(constraints, Comparator.comparingInt(c -> constraintOrder.get(c.getClass())));
     }
@@ -70,25 +70,25 @@ public class StatementGenerator
      * @param builder    The {@code StringBuilder} to append the SQL to.
      * @param constraint The {@link Constraint} to append the SQL representation of.
      */
-    private void appendSQL(StringBuilder builder, Constraint constraint)
+    private void appendConstraintSQL(StringBuilder builder, Constraint<T> constraint)
     {
         if (constraint instanceof WhereConstraint) {
-            appendSQL(builder, (WhereConstraint) constraint);
+            appendWhereConstraintSQL(builder, (WhereConstraint) constraint);
             return;
         }
 
         if (constraint instanceof OrderConstraint) {
-            appendSQL(builder, (OrderConstraint) constraint);
+            appendOrderConstraintSQL(builder, (OrderConstraint) constraint);
             return;
         }
 
         if (constraint instanceof LimitConstraint) {
-            appendSQL(builder, (LimitConstraint) constraint);
+            appendLimitConstraint(builder, (LimitConstraint) constraint);
             return;
         }
 
         if (constraint instanceof OffsetConstraint) {
-            appendSQL(builder, (OffsetConstraint) constraint);
+            appendOffsetConstraint(builder, (OffsetConstraint) constraint);
             return;
         }
     }
@@ -99,13 +99,13 @@ public class StatementGenerator
      * @param builder    The {@code StringBuilder} to append the SQL to.
      * @param constraint The {@link Constraint} to append the SQL representation of.
      */
-    private void appendSQL(StringBuilder builder, WhereConstraint constraint)
+    private void appendWhereConstraintSQL(StringBuilder builder, WhereConstraint<T> constraint)
     {
         WhereCondition[] conditions = constraint.getConditions();
         if (conditions.length > 0) {
             builder.append(" WHERE");
             for (WhereCondition condition : constraint.getConditions())
-                appendSQL(builder, condition);
+                appendWhereConditionSQL(builder, condition);
         }
     }
 
@@ -115,49 +115,59 @@ public class StatementGenerator
      * @param builder   The {@code StringBuilder} to append the SQL to.
      * @param condition The {@link WhereCondition} to append the SQL representation of.
      */
-    private void appendSQL(StringBuilder builder, WhereCondition condition)
+    private void appendWhereConditionSQL(StringBuilder builder, WhereCondition<T> condition)
     {
         if (condition instanceof BinaryAndCondition) {
             builder.append(' ');
             builder.append('(');
-            appendSQL(builder, ((BinaryAndCondition) condition).left);
+            appendWhereConditionSQL(builder, ((BinaryAndCondition) condition).left);
             builder.append(" AND");
-            appendSQL(builder, ((BinaryAndCondition) condition).right);
+            appendWhereConditionSQL(builder, ((BinaryAndCondition) condition).right);
             builder.append(')');
             return;
         }
 
         if (condition instanceof UnaryAndCondition) {
             builder.append(" AND");
-            appendSQL(builder, ((UnaryAndCondition) condition).operand);
+            appendWhereConditionSQL(builder, ((UnaryAndCondition) condition).operand);
             return;
         }
 
         if (condition instanceof BinaryOrCondition) {
             builder.append(' ');
             builder.append('(');
-            appendSQL(builder, ((BinaryOrCondition) condition).left);
+            appendWhereConditionSQL(builder, ((BinaryOrCondition) condition).left);
             builder.append(" OR");
-            appendSQL(builder, ((BinaryOrCondition) condition).right);
+            appendWhereConditionSQL(builder, ((BinaryOrCondition) condition).right);
             builder.append(')');
             return;
         }
 
         if (condition instanceof UnaryOrCondition) {
             builder.append(" OR");
-            appendSQL(builder, ((UnaryOrCondition) condition).operand);
+            appendWhereConditionSQL(builder, ((UnaryOrCondition) condition).operand);
             return;
         }
 
         if (condition instanceof EqualsCondition) {
-            builder.append(String.format(" `%s` = ?", ((EqualsCondition) condition).column));
+            appendEqualsConditionSQL(builder, (EqualsCondition) condition);
             return;
         }
 
         if (condition instanceof LikeCondition) {
-            builder.append(String.format(" `%s` LIKE ?", ((LikeCondition) condition).column));
+            appendLikeConditionSQL(builder, (LikeCondition) condition);
             return;
         }
+    }
+
+    private void appendEqualsConditionSQL(StringBuilder builder, EqualsCondition<T> condition)
+    {
+        builder.append(String.format(" `%s` = ?", condition.column.getMysqlName()));
+    }
+
+    private void appendLikeConditionSQL(StringBuilder builder, LikeCondition<T> condition)
+    {
+        builder.append(String.format(" `%s` LIKE ?", condition.column.getMysqlName()));
     }
 
     /**
@@ -166,10 +176,10 @@ public class StatementGenerator
      * @param builder    The {@code StringBuilder} to append the SQL to.
      * @param constraint The {@link OrderConstraint} to append the SQL representation of.
      */
-    private void appendSQL(StringBuilder builder, OrderConstraint constraint)
+    private void appendOrderConstraintSQL(StringBuilder builder, OrderConstraint<T> constraint)
     {
         builder.append(" ORDER BY `");
-        builder.append(constraint.getColumn());
+        builder.append(constraint.getColumn().getMysqlName());
         builder.append("` ");
         builder.append(constraint.getDirection());
     }
@@ -180,7 +190,7 @@ public class StatementGenerator
      * @param builder    The {@code StringBuilder} to append the SQL to.
      * @param constraint The {@link LimitConstraint} to append the SQL representation of.
      */
-    private void appendSQL(StringBuilder builder, LimitConstraint constraint)
+    private void appendLimitConstraint(StringBuilder builder, LimitConstraint<T> constraint)
     {
         builder.append(" LIMIT ?");
     }
@@ -191,7 +201,7 @@ public class StatementGenerator
      * @param builder    The {@code StringBuilder} to append the SQL to.
      * @param constraint The {@link OffsetConstraint} to append the SQL representation of.
      */
-    private void appendSQL(StringBuilder builder, OffsetConstraint constraint)
+    private void appendOffsetConstraint(StringBuilder builder, OffsetConstraint<T> constraint)
     {
         builder.append(" OFFSET ?");
     }

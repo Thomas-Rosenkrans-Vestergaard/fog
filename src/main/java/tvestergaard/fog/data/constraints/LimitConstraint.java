@@ -3,7 +3,7 @@ package tvestergaard.fog.data.constraints;
 /**
  * Restricts the number of records returned by some select operation the object is provided to.
  */
-public class LimitConstraint implements Constraint
+public class LimitConstraint<C extends Enum<C>> implements Constraint<C>
 {
 
     /**

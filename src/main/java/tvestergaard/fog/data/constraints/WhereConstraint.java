@@ -5,20 +5,20 @@ import java.util.Arrays;
 /**
  * Represents a condition that must be true for some entity to be returned during some selection operation.
  */
-public class WhereConstraint implements Constraint
+public class WhereConstraint<C extends Enum<C>> implements Constraint<C>
 {
 
     /**
      * The conditions defined in the {@link WhereConstraint}.
      */
-    private final WhereCondition[] conditions;
+    private final WhereCondition<C>[] conditions;
 
     /**
      * Creates a new {@link WhereConstraint}.
      *
      * @param conditions The conditions defined in the {@link WhereConstraint}.
      */
-    public WhereConstraint(WhereCondition... conditions)
+    public WhereConstraint(WhereCondition<C>... conditions)
     {
         this.conditions = conditions;
     }
@@ -29,7 +29,7 @@ public class WhereConstraint implements Constraint
      *
      * @return The conditions of the {@link WhereConstraint}.
      */
-    public WhereCondition[] getConditions()
+    public WhereCondition<C>[] getConditions()
     {
         return Arrays.copyOf(this.conditions, this.conditions.length);
     }

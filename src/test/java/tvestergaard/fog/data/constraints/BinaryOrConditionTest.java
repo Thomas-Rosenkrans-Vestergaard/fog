@@ -10,8 +10,8 @@ public class BinaryOrConditionTest
     @Test
     public void getLeft() throws Exception
     {
-        BinaryOrCondition left      = new BinaryOrCondition(null, null);
-        BinaryOrCondition condition = new BinaryOrCondition(left, null);
+        BinaryOrCondition<TestEnum> left      = new BinaryOrCondition(null, null);
+        BinaryOrCondition<TestEnum> condition = new BinaryOrCondition(left, null);
 
         assertSame(left, condition.left);
         assertSame(left, condition.getLeft());
@@ -20,8 +20,8 @@ public class BinaryOrConditionTest
     @Test
     public void getRight() throws Exception
     {
-        BinaryOrCondition right     = new BinaryOrCondition(null, null);
-        BinaryOrCondition condition = new BinaryOrCondition(null, right);
+        BinaryOrCondition<TestEnum> right     = new BinaryOrCondition(null, null);
+        BinaryOrCondition<TestEnum> condition = new BinaryOrCondition(null, right);
 
         assertSame(right, condition.right);
         assertSame(right, condition.getRight());

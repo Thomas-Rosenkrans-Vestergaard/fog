@@ -3,18 +3,18 @@ package tvestergaard.fog.data.constraints;
 /**
  * Represents the OR operator.
  */
-public class BinaryOrCondition implements WhereCondition
+public class BinaryOrCondition<C extends Enum<C>> implements WhereCondition<C>
 {
 
     /**
      * The left hand operand.
      */
-    public final WhereCondition left;
+    public final WhereCondition<C> left;
 
     /**
      * The right hand operand.
      */
-    public final WhereCondition right;
+    public final WhereCondition<C> right;
 
     /**
      * Creates a new {@link BinaryOrCondition}.
@@ -22,7 +22,7 @@ public class BinaryOrCondition implements WhereCondition
      * @param left  The left hand operand.
      * @param right The right hand operand.
      */
-    public BinaryOrCondition(WhereCondition left, WhereCondition right)
+    public BinaryOrCondition(WhereCondition<C> left, WhereCondition<C> right)
     {
         this.left = left;
         this.right = right;
@@ -33,7 +33,7 @@ public class BinaryOrCondition implements WhereCondition
      *
      * @return The left hand operand.
      */
-    public WhereCondition getLeft()
+    public WhereCondition<C> getLeft()
     {
         return this.left;
     }
@@ -43,7 +43,7 @@ public class BinaryOrCondition implements WhereCondition
      *
      * @return The right hand operand.
      */
-    public WhereCondition getRight()
+    public WhereCondition<C> getRight()
     {
         return this.right;
     }

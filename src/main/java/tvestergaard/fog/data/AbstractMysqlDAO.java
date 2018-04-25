@@ -127,14 +127,14 @@ public abstract class AbstractMysqlDAO
         return new OrderRecord(
                 resultSet.getInt("orders.id"),
                 createCustomer(resultSet),
-                Order.OrderType.from(resultSet.getInt("orders.type")),
+                Order.Type.from(resultSet.getInt("orders.type")),
                 createCladding(resultSet),
                 resultSet.getInt("orders.width"),
                 resultSet.getInt("orders.length"),
                 resultSet.getInt("orders.height"),
                 createRoofing(resultSet),
                 resultSet.getInt("orders.slope"),
-                Order.RaftersType.from(resultSet.getInt("orders.rafters_type")),
+                Order.RaftersConstruction.from(resultSet.getInt("orders.rafters_type")),
                 createShed(resultSet),
                 resultSet.getTimestamp("orders.created_at").toLocalDateTime()
         );

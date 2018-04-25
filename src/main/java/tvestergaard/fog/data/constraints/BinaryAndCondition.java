@@ -3,18 +3,18 @@ package tvestergaard.fog.data.constraints;
 /**
  * Represents and AND operator.
  */
-public class BinaryAndCondition implements WhereCondition
+public class BinaryAndCondition<C extends Enum<C>> implements WhereCondition<C>
 {
 
     /**
      * The left hand operand.
      */
-    public final WhereCondition left;
+    public final WhereCondition<C> left;
 
     /**
      * The right hash operand.
      */
-    public final WhereCondition right;
+    public final WhereCondition<C> right;
 
     /**
      * Creates a new {@link BinaryAndCondition}.
@@ -22,7 +22,7 @@ public class BinaryAndCondition implements WhereCondition
      * @param left  The left hand operand.
      * @param right The right hand operand.
      */
-    public BinaryAndCondition(WhereCondition left, WhereCondition right)
+    public BinaryAndCondition(WhereCondition<C> left, WhereCondition<C> right)
     {
         this.left = left;
         this.right = right;

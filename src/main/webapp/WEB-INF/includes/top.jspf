@@ -7,7 +7,7 @@
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="css/materialize.min.css"/>
     <link rel="stylesheet" href="css/main.css"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta SQLname="viewport" content="width=device-width, initial-scale=1.0"/>
     <script src="js/jquery-3.3.1.min.js"></script>
     <script type="text/javascript" src="js/materialize.min.js"></script>
     <%@ include file="notifications.jspf" %>

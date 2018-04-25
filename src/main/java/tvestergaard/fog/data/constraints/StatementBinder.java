@@ -6,7 +6,7 @@ import java.sql.SQLException;
 /**
  * Binds the parameters of a provided {@code PreparedStatement} using the provided {@link Constraint}s.
  */
-public class StatementBinder
+public class StatementBinder<T extends Enum<T> & MysqlColumn>
 {
 
     /**
@@ -22,7 +22,7 @@ public class StatementBinder
      * @param constraints The {@link Constraint}s to set the prepared parameters of.
      * @throws SQLException When a database exception occurs.
      */
-    public void bind(PreparedStatement statement, int begin, Constraint... constraints) throws SQLException
+    public void bind(PreparedStatement statement, int begin, Constraint<T>... constraints) throws SQLException
     {
         currentParameterIndex = begin;
         for (Constraint constraint : constraints) {
@@ -38,7 +38,7 @@ public class StatementBinder
      * @param constraints The {@link Constraint}s to set the prepared parameters of.
      * @throws SQLException When a database exception occurs.
      */
-    public void bind(PreparedStatement statement, Constraint... constraints) throws SQLException
+    public void bind(PreparedStatement statement, Constraint<T>... constraints) throws SQLException
     {
         bind(statement, 1, constraints);
     }

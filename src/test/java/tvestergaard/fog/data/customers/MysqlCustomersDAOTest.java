@@ -8,7 +8,8 @@ import tvestergaard.fog.data.TestDataSource;
 import java.sql.Connection;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
+import static tvestergaard.fog.data.cladding.CladdingColumn.ID;
 import static tvestergaard.fog.data.constraints.Constraint.*;
 
 public class MysqlCustomersDAOTest
@@ -17,82 +18,70 @@ public class MysqlCustomersDAOTest
     private static final MysqlDataSource  source = TestDataSource.getSource();
     private static final MysqlCustomerDAO dao    = new MysqlCustomerDAO(source);
 
+    private Customer customer1;
+    private Customer customer2;
+    private Customer customer3;
+    private Customer customer4;
+    private Customer customer5;
+
     @Before
     public void createData() throws Exception
     {
         Connection connection = source.getConnection();
         connection.createStatement().execute("DELETE FROM customers");
-        connection.createStatement().execute(
-                "INSERT INTO customers (id, name, address, email, phone, password, contact_method, active) " +
-                        "VALUES (1, 'name1', 'address1', 'email1', 'phone1', 'password1', 0, b'1')");
-        connection.createStatement().execute(
-                "INSERT INTO customers (id, name, address, email, phone, password, contact_method, active) " +
-                        "VALUES (2, 'name2', 'address2', 'email2', 'phone2', 'password2', 0, b'1')");
-        connection.createStatement().execute(
-                "INSERT INTO customers (id, name, address, email, phone, password, contact_method, active)" +
-                        " VALUES (3, 'name3', 'address3', 'email3', 'phone3', 'password3', 0, b'1')");
-        connection.createStatement().execute(
-                "INSERT INTO customers (id, name, address, email, phone, password, contact_method, active)" +
-                        " VALUES (4, 'name4', 'address4', 'email4', 'phone4', 'password4', 0, b'1')");
-        connection.createStatement().execute(
-                "INSERT INTO customers (id, name, address, email, phone, password, contact_method, active)" +
-                        " VALUES (5, 'name5', 'address5', 'email5', 'phone5', 'password5', 0, b'0')");
+        customer1 = dao.create("name1", "address1", "email1", "phone1", "password1", Customer.ContactMethod.EMAIL, true);
+        customer2 = dao.create("name2", "address2", "email2", "phone2", "password2", Customer.ContactMethod.PHONE, false);
+        customer3 = dao.create("name3", "address3", "email3", "phone3", "password3", Customer.ContactMethod.EMAIL, true);
+        customer4 = dao.create("name4", "address4", "email4", "phone4", "password4", Customer.ContactMethod.PHONE, false);
+        customer5 = dao.create("name5", "address5", "email5", "phone5", "password5", Customer.ContactMethod.EMAIL, true);
     }
 
     @Test
-    public void getAll() throws Exception
+    public void get() throws Exception
     {
         List<Customer> customers = dao.get();
 
         assertEquals(5, customers.size());
-        assertEquals(1, customers.get(0).getId());
-        assertEquals(2, customers.get(1).getId());
-        assertEquals(3, customers.get(2).getId());
-        assertEquals(4, customers.get(3).getId());
-        assertEquals(5, customers.get(4).getId());
+        assertEquals(customer1, customers.get(0));
+        assertEquals(customer2, customers.get(1));
+        assertEquals(customer3, customers.get(2));
+        assertEquals(customer4, customers.get(3));
+        assertEquals(customer5, customers.get(4));
     }
 
     @Test
     public void getWhereEquals() throws Exception
     {
-        List<Customer> customers = dao.get(where(eq("id", 1)));
+        List<Customer> customers = dao.get(where(eq(CustomerColumn.ID, customer1.getId())));
 
         assertEquals(1, customers.size());
-
-        Customer customer = customers.get(0);
-        assertEquals(1, customer.getId());
-        assertEquals("name1", customer.getName());
-        assertEquals("email1", customer.getEmail());
-        assertEquals("phone1", customer.getPhone());
-        assertEquals("password1", customer.getPassword());
-        assertEquals(Customer.ContactMethod.EMAIL, customer.getContactMethod());
-        assertEquals(true, customer.isActive());
+        assertEquals(customer1, customers.get(0));
     }
 
     @Test
     public void getWhereLike() throws Exception
     {
-        List<Customer> customers = dao.get(where(like("name", "name%")));
+        List<Customer> customers = dao.get(where(like(CustomerColumn.NAME, "name%")));
 
         assertEquals(5, customers.size());
-        assertEquals("name1", customers.get(0).getName());
-        assertEquals("name2", customers.get(1).getName());
-        assertEquals("name3", customers.get(2).getName());
-        assertEquals("name4", customers.get(3).getName());
-        assertEquals("name5", customers.get(4).getName());
+        assertEquals(customer1, customers.get(0));
+        assertEquals(customer2, customers.get(1));
+        assertEquals(customer3, customers.get(2));
+        assertEquals(customer4, customers.get(3));
+        assertEquals(customer5, customers.get(4));
     }
 
     @Test
     public void getOrderBy() throws Exception
     {
-        List<Customer> customers = dao.get(order("name", desc()));
+        List<Customer> customers = dao.get(order(CustomerColumn.NAME, desc()));
 
         assertEquals(5, customers.size());
-        assertEquals("name5", customers.get(0).getName());
-        assertEquals("name4", customers.get(1).getName());
-        assertEquals("name3", customers.get(2).getName());
-        assertEquals("name2", customers.get(3).getName());
-        assertEquals("name1", customers.get(4).getName());
+        assertEquals(customer5, customers.get(0));
+        assertEquals(customer4, customers.get(1));
+        assertEquals(customer3, customers.get(2));
+        assertEquals(customer2, customers.get(3));
+        assertEquals(customer1, customers.get(4));
     }
 
     @Test
@@ -101,8 +90,8 @@ public class MysqlCustomersDAOTest
         List<Customer> customers = dao.get(limit(2));
 
         assertEquals(2, customers.size());
-        assertEquals(1, customers.get(0).getId());
-        assertEquals(2, customers.get(1).getId());
+        assertEquals(customer1, customers.get(0));
+        assertEquals(customer2, customers.get(1));
     }
 
     @Test
@@ -110,7 +99,52 @@ public class MysqlCustomersDAOTest
     {
         List<Customer> customers = dao.get(limit(2), offset(1));
 
-        assertEquals(2, customers.get(0).getId());
-        assertEquals(3, customers.get(1).getId());
+        assertEquals(customer2, customers.get(0));
+        assertEquals(customer3, customers.get(1));
+    }
+
+    @Test
+    public void first() throws Exception
+    {
+        assertEquals(customer3, dao.first(where(eq(ID, customer3.getId()))));
+        assertNull(dao.first(where(eq(ID, -1))));
+    }
+
+    @Test
+    public void create() throws Exception
+    {
+        String                 name          = "some_random_name";
+        String                 address       = "some_random_address";
+        String                 email         = "some_random_email";
+        String                 phone         = "some_random_phone";
+        String                 password      = "some_random_password";
+        Customer.ContactMethod contactMethod = Customer.ContactMethod.PHONE;
+        boolean                active        = false;
+
+        Customer actual = dao.create(name, address, email, phone, password, contactMethod, active);
+        assertEquals(name, actual.getName());
+        assertEquals(address, actual.getAddress());
+        assertEquals(email, actual.getEmail());
+        assertEquals(phone, actual.getPhone());
+        assertEquals(password, actual.getPassword());
+        assertEquals(contactMethod, actual.getContactMethod());
+        assertEquals(active, actual.isActive());
+    }
+
+    @Test
+    public void update() throws Exception
+    {
+        customer1.setName("new_name");
+        customer1.setAddress("new_address");
+        customer1.setEmail("new_email");
+        customer1.setPhone("new_phone");
+        customer1.setPassword("new_password");
+        customer1.setContactMethod(Customer.ContactMethod.PHONE);
+        customer1.setActive(false);
+
+        assertTrue(dao.update(customer1));
+
+        List<Customer> actual = dao.get(where(eq(ID, customer1.getId())));
+        assertEquals(customer1, actual.get(0));
     }
 }

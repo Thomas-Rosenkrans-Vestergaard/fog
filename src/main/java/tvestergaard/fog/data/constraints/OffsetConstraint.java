@@ -3,7 +3,7 @@ package tvestergaard.fog.data.constraints;
 /**
  * Offsets the records returned by some select operation.
  */
-public class OffsetConstraint implements Constraint
+public class OffsetConstraint<C extends Enum<C>> implements Constraint<C>
 {
 
     /**

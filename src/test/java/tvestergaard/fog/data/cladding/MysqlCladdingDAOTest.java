@@ -9,6 +9,8 @@ import java.sql.Connection;
 import java.util.List;
 
 import static org.junit.Assert.*;
+import static tvestergaard.fog.data.cladding.CladdingColumn.ID;
+import static tvestergaard.fog.data.cladding.CladdingColumn.NAME;
 import static tvestergaard.fog.data.constraints.Constraint.*;
 
 public class MysqlCladdingDAOTest
@@ -51,7 +53,7 @@ public class MysqlCladdingDAOTest
     @Test
     public void getWhereEquals() throws Exception
     {
-        List<Cladding> claddings = dao.get(where(eq("id", cladding1.getId())));
+        List<Cladding> claddings = dao.get(where(eq(ID, cladding1.getId())));
 
         assertEquals(1, claddings.size());
         assertEquals(cladding1, claddings.get(0));
@@ -60,7 +62,7 @@ public class MysqlCladdingDAOTest
     @Test
     public void getWhereLike() throws Exception
     {
-        List<Cladding> claddings = dao.get(where(like("name", "name%")));
+        List<Cladding> claddings = dao.get(where(like(NAME, "name%")));
 
         assertEquals(5, claddings.size());
         assertEquals(cladding1, claddings.get(0));
@@ -73,7 +75,7 @@ public class MysqlCladdingDAOTest
     @Test
     public void getOrderBy() throws Exception
     {
-        List<Cladding> claddings = dao.get(order("name", desc()));
+        List<Cladding> claddings = dao.get(order(ID, desc()));
 
         assertEquals(5, claddings.size());
         assertEquals(cladding5, claddings.get(0));
@@ -105,8 +107,8 @@ public class MysqlCladdingDAOTest
     @Test
     public void first() throws Exception
     {
-        assertEquals(cladding3, dao.first(where(eq("id", cladding3.getId()))));
-        assertNull(dao.first(where(eq("id", -1))));
+        assertEquals(cladding3, dao.first(where(eq(ID, cladding3.getId()))));
+        assertNull(dao.first(where(eq(ID, -1))));
     }
 
     @Test
@@ -133,7 +135,7 @@ public class MysqlCladdingDAOTest
 
         assertTrue(dao.update(cladding1));
 
-        List<Cladding> actual = dao.get(where(eq("id", cladding1.getId())));
+        List<Cladding> actual = dao.get(where(eq(ID, cladding1.getId())));
         assertEquals(cladding1, actual.get(0));
     }
 }

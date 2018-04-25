@@ -25,18 +25,18 @@ public interface Order
     Customer getCustomer();
 
     /**
-     * Returns the {@link OrderType} of the {@link Order}.
+     * Returns the {@link Type} of the {@link Order}.
      *
-     * @return The {@link OrderType} of the {@link Order}.
+     * @return The {@link Type} of the {@link Order}.
      */
-    OrderType getOrderType();
+    Type getType();
 
     /**
-     * Sets the {@link OrderType} of the {@link Order}.
+     * Sets the {@link Type} of the {@link Order}.
      *
-     * @param orderType The new {@link OrderType}.
+     * @param type The new {@link Type}.
      */
-    void setOrderType(OrderType orderType);
+    void setType(Type type);
 
     /**
      * Returns the {@link Cladding} used on the {@link Order}.
@@ -127,14 +127,14 @@ public interface Order
      *
      * @return The choice of rafters made by the {@link Customer} who placed the {@link Order}.
      */
-    RaftersType getRaftersType();
+    RaftersConstruction getRaftersConstruction();
 
     /**
-     * Sets the {@link RaftersType} chosen by the {@link Customer} who placed the {@link Order}.
+     * Sets the {@link RaftersConstruction} chosen by the {@link Customer} who placed the {@link Order}.
      *
-     * @param type The new {@link RaftersType}.
+     * @param type The new {@link RaftersConstruction}.
      */
-    void setRaftersType(RaftersType type);
+    void setRaftersConstruction(RaftersConstruction type);
 
     /**
      * Returns the {@link Shed} included in the {@link Order}. {@code null} means no {@link Shed} is included.
@@ -176,7 +176,7 @@ public interface Order
     /**
      * Represents a type of {@link Order}.
      */
-    enum OrderType
+    enum Type
     {
 
         /**
@@ -189,7 +189,7 @@ public interface Order
          */
         GARAGE;
 
-        public static OrderType from(int id)
+        public static Type from(int id)
         {
             if (id == 0)
                 return GARAGE;
@@ -203,7 +203,7 @@ public interface Order
     /**
      * Represents the rafters choice made by the {@link Customer}.
      */
-    enum RaftersType
+    enum RaftersConstruction
     {
 
         /**
@@ -217,27 +217,27 @@ public interface Order
         SELFMADE(1);
 
         /**
-         * Identifier representing the {@link RaftersType}.
+         * Identifier representing the {@link RaftersConstruction}.
          */
         private final int id;
 
         /**
-         * Creates a new {@link RaftersType}.
+         * Creates a new {@link RaftersConstruction}.
          *
-         * @param id Identifier representing the {@link RaftersType}.
+         * @param id Identifier representing the {@link RaftersConstruction}.
          */
-        RaftersType(int id)
+        RaftersConstruction(int id)
         {
             this.id = id;
         }
 
         /**
-         * Returns the {@link RaftersType} with the provided id.
+         * Returns the {@link RaftersConstruction} with the provided id.
          *
-         * @param id The identifier of the {@link RaftersType} to return.
-         * @return The {@link RaftersType} with the provided id.
+         * @param id The identifier of the {@link RaftersConstruction} to return.
+         * @return The {@link RaftersConstruction} with the provided id.
          */
-        public static RaftersType from(int id)
+        public static RaftersConstruction from(int id)
         {
             if (id == 0)
                 return PREMADE;

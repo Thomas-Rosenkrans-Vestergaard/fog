@@ -3,20 +3,20 @@ package tvestergaard.fog.data.constraints;
 /**
  * Represents a unary 'AND' operator.
  */
-public class UnaryAndCondition implements WhereCondition
+public class UnaryAndCondition<C extends Enum<C>> implements WhereCondition<C>
 {
 
     /**
      * The operand provided to the {@link UnaryAndCondition}.
      */
-    public final WhereCondition operand;
+    public final WhereCondition<C> operand;
 
     /**
      * Creates a new {@link UnaryAndCondition}.
      *
      * @param operand The operand provided to the {@link UnaryAndCondition}.
      */
-    public UnaryAndCondition(WhereCondition operand)
+    public UnaryAndCondition(WhereCondition<C> operand)
     {
         this.operand = operand;
     }
@@ -26,7 +26,7 @@ public class UnaryAndCondition implements WhereCondition
      *
      * @return The operand provided to the {@link UnaryAndCondition}.
      */
-    public WhereCondition getOperand()
+    public WhereCondition<C> getOperand()
     {
         return this.operand;
     }
