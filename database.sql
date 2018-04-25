@@ -4,7 +4,7 @@ USE `fog`;
 --
 -- Host: 127.0.0.1    Database: fog
 -- ------------------------------------------------------
--- Server version	5.7.20-log
+-- Server version	5.6.37
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -32,15 +32,6 @@ CREATE TABLE `bom` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `bom`
---
-
-LOCK TABLES `bom` WRITE;
-/*!40000 ALTER TABLE `bom` DISABLE KEYS */;
-/*!40000 ALTER TABLE `bom` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `bom_materials`
 --
 
@@ -63,15 +54,6 @@ CREATE TABLE `bom_materials` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `bom_materials`
---
-
-LOCK TABLES `bom_materials` WRITE;
-/*!40000 ALTER TABLE `bom_materials` DISABLE KEYS */;
-/*!40000 ALTER TABLE `bom_materials` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `claddings`
 --
 
@@ -86,17 +68,8 @@ CREATE TABLE `claddings` (
   `active` bit(1) NOT NULL DEFAULT b'1',
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `claddings`
---
-
-LOCK TABLES `claddings` WRITE;
-/*!40000 ALTER TABLE `claddings` DISABLE KEYS */;
-/*!40000 ALTER TABLE `claddings` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `customers`
@@ -117,17 +90,8 @@ CREATE TABLE `customers` (
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `customers`
---
-
-LOCK TABLES `customers` WRITE;
-/*!40000 ALTER TABLE `customers` DISABLE KEYS */;
-/*!40000 ALTER TABLE `customers` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `employees`
@@ -150,15 +114,6 @@ CREATE TABLE `employees` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `employees`
---
-
-LOCK TABLES `employees` WRITE;
-/*!40000 ALTER TABLE `employees` DISABLE KEYS */;
-/*!40000 ALTER TABLE `employees` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `employees_roles`
 --
 
@@ -179,15 +134,6 @@ CREATE TABLE `employees_roles` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `employees_roles`
---
-
-LOCK TABLES `employees_roles` WRITE;
-/*!40000 ALTER TABLE `employees_roles` DISABLE KEYS */;
-/*!40000 ALTER TABLE `employees_roles` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `floorings`
 --
 
@@ -204,15 +150,6 @@ CREATE TABLE `floorings` (
   UNIQUE KEY `id_UNIQUE` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `floorings`
---
-
-LOCK TABLES `floorings` WRITE;
-/*!40000 ALTER TABLE `floorings` DISABLE KEYS */;
-/*!40000 ALTER TABLE `floorings` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `materials`
@@ -235,15 +172,6 @@ CREATE TABLE `materials` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `materials`
---
-
-LOCK TABLES `materials` WRITE;
-/*!40000 ALTER TABLE `materials` DISABLE KEYS */;
-/*!40000 ALTER TABLE `materials` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `orders`
 --
 
@@ -261,7 +189,7 @@ CREATE TABLE `orders` (
   `roofing` int(11) unsigned NOT NULL,
   `slope` tinyint(11) unsigned NOT NULL,
   `rafters_type` tinyint(11) unsigned NOT NULL,
-  `shed` int(11) unsigned NOT NULL,
+  `shed` int(11) unsigned DEFAULT NULL,
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`),
@@ -269,19 +197,9 @@ CREATE TABLE `orders` (
   KEY `cladding` (`cladding`),
   KEY `shed` (`shed`),
   CONSTRAINT `orders_ibfk_1` FOREIGN KEY (`customer`) REFERENCES `customers` (`id`),
-  CONSTRAINT `orders_ibfk_2` FOREIGN KEY (`cladding`) REFERENCES `roofings` (`id`),
-  CONSTRAINT `orders_ibfk_3` FOREIGN KEY (`shed`) REFERENCES `sheds` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  CONSTRAINT `orders_ibfk_2` FOREIGN KEY (`cladding`) REFERENCES `roofings` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `orders`
---
-
-LOCK TABLES `orders` WRITE;
-/*!40000 ALTER TABLE `orders` DISABLE KEYS */;
-/*!40000 ALTER TABLE `orders` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `roles`
@@ -297,15 +215,6 @@ CREATE TABLE `roles` (
   UNIQUE KEY `id_UNIQUE` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `roles`
---
-
-LOCK TABLES `roles` WRITE;
-/*!40000 ALTER TABLE `roles` DISABLE KEYS */;
-/*!40000 ALTER TABLE `roles` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `roofings`
@@ -324,17 +233,8 @@ CREATE TABLE `roofings` (
   `active` bit(1) NOT NULL DEFAULT b'1',
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `roofings`
---
-
-LOCK TABLES `roofings` WRITE;
-/*!40000 ALTER TABLE `roofings` DISABLE KEYS */;
-/*!40000 ALTER TABLE `roofings` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `sheds`
@@ -357,15 +257,6 @@ CREATE TABLE `sheds` (
   CONSTRAINT `sheds_ibfk_2` FOREIGN KEY (`flooring`) REFERENCES `floorings` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `sheds`
---
-
-LOCK TABLES `sheds` WRITE;
-/*!40000 ALTER TABLE `sheds` DISABLE KEYS */;
-/*!40000 ALTER TABLE `sheds` ENABLE KEYS */;
-UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -376,4 +267,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-04-25  0:10:54
+-- Dump completed on 2018-04-25 13:20:22

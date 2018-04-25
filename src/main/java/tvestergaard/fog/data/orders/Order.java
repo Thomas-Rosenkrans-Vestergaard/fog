@@ -182,12 +182,34 @@ public interface Order
         /**
          * The {@link Customer} wants a shed.
          */
-        SHED,
+        SHED(0, "Redskabsskur"),
 
         /**
          * The {@link Customer} wants a garage.
          */
-        GARAGE;
+        GARAGE(1, "Carport");
+
+        /**
+         * The unique identifier representing the {@link Type}.
+         */
+        private final int id;
+
+        /**
+         * The display name of the {@link Type}.
+         */
+        private final String displayName;
+
+        /**
+         * Creates a new {@link Type}.
+         *
+         * @param id
+         * @param displayName
+         */
+        Type(int id, String displayName)
+        {
+            this.id = id;
+            this.displayName = displayName;
+        }
 
         public static Type from(int id)
         {
@@ -197,6 +219,11 @@ public interface Order
                 return SHED;
 
             throw new IllegalArgumentException("Unknown OrderType with provided id.");
+        }
+
+        public String getDisplayName()
+        {
+            return this.displayName;
         }
     }
 
@@ -209,12 +236,12 @@ public interface Order
         /**
          * The {@link Customer} receives rafters premade.
          */
-        PREMADE(0),
+        PREMADE(0, "Færdiglavet"),
 
         /**
          * The {@link Customer} makes the rafters themselves.
          */
-        SELFMADE(1);
+        SELFMADE(1, "Selvbyg");
 
         /**
          * Identifier representing the {@link RaftersConstruction}.
@@ -222,13 +249,14 @@ public interface Order
         private final int id;
 
         /**
-         * Creates a new {@link RaftersConstruction}.
-         *
-         * @param id Identifier representing the {@link RaftersConstruction}.
+         * The display name representing the {@link RaftersConstruction}.
          */
-        RaftersConstruction(int id)
+        private final String displayName;
+
+        RaftersConstruction(int id, String displayName)
         {
             this.id = id;
+            this.displayName = displayName;
         }
 
         /**
@@ -245,6 +273,16 @@ public interface Order
                 return SELFMADE;
 
             throw new IllegalArgumentException("Unknown RaftersType with provided id.");
+        }
+
+        public int getId()
+        {
+            return this.id;
+        }
+
+        public String getDisplayName()
+        {
+            return this.displayName;
         }
     }
 }

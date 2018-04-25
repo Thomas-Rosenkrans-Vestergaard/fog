@@ -52,6 +52,7 @@ public abstract class AbstractMysqlDAO
         if (connection == null) {
             connection = source.getConnection();
             connection.setAutoCommit(false);
+            this.connection.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
         }
 
         return connection;

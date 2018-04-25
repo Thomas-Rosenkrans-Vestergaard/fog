@@ -3,16 +3,5 @@
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee">
     <tlib-version>1.0</tlib-version>
-    <short-SQLname>f</short-SQLname>
     <uri>/WEB-INF/tld/functions</uri>
-    <function>
-        <SQLname>formatPrice</SQLname>
-        <function-class>tvestergaard.cupcakes.view.ViewUtilities</function-class>
-        <function-signature>java.lang.String formatPrice(java.lang.Integer)</function-signature>
-    </function>
-    <function>
-        <SQLname>formatTimestamp</SQLname>
-        <function-class>tvestergaard.cupcakes.view.ViewUtilities</function-class>
-        <function-signature>java.lang.String formatTimestamp(java.sql.Timestamp)</function-signature>
-    </function>
 </taglib>
