@@ -1,4 +1,4 @@
-package tvestergaard.fog.logic.orders;
+package tvestergaard.fog.logic;
 
 import java.util.HashSet;
 import java.util.Set;

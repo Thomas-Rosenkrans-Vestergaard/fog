@@ -20,9 +20,8 @@
             <li><a href="orders">Ordre</a></li>
             <li><a href="customers">Kunder</a></li>
             <li><a href="employees">Medarbejdere</a></li>
-            <li><a href="employees">Medarbejdere</a></li>
-            <li><a href="roofings">Tagbeklædninger</a></li>
-            <li><a href="claddings">Facadebeklædning</a></li>
+            <li><a href="roofings">Tag</a></li>
+            <li><a href="claddings">Bekældninger</a></li>
             <li><a href="floorings">Gulve</a></li>
         </ul>
     </div>

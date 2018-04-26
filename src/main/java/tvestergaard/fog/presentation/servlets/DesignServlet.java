@@ -16,10 +16,10 @@ import tvestergaard.fog.data.roofing.MysqlRoofingDAO;
 import tvestergaard.fog.data.roofing.RoofingColumn;
 import tvestergaard.fog.data.roofing.RoofingDAO;
 import tvestergaard.fog.data.sheds.ShedSpecification;
-import tvestergaard.fog.logic.customers.CustomerFacade;
-import tvestergaard.fog.logic.customers.CustomerValidationException;
-import tvestergaard.fog.logic.orders.OrderFacade;
-import tvestergaard.fog.logic.orders.OrderValidationException;
+import tvestergaard.fog.logic.CustomerFacade;
+import tvestergaard.fog.logic.CustomerValidationException;
+import tvestergaard.fog.logic.OrderFacade;
+import tvestergaard.fog.logic.OrderValidationException;
 import tvestergaard.fog.presentation.FormResponse;
 import tvestergaard.fog.presentation.Notifications;
 import tvestergaard.fog.presentation.Parameters;
@@ -36,7 +36,7 @@ import java.util.EnumSet;
 
 import static tvestergaard.fog.data.constraints.Constraint.eq;
 import static tvestergaard.fog.data.constraints.Constraint.where;
-import static tvestergaard.fog.logic.customers.CustomerValidationException.Reason.*;
+import static tvestergaard.fog.logic.CustomerValidationException.Reason.*;
 import static tvestergaard.fog.presentation.PresentationFunctions.formResponse;
 import static tvestergaard.fog.presentation.PresentationFunctions.notifications;
 

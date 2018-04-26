@@ -1,4 +1,4 @@
-package tvestergaard.fog.logic.customers;
+package tvestergaard.fog.logic;
 
 import org.apache.commons.validator.routines.EmailValidator;
 import org.mindrot.jbcrypt.BCrypt;
@@ -6,7 +6,6 @@ import tvestergaard.fog.data.DataAccessException;
 import tvestergaard.fog.data.ProductionDataSource;
 import tvestergaard.fog.data.constraints.Constraint;
 import tvestergaard.fog.data.customers.*;
-import tvestergaard.fog.logic.ApplicationException;
 
 import java.util.HashSet;
 import java.util.List;
@@ -14,8 +13,8 @@ import java.util.Set;
 
 import static tvestergaard.fog.data.constraints.Constraint.*;
 import static tvestergaard.fog.data.customers.CustomerColumn.EMAIL;
-import static tvestergaard.fog.logic.customers.CustomerValidationException.Reason;
-import static tvestergaard.fog.logic.customers.CustomerValidationException.Reason.*;
+import static tvestergaard.fog.logic.CustomerValidationException.Reason;
+import static tvestergaard.fog.logic.CustomerValidationException.Reason.*;
 
 public class CustomerFacade
 {

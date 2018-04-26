@@ -1,4 +1,4 @@
-package tvestergaard.fog.logic.customers;
+package tvestergaard.fog.logic;
 
 import java.util.HashSet;
 import java.util.Set;

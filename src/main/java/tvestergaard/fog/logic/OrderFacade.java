@@ -1,4 +1,4 @@
-package tvestergaard.fog.logic.orders;
+package tvestergaard.fog.logic;
 
 import tvestergaard.fog.data.DataAccessException;
 import tvestergaard.fog.data.ProductionDataSource;
@@ -6,14 +6,13 @@ import tvestergaard.fog.data.constraints.Constraint;
 import tvestergaard.fog.data.orders.*;
 import tvestergaard.fog.data.sheds.Shed;
 import tvestergaard.fog.data.sheds.ShedSpecification;
-import tvestergaard.fog.logic.ApplicationException;
-import tvestergaard.fog.logic.orders.OrderValidationException.Reason;
+import tvestergaard.fog.logic.OrderValidationException.Reason;
 
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import static tvestergaard.fog.logic.orders.OrderValidationException.Reason.*;
+import static tvestergaard.fog.logic.OrderValidationException.Reason.*;
 
 public class OrderFacade
 {
