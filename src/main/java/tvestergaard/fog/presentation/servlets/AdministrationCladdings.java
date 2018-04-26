@@ -1,7 +1,7 @@
 package tvestergaard.fog.presentation.servlets;
 
 import tvestergaard.fog.logic.ApplicationException;
-import tvestergaard.fog.logic.CladdingFacade;
+import tvestergaard.fog.logic.claddings.CladdingFacade;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -15,6 +15,13 @@ public class AdministrationCladdings extends HttpServlet
 {
 
     private final CladdingFacade claddingFacade = new CladdingFacade();
+    private final CommandDispatcher dispatcher;
+
+    public AdministrationCladdings(CommandDispatcher dispatcher)
+    {
+        this.dispatcher = new CommandDispatcher();
+        this.dispatcher.register(new ShowCladdingsCommand());
+    }
 
     /**
      * Shows the administration page for orders placed by claddings.
@@ -27,12 +34,41 @@ public class AdministrationCladdings extends HttpServlet
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException
     {
-        try {
-            req.setAttribute("title", "Tag");
-            req.setAttribute("claddings", claddingFacade.get());
-            req.getRequestDispatcher("/WEB-INF/administration/claddings.jsp").forward(req, resp);
-        } catch (ApplicationException e) {
-            throw new IllegalStateException(e);
+
+    }
+
+    private class ShowCladdingsCommand implements Command
+    {
+
+        /**
+         * Checks whether or not the command accepts the provided request.
+         *
+         * @param request The request.
+         * @return {@code true} when the commend accepts the request.
+         */
+        @Override
+        public boolean accepts(HttpServletRequest request) throws ServletException, IOException
+        {
+            return true;
+        }
+
+        /**
+         * Delegates the request and response objects to this command.
+         *
+         * @param request  The request.
+         * @param response The response.
+         */
+        @Override
+        public void dispatch(HttpServletRequest request, HttpServletResponse response)
+                throws ServletException, IOException
+        {
+            try {
+                request.setAttribute("title", "Tag");
+                request.setAttribute("claddings", claddingFacade.get());
+                request.getRequestDispatcher("/WEB-INF/administration/claddings.jsp").forward(request, response);
+            } catch (ApplicationException e) {
+                throw new IllegalStateException(e);
+            }
         }
     }
 }

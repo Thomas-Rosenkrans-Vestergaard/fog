@@ -1,7 +1,7 @@
 package tvestergaard.fog.presentation.servlets;
 
 import tvestergaard.fog.logic.ApplicationException;
-import tvestergaard.fog.logic.CustomerFacade;
+import tvestergaard.fog.logic.customers.CustomerFacade;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -14,7 +14,8 @@ import java.io.IOException;
 public class AdministrationCustomers extends HttpServlet
 {
 
-    private final CustomerFacade customerFacade = new CustomerFacade();
+    private final CustomerFacade    customerFacade = new CustomerFacade();
+    private final CommandDispatcher dispatcher     = new CommandDispatcher();
 
     /**
      * Shows the administration page for orders placed by customers.

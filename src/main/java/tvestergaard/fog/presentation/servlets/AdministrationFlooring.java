@@ -1,7 +1,7 @@
 package tvestergaard.fog.presentation.servlets;
 
 import tvestergaard.fog.logic.ApplicationException;
-import tvestergaard.fog.logic.FlooringFacade;
+import tvestergaard.fog.logic.floorings.FlooringFacade;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;

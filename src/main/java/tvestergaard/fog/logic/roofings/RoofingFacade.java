@@ -1,0 +1,124 @@
+package tvestergaard.fog.logic.roofings;
+
+import tvestergaard.fog.data.DataAccessException;
+import tvestergaard.fog.data.ProductionDataSource;
+import tvestergaard.fog.data.constraints.Constraint;
+import tvestergaard.fog.data.roofing.MysqlRoofingDAO;
+import tvestergaard.fog.data.roofing.Roofing;
+import tvestergaard.fog.data.roofing.RoofingColumn;
+import tvestergaard.fog.data.roofing.RoofingDAO;
+import tvestergaard.fog.logic.ApplicationException;
+
+import java.util.List;
+import java.util.Set;
+
+public class RoofingFacade
+{
+
+    /**
+     * The {@link RoofingDAO} used to query the data storage of the application.
+     */
+    private final RoofingDAO dao;
+
+    /**
+     * The validator used to validate roofing information provided to the {@link RoofingFacade}.
+     */
+    private final RoofingValidator validator = new RoofingValidator();
+
+    /**
+     * Creates a new {@link RoofingDAO}.
+     *
+     * @param dao The {@link RoofingDAO} used to query the data storage of the application.
+     */
+    public RoofingFacade(RoofingDAO dao)
+    {
+        this.dao = dao;
+    }
+
+    /**
+     * Creates a new {@link RoofingDAO} using the {@link MysqlRoofingDAO} for the {@link ProductionDataSource}.
+     */
+    public RoofingFacade()
+    {
+        this(new MysqlRoofingDAO(ProductionDataSource.getSource()));
+    }
+
+    /**
+     * Returns the roofings in the data storage. The results can be constrained using the provided constraints.
+     *
+     * @param constraints The constraints that modify the resulting list.
+     * @return The complete list of the roofings in the data storage.
+     * @throws ApplicationException When an exception occurs while performing the operation.
+     */
+    public List<Roofing> get(Constraint<RoofingColumn>... constraints)
+    {
+        try {
+            return dao.get(constraints);
+        } catch (DataAccessException e) {
+            throw new ApplicationException(e);
+        }
+    }
+
+    /**
+     * Returns the first roofing matching the provided constraints.
+     *
+     * @param constraints The constraints that modify the resulting list.
+     * @return The first roofing matching the provided constraints. Returns {@code null} when no constraints matches the
+     * provided constraints.
+     * @throws ApplicationException When an exception occurs while performing the operation.
+     */
+    public Roofing first(Constraint<RoofingColumn>... constraints)
+    {
+        try {
+            return dao.first(constraints);
+        } catch (DataAccessException e) {
+            throw new ApplicationException(e);
+        }
+    }
+
+    /**
+     * Inserts a new roofing into the data storage.
+     *
+     * @param name                The name of the roofing to create.
+     * @param description         The description of the roofing to create.
+     * @param minimumSlope        The minimum slope at which the roofing to create can be laid.
+     * @param maximumSlope        The maximum slope at which the roofing to create can be laid.
+     * @param pricePerSquareMeter The price per square meter of roofing (in øre).
+     * @param active              Whether or not the roofing can be applied to orders.
+     * @return The roofing instance representing the newly created roofing.
+     * @throws ApplicationException      When an exception occurs while performing the operation.
+     * @throws RoofingValidatorException When the provided roofing information is considered invalid.
+     */
+    public Roofing create(String name, String description, int minimumSlope, int maximumSlope, int pricePerSquareMeter, boolean active)
+            throws RoofingValidatorException
+    {
+        try {
+            Set<RoofingError> errors = validator.validate(name, description, minimumSlope, maximumSlope, pricePerSquareMeter);
+            if (!errors.isEmpty())
+                throw new RoofingValidatorException(errors);
+            return dao.create(name, description, minimumSlope, maximumSlope, pricePerSquareMeter, active);
+        } catch (DataAccessException e) {
+            throw new ApplicationException(e);
+        }
+    }
+
+    /**
+     * Updates the entity in the data storage to match the provided {@code roofing}.
+     *
+     * @param roofing The roofing to update the entity in the data storage to.
+     * @return {@link true} if the record was updated.
+     * @throws ApplicationException      When an exception occurs while performing the operation.
+     * @throws RoofingValidatorException When the provided roofing information is considered invalid.
+     */
+    public boolean update(Roofing roofing) throws RoofingValidatorException
+    {
+        try {
+            Set<RoofingError> errors = validator.validate(roofing);
+            if (!errors.isEmpty())
+                throw new RoofingValidatorException(errors);
+            return dao.update(roofing);
+        } catch (DataAccessException e) {
+            throw new ApplicationException(e);
+        }
+    }
+}

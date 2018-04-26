@@ -16,8 +16,9 @@ import tvestergaard.fog.data.roofing.MysqlRoofingDAO;
 import tvestergaard.fog.data.roofing.RoofingColumn;
 import tvestergaard.fog.data.roofing.RoofingDAO;
 import tvestergaard.fog.data.sheds.ShedSpecification;
-import tvestergaard.fog.logic.CustomerFacade;
-import tvestergaard.fog.logic.CustomerValidationException;
+import tvestergaard.fog.logic.customers.CustomerError;
+import tvestergaard.fog.logic.customers.CustomerFacade;
+import tvestergaard.fog.logic.customers.CustomerValidatorException;
 import tvestergaard.fog.logic.OrderFacade;
 import tvestergaard.fog.logic.OrderValidationException;
 import tvestergaard.fog.presentation.FormResponse;
@@ -36,7 +37,7 @@ import java.util.EnumSet;
 
 import static tvestergaard.fog.data.constraints.Constraint.eq;
 import static tvestergaard.fog.data.constraints.Constraint.where;
-import static tvestergaard.fog.logic.CustomerValidationException.Reason.*;
+import static tvestergaard.fog.logic.customers.CustomerError.*;
 import static tvestergaard.fog.presentation.PresentationFunctions.formResponse;
 import static tvestergaard.fog.presentation.PresentationFunctions.notifications;
 
@@ -119,10 +120,10 @@ public class DesignServlet extends HttpServlet
             notifications.success("Din ordre blev registreret.");
             resp.sendRedirect("administration/orders");
 
-        } catch (CustomerValidationException e) {
+        } catch (CustomerValidatorException e) {
 //            FormResponse response = formResponse(req);
 //            populateFormResponse(response, parameters, e);
-            for (CustomerValidationException.Reason reason : e.getReasons())
+            for (CustomerError reason : e.getReasons())
                 notifications.error(reason.name());
             resp.sendRedirect("design");
         } catch (OrderValidationException e) {
@@ -137,7 +138,7 @@ public class DesignServlet extends HttpServlet
 
     }
 
-    private void populateFormResponse(FormResponse formResponse, Parameters parameters, CustomerValidationException e)
+    private void populateFormResponse(FormResponse formResponse, Parameters parameters, CustomerValidatorException e)
     {
         if (e.isReason(NAME_EMPTY))
             formResponse.addError("name", "Navnet må ikke være tomt.");
