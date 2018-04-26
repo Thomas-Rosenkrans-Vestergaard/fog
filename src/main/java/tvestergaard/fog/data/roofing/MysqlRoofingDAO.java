@@ -38,18 +38,18 @@ public class MysqlRoofingDAO extends AbstractMysqlDAO implements RoofingDAO
     }
 
     /**
-     * Returns the roofings in the data storage.
-     * The results can be constrained using the provided constraints.
+     * Returns the roofings in the data storage. The results can be constrained using the provided constraints.
      *
      * @param constraints The constraints that modify the resulting list.
      * @return The resulting roofings.
      * @throws MysqlDataAccessException When an exception occurs while performing the operation.
      */
-    @Override public List<Roofing> get(Constraint<RoofingColumn>... constraints) throws MysqlDataAccessException
+    @Override
+    public List<Roofing> get(Constraint<RoofingColumn>... constraints) throws MysqlDataAccessException
     {
         try {
             final List<Roofing> roofings = new ArrayList<>();
-            final String        SQL      = generator.generate("SELECT * FROM roofings", constraints);
+            final String SQL = generator.generate("SELECT * FROM roofings", constraints);
             try (PreparedStatement statement = getConnection().prepareStatement(SQL)) {
                 binder.bind(statement, constraints);
                 ResultSet resultSet = statement.executeQuery();
@@ -67,11 +67,12 @@ public class MysqlRoofingDAO extends AbstractMysqlDAO implements RoofingDAO
      * Returns the first roofing matching the provided constraints.
      *
      * @param constraints The constraints that modify the resulting list.
-     * @return The first roofing matching the provided constraints. Returns {@code null} when no
-     * constraints matches the provided constraints.
+     * @return The first roofing matching the provided constraints. Returns {@code null} when no constraints matches the
+     * provided constraints.
      * @throws MysqlDataAccessException When an exception occurs while performing the operation.
      */
-    @Override public Roofing first(Constraint<RoofingColumn>... constraints) throws MysqlDataAccessException
+    @Override
+    public Roofing first(Constraint<RoofingColumn>... constraints) throws MysqlDataAccessException
     {
         constraints = append(constraints, limit(1));
 
@@ -102,12 +103,18 @@ public class MysqlRoofingDAO extends AbstractMysqlDAO implements RoofingDAO
      * @return The roofing instance representing the newly created roofing.
      * @throws MysqlDataAccessException When an exception occurs while performing the operation.
      */
-    @Override public Roofing create(String name, String description, int minimumSlope, int maximumSlope, int pricePerSquareMeter, boolean active)
-            throws MysqlDataAccessException
+    @Override
+    public Roofing create(String name,
+                          String description,
+                          int minimumSlope,
+                          int maximumSlope,
+                          int pricePerSquareMeter,
+                          boolean active) throws MysqlDataAccessException
     {
         try {
             final String SQL = "INSERT INTO roofings " +
-                    "(name, description, minimum_slope, maximum_slope, price_per_square_meter, active) VALUES (?,?,?,?,?,?)";
+                    "(name, description, minimum_slope, maximum_slope, price_per_square_meter, active) VALUES (?,?,?," +
+                    "?,?,?)";
             Connection connection = getConnection();
             try (PreparedStatement statement = connection.prepareStatement(SQL, Statement.RETURN_GENERATED_KEYS)) {
                 statement.setString(1, name);
@@ -140,7 +147,8 @@ public class MysqlRoofingDAO extends AbstractMysqlDAO implements RoofingDAO
      * @return {@link true} if the record was updated.
      * @throws MysqlDataAccessException When an exception occurs while performing the operation.
      */
-    @Override public boolean update(Roofing roofing) throws MysqlDataAccessException
+    @Override
+    public boolean update(Roofing roofing) throws MysqlDataAccessException
     {
         try {
             final String SQL = "UPDATE roofings SET name = ?, description = ?, minimum_slope = ?, maximum_slope = ?," +

@@ -43,7 +43,8 @@ public class Notifications implements Iterable<Notification>
     }
 
     /**
-     * Adds a new notification with the provided message and the <code>Notification.Level</code> of <code>SUCCESS</code>.
+     * Adds a new notification with the provided message and the <code>Notification.Level</code> of
+     * <code>SUCCESS</code>.
      *
      * @param message The message.
      */
@@ -63,7 +64,8 @@ public class Notifications implements Iterable<Notification>
     }
 
     /**
-     * Adds a new notification with the provided message and the <code>Notification.Level</code> of <code>WARNING</code>.
+     * Adds a new notification with the provided message and the <code>Notification.Level</code> of
+     * <code>WARNING</code>.
      *
      * @param message The message.
      */
@@ -87,7 +89,8 @@ public class Notifications implements Iterable<Notification>
      *
      * @return an Iterator.
      */
-    @Override public Iterator<Notification> iterator()
+    @Override
+    public Iterator<Notification> iterator()
     {
         return new NotificationIterator();
     }
@@ -95,13 +98,13 @@ public class Notifications implements Iterable<Notification>
     private class NotificationIterator implements Iterator<Notification>
     {
         /**
-         * Returns {@code true} if the iteration has more elements.
-         * (In other words, returns {@code true} if {@link #next} would
-         * return an element rather than throwing an exception.)
+         * Returns {@code true} if the iteration has more elements. (In other words, returns {@code true} if {@link
+         * #next} would return an element rather than throwing an exception.)
          *
          * @return {@code true} if the iteration has more elements
          */
-        @Override public boolean hasNext()
+        @Override
+        public boolean hasNext()
         {
             return !notifications.isEmpty();
         }
@@ -112,7 +115,8 @@ public class Notifications implements Iterable<Notification>
          * @return the next element in the iteration
          * @throws NoSuchElementException if the iteration has no more elements
          */
-        @Override public Notification next()
+        @Override
+        public Notification next()
         {
             if (notifications.isEmpty())
                 throw new NoSuchElementException();
@@ -140,7 +144,8 @@ public class Notifications implements Iterable<Notification>
      * Checks if new getNotifications has been added to the queue since the last time the {@link Notifications#record()}
      * method was called.
      *
-     * @return True is new getNotifications has been added to the queue since the last call to {@link Notifications#record()}.
+     * @return True is new getNotifications has been added to the queue since the last call to {@link
+     * Notifications#record()}.
      * @see Notifications#record()
      */
     public boolean hasNew()

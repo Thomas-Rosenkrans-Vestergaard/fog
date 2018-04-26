@@ -3,6 +3,94 @@
     padding: 0;
 }
 
-.form-header {
-    font-size: 16px;
+main {
+    padding: 40px 40px 40px 340px;
+    max-width: 1200px;
+}
+
+@media only screen and (max-width: 992px) {
+    main {
+        padding-left: 40px;
+        margin: 0 auto;
+    }
+}
+
+#nav-logo-container {
+    background: #014785;
+}
+
+#side-logo {
+    max-width: 200px;
+    display: block;
+    padding: 50px 0;
+    margin: 0 auto;
+}
+
+#top-logo-link {
+    float: right;
+}
+
+#top-logo {
+    float: right;
+    height: 45px;
+    margin: 30px;
+}
+
+#menu-button {
+    height: 100px;
+    width: 100%;
+    background: #014785;
+    display: none;
+}
+
+@media only screen and (max-width: 992px) {
+    #menu-button {
+        display: block;
+    }
+}
+
+#navigation-trigger i {
+    font-size: 5rem;
+    color: white;
+    padding: 15px;
+}
+
+p {
+    line-height: 2rem;
+}
+
+h2, h3, h4, h5, h6 {
+    text-transform: uppercase;
+    color: #337ab7;
+}
+
+h2 {
+    font-size: 3rem;
+}
+
+h3 {
+    font-size: 2.5rem;
+}
+
+h4 {
+    font-size: 2rem;
+}
+
+h5 {
+    font-size: 1.5rem;
+}
+
+h6 {
+    font-size: 1.2rem;
+}
+
+hr {
+    margin: 20px 0;
+}
+
+[type="radio"]:checked+label:after, [type="radio"].with-gap:checked+label:after {
+    background-color: #014785;
+}
+[type="radio"]:checked+label:after, [type="radio"].with-gap:checked+label:before, [type="radio"].with-gap:checked+label:after {
+    border: 2px solid #014785;
 }

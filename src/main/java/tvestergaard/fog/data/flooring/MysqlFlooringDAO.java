@@ -38,18 +38,18 @@ public class MysqlFlooringDAO extends AbstractMysqlDAO implements FlooringDAO
     }
 
     /**
-     * Returns the floorings in the data storage.
-     * The results can be constrained using the provided constraints.
+     * Returns the floorings in the data storage. The results can be constrained using the provided constraints.
      *
      * @param constraints The constraints that modify the resulting list.
      * @return The resulting floorings.
      * @throws MysqlDataAccessException When an exception occurs while performing the operation.
      */
-    @Override public List<Flooring> get(Constraint<FlooringColumn>... constraints) throws MysqlDataAccessException
+    @Override
+    public List<Flooring> get(Constraint<FlooringColumn>... constraints) throws MysqlDataAccessException
     {
         try {
             final List<Flooring> floors = new ArrayList<>();
-            final String         SQL    = generator.generate("SELECT floorings.* FROM floorings", constraints);
+            final String SQL = generator.generate("SELECT floorings.* FROM floorings", constraints);
             try (java.sql.PreparedStatement statement = getConnection().prepareStatement(SQL)) {
                 binder.bind(statement, constraints);
                 ResultSet resultSet = statement.executeQuery();
@@ -67,11 +67,12 @@ public class MysqlFlooringDAO extends AbstractMysqlDAO implements FlooringDAO
      * Returns the first flooring matching the provided constraints.
      *
      * @param constraints The constraints that modify the resulting list.
-     * @return The first flooring matching the provided constraints. Returns {@code null} when no
-     * constraints matches the provided constraints.
+     * @return The first flooring matching the provided constraints. Returns {@code null} when no constraints matches
+     * the provided constraints.
      * @throws MysqlDataAccessException When an exception occurs while performing the operation.
      */
-    @Override public Flooring first(Constraint<FlooringColumn>... constraints) throws MysqlDataAccessException
+    @Override
+    public Flooring first(Constraint<FlooringColumn>... constraints) throws MysqlDataAccessException
     {
         constraints = append(constraints, limit(1));
 
@@ -100,12 +101,14 @@ public class MysqlFlooringDAO extends AbstractMysqlDAO implements FlooringDAO
      * @return The flooring instance representing the newly created flooring.
      * @throws MysqlDataAccessException When an exception occurs while performing the operation.
      */
-    @Override public Flooring create(String name, String description, int pricePerSquareMeter, boolean active)
+    @Override
+    public Flooring create(String name, String description, int pricePerSquareMeter, boolean active)
             throws MysqlDataAccessException
     {
         try {
-            final String SQL        = "INSERT INTO floorings (name, description, price_per_square_meter, active) VALUES (?,?,?,?)";
-            Connection   connection = getConnection();
+            final String SQL =
+                    "INSERT INTO floorings (name, description, price_per_square_meter, active) VALUES (?,?,?,?)";
+            Connection connection = getConnection();
             try (PreparedStatement statement = connection.prepareStatement(SQL, Statement.RETURN_GENERATED_KEYS)) {
                 statement.setString(1, name);
                 statement.setString(2, description);
@@ -134,11 +137,14 @@ public class MysqlFlooringDAO extends AbstractMysqlDAO implements FlooringDAO
      * @return {@link true} if the record was updated.
      * @throws MysqlDataAccessException When an exception occurs while performing the operation.
      */
-    @Override public boolean update(Flooring flooring) throws MysqlDataAccessException
+    @Override
+    public boolean update(Flooring flooring) throws MysqlDataAccessException
     {
         try {
-            final String SQL        = "UPDATE floorings SET name = ?, description = ?, price_per_square_meter = ?, active = ? WHERE id = ?";
-            Connection   connection = getConnection();
+            final String SQL =
+                    "UPDATE floorings SET name = ?, description = ?, price_per_square_meter = ?, active = ? WHERE id " +
+                            "= ?";
+            Connection connection = getConnection();
             try (PreparedStatement statement = connection.prepareStatement(SQL)) {
                 statement.setString(1, flooring.getName());
                 statement.setString(2, flooring.getDescription());

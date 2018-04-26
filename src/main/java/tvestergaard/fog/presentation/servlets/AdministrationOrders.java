@@ -3,10 +3,7 @@ package tvestergaard.fog.presentation.servlets;
 import tvestergaard.fog.data.DataAccessException;
 import tvestergaard.fog.data.ProductionDataSource;
 import tvestergaard.fog.data.orders.MysqlOrderDAO;
-import tvestergaard.fog.data.orders.Order;
 import tvestergaard.fog.data.orders.OrderDAO;
-import tvestergaard.fog.presentation.tables.HtmlTableRenderer;
-import tvestergaard.fog.presentation.tables.TableRenderer;
 
 import javax.servlet.ServletException;
 import javax.servlet.ServletResponse;
@@ -23,8 +20,7 @@ public class AdministrationOrders extends HttpServlet
     /**
      * The {@link OrderDAO} used when displaying possible roof choices to the customer.
      */
-    private final OrderDAO                            orderDAO      = new MysqlOrderDAO(ProductionDataSource.getSource());
-    private final TableRenderer<Order, StringBuilder> tableRenderer = new HtmlTableRenderer<Order>();
+    private final OrderDAO orderDAO = new MysqlOrderDAO(ProductionDataSource.getSource());
 
     /**
      * Shows the administration page for orders placed by customers.
@@ -39,10 +35,8 @@ public class AdministrationOrders extends HttpServlet
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException
     {
         try {
-            StringBuilder builder = new StringBuilder();
-            tableRenderer.render(new OrdersTable(), orderDAO.get(), builder);
-            req.setAttribute("title", "Orders");
-            req.setAttribute("table", builder.toString());
+            req.setAttribute("title", "Ordre");
+            req.setAttribute("orders", orderDAO.get());
             req.getRequestDispatcher("/WEB-INF/administration/orders.jsp").forward(req, resp);
         } catch (DataAccessException e) {
             throw new IllegalStateException(e);

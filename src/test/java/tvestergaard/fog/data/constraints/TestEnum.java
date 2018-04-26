@@ -19,7 +19,7 @@ public enum TestEnum implements MysqlColumn
      *
      * @return The name of the column in mysql.
      */
-    @Override public String getMysqlName()
+    @Override public String getSQLName()
     {
         return mysqlColumn;
     }

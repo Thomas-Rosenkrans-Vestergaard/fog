@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.EnumSet;
+import java.util.HashMap;
 
 /**
  * Class for validating types and converting the values of parameters in the provided {@code HttpServletRequest}.
@@ -35,7 +36,7 @@ public class Parameters
      */
     public Parameters(HttpServletRequest request)
     {
-        this(parameterName -> request.getParameter(parameterName));
+        this.provider = new HttpServletParameterProvider(request);
     }
 
     /**
@@ -57,12 +58,12 @@ public class Parameters
      */
     public String value(String parameter)
     {
-        return getParameterValue(parameter);
+        return provider.getParameter(parameter);
     }
 
     /**
-     * Checks that the value of the provided parameter can safely be extracted to an integer value using the
-     * {@link Parameters#getInt(String)} method.
+     * Checks that the value of the provided parameter can safely be extracted to an integer value using the {@link
+     * Parameters#getInt(String)} method.
      *
      * @param parameter The name of the parameter to test the format of.
      * @return {@code true} if the value of the provided parameter can safely be extracted to an integer value using the
@@ -98,8 +99,8 @@ public class Parameters
     }
 
     /**
-     * Checks that the value of the provided parameter can safely be extracted to a long value using the
-     * {@link Parameters#getLong(String)} method.
+     * Checks that the value of the provided parameter can safely be extracted to a long value using the {@link
+     * Parameters#getLong(String)} method.
      *
      * @param parameter The name of the parameter to test the format of.
      * @return {@code true} if the value of the provided parameter can safely be extracted to a long value using the
@@ -135,8 +136,8 @@ public class Parameters
     }
 
     /**
-     * Checks that the value of the provided parameter can safely be extracted to a float value using the
-     * {@link Parameters#getFloat(String)} method.
+     * Checks that the value of the provided parameter can safely be extracted to a float value using the {@link
+     * Parameters#getFloat(String)} method.
      *
      * @param parameter The name of the parameter to test the format of.
      * @return {@code true} if the value of the provided parameter can safely be extracted to a float value using the
@@ -172,8 +173,8 @@ public class Parameters
     }
 
     /**
-     * Checks that the value of the provided parameter can safely be extracted to a double value using the
-     * {@link Parameters#getDouble(String)} method.
+     * Checks that the value of the provided parameter can safely be extracted to a double value using the {@link
+     * Parameters#getDouble(String)} method.
      *
      * @param parameter The name of the parameter to test the format of.
      * @return {@code true} if the value of the provided parameter can safely be extracted to a double value using the
@@ -209,14 +210,11 @@ public class Parameters
     }
 
     /**
-     * Checks that the value of the provided parameter can safely be extracted to a boolean value using the
-     * {@link Parameters#getBoolean(String)} method.
+     * Checks that the value of the provided parameter can safely be extracted to a boolean value using the {@link
+     * Parameters#getBoolean(String)} method.
      * <p>
-     * The values that can be converted to a boolean value are:
-     * - true  -> true
-     * - on    -> true
-     * - false -> false
-     * - off   -> false
+     * The values that can be converted to a boolean value are: - true  -> true - on    -> true - false -> false - off
+     * -> false
      *
      * @param parameter The name of the parameter to test the format of.
      * @return {@code true} if the value of the provided parameter can safely be extracted to a boolean value using the
@@ -253,8 +251,8 @@ public class Parameters
     }
 
     /**
-     * Checks that the value of the provided parameter can safely be extracted to a {@link LocalDate} using the
-     * {@link Parameters#getDate(String)} method.
+     * Checks that the value of the provided parameter can safely be extracted to a {@link LocalDate} using the {@link
+     * Parameters#getDate(String)} method.
      *
      * @param parameter The name of the parameter to test the format of.
      * @return {@code true} if the value of the provided parameter can safely be extracted to a {@link LocalDate} using
@@ -294,8 +292,8 @@ public class Parameters
      * {@link Parameters#getDatetime(String)} method.
      *
      * @param parameter The name of the parameter to test the format of.
-     * @return {@code true} if the value of the provided parameter can safely be extracted using the
-     * {@link Parameters#getDatetime(String)} method.
+     * @return {@code true} if the value of the provided parameter can safely be extracted using the {@link
+     * Parameters#getDatetime(String)} method.
      */
     public boolean isDatetime(String parameter)
     {
@@ -310,8 +308,8 @@ public class Parameters
     /**
      * Extracts the datetime value of the value of the provided parameter to a {@link LocalDateTime}.
      * <p>
-     * This method will not throw an exception when the {@link Parameters#isDatetime(String)} method returns true for the
-     * same parameter name.
+     * This method will not throw an exception when the {@link Parameters#isDatetime(String)} method returns true for
+     * the same parameter name.
      *
      * @param parameter The name of the parameter to extract the datetime value from.
      * @return The datetime value of the value of the provided parameter.
@@ -327,8 +325,8 @@ public class Parameters
     }
 
     /**
-     * Checks that the value of the provided parameter can safely be extracted to a {@link LocalTime} using the
-     * {@link Parameters#getTime(String)} method.
+     * Checks that the value of the provided parameter can safely be extracted to a {@link LocalTime} using the {@link
+     * Parameters#getTime(String)} method.
      *
      * @param parameter The name of the parameter to test the format of.
      * @return {@code true} if the value of the provided parameter can safely be extracted to a {@link LocalTime} using
@@ -364,18 +362,21 @@ public class Parameters
     }
 
     /**
-     * Checks that the value of the provided parameter can safely be extracted to the type {@code T} using the
-     * {@link Parameters#getEnum(String, EnumSet)} method. The enum element is considered a match when the name of
-     * the enum element equals the value of the parameter.
+     * Checks that the value of the provided parameter can safely be extracted to the type {@code T} using the {@link
+     * Parameters#getEnum(String, EnumSet)} method. The enum element is considered a match when the name of the enum
+     * element equals the value of the parameter.
      *
      * @param parameter   The name of the parameter to test the format of.
      * @param enumeration The {@link EnumSet} containing the legal values.
      * @param <T>         The type of the enum type.
-     * @return {@code true} if the value of the provided parameter can safely be extracted to the type {@code T} using the
-     * {@link Parameters#getEnum(String, EnumSet)} method.
+     * @return {@code true} if the value of the provided parameter can safely be extracted to the type {@code T} using
+     * the {@link Parameters#getEnum(String, EnumSet)} method.
      */
     public <T extends Enum<T>> boolean isEnum(String parameter, EnumSet<T> enumeration)
     {
+        if (!isPresent(parameter))
+            return false;
+
         String value = getParameterValue(parameter);
         for (T element : enumeration)
             if (element.name().equals(value))

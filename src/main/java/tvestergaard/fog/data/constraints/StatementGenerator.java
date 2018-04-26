@@ -26,8 +26,8 @@ public class StatementGenerator<T extends Enum<T> & MysqlColumn>
     }
 
     /**
-     * Generates the SQL representing the provided {@link Constraint}s. Returns the generated SQL appended to the provided
-     * {@code statement}.
+     * Generates the SQL representing the provided {@link Constraint}s. Returns the generated SQL appended to the
+     * provided {@code statement}.
      *
      * @param statement   The base statement.
      * @param constraints The constraints to generate into SQL.
@@ -94,7 +94,8 @@ public class StatementGenerator<T extends Enum<T> & MysqlColumn>
     }
 
     /**
-     * Appends the SQL, needed to represent the provided {@link WhereConstraint}, to the provided {@code StringBuilder}.
+     * Appends the SQL, needed to represent the provided {@link WhereConstraint}, to the provided {@code
+     * StringBuilder}.
      *
      * @param builder    The {@code StringBuilder} to append the SQL to.
      * @param constraint The {@link Constraint} to append the SQL representation of.
@@ -154,38 +155,72 @@ public class StatementGenerator<T extends Enum<T> & MysqlColumn>
             return;
         }
 
+        if (condition instanceof NotCondition) {
+            appendNotConditionSQL(builder, (NotCondition) condition);
+            return;
+        }
+
         if (condition instanceof LikeCondition) {
             appendLikeConditionSQL(builder, (LikeCondition) condition);
             return;
         }
     }
 
+    private void appendNotConditionSQL(StringBuilder builder, NotCondition<T> condition)
+    {
+        builder.append(' ');
+        if (condition.column.useBacktick())
+            builder.append('`');
+        builder.append(condition.column.getSQLName());
+        if (condition.column.useBacktick())
+            builder.append('`');
+        builder.append(" != ?");
+    }
+
     private void appendEqualsConditionSQL(StringBuilder builder, EqualsCondition<T> condition)
     {
-        builder.append(String.format(" `%s` = ?", condition.column.getMysqlName()));
+        builder.append(' ');
+        if (condition.column.useBacktick())
+            builder.append('`');
+        builder.append(condition.column.getSQLName());
+        if (condition.column.useBacktick())
+            builder.append('`');
+        builder.append(" = ?");
     }
 
     private void appendLikeConditionSQL(StringBuilder builder, LikeCondition<T> condition)
     {
-        builder.append(String.format(" `%s` LIKE ?", condition.column.getMysqlName()));
+        builder.append(' ');
+        if (condition.column.useBacktick())
+            builder.append('`');
+        builder.append(condition.column.getSQLName());
+        if (condition.column.useBacktick())
+            builder.append('`');
+        builder.append(" LIKE ?");
     }
 
     /**
-     * Appends the SQL, needed to represent the provided {@link OrderConstraint}, to the provided {@code StringBuilder}.
+     * Appends the SQL, needed to represent the provided {@link OrderConstraint}, to the provided {@code
+     * StringBuilder}.
      *
      * @param builder    The {@code StringBuilder} to append the SQL to.
      * @param constraint The {@link OrderConstraint} to append the SQL representation of.
      */
     private void appendOrderConstraintSQL(StringBuilder builder, OrderConstraint<T> constraint)
     {
-        builder.append(" ORDER BY `");
-        builder.append(constraint.getColumn().getMysqlName());
-        builder.append("` ");
+        builder.append(" ORDER BY ");
+        if (constraint.getColumn().useBacktick())
+            builder.append('`');
+        builder.append(constraint.getColumn().getSQLName());
+        if (constraint.getColumn().useBacktick())
+            builder.append('`');
+        builder.append(' ');
         builder.append(constraint.getDirection());
     }
 
     /**
-     * Appends the SQL, needed to represent the provided {@link LimitConstraint}, to the provided {@code StringBuilder}.
+     * Appends the SQL, needed to represent the provided {@link LimitConstraint}, to the provided {@code
+     * StringBuilder}.
      *
      * @param builder    The {@code StringBuilder} to append the SQL to.
      * @param constraint The {@link LimitConstraint} to append the SQL representation of.
@@ -196,7 +231,8 @@ public class StatementGenerator<T extends Enum<T> & MysqlColumn>
     }
 
     /**
-     * Appends the SQL, needed to represent the provided {@link OffsetConstraint}, to the provided {@code StringBuilder}.
+     * Appends the SQL, needed to represent the provided {@link OffsetConstraint}, to the provided {@code
+     * StringBuilder}.
      *
      * @param builder    The {@code StringBuilder} to append the SQL to.
      * @param constraint The {@link OffsetConstraint} to append the SQL representation of.

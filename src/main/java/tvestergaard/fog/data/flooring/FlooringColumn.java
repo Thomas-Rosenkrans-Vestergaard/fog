@@ -15,16 +15,16 @@ public enum FlooringColumn implements MysqlColumn
     /**
      * The name of the column in SQL.
      */
-    private final String mysqlName;
+    private final String SQLName;
 
     /**
      * Creates a new {@link CladdingColumn}.
      *
-     * @param mysqlName The name of the column in SQL.
+     * @param SQLName The name of the column in SQL.
      */
-    FlooringColumn(String mysqlName)
+    FlooringColumn(String SQLName)
     {
-        this.mysqlName = mysqlName;
+        this.SQLName = SQLName;
     }
 
     /**
@@ -32,8 +32,9 @@ public enum FlooringColumn implements MysqlColumn
      *
      * @return The name of the column in mysql.
      */
-    @Override public String getMysqlName()
+    @Override
+    public String getSQLName()
     {
-        return mysqlName;
+        return SQLName;
     }
 }

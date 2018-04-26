@@ -4,6 +4,7 @@ import tvestergaard.fog.data.constraints.MysqlColumn;
 
 public enum CustomerColumn implements MysqlColumn
 {
+
     ID("id"),
     NAME("name"),
     ADDRESS("address"),
@@ -17,16 +18,16 @@ public enum CustomerColumn implements MysqlColumn
     /**
      * The name of the column in mysql.
      */
-    private final String mysqlName;
+    private final String SQLName;
 
     /**
      * Creates a new {@link CustomerColumn}.
      *
-     * @param mysqlName The name of the column in mysql.
+     * @param SQLName The name of the column in mysql.
      */
-    CustomerColumn(String mysqlName)
+    CustomerColumn(String SQLName)
     {
-        this.mysqlName = mysqlName;
+        this.SQLName = SQLName;
     }
 
     /**
@@ -34,8 +35,9 @@ public enum CustomerColumn implements MysqlColumn
      *
      * @return The name of the column in mysql.
      */
-    @Override public String getMysqlName()
+    @Override
+    public String getSQLName()
     {
-        return mysqlName;
+        return SQLName;
     }
 }

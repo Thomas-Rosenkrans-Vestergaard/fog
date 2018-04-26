@@ -14,25 +14,26 @@ public enum CladdingColumn implements MysqlColumn
     /**
      * The name of the column in SQL.
      */
-    private final String mysqlName;
+    private final String SQLName;
 
     /**
      * Creates a new {@link CladdingColumn}.
      *
-     * @param mysqlName The name of the column in SQL.
+     * @param SQLName The name of the column in SQL.
      */
-    CladdingColumn(String mysqlName)
+    CladdingColumn(String SQLName)
     {
-        this.mysqlName = mysqlName;
+        this.SQLName = SQLName;
     }
 
     /**
-     * Returns the name of the column in mysql.
+     * Returns the name of the column in SQL.
      *
-     * @return The name of the column in mysql.
+     * @return The name of the column in SQL.
      */
-    @Override public String getMysqlName()
+    @Override
+    public String getSQLName()
     {
-        return mysqlName;
+        return SQLName;
     }
 }

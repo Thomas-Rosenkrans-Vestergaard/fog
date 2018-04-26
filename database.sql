@@ -4,7 +4,7 @@ USE `fog`;
 --
 -- Host: 127.0.0.1    Database: fog
 -- ------------------------------------------------------
--- Server version	5.6.37
+-- Server version	5.7.20-log
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -68,7 +68,7 @@ CREATE TABLE `claddings` (
   `active` bit(1) NOT NULL DEFAULT b'1',
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -90,7 +90,7 @@ CREATE TABLE `customers` (
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -148,7 +148,7 @@ CREATE TABLE `floorings` (
   `active` bit(1) NOT NULL DEFAULT b'1',
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -181,24 +181,24 @@ DROP TABLE IF EXISTS `orders`;
 CREATE TABLE `orders` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `customer` int(11) unsigned NOT NULL,
-  `type` tinyint(3) unsigned NOT NULL,
   `cladding` int(11) unsigned NOT NULL,
   `width` int(11) unsigned NOT NULL,
   `length` int(11) unsigned NOT NULL,
   `height` int(11) unsigned NOT NULL,
   `roofing` int(11) unsigned NOT NULL,
   `slope` tinyint(11) unsigned NOT NULL,
-  `rafters_type` tinyint(11) unsigned NOT NULL,
+  `rafters` tinyint(11) unsigned NOT NULL,
   `shed` int(11) unsigned DEFAULT NULL,
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`),
   KEY `customer` (`customer`),
   KEY `cladding` (`cladding`),
-  KEY `shed` (`shed`),
+  KEY `orders_ibfk_3_idx` (`shed`),
   CONSTRAINT `orders_ibfk_1` FOREIGN KEY (`customer`) REFERENCES `customers` (`id`),
-  CONSTRAINT `orders_ibfk_2` FOREIGN KEY (`cladding`) REFERENCES `roofings` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+  CONSTRAINT `orders_ibfk_2` FOREIGN KEY (`cladding`) REFERENCES `roofings` (`id`),
+  CONSTRAINT `orders_ibfk_3` FOREIGN KEY (`shed`) REFERENCES `sheds` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -233,7 +233,7 @@ CREATE TABLE `roofings` (
   `active` bit(1) NOT NULL DEFAULT b'1',
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -244,7 +244,7 @@ DROP TABLE IF EXISTS `sheds`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `sheds` (
-  `id` int(11) unsigned zerofill NOT NULL,
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `width` int(11) unsigned NOT NULL,
   `depth` int(11) unsigned NOT NULL,
   `cladding` int(11) unsigned NOT NULL,
@@ -267,4 +267,4 @@ CREATE TABLE `sheds` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-04-25 13:20:22
+-- Dump completed on 2018-04-26 11:21:30

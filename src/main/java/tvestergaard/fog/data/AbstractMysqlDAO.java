@@ -3,12 +3,14 @@ package tvestergaard.fog.data;
 import com.mysql.cj.jdbc.MysqlDataSource;
 import tvestergaard.fog.data.cladding.Cladding;
 import tvestergaard.fog.data.cladding.CladdingRecord;
+import tvestergaard.fog.data.customers.ContactMethod;
 import tvestergaard.fog.data.customers.Customer;
 import tvestergaard.fog.data.customers.CustomerRecord;
 import tvestergaard.fog.data.flooring.Flooring;
 import tvestergaard.fog.data.flooring.FlooringRecord;
 import tvestergaard.fog.data.orders.Order;
 import tvestergaard.fog.data.orders.OrderRecord;
+import tvestergaard.fog.data.orders.RafterChoice;
 import tvestergaard.fog.data.roofing.Roofing;
 import tvestergaard.fog.data.roofing.RoofingRecord;
 import tvestergaard.fog.data.sheds.Shed;
@@ -52,7 +54,6 @@ public abstract class AbstractMysqlDAO
         if (connection == null) {
             connection = source.getConnection();
             connection.setAutoCommit(false);
-            this.connection.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
         }
 
         return connection;
@@ -92,7 +93,7 @@ public abstract class AbstractMysqlDAO
                 resultSet.getString("customers.email"),
                 resultSet.getString("customers.phone"),
                 resultSet.getString("customers.password"),
-                Customer.ContactMethod.from(resultSet.getInt("customers.contact_method")),
+                ContactMethod.from(resultSet.getInt("customers.contact_method")),
                 resultSet.getBoolean("customers.active"),
                 resultSet.getTimestamp("customers.created_at").toLocalDateTime()
         );
@@ -128,14 +129,13 @@ public abstract class AbstractMysqlDAO
         return new OrderRecord(
                 resultSet.getInt("orders.id"),
                 createCustomer(resultSet),
-                Order.Type.from(resultSet.getInt("orders.type")),
                 createCladding(resultSet),
                 resultSet.getInt("orders.width"),
                 resultSet.getInt("orders.length"),
                 resultSet.getInt("orders.height"),
                 createRoofing(resultSet),
                 resultSet.getInt("orders.slope"),
-                Order.Rafters.from(resultSet.getInt("orders.rafters_type")),
+                RafterChoice.from(resultSet.getInt("orders.rafters_type")),
                 createShed(resultSet),
                 resultSet.getTimestamp("orders.created_at").toLocalDateTime()
         );

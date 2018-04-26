@@ -10,64 +10,65 @@ public class CustomerRecord implements Customer
 {
 
     /**
-     * The unique identifier of the {@link Customer}.
+     * The unique identifier of the customer.
      */
     private final int id;
 
     /**
-     * The name of the {@link Customer}.
+     * The name of the customer.
      */
     private String name;
 
     /**
-     * The address of the {@link Customer}.
+     * The address of the customer.
      */
     private String address;
 
     /**
-     * The email address of the {@link Customer}.
+     * The email address of the customer.
      */
     private String email;
 
     /**
-     * The phone number of the {@link Customer}.
+     * The phone number of the customer.
      */
     private String phone;
 
     /**
-     * The password of the {@link Customer}.
+     * The password of the customer.
      */
     private String password;
 
     /**
-     * The preferred contact method of the {@link Customer}.
+     * The preferred contact method of the customer.
      */
     private ContactMethod contactMethod;
 
     /**
-     * Whether or not the {@link Customer} is active.
+     * Whether or not the customer is active.
      */
     private boolean active;
 
     /**
-     * The moment in time when the {@link Customer} was created.
+     * The moment in time when the customer was created.
      */
     private LocalDateTime createdAt;
 
     /**
-     * Creates a new {@link Customer}.
+     * Creates a new customer.
      *
-     * @param id            The unique identifier of the {@link Customer}.
-     * @param name          The name of the {@link Customer}.
-     * @param address       The address of the {@link Customer}.
-     * @param email         The email address of the {@link Customer}.
-     * @param phone         The phone number of the {@link Customer}.
-     * @param password      The password of the {@link Customer}.
-     * @param contactMethod The preferred contact method of the {@link Customer}.
-     * @param active        Whether or not the {@link Customer} is active.
-     * @param createdAt     The moment in time when the {@link Customer} was created.
+     * @param id            The unique identifier of the customer.
+     * @param name          The name of the customer.
+     * @param address       The address of the customer.
+     * @param email         The email address of the customer.
+     * @param phone         The phone number of the customer.
+     * @param password      The password of the customer.
+     * @param contactMethod The preferred contact method of the customer.
+     * @param active        Whether or not the customer is active.
+     * @param createdAt     The moment in time when the customer was created.
      */
-    public CustomerRecord(int id, String name, String address, String email, String phone, String password, ContactMethod contactMethod, boolean active, LocalDateTime createdAt)
+    public CustomerRecord(int id, String name, String address, String email, String phone, String password,
+                          ContactMethod contactMethod, boolean active, LocalDateTime createdAt)
     {
         this.id = id;
         this.name = name;
@@ -81,166 +82,183 @@ public class CustomerRecord implements Customer
     }
 
     /**
-     * Returns the unique identifier of the {@link Customer}.
+     * Returns the unique identifier of the customer.
      *
-     * @return The unique identifier of the {@link Customer}.
+     * @return The unique identifier of the customer.
      */
-    @Override public int getId()
+    @Override
+    public int getId()
     {
         return id;
     }
 
     /**
-     * Returns the name of the {@link Customer}.
+     * Returns the name of the customer.
      *
-     * @return The name of the {@link Customer}.
+     * @return The name of the customer.
      */
-    @Override public String getName()
+    @Override
+    public String getName()
     {
         return name;
     }
 
     /**
-     * Sets the name of the {@link Customer}.
+     * Sets the name of the customer.
      *
      * @param name The new name.
      */
-    @Override public void setName(String name)
+    @Override
+    public void setName(String name)
     {
         this.name = name;
     }
 
     /**
-     * Returns the address of the {@link Customer}.
+     * Returns the address of the customer.
      *
-     * @return The address of the {@link Customer}.
+     * @return The address of the customer.
      */
-    @Override public String getAddress()
+    @Override
+    public String getAddress()
     {
         return address;
     }
 
     /**
-     * Sets the address of the {@link Customer}.
+     * Sets the address of the customer.
      *
      * @param address The new address.
      */
-    @Override public void setAddress(String address)
+    @Override
+    public void setAddress(String address)
     {
         this.address = address;
     }
 
     /**
-     * Returns the email address of the {@link Customer}.
+     * Returns the email address of the customer.
      *
-     * @return The email address of the {@link Customer}.
+     * @return The email address of the customer.
      */
-    @Override public String getEmail()
+    @Override
+    public String getEmail()
     {
         return email;
     }
 
     /**
-     * Sets the email address of the {@link Customer}.
+     * Sets the email address of the customer.
      *
      * @param email The new email.
      */
-    @Override public void setEmail(String email)
+    @Override
+    public void setEmail(String email)
     {
         this.email = email;
     }
 
     /**
-     * Returns the phone number of the {@link Customer}.
+     * Returns the phone number of the customer.
      *
-     * @return The phone number of the {@link Customer}.
+     * @return The phone number of the customer.
      */
-    @Override public String getPhone()
+    @Override
+    public String getPhone()
     {
         return phone;
     }
 
     /**
-     * Sets the phone number of the {@link Customer}.
+     * Sets the phone number of the customer.
      *
      * @param phone The new phone number.
      */
-    @Override public void setPhone(String phone)
+    @Override
+    public void setPhone(String phone)
     {
         this.phone = phone;
     }
 
     /**
-     * Returns the password of the {@link Customer}.
+     * Returns the password of the customer.
      *
-     * @return The password of the {@link Customer}.
+     * @return The password of the customer.
      */
-    @Override public String getPassword()
+    @Override
+    public String getPassword()
     {
         return password;
     }
 
     /**
-     * Sets the password of the {@link Customer}.
+     * Sets the password of the customer.
      *
      * @param password The new password.
      */
-    @Override public void setPassword(String password)
+    @Override
+    public void setPassword(String password)
     {
         this.password = password;
     }
 
     /**
-     * Returns the contact method preferred by the {@link Customer}.
+     * Returns the contact method preferred by the customer.
      *
-     * @return The contact method preferred by the {@link Customer}.
+     * @return The contact method preferred by the customer.
      */
-    @Override public ContactMethod getContactMethod()
+    @Override
+    public ContactMethod getContactMethod()
     {
         return this.contactMethod;
     }
 
     /**
-     * Sets the contact method preferred by the {@link Customer}.
+     * Sets the contact method preferred by the customer.
      *
      * @param method The new contact method.
      */
-    @Override public void setContactMethod(ContactMethod method)
+    @Override
+    public void setContactMethod(ContactMethod method)
     {
         this.contactMethod = method;
     }
 
     /**
-     * Returns {@code true} if the {@link Customer} is active.
+     * Returns {@code true} if the customer is active.
      *
-     * @return {@code true} if the {@link Customer} is active.
+     * @return {@code true} if the customer is active.
      */
-    @Override public boolean isActive()
+    @Override
+    public boolean isActive()
     {
         return active;
     }
 
     /**
-     * Sets the active state of the {@link Customer}.
+     * Sets the active state of the customer.
      *
      * @param state The new state.
      */
-    @Override public void setActive(boolean state)
+    @Override
+    public void setActive(boolean state)
     {
         this.active = state;
     }
 
     /**
-     * Returns the {@code LocalDateTime} representing the moment when the {@link Customer} was created.
+     * Returns the {@code LocalDateTime} representing the moment when the customer was created.
      *
-     * @return The {@code LocalDateTime} representing the moment when the {@link Customer} was created.
+     * @return The {@code LocalDateTime} representing the moment when the customer was created.
      */
-    @Override public LocalDateTime getCreatedAt()
+    @Override
+    public LocalDateTime getCreatedAt()
     {
         return this.createdAt;
     }
 
-    @Override public boolean equals(Object o)
+    @Override
+    public boolean equals(Object o)
     {
         if (this == o) return true;
         if (!(o instanceof Customer)) return false;
@@ -256,7 +274,8 @@ public class CustomerRecord implements Customer
                 Objects.equals(createdAt, that.getCreatedAt());
     }
 
-    @Override public int hashCode()
+    @Override
+    public int hashCode()
     {
         return Objects.hash(getId());
     }
