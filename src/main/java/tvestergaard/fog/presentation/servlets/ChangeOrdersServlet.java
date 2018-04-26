@@ -11,17 +11,17 @@ import java.io.IOException;
 public class ChangeOrdersServlet extends HttpServlet
 {
 
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
-	{
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
+    {
 
-	}
+    }
 
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
-	{
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
+    {
 
-		request.getRequestDispatcher("/WEB-INF/changeOrders.jsp").forward(request, response);
+        request.getRequestDispatcher("/WEB-INF/changeOrders.jsp").forward(request, response);
 
-	}
+    }
 
 
 }

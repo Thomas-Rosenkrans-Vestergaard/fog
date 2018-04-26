@@ -9,8 +9,7 @@ public interface CustomerDAO
 {
 
     /**
-     * Returns the customers in the data storage.
-     * The results can be constrained using the provided constraints.
+     * Returns the customers in the data storage. The results can be constrained using the provided constraints.
      *
      * @param constraints The constraints that modify the resulting list.
      * @return The resulting customers.
@@ -22,8 +21,8 @@ public interface CustomerDAO
      * Returns the first customer matching the provided constraints.
      *
      * @param constraints The constraints that modify the resulting list.
-     * @return The first customer matching the provided constraints. Returns {@code null} when no
-     * constraints matches the provided constraints.
+     * @return The first customer matching the provided constraints. Returns {@code null} when no constraints matches
+     * the provided constraints.
      * @throws DataAccessException When an exception occurs while performing the operation.
      */
     Customer first(Constraint<CustomerColumn>... constraints) throws DataAccessException;
@@ -40,7 +39,13 @@ public interface CustomerDAO
      * @return The customer instance representing the newly created customer.
      * @throws DataAccessException When an exception occurs while performing the operation.
      */
-    Customer create(String name, String address, String email, String phone, String password, Customer.ContactMethod contactMethod, boolean active) throws DataAccessException;
+    Customer create(String name,
+                    String address,
+                    String email,
+                    String phone,
+                    String password,
+                    ContactMethod contactMethod,
+                    boolean active) throws DataAccessException;
 
     /**
      * Updates the entity in the data storage to match the provided {@code customer}.

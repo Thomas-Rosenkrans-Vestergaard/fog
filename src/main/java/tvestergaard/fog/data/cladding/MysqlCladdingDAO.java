@@ -18,7 +18,7 @@ public class MysqlCladdingDAO extends AbstractMysqlDAO implements CladdingDAO
 {
 
     /**
-     * The generator used to generate SQL for the constraints provided to this DAO.
+     * The generator used to create SQL for the constraints provided to this DAO.
      */
     private final StatementGenerator generator = new StatementGenerator();
 
@@ -38,18 +38,18 @@ public class MysqlCladdingDAO extends AbstractMysqlDAO implements CladdingDAO
     }
 
     /**
-     * Returns the claddings in the data storage.
-     * The results can be constrained using the provided constraints.
+     * Returns the claddings in the data storage. The results can be constrained using the provided constraints.
      *
      * @param constraints The constraints that modify the resulting list.
      * @return The resulting claddings.
      * @throws MysqlDataAccessException When an exception occurs while performing the operation.
      */
-    @Override public List<Cladding> get(Constraint<CladdingColumn>... constraints) throws MysqlDataAccessException
+    @Override
+    public List<Cladding> get(Constraint<CladdingColumn>... constraints) throws MysqlDataAccessException
     {
         try {
             final List<Cladding> floors = new ArrayList<>();
-            final String         SQL    = generator.generate("SELECT * FROM claddings", constraints);
+            final String SQL = generator.generate("SELECT * FROM claddings", constraints);
             try (PreparedStatement statement = getConnection().prepareStatement(SQL)) {
                 binder.bind(statement, constraints);
                 ResultSet resultSet = statement.executeQuery();
@@ -67,11 +67,12 @@ public class MysqlCladdingDAO extends AbstractMysqlDAO implements CladdingDAO
      * Returns the first cladding matching the provided constraints.
      *
      * @param constraints The constraints that modify the resulting list.
-     * @return The first cladding matching the provided constraints. Returns {@code null} when no
-     * constraints matches the provided constraints.
+     * @return The first cladding matching the provided constraints. Returns {@code null} when no constraints matches
+     * the provided constraints.
      * @throws MysqlDataAccessException When an exception occurs while performing the operation.
      */
-    @Override public Cladding first(Constraint<CladdingColumn>... constraints) throws MysqlDataAccessException
+    @Override
+    public Cladding first(Constraint<CladdingColumn>... constraints) throws MysqlDataAccessException
     {
         constraints = append(constraints, limit(1));
 
@@ -100,12 +101,14 @@ public class MysqlCladdingDAO extends AbstractMysqlDAO implements CladdingDAO
      * @return The cladding instance representing the newly created cladding.
      * @throws MysqlDataAccessException When an exception occurs while performing the operation.
      */
-    @Override public Cladding create(String name, String description, int pricePerSquareMeter, boolean active)
+    @Override
+    public Cladding create(String name, String description, int pricePerSquareMeter, boolean active)
             throws MysqlDataAccessException
     {
         try {
-            final String SQL        = "INSERT INTO claddings (name, description, price_per_square_meter, active) VALUES (?,?,?,?)";
-            Connection   connection = getConnection();
+            final String SQL =
+                    "INSERT INTO claddings (name, description, price_per_square_meter, active) VALUES (?,?,?,?)";
+            Connection connection = getConnection();
             try (PreparedStatement statement = connection.prepareStatement(SQL, Statement.RETURN_GENERATED_KEYS)) {
                 statement.setString(1, name);
                 statement.setString(2, description);
@@ -134,11 +137,14 @@ public class MysqlCladdingDAO extends AbstractMysqlDAO implements CladdingDAO
      * @return {@link true} if the record was updated.
      * @throws MysqlDataAccessException When an exception occurs while performing the operation.
      */
-    @Override public boolean update(Cladding cladding) throws MysqlDataAccessException
+    @Override
+    public boolean update(Cladding cladding) throws MysqlDataAccessException
     {
         try {
-            final String SQL        = "UPDATE claddings SET name = ?, description = ?, price_per_square_meter = ?, active = ? WHERE id = ?";
-            Connection   connection = getConnection();
+            final String SQL =
+                    "UPDATE claddings SET name = ?, description = ?, price_per_square_meter = ?, active = ? WHERE id " +
+                            "= ?";
+            Connection connection = getConnection();
             try (PreparedStatement statement = connection.prepareStatement(SQL)) {
                 statement.setString(1, cladding.getName());
                 statement.setString(2, cladding.getDescription());

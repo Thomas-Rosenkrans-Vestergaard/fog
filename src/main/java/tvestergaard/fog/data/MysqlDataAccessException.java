@@ -26,7 +26,8 @@ public class MysqlDataAccessException extends DataAccessException
      *
      * @return The {@link SQLException} that caused the {@link MysqlDataAccessException}.
      */
-    @Override public synchronized SQLException getCause()
+    @Override
+    public synchronized SQLException getCause()
     {
         return exception;
     }

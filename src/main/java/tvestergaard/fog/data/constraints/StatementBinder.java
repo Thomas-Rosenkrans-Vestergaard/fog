@@ -15,7 +15,8 @@ public class StatementBinder<T extends Enum<T> & MysqlColumn>
     private int currentParameterIndex = 1;
 
     /**
-     * Sets the prepared parameters on the provided {@link PreparedStatement} needed by the provided {@link Constraint}s.
+     * Sets the prepared parameters on the provided {@link PreparedStatement} needed by the provided {@link
+     * Constraint}s.
      *
      * @param statement   The statement to set the prepared parameters on.
      * @param begin       The index of the parameter to start setting prepared parameters from.
@@ -31,8 +32,8 @@ public class StatementBinder<T extends Enum<T> & MysqlColumn>
     }
 
     /**
-     * Sets the prepared parameters on the provided {@link PreparedStatement} needed by the provided {@link Constraint}s.
-     * Begins binding from parameter index 1.
+     * Sets the prepared parameters on the provided {@link PreparedStatement} needed by the provided {@link
+     * Constraint}s. Begins binding from parameter index 1.
      *
      * @param statement   The statement to set the prepared parameters on.
      * @param constraints The {@link Constraint}s to set the prepared parameters of.
@@ -44,7 +45,8 @@ public class StatementBinder<T extends Enum<T> & MysqlColumn>
     }
 
     /**
-     * Sets the prepared parameters on the provided {@link PreparedStatement} needed by the provided {@link Constraint}.
+     * Sets the prepared parameters on the provided {@link PreparedStatement} needed by the provided {@link
+     * Constraint}.
      *
      * @param statement  The statement to set the prepared parameters on.
      * @param constraint The {@link Constraint} to set the prepared parameters of.
@@ -69,7 +71,8 @@ public class StatementBinder<T extends Enum<T> & MysqlColumn>
     }
 
     /**
-     * Sets the prepared parameters on the provided {@link PreparedStatement} needed by the provided {@link WhereConstraint}.
+     * Sets the prepared parameters on the provided {@link PreparedStatement} needed by the provided {@link
+     * WhereConstraint}.
      *
      * @param statement  The statement to set the prepared parameters on.
      * @param constraint The {@link Constraint} to set the prepared parameters of.
@@ -83,7 +86,8 @@ public class StatementBinder<T extends Enum<T> & MysqlColumn>
     }
 
     /**
-     * Sets the prepared parameters on the provided {@link PreparedStatement} needed by the provided {@link WhereConstraint}.
+     * Sets the prepared parameters on the provided {@link PreparedStatement} needed by the provided {@link
+     * WhereConstraint}.
      *
      * @param statement The statement to set the prepared parameters on.
      * @param condition The {@link WhereCondition} to set the prepared parameters of.

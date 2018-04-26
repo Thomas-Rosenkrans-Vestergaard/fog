@@ -4,4 +4,19 @@
         xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee">
     <tlib-version>1.0</tlib-version>
     <uri>/WEB-INF/tld/functions</uri>
+    <function>
+        <name>formatBoolean</name>
+        <function-class>tvestergaard.fog.presentation.PresentationFunctions</function-class>
+        <function-signature>java.lang.String formatBoolean(java.lang.Boolean)</function-signature>
+    </function>
+    <function>
+        <name>formatDatetime</name>
+        <function-class>tvestergaard.fog.presentation.PresentationFunctions</function-class>
+        <function-signature>java.lang.String formatDatetime(java.time.LocalDateTime)</function-signature>
+    </function>
+    <function>
+        <name>formatPrice</name>
+        <function-class>tvestergaard.fog.presentation.PresentationFunctions</function-class>
+        <function-signature>java.lang.String formatPrice(java.lang.Integer)</function-signature>
+    </function>
 </taglib>

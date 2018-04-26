@@ -9,8 +9,7 @@ public interface FlooringDAO
 {
 
     /**
-     * Returns the floorings in the data storage.
-     * The results can be constrained using the provided constraints.
+     * Returns the floorings in the data storage. The results can be constrained using the provided constraints.
      *
      * @param constraints The constraints that modify the resulting list.
      * @return The resulting floorings.
@@ -22,8 +21,8 @@ public interface FlooringDAO
      * Returns the first flooring matching the provided constraints.
      *
      * @param constraints The constraints that modify the resulting list.
-     * @return The first flooring matching the provided constraints. Returns {@code null} when no
-     * constraints matches the provided constraints.
+     * @return The first flooring matching the provided constraints. Returns {@code null} when no constraints matches
+     * the provided constraints.
      * @throws DataAccessException When an exception occurs while performing the operation.
      */
     Flooring first(Constraint<FlooringColumn>... constraints) throws DataAccessException;
@@ -38,7 +37,8 @@ public interface FlooringDAO
      * @return The flooring instance representing the newly created flooring.
      * @throws DataAccessException When an exception occurs while performing the operation.
      */
-    Flooring create(String name, String description, int pricePerSquareMeter, boolean active) throws DataAccessException;
+    Flooring create(String name, String description, int pricePerSquareMeter, boolean active)
+            throws DataAccessException;
 
     /**
      * Updates the entity in the data storage to match the provided {@code flooring}.

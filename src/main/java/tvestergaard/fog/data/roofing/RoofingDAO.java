@@ -9,8 +9,7 @@ public interface RoofingDAO
 {
 
     /**
-     * Returns the roofings in the data storage.
-     * The results can be constrained using the provided constraints.
+     * Returns the roofings in the data storage. The results can be constrained using the provided constraints.
      *
      * @param constraints The constraints that modify the resulting list.
      * @return The complete list of the roofings in the data storage.
@@ -22,8 +21,8 @@ public interface RoofingDAO
      * Returns the first roofing matching the provided constraints.
      *
      * @param constraints The constraints that modify the resulting list.
-     * @return The first roofing matching the provided constraints. Returns {@code null} when no
-     * constraints matches the provided constraints.
+     * @return The first roofing matching the provided constraints. Returns {@code null} when no constraints matches the
+     * provided constraints.
      * @throws DataAccessException When an exception occurs while performing the operation.
      */
     Roofing first(Constraint<RoofingColumn>... constraints) throws DataAccessException;
@@ -40,8 +39,12 @@ public interface RoofingDAO
      * @return The roofing instance representing the newly created roofing.
      * @throws DataAccessException When an exception occurs while performing the operation.
      */
-    Roofing create(String name, String description, int minimumSlope, int maximumSlope, int pricePerSquareMeter, boolean active)
-            throws DataAccessException;
+    Roofing create(String name,
+                   String description,
+                   int minimumSlope,
+                   int maximumSlope,
+                   int pricePerSquareMeter,
+                   boolean active) throws DataAccessException;
 
     /**
      * Updates the entity in the data storage to match the provided {@code roofing}.

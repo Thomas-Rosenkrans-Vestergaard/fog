@@ -1,8 +1,10 @@
 package tvestergaard.fog.data.flooring;
 
 import com.mysql.cj.jdbc.MysqlDataSource;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import tvestergaard.fog.data.ProductionDataSource;
 import tvestergaard.fog.data.TestDataSource;
 
 import java.sql.Connection;
@@ -28,13 +30,18 @@ public class MysqlFlooringDAOTest
     @Before
     public void createData() throws Exception
     {
-        Connection connection = source.getConnection();
-        connection.createStatement().execute("DELETE FROM floorings");
         flooring1 = dao.create("name1", "description1", 1, true);
         flooring2 = dao.create("name2", "description2", 2, false);
         flooring3 = dao.create("name3", "description3", 3, false);
         flooring4 = dao.create("name4", "description4", 4, true);
         flooring5 = dao.create("name5", "description5", 5, false);
+    }
+
+    @After
+    public void after() throws Exception
+    {
+        Connection connection = ProductionDataSource.getSource().getConnection();
+        connection.createStatement().executeUpdate("DELETE * FROM floorings");
     }
 
     @Test
@@ -114,11 +121,11 @@ public class MysqlFlooringDAOTest
     @Test
     public void create() throws Exception
     {
-        String   name                = "some_random_name";
-        String   description         = "some_random_description";
-        int      pricePerSquareMeter = 234873;
-        boolean  active              = false;
-        Flooring actual              = dao.create(name, description, pricePerSquareMeter, active);
+        String name = "some_random_name";
+        String description = "some_random_description";
+        int pricePerSquareMeter = 234873;
+        boolean active = false;
+        Flooring actual = dao.create(name, description, pricePerSquareMeter, active);
         assertEquals(name, actual.getName());
         assertEquals(description, actual.getDescription());
         assertEquals(pricePerSquareMeter, actual.getPricePerSquareMeter());

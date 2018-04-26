@@ -79,6 +79,18 @@ public interface Constraint<T extends Enum<T>>
 
 
     /**
+     * Creates a new {@link NotCondition}.
+     *
+     * @param column The column used in the {@link NotCondition}.
+     * @param value  The value to use in the {@link NotCondition}.
+     * @return The newly created instance of {@link NotCondition}.
+     */
+    static <C extends Enum<C>> NotCondition not(C column, Object value)
+    {
+        return new NotCondition(column, value);
+    }
+
+    /**
      * Creates a new {@link LikeCondition}.
      *
      * @param column The column used in the {@link LikeCondition}.

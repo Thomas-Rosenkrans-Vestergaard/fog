@@ -15,308 +15,311 @@ public class OrderRecord implements Order
 {
 
     /**
-     * The unique identifier of the {@link Order}.
+     * The unique identifier of the order.
      */
     private final int id;
 
     /**
-     * The {@link Customer} who placed the {@link Order}.
+     * The customer who placed the order.
      */
     private Customer customer;
 
     /**
-     * The {@link Type} of the {@link Order}.
-     */
-    private Type type;
-
-    /**
-     * The {@link Cladding} used on the {@link Order}.
+     * The cladding used on the order.
      */
     private Cladding cladding;
 
     /**
-     * The width of the {@link Order}.
+     * The width of the order.
      */
     private int width;
 
     /**
-     * The length of the {@link Order}.
+     * The length of the order.
      */
     private int length;
 
     /**
-     * The height of the {@link Order}.
+     * The height of the order.
      */
     private int height;
 
     /**
-     * The {@link Roofing} used on the {@link Order}.
+     * The roofing used on the order.
      */
     private Roofing roofing;
 
     /**
-     * The slope of the {@link Roofing}.
+     * The slope of the roofing.
      */
     private int slope;
 
     /**
-     * The type of rafters chosen by the {@link Customer} who placed the {@link Order}.
+     * The type of rafters chosen by the customer who placed the order.
      */
-    private Rafters raftersType;
+    private RafterChoice rafters;
 
     /**
-     * The {@link Shed} included with the {@link Order}.
+     * The shed included with the order.
      */
     private Shed shed;
 
     /**
-     * The moment when the {@link Order} was placed.
+     * The moment when the order was placed.
      */
     private LocalDateTime createdAt;
 
     /**
      * Creates a new {@link OrderRecord}.
      *
-     * @param id          The unique identifier of the {@link Order}.
-     * @param customer    The {@link Customer} who placed the {@link Order}.
-     * @param type        The {@link Type} of the {@link Order}.
-     * @param cladding    The {@link Cladding} used on the {@link Order}.
-     * @param width       The width of the {@link Order}.
-     * @param length      The length of the {@link Order}.
-     * @param height      The height of the {@link Order}.
-     * @param roofing     The {@link Roofing} used on the {@link Order}.
-     * @param slope       The slope of the {@link Roofing}.
-     * @param raftersType The type of rafters chosen by the {@link Customer} who placed the {@link Order}.
-     * @param shed        The {@link Shed} included with the {@link Order}.
-     * @param createdAt   The time when the {@link Order} was placed.
+     * @param id        The unique identifier of the order.
+     * @param customer  The customer who placed the order.
+     * @param cladding  The cladding used on the order.
+     * @param width     The width of the order.
+     * @param length    The length of the order.
+     * @param height    The height of the order.
+     * @param roofing   The roofing used on the order.
+     * @param slope     The slope of the roofing.
+     * @param rafters   The type of rafters chosen by the customer who placed the order.
+     * @param shed      The shed included with the order.
+     * @param createdAt The time when the order was placed.
      */
-    public OrderRecord(int id, Customer customer, Type type, Cladding cladding, int width, int length, int height, Roofing roofing, int slope, Rafters raftersType, Shed shed, LocalDateTime createdAt)
+    public OrderRecord(int id,
+                       Customer customer,
+                       Cladding cladding,
+                       int width,
+                       int length,
+                       int height,
+                       Roofing roofing,
+                       int slope,
+                       RafterChoice rafters,
+                       Shed shed,
+                       LocalDateTime createdAt)
     {
         this.id = id;
         this.customer = customer;
-        this.type = type;
         this.cladding = cladding;
         this.width = width;
         this.length = length;
         this.height = height;
         this.roofing = roofing;
         this.slope = slope;
-        this.raftersType = raftersType;
+        this.rafters = rafters;
         this.shed = shed;
         this.createdAt = createdAt;
     }
 
     /**
-     * Returns the unique identifier of the {@link Order}.
+     * Returns the unique identifier of the order.
      *
-     * @return The unique identifier of the {@link Order}.
+     * @return The unique identifier of the order.
      */
-    @Override public int getId()
+    @Override
+    public int getId()
     {
         return id;
     }
 
     /**
-     * Returns the {@link Customer} who placed the {@link Order}.
+     * Returns the customer who placed the order.
      *
-     * @return The {@link Customer} who placed the {@link Order}.
+     * @return The customer who placed the order.
      */
-    @Override public Customer getCustomer()
+    @Override
+    public Customer getCustomer()
     {
         return customer;
     }
 
     /**
-     * Returns the {@link Type} of the {@link Order}.
+     * Returns the cladding used on the order.
      *
-     * @return The {@link Type} of the {@link Order}.
+     * @return The cladding used on the order.
      */
-    @Override public Type getType()
-    {
-        return type;
-    }
-
-    /**
-     * Sets the {@link Type} of the {@link Order}.
-     *
-     * @param type The new {@link Type}.
-     */
-    @Override public void setType(Type type)
-    {
-        this.type = type;
-    }
-
-    /**
-     * Returns the {@link Cladding} used on the {@link Order}.
-     *
-     * @return The {@link Cladding} used on the {@link Order}.
-     */
-    @Override public Cladding getCladding()
+    @Override
+    public Cladding getCladding()
     {
         return cladding;
     }
 
     /**
-     * Sets the {@link Cladding} used on the {@link Order}.
+     * Sets the cladding used on the order.
      *
-     * @param cladding The new {@link Cladding}.
+     * @param cladding The new cladding.
      */
-    @Override public void setCladding(Cladding cladding)
+    @Override
+    public void setCladding(Cladding cladding)
     {
         this.cladding = cladding;
     }
 
     /**
-     * Returns the width of the {@link Order}.
+     * Returns the width of the order.
      *
-     * @return The width of the {@link Order}.
+     * @return The width of the order.
      */
-    @Override public int getWidth()
+    @Override
+    public int getWidth()
     {
         return width;
     }
 
     /**
-     * Sets the width of the {@link Order}.
+     * Sets the width of the order.
      *
      * @param width The new width.
      */
-    @Override public void setWidth(int width)
+    @Override
+    public void setWidth(int width)
     {
         this.width = width;
     }
 
     /**
-     * Returns the length of the {@link Order}.
+     * Returns the length of the order.
      *
-     * @return The length of the {@link Order}.
+     * @return The length of the order.
      */
-    @Override public int getLength()
+    @Override
+    public int getLength()
     {
         return length;
     }
 
     /**
-     * Sets the length of the {@link Order}.
+     * Sets the length of the order.
      *
      * @param length The new length.
      */
-    @Override public void setLength(int length)
+    @Override
+    public void setLength(int length)
     {
         this.length = length;
     }
 
     /**
-     * Returns the height of the {@link Order}.
+     * Returns the height of the order.
      *
-     * @return The height of the {@link Order}.
+     * @return The height of the order.
      */
-    @Override public int getHeight()
+    @Override
+    public int getHeight()
     {
         return height;
     }
 
     /**
-     * Sets the height of the {@link Order}.
+     * Sets the height of the order.
      *
      * @param height The new height.
      */
-    @Override public void setHeight(int height)
+    @Override
+    public void setHeight(int height)
     {
         this.height = height;
     }
 
     /**
-     * Returns the {@link Roofing} used on the {@link Order}.
+     * Returns the roofing used on the order.
      *
-     * @return The {@link Roofing} used on the {@link Order}.
+     * @return The roofing used on the order.
      */
-    @Override public Roofing getRoofing()
+    @Override
+    public Roofing getRoofing()
     {
         return roofing;
     }
 
     /**
-     * Sets the {@link Roofing} used on the {@link Order}.
+     * Sets the roofing used on the order.
      *
-     * @param roofing The new {@link Roofing}.
+     * @param roofing The new roofing.
      */
-    @Override public void setRoofing(Roofing roofing)
+    @Override
+    public void setRoofing(Roofing roofing)
     {
         this.roofing = roofing;
     }
 
     /**
-     * Returns the slope of the {@link Roofing}.
+     * Returns the slope of the roofing.
      *
-     * @return The slope of the {@link Roofing}.
+     * @return The slope of the roofing.
      */
-    @Override public int getSlope()
+    @Override
+    public int getSlope()
     {
         return slope;
     }
 
     /**
-     * Sets the slope of the {@link Roofing}.
+     * Sets the slope of the roofing.
      *
      * @param slope The new slope.
      */
-    @Override public void setSlope(int slope)
+    @Override
+    public void setSlope(int slope)
     {
         this.slope = slope;
     }
 
     /**
-     * Returns the choice of rafters made by the {@link Customer} who placed the {@link Order}.
+     * Returns the choice of rafters made by the customer who placed the order.
      *
-     * @return The chaice of rafters made by the {@link Customer} who placed the {@link Order}.
+     * @return The choice of rafters made by the customer who placed the order.
      */
-    @Override public Rafters getRafters()
+    @Override
+    public RafterChoice getRafterChoice()
     {
-        return raftersType;
+        return rafters;
     }
 
     /**
-     * Sets the {@link Rafters} chosen by the {@link Customer} who placed the {@link Order}.
+     * Sets the {@link RafterChoice} chosen by the customer who placed the order.
      *
-     * @param type The new {@link Rafters}.
+     * @param rafters The new {@link RafterChoice}.
      */
-    @Override public void setRaftersConstruction(Rafters type)
+    @Override
+    public void setRafterChoice(RafterChoice rafters)
     {
-        this.raftersType = raftersType;
+        this.rafters = rafters;
     }
 
     /**
-     * Returns the {@link Shed} included in the {@link Order}. {@code null} means no {@link Shed} is included.
+     * Returns the shed included in the order. {@code null} means no shed is included.
      *
-     * @return The {@link Shed} included in the {@link Order}.
+     * @return The shed included in the order.
      */
-    @Override public Shed getShed()
+    @Override
+    public Shed getShed()
     {
         return this.shed;
     }
 
     /**
-     * Sets the {@link Shed} included in the {@link Order}. {@code null} means no {@link Shed} is included.
+     * Sets the shed included in the order. {@code null} means no shed is included.
      *
-     * @param shed The new {@link Shed}.
+     * @param shed The new shed.
      */
-    @Override public void setShed(Shed shed)
+    @Override
+    public void setShed(Shed shed)
     {
         this.shed = shed;
     }
 
     /**
-     * Returns a {@code LocalDateTime} representing the moment in time when the {@link Customer} placed the {@link Order}.
+     * Returns a {@code LocalDateTime} representing the moment in time when the customer placed the {@link Order}.
      *
      * @return The {@code LocalDateTime}.
      */
-    @Override public LocalDateTime getCreatedAt()
+    @Override
+    public LocalDateTime getCreatedAt()
     {
         return createdAt;
     }
 
-    @Override public boolean equals(Object o)
+    @Override
+    public boolean equals(Object o)
     {
         if (this == o) return true;
         if (!(o instanceof Order)) return false;
@@ -326,16 +329,16 @@ public class OrderRecord implements Order
                 getLength() == that.getLength() &&
                 getHeight() == that.getHeight() &&
                 getSlope() == that.getSlope() &&
-               Objects.equals(getCustomer(), that.getCustomer()) &&
-                type == that.getType() &&
-               Objects.equals(getCladding(), that.getCladding()) &&
-               Objects.equals(getRoofing(), that.getRoofing()) &&
-               getRafters() == that.getRafters() &&
-               Objects.equals(getShed(), that.getShed()) &&
-               Objects.equals(getCreatedAt(), that.getCreatedAt());
+                Objects.equals(getCustomer(), that.getCustomer()) &&
+                Objects.equals(getCladding(), that.getCladding()) &&
+                Objects.equals(getRoofing(), that.getRoofing()) &&
+                getRafterChoice() == that.getRafterChoice() &&
+                Objects.equals(getShed(), that.getShed()) &&
+                Objects.equals(getCreatedAt(), that.getCreatedAt());
     }
 
-    @Override public int hashCode()
+    @Override
+    public int hashCode()
     {
         return Objects.hash(getId());
     }

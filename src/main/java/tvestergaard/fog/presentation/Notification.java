@@ -118,7 +118,8 @@ public class Notification
         return this.level;
     }
 
-    @Override public boolean equals(Object o)
+    @Override
+    public boolean equals(Object o)
     {
         if (this == o) return true;
         if (!(o instanceof Notification)) return false;
@@ -127,7 +128,8 @@ public class Notification
                 level == that.level;
     }
 
-    @Override public int hashCode()
+    @Override
+    public int hashCode()
     {
         return Objects.hash(message, level);
     }

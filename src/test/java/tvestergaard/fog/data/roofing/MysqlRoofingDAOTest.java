@@ -1,8 +1,10 @@
 package tvestergaard.fog.data.roofing;
 
 import com.mysql.cj.jdbc.MysqlDataSource;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import tvestergaard.fog.data.ProductionDataSource;
 import tvestergaard.fog.data.TestDataSource;
 
 import java.sql.Connection;
@@ -28,8 +30,6 @@ public class MysqlRoofingDAOTest
     @Before
     public void createData() throws Exception
     {
-        Connection connection = source.getConnection();
-        connection.createStatement().execute("DELETE FROM roofings");
         roofing1 = dao.create("name1", "description1", 1, 1, 1, true);
         roofing2 = dao.create("name2", "description2", 2, 2, 2, false);
         roofing3 = dao.create("name3", "description3", 3, 3, 3, true);
@@ -37,8 +37,16 @@ public class MysqlRoofingDAOTest
         roofing5 = dao.create("name5", "description5", 5, 5, 5, true);
     }
 
+    @After
+    public void after() throws Exception
+    {
+        Connection connection = ProductionDataSource.getSource().getConnection();
+        connection.createStatement().executeUpdate("DELETE FROM roofings");
+        connection.commit();
+    }
+
     @Test
-    public void getAll() throws Exception
+    public void get() throws Exception
     {
         List<Roofing> roofings = dao.get();
 
@@ -114,13 +122,13 @@ public class MysqlRoofingDAOTest
     @Test
     public void create() throws Exception
     {
-        String  name                = "some_random_name";
-        String  description         = "some_random_description";
-        int     minimumSlope        = 34;
-        int     maximumSlope        = 77;
-        int     pricePerSquareMeter = 234873;
-        boolean active              = false;
-        Roofing actual              = dao.create(name, description, minimumSlope, maximumSlope, pricePerSquareMeter, active);
+        String name = "some_random_name";
+        String description = "some_random_description";
+        int minimumSlope = 34;
+        int maximumSlope = 77;
+        int pricePerSquareMeter = 234873;
+        boolean active = false;
+        Roofing actual = dao.create(name, description, minimumSlope, maximumSlope, pricePerSquareMeter, active);
         assertEquals(name, actual.getName());
         assertEquals(description, actual.getDescription());
         assertEquals(minimumSlope, actual.getMinimumSlope());

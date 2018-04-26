@@ -1,8 +1,10 @@
 package tvestergaard.fog.data.customers;
 
 import com.mysql.cj.jdbc.MysqlDataSource;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import tvestergaard.fog.data.ProductionDataSource;
 import tvestergaard.fog.data.TestDataSource;
 
 import java.sql.Connection;
@@ -27,13 +29,18 @@ public class MysqlCustomersDAOTest
     @Before
     public void createData() throws Exception
     {
-        Connection connection = source.getConnection();
-        connection.createStatement().execute("DELETE FROM customers");
-        customer1 = dao.create("name1", "address1", "email1", "phone1", "password1", Customer.ContactMethod.EMAIL, true);
-        customer2 = dao.create("name2", "address2", "email2", "phone2", "password2", Customer.ContactMethod.PHONE, false);
-        customer3 = dao.create("name3", "address3", "email3", "phone3", "password3", Customer.ContactMethod.EMAIL, true);
-        customer4 = dao.create("name4", "address4", "email4", "phone4", "password4", Customer.ContactMethod.PHONE, false);
-        customer5 = dao.create("name5", "address5", "email5", "phone5", "password5", Customer.ContactMethod.EMAIL, true);
+        customer1 = dao.create("name1", "address1", "email1", "phone1", "password1", ContactMethod.EMAIL, true);
+        customer2 = dao.create("name2", "address2", "email2", "phone2", "password2", ContactMethod.PHONE, false);
+        customer3 = dao.create("name3", "address3", "email3", "phone3", "password3", ContactMethod.EMAIL, true);
+        customer4 = dao.create("name4", "address4", "email4", "phone4", "password4", ContactMethod.PHONE, false);
+        customer5 = dao.create("name5", "address5", "email5", "phone5", "password5", ContactMethod.EMAIL, true);
+    }
+
+    @After
+    public void after() throws Exception
+    {
+        Connection connection = ProductionDataSource.getSource().getConnection();
+        connection.createStatement().executeUpdate("DELETE * FROM customers");
     }
 
     @Test
@@ -113,13 +120,13 @@ public class MysqlCustomersDAOTest
     @Test
     public void create() throws Exception
     {
-        String                 name          = "some_random_name";
-        String                 address       = "some_random_address";
-        String                 email         = "some_random_email";
-        String                 phone         = "some_random_phone";
-        String                 password      = "some_random_password";
-        Customer.ContactMethod contactMethod = Customer.ContactMethod.PHONE;
-        boolean                active        = false;
+        String name = "some_random_name";
+        String address = "some_random_address";
+        String email = "some_random_email";
+        String phone = "some_random_phone";
+        String password = "some_random_password";
+        ContactMethod contactMethod = ContactMethod.PHONE;
+        boolean active = false;
 
         Customer actual = dao.create(name, address, email, phone, password, contactMethod, active);
         assertEquals(name, actual.getName());
@@ -139,7 +146,7 @@ public class MysqlCustomersDAOTest
         customer1.setEmail("new_email");
         customer1.setPhone("new_phone");
         customer1.setPassword("new_password");
-        customer1.setContactMethod(Customer.ContactMethod.PHONE);
+        customer1.setContactMethod(ContactMethod.PHONE);
         customer1.setActive(false);
 
         assertTrue(dao.update(customer1));

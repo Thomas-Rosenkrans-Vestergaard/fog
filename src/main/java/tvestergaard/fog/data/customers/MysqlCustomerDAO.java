@@ -38,18 +38,18 @@ public class MysqlCustomerDAO extends AbstractMysqlDAO implements CustomerDAO
     }
 
     /**
-     * Returns the customers in the data storage.
-     * The results can be constrained using the provided constraints.
+     * Returns the customers in the data storage. The results can be constrained using the provided constraints.
      *
      * @param constraints The constraints that modify the resulting list.
      * @return The resulting customers.
      * @throws MysqlDataAccessException When an exception occurs while performing the operation.
      */
-    @Override public List<Customer> get(Constraint<CustomerColumn>... constraints) throws MysqlDataAccessException
+    @Override
+    public List<Customer> get(Constraint<CustomerColumn>... constraints) throws MysqlDataAccessException
     {
         try {
             final List<Customer> customers = new ArrayList<>();
-            final String         SQL       = generator.generate("SELECT * FROM customers", constraints);
+            final String SQL = generator.generate("SELECT * FROM customers", constraints);
             try (PreparedStatement statement = getConnection().prepareStatement(SQL)) {
                 binder.bind(statement, constraints);
                 ResultSet resultSet = statement.executeQuery();
@@ -67,11 +67,12 @@ public class MysqlCustomerDAO extends AbstractMysqlDAO implements CustomerDAO
      * Returns the first customer matching the provided constraints.
      *
      * @param constraints The constraints that modify the resulting list.
-     * @return The first customer matching the provided constraints. Returns {@code null} when no
-     * constraints matches the provided constraints.
+     * @return The first customer matching the provided constraints. Returns {@code null} when no constraints matches
+     * the provided constraints.
      * @throws MysqlDataAccessException When an exception occurs while performing the operation.
      */
-    @Override public Customer first(Constraint<CustomerColumn>... constraints) throws MysqlDataAccessException
+    @Override
+    public Customer first(Constraint<CustomerColumn>... constraints) throws MysqlDataAccessException
     {
         constraints = append(constraints, limit(1));
 
@@ -99,15 +100,23 @@ public class MysqlCustomerDAO extends AbstractMysqlDAO implements CustomerDAO
      * @param phone         The phone number of the customer to create.
      * @param password      The password of the customer to create.
      * @param contactMethod The preferred contact method of the customer to create.
-     * @param active        Whether or not the customer can be applied to orders.     @return The customer instance representing the newly created customer.
+     * @param active        Whether or not the customer can be applied to orders.     @return The customer instance
+     *                      representing the newly created customer.
      * @throws MysqlDataAccessException When an exception occurs while performing the operation.
      */
-    @Override public Customer create(String name, String address, String email, String phone, String password,
-                                     Customer.ContactMethod contactMethod, boolean active) throws MysqlDataAccessException
+    @Override
+    public Customer create(String name,
+                           String address,
+                           String email,
+                           String phone,
+                           String password,
+                           ContactMethod contactMethod,
+                           boolean active) throws MysqlDataAccessException
     {
         try {
-            final String SQL = "INSERT INTO customers (name, address, email, phone, password, contact_method, active) " +
-                    "VALUES (?, ?, ?, ?, ?, ?, ?)";
+            final String SQL =
+                    "INSERT INTO customers (name, address, email, phone, password, contact_method, active) " +
+                            "VALUES (?, ?, ?, ?, ?, ?, ?)";
             Connection connection = getConnection();
             try (PreparedStatement statement = connection.prepareStatement(SQL, Statement.RETURN_GENERATED_KEYS)) {
                 statement.setString(1, name);
@@ -140,7 +149,8 @@ public class MysqlCustomerDAO extends AbstractMysqlDAO implements CustomerDAO
      * @return {@link true} if the record was updated.
      * @throws DataAccessException When an exception occurs while performing the operation.
      */
-    @Override public boolean update(Customer customer) throws DataAccessException
+    @Override
+    public boolean update(Customer customer) throws DataAccessException
     {
         try {
             final String SQL = "UPDATE customers SET name = ?, address = ?, email = ?, phone = ?," +

@@ -8,5 +8,15 @@ public interface MysqlColumn
      *
      * @return The name of the column in mysql.
      */
-    String getMysqlName();
+    String getSQLName();
+
+    /**
+     * Whether or not the generator should use backtick (`) on the column name.
+     *
+     * @return {@code true} if the generator should use backtick (`) on the column name.
+     */
+    default boolean useBacktick()
+    {
+        return true;
+    }
 }

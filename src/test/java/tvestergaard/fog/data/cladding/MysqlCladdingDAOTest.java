@@ -1,8 +1,10 @@
 package tvestergaard.fog.data.cladding;
 
 import com.mysql.cj.jdbc.MysqlDataSource;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import tvestergaard.fog.data.ProductionDataSource;
 import tvestergaard.fog.data.TestDataSource;
 
 import java.sql.Connection;
@@ -28,13 +30,18 @@ public class MysqlCladdingDAOTest
     @Before
     public void createData() throws Exception
     {
-        Connection connection = source.getConnection();
-        connection.createStatement().execute("DELETE FROM claddings");
         cladding1 = dao.create("name1", "description1", 1, false);
         cladding2 = dao.create("name2", "description2", 2, true);
         cladding3 = dao.create("name3", "description3", 3, false);
         cladding4 = dao.create("name4", "description4", 4, true);
         cladding5 = dao.create("name5", "description5", 5, false);
+    }
+
+    @After
+    public void after() throws Exception
+    {
+        Connection connection = ProductionDataSource.getSource().getConnection();
+        connection.createStatement().executeUpdate("DELETE * FROM claddings");
     }
 
     @Test
@@ -64,12 +71,11 @@ public class MysqlCladdingDAOTest
     {
         List<Cladding> claddings = dao.get(where(like(NAME, "name%")));
 
-        assertEquals(5, claddings.size());
-        assertEquals(cladding1, claddings.get(0));
-        assertEquals(cladding2, claddings.get(1));
-        assertEquals(cladding3, claddings.get(2));
-        assertEquals(cladding4, claddings.get(3));
-        assertEquals(cladding5, claddings.get(4));
+        assertEquals(cladding1, claddings.get(claddings.size() - 5));
+        assertEquals(cladding2, claddings.get(claddings.size() - 4));
+        assertEquals(cladding3, claddings.get(claddings.size() - 3));
+        assertEquals(cladding4, claddings.get(claddings.size() - 2));
+        assertEquals(cladding5, claddings.get(claddings.size() - 1));
     }
 
     @Test
@@ -114,11 +120,11 @@ public class MysqlCladdingDAOTest
     @Test
     public void create() throws Exception
     {
-        String   name                = "some_random_name";
-        String   description         = "some_random_description";
-        int      pricePerSquareMeter = 234873;
-        boolean  active              = false;
-        Cladding actual              = dao.create(name, description, pricePerSquareMeter, active);
+        String name = "some_random_name";
+        String description = "some_random_description";
+        int pricePerSquareMeter = 234873;
+        boolean active = false;
+        Cladding actual = dao.create(name, description, pricePerSquareMeter, active);
         assertEquals(name, actual.getName());
         assertEquals(description, actual.getDescription());
         assertEquals(pricePerSquareMeter, actual.getPricePerSquareMeter());
