@@ -17,6 +17,7 @@
             <th>Kontaktmetode</th>
             <th>Aktiv</th>
             <th>Oprettet</th>
+            <th></th>
             </thead>
             <tbody>
             <c:forEach items="${customers}" var="customer">
@@ -29,6 +30,7 @@
                     <td><c:out value="${customer.getContactMethod()}"/></td>
                     <td><c:out value="${f:formatBoolean(customer.isActive())}"/></td>
                     <td><c:out value="${f:formatDatetime(customer.getCreatedAt())}"/></td>
+                    <td><a href="customers?action=update&id=${customer.getId()}" class="btn">VIS</a></td>
                 </tr>
             </c:forEach>
             </tbody>

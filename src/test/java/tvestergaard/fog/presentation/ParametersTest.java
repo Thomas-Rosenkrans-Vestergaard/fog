@@ -290,14 +290,12 @@ public class ParametersTest
     @Test
     public void isEnum() throws Exception
     {
-        EnumSet<Letters> enumSet = EnumSet.allOf(Letters.class);
+        assertFalse(parameters.isEnum("empty", Letters.class));
+        assertFalse(parameters.isEnum("text", Letters.class));
 
-        assertFalse(parameters.isEnum("empty", enumSet));
-        assertFalse(parameters.isEnum("text", enumSet));
-
-        assertTrue(parameters.isEnum("A", enumSet));
-        assertTrue(parameters.isEnum("B", enumSet));
-        assertTrue(parameters.isEnum("C", enumSet));
+        assertTrue(parameters.isEnum("A", Letters.class));
+        assertTrue(parameters.isEnum("B", Letters.class));
+        assertTrue(parameters.isEnum("C", Letters.class));
     }
 
     @Test
@@ -305,9 +303,9 @@ public class ParametersTest
     {
         EnumSet<Letters> enumSet = EnumSet.allOf(Letters.class);
 
-        assertEquals(Letters.A, parameters.getEnum("A", enumSet));
-        assertEquals(Letters.B, parameters.getEnum("B", enumSet));
-        assertEquals(Letters.C, parameters.getEnum("C", enumSet));
+        assertEquals(Letters.A, parameters.getEnum("A", Letters.class));
+        assertEquals(Letters.B, parameters.getEnum("B", Letters.class));
+        assertEquals(Letters.C, parameters.getEnum("C", Letters.class));
     }
 
     private enum Letters

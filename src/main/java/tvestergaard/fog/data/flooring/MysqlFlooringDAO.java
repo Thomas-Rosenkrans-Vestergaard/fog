@@ -2,6 +2,7 @@ package tvestergaard.fog.data.flooring;
 
 import com.mysql.cj.jdbc.MysqlDataSource;
 import tvestergaard.fog.data.AbstractMysqlDAO;
+import tvestergaard.fog.data.DataAccessException;
 import tvestergaard.fog.data.MysqlDataAccessException;
 import tvestergaard.fog.data.constraints.Constraint;
 import tvestergaard.fog.data.constraints.StatementBinder;
@@ -49,7 +50,7 @@ public class MysqlFlooringDAO extends AbstractMysqlDAO implements FlooringDAO
     {
         try {
             final List<Flooring> floors = new ArrayList<>();
-            final String SQL = generator.generate("SELECT floorings.* FROM floorings", constraints);
+            final String         SQL    = generator.generate("SELECT floorings.* FROM floorings", constraints);
             try (java.sql.PreparedStatement statement = getConnection().prepareStatement(SQL)) {
                 binder.bind(statement, constraints);
                 ResultSet resultSet = statement.executeQuery();
@@ -94,33 +95,29 @@ public class MysqlFlooringDAO extends AbstractMysqlDAO implements FlooringDAO
     /**
      * Inserts a new flooring into the data storage.
      *
-     * @param name                The name of the flooring to create.
-     * @param description         The description of the flooring to create.
-     * @param pricePerSquareMeter The price per square meter of flooring (in øre).
-     * @param active              Whether or not the flooring can be applied to orders.
+     * @param blueprint The cladding blueprint that contains the information necessary to create the cladding.
      * @return The flooring instance representing the newly created flooring.
      * @throws MysqlDataAccessException When an exception occurs while performing the operation.
      */
-    @Override
-    public Flooring create(String name, String description, int pricePerSquareMeter, boolean active)
-            throws MysqlDataAccessException
+    @Override public Flooring create(FlooringBlueprint blueprint) throws MysqlDataAccessException
     {
         try {
             final String SQL =
                     "INSERT INTO floorings (name, description, price_per_square_meter, active) VALUES (?,?,?,?)";
             Connection connection = getConnection();
             try (PreparedStatement statement = connection.prepareStatement(SQL, Statement.RETURN_GENERATED_KEYS)) {
-                statement.setString(1, name);
-                statement.setString(2, description);
-                statement.setInt(3, pricePerSquareMeter);
-                statement.setBoolean(4, active);
+                statement.setString(1, blueprint.getName());
+                statement.setString(2, blueprint.getDescription());
+                statement.setInt(3, blueprint.getPricePerSquareMeter());
+                statement.setBoolean(4, blueprint.isActive());
                 int updated = statement.executeUpdate();
                 connection.commit();
                 if (updated == 0)
                     return null;
                 ResultSet generated = statement.getGeneratedKeys();
                 generated.first();
-                return new FlooringRecord(generated.getInt(1), name, description, pricePerSquareMeter, active);
+                return new FlooringRecord(generated.getInt(1), blueprint.getName(), blueprint.getDescription(),
+                        blueprint.getPricePerSquareMeter(), blueprint.isActive());
             } catch (SQLException e) {
                 connection.rollback();
                 throw e;
@@ -133,24 +130,21 @@ public class MysqlFlooringDAO extends AbstractMysqlDAO implements FlooringDAO
     /**
      * Updates the entity in the data storage to match the provided {@code flooring}.
      *
-     * @param flooring The flooring to update the entity in the data storage to.
+     * @param updater The cladding updater that contains the information necessary to create the cladding.
      * @return {@link true} if the record was updated.
-     * @throws MysqlDataAccessException When an exception occurs while performing the operation.
+     * @throws DataAccessException When an exception occurs while performing the operation.
      */
-    @Override
-    public boolean update(Flooring flooring) throws MysqlDataAccessException
+    @Override public boolean update(FlooringUpdater updater) throws DataAccessException
     {
         try {
-            final String SQL =
-                    "UPDATE floorings SET name = ?, description = ?, price_per_square_meter = ?, active = ? WHERE id " +
-                            "= ?";
-            Connection connection = getConnection();
+            final String SQL        = "UPDATE floorings SET name = ?, description = ?, price_per_square_meter = ?, active = ? WHERE id = ?";
+            Connection   connection = getConnection();
             try (PreparedStatement statement = connection.prepareStatement(SQL)) {
-                statement.setString(1, flooring.getName());
-                statement.setString(2, flooring.getDescription());
-                statement.setInt(3, flooring.getPricePerSquareMeter());
-                statement.setBoolean(4, flooring.isActive());
-                statement.setInt(5, flooring.getId());
+                statement.setString(1, updater.getName());
+                statement.setString(2, updater.getDescription());
+                statement.setInt(3, updater.getPricePerSquareMeter());
+                statement.setBoolean(4, updater.isActive());
+                statement.setInt(5, updater.getId());
                 int updated = statement.executeUpdate();
                 connection.commit();
                 return updated != 0;

@@ -4,13 +4,14 @@ import com.mysql.cj.jdbc.MysqlDataSource;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import tvestergaard.fog.data.ProductionDataSource;
 import tvestergaard.fog.data.TestDataSource;
 
 import java.sql.Connection;
 import java.util.List;
 
 import static org.junit.Assert.*;
+import static tvestergaard.fog.Helpers.randomBoolean;
+import static tvestergaard.fog.Helpers.randomString;
 import static tvestergaard.fog.data.cladding.CladdingColumn.ID;
 import static tvestergaard.fog.data.constraints.Constraint.*;
 
@@ -29,18 +30,18 @@ public class MysqlCustomersDAOTest
     @Before
     public void createData() throws Exception
     {
-        customer1 = dao.create("name1", "address1", "email1", "phone1", "password1", ContactMethod.EMAIL, true);
-        customer2 = dao.create("name2", "address2", "email2", "phone2", "password2", ContactMethod.PHONE, false);
-        customer3 = dao.create("name3", "address3", "email3", "phone3", "password3", ContactMethod.EMAIL, true);
-        customer4 = dao.create("name4", "address4", "email4", "phone4", "password4", ContactMethod.PHONE, false);
-        customer5 = dao.create("name5", "address5", "email5", "phone5", "password5", ContactMethod.EMAIL, true);
+        customer1 = dao.create(Customer.blueprint("name1", "address1", "email1", "phone1", "password1", true));
+        customer2 = dao.create(Customer.blueprint("name2", "address2", "email2", "phone2", "password2", false));
+        customer3 = dao.create(Customer.blueprint("name3", "address3", "email3", "phone3", "password3", true));
+        customer4 = dao.create(Customer.blueprint("name4", "address4", "email4", "phone4", "password4", false));
+        customer5 = dao.create(Customer.blueprint("name5", "address5", "email5", "phone5", "password5", true));
     }
 
     @After
     public void after() throws Exception
     {
-        Connection connection = ProductionDataSource.getSource().getConnection();
-        connection.createStatement().executeUpdate("DELETE * FROM customers");
+        Connection connection = TestDataSource.getSource().getConnection();
+        connection.createStatement().executeUpdate("DELETE FROM customers");
     }
 
     @Test
@@ -120,33 +121,30 @@ public class MysqlCustomersDAOTest
     @Test
     public void create() throws Exception
     {
-        String name = "some_random_name";
-        String address = "some_random_address";
-        String email = "some_random_email";
-        String phone = "some_random_phone";
-        String password = "some_random_password";
-        ContactMethod contactMethod = ContactMethod.PHONE;
-        boolean active = false;
+        String  name     = randomString();
+        String  address  = randomString();
+        String  email    = randomString();
+        String  phone    = randomString();
+        String  password = randomString();
+        boolean active   = randomBoolean();
 
-        Customer actual = dao.create(name, address, email, phone, password, contactMethod, active);
+        Customer actual = dao.create(Customer.blueprint(name, address, email, phone, password, active));
         assertEquals(name, actual.getName());
         assertEquals(address, actual.getAddress());
         assertEquals(email, actual.getEmail());
         assertEquals(phone, actual.getPhone());
         assertEquals(password, actual.getPassword());
-        assertEquals(contactMethod, actual.getContactMethod());
         assertEquals(active, actual.isActive());
     }
 
     @Test
     public void update() throws Exception
     {
-        customer1.setName("new_name");
-        customer1.setAddress("new_address");
-        customer1.setEmail("new_email");
-        customer1.setPhone("new_phone");
-        customer1.setPassword("new_password");
-        customer1.setContactMethod(ContactMethod.PHONE);
+        customer1.setName(randomString());
+        customer1.setAddress(randomString());
+        customer1.setEmail(randomString());
+        customer1.setPhone(randomString());
+        customer1.setPassword(randomString());
         customer1.setActive(false);
 
         assertTrue(dao.update(customer1));

@@ -5,7 +5,6 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.EnumSet;
-import java.util.HashMap;
 
 /**
  * Class for validating types and converting the values of parameters in the provided {@code HttpServletRequest}.
@@ -363,22 +362,22 @@ public class Parameters
 
     /**
      * Checks that the value of the provided parameter can safely be extracted to the type {@code T} using the {@link
-     * Parameters#getEnum(String, EnumSet)} method. The enum element is considered a match when the name of the enum
+     * Parameters#getEnum(String, Class)} method. The enum element is considered a match when the name of the enum
      * element equals the value of the parameter.
      *
      * @param parameter   The name of the parameter to test the format of.
      * @param enumeration The {@link EnumSet} containing the legal values.
      * @param <T>         The type of the enum type.
      * @return {@code true} if the value of the provided parameter can safely be extracted to the type {@code T} using
-     * the {@link Parameters#getEnum(String, EnumSet)} method.
+     * the {@link Parameters#getEnum(String, Class)}
      */
-    public <T extends Enum<T>> boolean isEnum(String parameter, EnumSet<T> enumeration)
+    public <T extends Enum<T>> boolean isEnum(String parameter, Class<T> enumeration)
     {
         if (!isPresent(parameter))
             return false;
 
         String value = getParameterValue(parameter);
-        for (T element : enumeration)
+        for (T element : EnumSet.allOf(enumeration))
             if (element.name().equals(value))
                 return true;
 
@@ -389,18 +388,18 @@ public class Parameters
      * Extracts the {@code T} value of the provided parameter. The enum element is considered a match when the name of
      * the enum element equals the value of the parameter.
      * <p>
-     * This method will not throw an exception when the {@link Parameters#isEnum(String, EnumSet)} method returns true
+     * This method will not throw an exception when the {@link Parameters#isEnum(String, Class)} method returns true
      * for the same parameter name.
      *
      * @param parameter   The name of the parameter to extract the double value from.
-     * @param enumeration The possible enumeration values.
+     * @param enumeration The enum.
      * @return The double value of the value of the provided parameter.
      * @throws ParametersConversionException When an error occurs while extracting the {@code T} value.
      */
-    public <T extends Enum<T>> T getEnum(String parameter, EnumSet<T> enumeration)
+    public <T extends Enum<T>> T getEnum(String parameter, Class<T> enumeration)
     {
         String value = getParameterValue(parameter);
-        for (T element : enumeration)
+        for (T element : EnumSet.allOf(enumeration))
             if (element.name().equals(value))
                 return element;
 

@@ -4,13 +4,13 @@ import com.mysql.cj.jdbc.MysqlDataSource;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import tvestergaard.fog.data.ProductionDataSource;
 import tvestergaard.fog.data.TestDataSource;
 
 import java.sql.Connection;
 import java.util.List;
 
 import static org.junit.Assert.*;
+import static tvestergaard.fog.Helpers.randomString;
 import static tvestergaard.fog.data.constraints.Constraint.*;
 import static tvestergaard.fog.data.roofing.RoofingColumn.ID;
 import static tvestergaard.fog.data.roofing.RoofingColumn.NAME;
@@ -30,19 +30,18 @@ public class MysqlRoofingDAOTest
     @Before
     public void createData() throws Exception
     {
-        roofing1 = dao.create("name1", "description1", 1, 1, 1, true);
-        roofing2 = dao.create("name2", "description2", 2, 2, 2, false);
-        roofing3 = dao.create("name3", "description3", 3, 3, 3, true);
-        roofing4 = dao.create("name4", "description4", 4, 4, 4, false);
-        roofing5 = dao.create("name5", "description5", 5, 5, 5, true);
+        roofing1 = dao.create(Roofing.blueprint("name1", "description1", 1, 1, 1, true));
+        roofing2 = dao.create(Roofing.blueprint("name2", "description2", 2, 2, 2, false));
+        roofing3 = dao.create(Roofing.blueprint("name3", "description3", 3, 3, 3, true));
+        roofing4 = dao.create(Roofing.blueprint("name4", "description4", 4, 4, 4, false));
+        roofing5 = dao.create(Roofing.blueprint("name5", "description5", 5, 5, 5, true));
     }
 
     @After
     public void after() throws Exception
     {
-        Connection connection = ProductionDataSource.getSource().getConnection();
+        Connection connection = TestDataSource.getSource().getConnection();
         connection.createStatement().executeUpdate("DELETE FROM roofings");
-        connection.commit();
     }
 
     @Test
@@ -122,26 +121,27 @@ public class MysqlRoofingDAOTest
     @Test
     public void create() throws Exception
     {
-        String name = "some_random_name";
-        String description = "some_random_description";
-        int minimumSlope = 34;
-        int maximumSlope = 77;
-        int pricePerSquareMeter = 234873;
-        boolean active = false;
-        Roofing actual = dao.create(name, description, minimumSlope, maximumSlope, pricePerSquareMeter, active);
+        String           name         = "some_random_name";
+        String           description  = "some_random_description";
+        int              minimumSlope = 34;
+        int              maximumSlope = 77;
+        int              price        = 234873;
+        boolean          active       = false;
+        RoofingBlueprint blueprint    = Roofing.blueprint(name, description, minimumSlope, maximumSlope, price, active);
+        Roofing          actual       = dao.create(blueprint);
         assertEquals(name, actual.getName());
         assertEquals(description, actual.getDescription());
         assertEquals(minimumSlope, actual.getMinimumSlope());
         assertEquals(maximumSlope, actual.getMaximumSlope());
-        assertEquals(pricePerSquareMeter, actual.getPricePerSquareMeter());
+        assertEquals(price, actual.getPricePerSquareMeter());
         assertEquals(active, actual.isActive());
     }
 
     @Test
     public void update() throws Exception
     {
-        roofing1.setName("new_name");
-        roofing1.setDescription("new_description");
+        roofing1.setName(randomString());
+        roofing1.setDescription(randomString());
         roofing1.setMinimumSlope(45);
         roofing1.setMaximumSlope(90);
         roofing1.setPricePerSquareMeter(2897342);

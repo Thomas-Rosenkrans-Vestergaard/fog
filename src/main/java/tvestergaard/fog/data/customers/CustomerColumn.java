@@ -5,39 +5,23 @@ import tvestergaard.fog.data.constraints.MysqlColumn;
 public enum CustomerColumn implements MysqlColumn
 {
 
-    ID("id"),
-    NAME("name"),
-    ADDRESS("address"),
-    EMAIL("email"),
-    PHONE("phone"),
-    PASSWORD("password"),
-    CONTACT_METHOD("contact_method"),
-    ACTIVE("active"),
-    CREATED_AT("created_at");
+    ID,
+    NAME,
+    ADDRESS,
+    EMAIL,
+    PHONE,
+    PASSWORD,
+    ACTIVE,
+    CREATED_AT;
 
     /**
-     * The name of the column in mysql.
-     */
-    private final String SQLName;
-
-    /**
-     * Creates a new {@link CustomerColumn}.
+     * Returns the name of the column in MySQL.
      *
-     * @param SQLName The name of the column in mysql.
-     */
-    CustomerColumn(String SQLName)
-    {
-        this.SQLName = SQLName;
-    }
-
-    /**
-     * Returns the name of the column in mysql.
-     *
-     * @return The name of the column in mysql.
+     * @return The name of the column in MySQL.
      */
     @Override
-    public String getSQLName()
+    public String getMysqlName()
     {
-        return SQLName;
+        return this.name().toLowerCase();
     }
 }

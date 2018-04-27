@@ -1,6 +1,6 @@
 package tvestergaard.fog.logic.claddings;
 
-import tvestergaard.fog.data.cladding.Cladding;
+import tvestergaard.fog.data.cladding.CladdingBlueprint;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -11,16 +11,18 @@ public class CladdingValidator
 {
 
     /**
-     * Validates the provided cladding information.
+     * Validates the provided cladding blueprint.
      *
-     * @param name                The name to validate.
-     * @param description         The description to validate.
-     * @param pricePerSquareMeter The price per square meter to validate.
+     * @param blueprint The cladding blueprint to perform validation upon.
      * @return The errors with the provided cladding information.
      */
-    public Set<CladdingError> validate(String name, String description, int pricePerSquareMeter)
+    public Set<CladdingError> validate(CladdingBlueprint blueprint)
     {
         Set<CladdingError> errors = new HashSet<>();
+
+        String name                = blueprint.getName();
+        String description         = blueprint.getDescription();
+        int    pricePerSquareMeter = blueprint.getPricePerSquareMeter();
 
         if (name == null || name.isEmpty())
             errors.add(EMPTY_NAME);
@@ -35,16 +37,5 @@ public class CladdingValidator
             errors.add(NEGATIVE_PRICE);
 
         return errors;
-    }
-
-    /**
-     * Validates the provided cladding.
-     *
-     * @param cladding The cladding to validate.
-     * @return The errors with the provided cladding.
-     */
-    public Set<CladdingError> validate(Cladding cladding)
-    {
-        return validate(cladding.getName(), cladding.getDescription(), cladding.getPricePerSquareMeter());
     }
 }

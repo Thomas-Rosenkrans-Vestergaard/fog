@@ -2,10 +2,7 @@ package tvestergaard.fog.logic.claddings;
 
 import tvestergaard.fog.data.DataAccessException;
 import tvestergaard.fog.data.ProductionDataSource;
-import tvestergaard.fog.data.cladding.Cladding;
-import tvestergaard.fog.data.cladding.CladdingColumn;
-import tvestergaard.fog.data.cladding.CladdingDAO;
-import tvestergaard.fog.data.cladding.MysqlCladdingDAO;
+import tvestergaard.fog.data.cladding.*;
 import tvestergaard.fog.data.constraints.Constraint;
 import tvestergaard.fog.logic.ApplicationException;
 
@@ -84,17 +81,18 @@ public class CladdingFacade
      * @param pricePerSquareMeter The price per square meter of cladding (in øre).
      * @param active              Whether or not the cladding can be applied to orders.
      * @return The cladding instance representing the newly created cladding.
-     * @throws ApplicationException        When an exception occurs while performing the operation.
+     * @throws ApplicationException       When an exception occurs while performing the operation.
      * @throws CladdingValidatorException When the provided information is considered invalid.
      */
     public Cladding create(String name, String description, int pricePerSquareMeter, boolean active)
             throws CladdingValidatorException
     {
         try {
-            Set<CladdingError> reasons = validator.validate(name, description, pricePerSquareMeter);
+            CladdingBlueprint  blueprint = Cladding.blueprint(name, description, pricePerSquareMeter, active);
+            Set<CladdingError> reasons   = validator.validate(blueprint);
             if (!reasons.isEmpty())
                 throw new CladdingValidatorException(reasons);
-            return dao.create(name, description, pricePerSquareMeter, active);
+            return dao.create(blueprint);
         } catch (DataAccessException e) {
             throw new ApplicationException(e);
         }
@@ -103,18 +101,18 @@ public class CladdingFacade
     /**
      * Updates the entity in the data storage to match the provided {@code cladding}.
      *
-     * @param cladding The cladding to update the entity in the data storage to.
+     * @param updater The cladding to update the entity in the data storage to.
      * @return {@link true} if the record was updated.
-     * @throws ApplicationException        When an exception occurs while performing the operation.
+     * @throws ApplicationException       When an exception occurs while performing the operation.
      * @throws CladdingValidatorException When the provided information is considered invalid.
      */
-    public boolean update(Cladding cladding) throws CladdingValidatorException
+    public boolean update(CladdingUpdater updater) throws CladdingValidatorException
     {
         try {
-            Set<CladdingError> reasons = validator.validate(cladding);
+            Set<CladdingError> reasons = validator.validate(updater);
             if (!reasons.isEmpty())
                 throw new CladdingValidatorException(reasons);
-            return dao.update(cladding);
+            return dao.update(updater);
         } catch (DataAccessException e) {
             throw new ApplicationException(e);
         }

@@ -4,13 +4,13 @@ import com.mysql.cj.jdbc.MysqlDataSource;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import tvestergaard.fog.data.ProductionDataSource;
 import tvestergaard.fog.data.TestDataSource;
 
 import java.sql.Connection;
 import java.util.List;
 
 import static org.junit.Assert.*;
+import static tvestergaard.fog.Helpers.*;
 import static tvestergaard.fog.data.cladding.CladdingColumn.ID;
 import static tvestergaard.fog.data.cladding.CladdingColumn.NAME;
 import static tvestergaard.fog.data.constraints.Constraint.*;
@@ -28,20 +28,20 @@ public class MysqlCladdingDAOTest
     private Cladding cladding5;
 
     @Before
-    public void createData() throws Exception
+    public void before() throws Exception
     {
-        cladding1 = dao.create("name1", "description1", 1, false);
-        cladding2 = dao.create("name2", "description2", 2, true);
-        cladding3 = dao.create("name3", "description3", 3, false);
-        cladding4 = dao.create("name4", "description4", 4, true);
-        cladding5 = dao.create("name5", "description5", 5, false);
+        cladding1 = dao.create(Cladding.blueprint("name1", "description1", 1, false));
+        cladding2 = dao.create(Cladding.blueprint("name2", "description2", 2, true));
+        cladding3 = dao.create(Cladding.blueprint("name3", "description3", 3, false));
+        cladding4 = dao.create(Cladding.blueprint("name4", "description4", 4, true));
+        cladding5 = dao.create(Cladding.blueprint("name5", "description5", 5, false));
     }
 
     @After
     public void after() throws Exception
     {
-        Connection connection = ProductionDataSource.getSource().getConnection();
-        connection.createStatement().executeUpdate("DELETE * FROM claddings");
+        Connection connection = TestDataSource.getSource().getConnection();
+        connection.createStatement().executeUpdate("DELETE FROM claddings");
     }
 
     @Test
@@ -120,11 +120,11 @@ public class MysqlCladdingDAOTest
     @Test
     public void create() throws Exception
     {
-        String name = "some_random_name";
-        String description = "some_random_description";
-        int pricePerSquareMeter = 234873;
-        boolean active = false;
-        Cladding actual = dao.create(name, description, pricePerSquareMeter, active);
+        String   name                = randomString();
+        String   description         = randomString();
+        int      pricePerSquareMeter = randomInt(0, 100000);
+        boolean  active              = randomBoolean();
+        Cladding actual              = dao.create(Cladding.blueprint(name, description, pricePerSquareMeter, active));
         assertEquals(name, actual.getName());
         assertEquals(description, actual.getDescription());
         assertEquals(pricePerSquareMeter, actual.getPricePerSquareMeter());
@@ -134,10 +134,10 @@ public class MysqlCladdingDAOTest
     @Test
     public void update() throws Exception
     {
-        cladding1.setName("new_name");
-        cladding1.setDescription("new_description");
-        cladding1.setPricePerSquareMeter(2897342);
-        cladding1.setActive(true);
+        cladding1.setName(randomString());
+        cladding1.setDescription(randomString());
+        cladding1.setPricePerSquareMeter(randomInt(0, 100000));
+        cladding1.setActive(randomBoolean());
 
         assertTrue(dao.update(cladding1));
 

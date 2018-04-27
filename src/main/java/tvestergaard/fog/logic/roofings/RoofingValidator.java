@@ -1,6 +1,6 @@
 package tvestergaard.fog.logic.roofings;
 
-import tvestergaard.fog.data.roofing.Roofing;
+import tvestergaard.fog.data.roofing.RoofingBlueprint;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -11,16 +11,20 @@ public class RoofingValidator
 {
 
     /**
-     * Validates the provided roofing information.
+     * Validates the provided roofing blueprint.
      *
-     * @param name                The name to validate.
-     * @param description         The description to validate.
-     * @param pricePerSquareMeter The price per square meter to validate.
+     * @param blueprint The roofing blueprint to perform validation upon.
      * @return The errors with the provided roofing information.
      */
-    public Set<RoofingError> validate(String name, String description, int pricePerSquareMeter, int minimumSlope, int maximumSlope)
+    public Set<RoofingError> validate(RoofingBlueprint blueprint)
     {
         Set<RoofingError> errors = new HashSet<>();
+
+        String name                = blueprint.getName();
+        String description         = blueprint.getDescription();
+        int    pricePerSquareMeter = blueprint.getPricePerSquareMeter();
+        int    minimumSlope        = blueprint.getMinimumSlope();
+        int    maximumSlope        = blueprint.getMaximumSlope();
 
         if (name == null || name.isEmpty())
             errors.add(EMPTY_NAME);
@@ -28,7 +32,7 @@ public class RoofingValidator
         if (name != null && name.length() > 255)
             errors.add(NAME_LONGER_THAN_255);
 
-        if (description == null || name.isEmpty())
+        if (description == null || description.isEmpty())
             errors.add(EMPTY_DESCRIPTION);
 
         if (pricePerSquareMeter < 1)
@@ -50,21 +54,5 @@ public class RoofingValidator
             errors.add(MINIMUM_GREATER_THAN_MAXIMUM);
 
         return errors;
-    }
-
-    /**
-     * Validates the provided roofing.
-     *
-     * @param roofing The roofing to validate.
-     * @return The errors with the provided roofing.
-     */
-    public Set<RoofingError> validate(Roofing roofing)
-    {
-        return validate(
-                roofing.getName(),
-                roofing.getDescription(),
-                roofing.getPricePerSquareMeter(),
-                roofing.getMinimumSlope(),
-                roofing.getMaximumSlope());
     }
 }

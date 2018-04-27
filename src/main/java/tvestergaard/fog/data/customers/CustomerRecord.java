@@ -3,9 +3,6 @@ package tvestergaard.fog.data.customers;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
-/**
- * The default {@link Customer} implementation.
- */
 public class CustomerRecord implements Customer
 {
 
@@ -40,11 +37,6 @@ public class CustomerRecord implements Customer
     private String password;
 
     /**
-     * The preferred contact method of the customer.
-     */
-    private ContactMethod contactMethod;
-
-    /**
      * Whether or not the customer is active.
      */
     private boolean active;
@@ -57,18 +49,17 @@ public class CustomerRecord implements Customer
     /**
      * Creates a new customer.
      *
-     * @param id            The unique identifier of the customer.
-     * @param name          The name of the customer.
-     * @param address       The address of the customer.
-     * @param email         The email address of the customer.
-     * @param phone         The phone number of the customer.
-     * @param password      The password of the customer.
-     * @param contactMethod The preferred contact method of the customer.
-     * @param active        Whether or not the customer is active.
-     * @param createdAt     The moment in time when the customer was created.
+     * @param id        The unique identifier of the customer.
+     * @param name      The name of the customer.
+     * @param address   The address of the customer.
+     * @param email     The email address of the customer.
+     * @param phone     The phone number of the customer.
+     * @param password  The password of the customer.
+     * @param active    Whether or not the customer is active.
+     * @param createdAt The moment in time when the customer was created.
      */
     public CustomerRecord(int id, String name, String address, String email, String phone, String password,
-                          ContactMethod contactMethod, boolean active, LocalDateTime createdAt)
+                          boolean active, LocalDateTime createdAt)
     {
         this.id = id;
         this.name = name;
@@ -76,7 +67,6 @@ public class CustomerRecord implements Customer
         this.email = email;
         this.phone = phone;
         this.password = password;
-        this.contactMethod = contactMethod;
         this.active = active;
         this.createdAt = createdAt;
     }
@@ -203,28 +193,6 @@ public class CustomerRecord implements Customer
     }
 
     /**
-     * Returns the contact method preferred by the customer.
-     *
-     * @return The contact method preferred by the customer.
-     */
-    @Override
-    public ContactMethod getContactMethod()
-    {
-        return this.contactMethod;
-    }
-
-    /**
-     * Sets the contact method preferred by the customer.
-     *
-     * @param method The new contact method.
-     */
-    @Override
-    public void setContactMethod(ContactMethod method)
-    {
-        this.contactMethod = method;
-    }
-
-    /**
      * Returns {@code true} if the customer is active.
      *
      * @return {@code true} if the customer is active.
@@ -270,7 +238,6 @@ public class CustomerRecord implements Customer
                 Objects.equals(email, that.getEmail()) &&
                 Objects.equals(phone, that.getPhone()) &&
                 Objects.equals(password, that.getPassword()) &&
-                contactMethod == that.getContactMethod() &&
                 Objects.equals(createdAt, that.getCreatedAt());
     }
 

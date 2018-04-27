@@ -30,22 +30,18 @@ public interface CladdingDAO
     /**
      * Inserts a new cladding into the data storage.
      *
-     * @param name                The name of the cladding to create.
-     * @param description         The description of the cladding to create.
-     * @param pricePerSquareMeter The price per square meter of cladding (in øre).
-     * @param active              Whether or not the cladding can be applied to orders.
+     * @param blueprint The cladding blueprint that contains the information necessary to create the cladding.
      * @return The cladding instance representing the newly created cladding.
      * @throws DataAccessException When an exception occurs while performing the operation.
      */
-    Cladding create(String name, String description, int pricePerSquareMeter, boolean active)
-            throws DataAccessException;
+    Cladding create(CladdingBlueprint blueprint) throws DataAccessException;
 
     /**
      * Updates the entity in the data storage to match the provided {@code cladding}.
      *
-     * @param cladding The cladding to update the entity in the data storage to.
+     * @param updater The cladding updater that contains the information necessary to create the cladding.
      * @return {@link true} if the record was updated.
      * @throws DataAccessException When an exception occurs while performing the operation.
      */
-    boolean update(Cladding cladding) throws DataAccessException;
+    boolean update(CladdingUpdater updater) throws DataAccessException;
 }

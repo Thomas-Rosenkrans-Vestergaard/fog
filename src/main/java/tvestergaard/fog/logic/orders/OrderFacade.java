@@ -1,18 +1,17 @@
-package tvestergaard.fog.logic;
+package tvestergaard.fog.logic.orders;
 
 import tvestergaard.fog.data.DataAccessException;
 import tvestergaard.fog.data.ProductionDataSource;
 import tvestergaard.fog.data.constraints.Constraint;
 import tvestergaard.fog.data.orders.*;
-import tvestergaard.fog.data.sheds.Shed;
-import tvestergaard.fog.data.sheds.ShedSpecification;
-import tvestergaard.fog.logic.OrderValidationException.Reason;
+import tvestergaard.fog.data.sheds.ShedUpdater;
+import tvestergaard.fog.logic.ApplicationException;
 
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import static tvestergaard.fog.logic.OrderValidationException.Reason.*;
+import static tvestergaard.fog.logic.orders.OrderError.*;
 
 public class OrderFacade
 {
@@ -36,7 +35,7 @@ public class OrderFacade
      * @return The resulting orders.
      * @throws ApplicationException When an exception occurs while performing the operation.
      */
-    public List<Order> get(Constraint<OrderColumn>... constraints) throws ApplicationException
+    public List<Order> get(Constraint<OrderColumn>... constraints)
     {
         try {
             return dao.get(constraints);
@@ -53,7 +52,7 @@ public class OrderFacade
      * provided constraints.
      * @throws ApplicationException When an exception occurs while performing the operation.
      */
-    public Order first(Constraint<OrderColumn>... constraints) throws ApplicationException
+    public Order first(Constraint<OrderColumn>... constraints)
     {
         try {
             return dao.first(constraints);
@@ -75,8 +74,8 @@ public class OrderFacade
      * @param rafters  The rafters construction delivered with the order to create.
      * @param shed     The shed to add to the order.
      * @return The new order.
-     * @throws OrderValidationException When the provided details are considered invalid.
-     * @throws ApplicationException     When an exception occurs during the operation.
+     * @throws OrderValidatorException When the provided details are considered invalid.
+     * @throws ApplicationException    When an exception occurs during the operation.
      */
     public Order create(
             int customer,
@@ -87,18 +86,21 @@ public class OrderFacade
             int roofing,
             int slope,
             RafterChoice rafters,
-            ShedSpecification shed) throws OrderValidationException
+            ShedSpecification shed) throws OrderValidatorException
     {
-        try {
+//        try {
 
-            Set<Reason> reasons = validateCreateOrder(customer, cladding, width, length, height, roofing, slope, shed);
-            if (!reasons.isEmpty())
-                throw new OrderValidationException(reasons);
+//            OrderBlueprint blueprint = OrderBlueprint.from()
+//                                               Set < OrderError > reasons = validateCreateOrder(customer, cladding, width, length, height, roofing, slope, shed);
+//            if (!reasons.isEmpty())
+//                throw new OrderValidatorException(reasons);
+//
+//            return dao.create(customer, cladding, width, length, height, roofing, slope, rafters, shed);
 
-            return dao.create(customer, cladding, width, length, height, roofing, slope, rafters, shed);
-        } catch (DataAccessException e) {
-            throw new ApplicationException(e);
-        }
+        return null;
+//        } catch (DataAccessException e) {
+//            throw new ApplicationException(e);
+//        }
     }
 
     /**
@@ -113,9 +115,8 @@ public class OrderFacade
      * @param slope    The slope variable to perform validation upon.
      * @param shed     The shed variable to perform validation upon.
      * @return Any reasons why the provided information is invalid.
-     * @see OrderFacade#create(int, int, int, int, int, int, int, RafterChoice, ShedSpecification)
      */
-    private Set<Reason> validateCreateOrder(
+    private Set<OrderError> validateCreateOrder(
             int customer,
             int cladding,
             int width,
@@ -142,7 +143,7 @@ public class OrderFacade
      * @param shed     The shed variable to perform validation upon.
      * @return Any reasons why the provided information is invalid.
      */
-    private Set<Reason> validateOrderInformation(
+    private Set<OrderError> validateOrderInformation(
             int customer,
             int cladding,
             int width,
@@ -152,7 +153,7 @@ public class OrderFacade
             int slope,
             ShedSpecification shed)
     {
-        Set<Reason> reasons = new HashSet<>();
+        Set<OrderError> reasons = new HashSet<>();
 
         if (width < 240 || width % 30 != 0 || width > 750)
             reasons.add(ILLEGAL_WIDTH);
@@ -177,12 +178,12 @@ public class OrderFacade
      * @throws ApplicationException When an exception occurs while performing the operation.
      * @see OrderFacade#update(Order)
      */
-    public boolean update(Order order) throws OrderValidationException
+    public boolean update(Order order) throws OrderValidatorException
     {
         try {
-            Set<Reason> reasons = validateUpdateOrder(order);
+            Set<OrderError> reasons = validate(order);
             if (!reasons.isEmpty())
-                throw new OrderValidationException(reasons);
+                throw new OrderValidatorException(reasons);
 
             return dao.update(order);
         } catch (DataAccessException e) {
@@ -193,22 +194,22 @@ public class OrderFacade
     /**
      * Validates the provided details for updating an order.
      *
-     * @param order The order to validate.
+     * @param updater The order to validate.
      * @return Any reasons why the provided information is invalid.
-     * @throws OrderValidationException When the provided details are considered invalid.
+     * @throws OrderValidatorException When the provided details are considered invalid.
      */
-    private Set<Reason> validateUpdateOrder(Order order)
+    private Set<OrderError> validate(OrderUpdater updater)
     {
         // TODO: validate that customer, cladding, roofing and shed are all active
-        Shed shed = order.getShed();
-        Set<Reason> reasons = validateOrderInformation(
-                order.getCustomer().getId(),
-                order.getCladding().getId(),
-                order.getWidth(),
-                order.getLength(),
-                order.getHeight(),
-                order.getRoofing().getId(),
-                order.getSlope(),
+        ShedUpdater shed = updater.getShed();
+        Set<OrderError> reasons = validateOrderInformation(
+                updater.getCustomer().getId(),
+                updater.getCladding().getId(),
+                updater.getWidth(),
+                updater.getLength(),
+                updater.getHeight(),
+                updater.getRoofing().getId(),
+                updater.getSlope(),
                 new ShedSpecification(shed.getWidth(), shed.getDepth(), shed.getCladding().getId(),
                         shed.getFlooring().getId()));
         return reasons;

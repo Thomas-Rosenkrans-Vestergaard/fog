@@ -21,6 +21,7 @@
         </div>
     </li>
     <li><a href="design">Design</a></li>
+    <li><a href="account">Kundekonto</a></li>
 </ul>
 <div id="menu-button">
     <a href="#" data-activates="slide-out" id="navigation-trigger"><i class="material-icons large">menu</i></a>

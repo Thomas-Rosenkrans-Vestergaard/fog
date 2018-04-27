@@ -5,13 +5,13 @@
 
 main {
     padding: 40px 40px 40px 340px;
-    max-width: 1200px;
+    max-width: 1400px;
+    margin: 0 auto;
 }
 
 @media only screen and (max-width: 992px) {
     main {
         padding-left: 40px;
-        margin: 0 auto;
     }
 }
 
@@ -32,7 +32,7 @@ main {
 
 #top-logo {
     float: right;
-    height: 45px;
+    height: 3rem;
     margin: 30px;
 }
 
@@ -50,9 +50,9 @@ main {
 }
 
 #navigation-trigger i {
-    font-size: 5rem;
+    font-size: 3rem;
     color: white;
-    padding: 15px;
+    padding: 25px;
 }
 
 p {
@@ -88,9 +88,14 @@ hr {
     margin: 20px 0;
 }
 
-[type="radio"]:checked+label:after, [type="radio"].with-gap:checked+label:after {
+[type="radio"]:checked + label:after, [type="radio"].with-gap:checked + label:after {
     background-color: #014785;
 }
-[type="radio"]:checked+label:after, [type="radio"].with-gap:checked+label:before, [type="radio"].with-gap:checked+label:after {
+
+[type="radio"]:checked + label:after, [type="radio"].with-gap:checked + label:before, [type="radio"].with-gap:checked + label:after {
     border: 2px solid #014785;
+}
+
+.account-form-headers {
+    font-size: 2rem;
 }

@@ -5,9 +5,6 @@ import tvestergaard.fog.data.flooring.Flooring;
 
 import java.util.Objects;
 
-/**
- * The default {@link Shed} implementation
- */
 public class ShedRecord implements Shed
 {
 

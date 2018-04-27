@@ -1,6 +1,5 @@
 package tvestergaard.fog.presentation.servlets;
 
-import tvestergaard.fog.logic.ApplicationException;
 import tvestergaard.fog.logic.roofings.RoofingFacade;
 
 import javax.servlet.ServletException;
@@ -14,7 +13,7 @@ import java.io.IOException;
 public class AdministrationRoofings extends HttpServlet
 {
 
-    private final RoofingFacade roofingFacade = new RoofingFacade();
+    private final RoofingFacade facade = new RoofingFacade();
 
     /**
      * Shows the administration page for orders placed by roofings.
@@ -27,12 +26,8 @@ public class AdministrationRoofings extends HttpServlet
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException
     {
-        try {
-            req.setAttribute("title", "Tag");
-            req.setAttribute("roofings", roofingFacade.get());
-            req.getRequestDispatcher("/WEB-INF/administration/roofings.jsp").forward(req, resp);
-        } catch (ApplicationException e) {
-            throw new IllegalStateException(e);
-        }
+        req.setAttribute("title", "Tag");
+        req.setAttribute("roofings", facade.get());
+        req.getRequestDispatcher("/WEB-INF/administration/roofings.jsp").forward(req, resp);
     }
 }

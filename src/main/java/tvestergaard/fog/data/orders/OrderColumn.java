@@ -1,45 +1,29 @@
 package tvestergaard.fog.data.orders;
 
-import tvestergaard.fog.data.cladding.CladdingColumn;
 import tvestergaard.fog.data.constraints.MysqlColumn;
 
 public enum OrderColumn implements MysqlColumn
 {
 
-    ID("o.id"),
-    CUSTOMER("o.customer"),
-    CLADDING("o.cladding"),
-    WIDTH("o.width"),
-    LENGTH("o.length"),
-    HEIGHT("o.height"),
-    ROOFING("o.roofing"),
-    SLOPE("o.slope"),
-    RAFTERS("o.rafters");
+    ID,
+    CUSTOMER,
+    CLADDING,
+    WIDTH,
+    LENGTH,
+    HEIGHT,
+    ROOFING,
+    SLOPE,
+    RAFTERS;
 
     /**
-     * The name of the column in SQL.
-     */
-    private final String SQLName;
-
-    /**
-     * Creates a new {@link CladdingColumn}.
+     * Returns the name of the column in MySQL.
      *
-     * @param SQLName The name of the column in SQL.
-     */
-    OrderColumn(String SQLName)
-    {
-        this.SQLName = SQLName;
-    }
-
-    /**
-     * Returns the name of the column in mysql.
-     *
-     * @return The name of the column in mysql.
+     * @return The name of the column in MySQL.
      */
     @Override
-    public String getSQLName()
+    public String getMysqlName()
     {
-        return SQLName;
+        return String.format("o.%s", this.name().toLowerCase());
     }
 
     /**

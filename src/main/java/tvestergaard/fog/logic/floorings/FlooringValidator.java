@@ -1,6 +1,6 @@
 package tvestergaard.fog.logic.floorings;
 
-import tvestergaard.fog.data.flooring.Flooring;
+import tvestergaard.fog.data.flooring.FlooringBlueprint;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -11,16 +11,18 @@ public class FlooringValidator
 {
 
     /**
-     * Validates the provided flooring information.
+     * Validates the provided flooring blueprint.
      *
-     * @param name                The name to validate.
-     * @param description         The description to validate.
-     * @param pricePerSquareMeter The price per square meter to validate.
+     * @param blueprint The flooring blueprint to perform validation upon.
      * @return The errors with the provided flooring information.
      */
-    public Set<FlooringError> validate(String name, String description, int pricePerSquareMeter)
+    public Set<FlooringError> validate(FlooringBlueprint blueprint)
     {
         Set<FlooringError> errors = new HashSet<>();
+
+        String name                = blueprint.getName();
+        String description         = blueprint.getDescription();
+        int    pricePerSquareMeter = blueprint.getPricePerSquareMeter();
 
         if (name == null || name.isEmpty())
             errors.add(EMPTY_NAME);
@@ -35,16 +37,5 @@ public class FlooringValidator
             errors.add(NEGATIVE_PRICE);
 
         return errors;
-    }
-
-    /**
-     * Validates the provided flooring.
-     *
-     * @param flooring The flooring to validate.
-     * @return The errors with the provided flooring.
-     */
-    public Set<FlooringError> validate(Flooring flooring)
-    {
-        return validate(flooring.getName(), flooring.getDescription(), flooring.getPricePerSquareMeter());
     }
 }

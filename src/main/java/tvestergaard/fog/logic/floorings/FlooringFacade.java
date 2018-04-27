@@ -3,10 +3,7 @@ package tvestergaard.fog.logic.floorings;
 import tvestergaard.fog.data.DataAccessException;
 import tvestergaard.fog.data.ProductionDataSource;
 import tvestergaard.fog.data.constraints.Constraint;
-import tvestergaard.fog.data.flooring.Flooring;
-import tvestergaard.fog.data.flooring.FlooringColumn;
-import tvestergaard.fog.data.flooring.FlooringDAO;
-import tvestergaard.fog.data.flooring.MysqlFlooringDAO;
+import tvestergaard.fog.data.flooring.*;
 import tvestergaard.fog.logic.ApplicationException;
 
 import java.util.List;
@@ -84,17 +81,18 @@ public class FlooringFacade
      * @param pricePerSquareMeter The price per square meter of flooring (in øre).
      * @param active              Whether or not the flooring can be applied to orders.
      * @return The flooring instance representing the newly created flooring.
-     * @throws ApplicationException        When an exception occurs while performing the operation.
+     * @throws ApplicationException       When an exception occurs while performing the operation.
      * @throws FlooringValidatorException When the provided information is considered invalid.
      */
     public Flooring create(String name, String description, int pricePerSquareMeter, boolean active)
             throws FlooringValidatorException
     {
         try {
-            Set<FlooringError> reasons = validator.validate(name, description, pricePerSquareMeter);
+            FlooringBlueprint  blueprint = Flooring.blueprint(name, description, pricePerSquareMeter, active);
+            Set<FlooringError> reasons   = validator.validate(blueprint);
             if (!reasons.isEmpty())
                 throw new FlooringValidatorException(reasons);
-            return dao.create(name, description, pricePerSquareMeter, active);
+            return dao.create(blueprint);
         } catch (DataAccessException e) {
             throw new ApplicationException(e);
         }
@@ -105,7 +103,7 @@ public class FlooringFacade
      *
      * @param flooring The flooring to update the entity in the data storage to.
      * @return {@link true} if the record was updated.
-     * @throws ApplicationException        When an exception occurs while performing the operation.
+     * @throws ApplicationException       When an exception occurs while performing the operation.
      * @throws FlooringValidatorException When the provided information is considered invalid.
      */
     public boolean update(Flooring flooring) throws FlooringValidatorException

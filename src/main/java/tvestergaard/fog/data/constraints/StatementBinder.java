@@ -2,6 +2,9 @@ package tvestergaard.fog.data.constraints;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.HashMap;
 
 /**
  * Binds the parameters of a provided {@code PreparedStatement} using the provided {@link Constraint}s.
@@ -15,6 +18,21 @@ public class StatementBinder<T extends Enum<T> & MysqlColumn>
     private int currentParameterIndex = 1;
 
     /**
+     * Contains the ordering of contains.
+     *
+     * @see StatementGenerator#sort(Constraint[])
+     */
+    private final java.util.Map<Class<? extends Constraint>, Integer> constraintOrder = new HashMap<>();
+
+    public StatementBinder()
+    {
+        constraintOrder.put(WhereConstraint.class, 0);
+        constraintOrder.put(OrderConstraint.class, 1);
+        constraintOrder.put(LimitConstraint.class, 2);
+        constraintOrder.put(OffsetConstraint.class, 4);
+    }
+
+    /**
      * Sets the prepared parameters on the provided {@link PreparedStatement} needed by the provided {@link
      * Constraint}s.
      *
@@ -26,10 +44,22 @@ public class StatementBinder<T extends Enum<T> & MysqlColumn>
     public void bind(PreparedStatement statement, int begin, Constraint<T>... constraints) throws SQLException
     {
         currentParameterIndex = begin;
+        sort(constraints);
         for (Constraint constraint : constraints) {
             bind(statement, constraint);
         }
     }
+
+    /**
+     * Sorts the provided {@link Constraint}s, so they appear in the order required by SQL.
+     *
+     * @param constraints The constraints to sort. Mutates the provided array.
+     */
+    private void sort(Constraint<T>[] constraints)
+    {
+        Arrays.sort(constraints, Comparator.comparingInt(c -> constraintOrder.get(c.getClass())));
+    }
+
 
     /**
      * Sets the prepared parameters on the provided {@link PreparedStatement} needed by the provided {@link
@@ -121,6 +151,10 @@ public class StatementBinder<T extends Enum<T> & MysqlColumn>
         if (condition instanceof EqualsCondition) {
             statement.setObject(currentParameterIndex++, ((EqualsCondition) condition).value);
             return;
+        }
+
+        if (condition instanceof NotCondition) {
+            statement.setObject(currentParameterIndex++, ((NotCondition) condition).value);
         }
 
         if (condition instanceof LikeCondition) {

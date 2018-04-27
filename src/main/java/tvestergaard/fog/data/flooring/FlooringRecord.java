@@ -2,9 +2,6 @@ package tvestergaard.fog.data.flooring;
 
 import java.util.Objects;
 
-/**
- * The default {@link Flooring} implementation.
- */
 public class FlooringRecord implements Flooring
 {
 

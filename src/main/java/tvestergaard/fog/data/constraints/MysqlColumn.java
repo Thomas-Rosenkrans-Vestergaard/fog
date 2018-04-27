@@ -4,11 +4,11 @@ public interface MysqlColumn
 {
 
     /**
-     * Returns the name of the column in mysql.
+     * Returns the name of the column in MySQL.
      *
-     * @return The name of the column in mysql.
+     * @return The name of the column in MySQL.
      */
-    String getSQLName();
+    String getMysqlName();
 
     /**
      * Whether or not the generator should use backtick (`) on the column name.

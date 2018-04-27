@@ -3,71 +3,37 @@ package tvestergaard.fog.data.sheds;
 import tvestergaard.fog.data.cladding.Cladding;
 import tvestergaard.fog.data.flooring.Flooring;
 
-public interface Shed
+public interface Shed extends ShedUpdater
 {
 
     /**
-     * Returns the unique identifier of the shed.
+     * Returns a new roofing blueprint from the provided information.
      *
-     * @return The unique identifier of the shed.
+     * @param width    The width of the roofing to specify in the blueprint.
+     * @param depth    The depth of the roofing to specify in the blueprint.
+     * @param cladding The cladding of the roofing to specify in the blueprint.
+     * @param flooring The flooring of the roofing to specify in the blueprint.
+     * @return The newly created roofing blueprint.
      */
-    int getId();
+    static ShedBlueprint blueprint(int width, int depth, Cladding cladding, Flooring flooring)
+    {
+        return new ShedRecord(-1, width, depth, cladding, flooring);
+    }
 
     /**
-     * Returns the width of the shed.
+     * Returns a new roofing blueprint from the provided information.
      *
-     * @return The width of the shed.
+     * @param id       The id of the roofing to update.
+     * @param width    The width of the roofing to specify in the blueprint.
+     * @param depth    The depth of the roofing to specify in the blueprint.
+     * @param cladding The cladding of the roofing to specify in the blueprint.
+     * @param flooring The flooring of the roofing to specify in the blueprint.
+     * @return The newly created roofing blueprint.
      */
-    int getWidth();
-
-    /**
-     * Sets the width of the shed.
-     *
-     * @param width The new width.
-     */
-    void setWidth(int width);
-
-    /**
-     * Returns the depth of the shed.
-     *
-     * @return The depth of the shed.
-     */
-    int getDepth();
-
-    /**
-     * Sets the depth of the shed.
-     *
-     * @param depth The new depth.
-     */
-    void setDepth(int depth);
-
-    /**
-     * Returns the cladding used on the shed.
-     *
-     * @return The cladding used on the shed.
-     */
-    Cladding getCladding();
-
-    /**
-     * Sets hte cladding used on the shed.
-     *
-     * @param cladding The new cladding.
-     */
-    void setCladding(Cladding cladding);
-
-    /**
-     * Returns the flooring used on the shed.
-     *
-     * @return The flooring used on the shed.
-     */
-    Flooring getFlooring();
-
-    /**
-     * Sets the flooring used on the shed.
-     *
-     * @param flooring The new flooring.
-     */
-    void setFlooring(Flooring flooring);
+    static ShedBlueprint updater(int id, int width, int depth, Cladding cladding, Flooring flooring)
+    {
+        return new ShedRecord(id, width, depth, cladding, flooring);
+    }
 
     /**
      * Checks that this shed equals another provided object. The two objects are only considered equal when all the

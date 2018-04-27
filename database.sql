@@ -68,7 +68,7 @@ CREATE TABLE `claddings` (
   `active` bit(1) NOT NULL DEFAULT b'1',
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -84,13 +84,13 @@ CREATE TABLE `customers` (
   `address` varchar(255) NOT NULL,
   `email` varchar(255) NOT NULL,
   `phone` varchar(30) NOT NULL,
+  `contact_method` enum('EMAIL','PHONE') NOT NULL,
   `password` varchar(255) DEFAULT NULL,
-  `contact_method` tinyint(3) unsigned NOT NULL,
   `active` bit(1) NOT NULL DEFAULT b'1',
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -107,30 +107,9 @@ CREATE TABLE `employees` (
   `password` varchar(60) NOT NULL,
   `active` bit(1) NOT NULL DEFAULT b'1',
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `employees_roles`
---
-
-DROP TABLE IF EXISTS `employees_roles`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `employees_roles` (
-  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `employee` int(11) unsigned NOT NULL,
-  `role` int(11) unsigned NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `id_UNIQUE` (`id`),
-  KEY `employee` (`employee`),
-  KEY `role` (`role`),
-  CONSTRAINT `employees_roles_ibfk_1` FOREIGN KEY (`employee`) REFERENCES `employees` (`id`),
-  CONSTRAINT `employees_roles_ibfk_2` FOREIGN KEY (`role`) REFERENCES `roles` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -148,7 +127,7 @@ CREATE TABLE `floorings` (
   `active` bit(1) NOT NULL DEFAULT b'1',
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -188,17 +167,14 @@ CREATE TABLE `orders` (
   `roofing` int(11) unsigned NOT NULL,
   `slope` tinyint(11) unsigned NOT NULL,
   `rafters` tinyint(11) unsigned NOT NULL,
-  `shed` int(11) unsigned DEFAULT NULL,
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`),
   KEY `customer` (`customer`),
   KEY `cladding` (`cladding`),
-  KEY `orders_ibfk_3_idx` (`shed`),
   CONSTRAINT `orders_ibfk_1` FOREIGN KEY (`customer`) REFERENCES `customers` (`id`),
-  CONSTRAINT `orders_ibfk_2` FOREIGN KEY (`cladding`) REFERENCES `roofings` (`id`),
-  CONSTRAINT `orders_ibfk_3` FOREIGN KEY (`shed`) REFERENCES `sheds` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+  CONSTRAINT `orders_ibfk_2` FOREIGN KEY (`cladding`) REFERENCES `roofings` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -210,10 +186,11 @@ DROP TABLE IF EXISTS `roles`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `roles` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `name` varchar(45) NOT NULL,
+  `employee` int(11) unsigned NOT NULL,
+  `role` enum('HEAD_OF_CENTER','HEAD_OF_MATERIALS','SALESMAN') NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -227,13 +204,13 @@ CREATE TABLE `roofings` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(255) NOT NULL,
   `description` text NOT NULL,
+  `price_per_square_meter` int(11) NOT NULL,
   `minimum_slope` tinyint(3) unsigned NOT NULL,
   `maximum_slope` tinyint(3) unsigned NOT NULL,
-  `price_per_square_meter` int(11) NOT NULL,
   `active` bit(1) NOT NULL DEFAULT b'1',
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -245,14 +222,17 @@ DROP TABLE IF EXISTS `sheds`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `sheds` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `order` int(11) unsigned NOT NULL,
   `width` int(11) unsigned NOT NULL,
   `depth` int(11) unsigned NOT NULL,
   `cladding` int(11) unsigned NOT NULL,
   `flooring` int(11) unsigned NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`),
+  UNIQUE KEY `order_UNIQUE` (`order`),
   KEY `cladding` (`cladding`),
   KEY `flooring` (`flooring`),
+  CONSTRAINT `fk_orders` FOREIGN KEY (`order`) REFERENCES `orders` (`id`),
   CONSTRAINT `sheds_ibfk_1` FOREIGN KEY (`cladding`) REFERENCES `claddings` (`id`),
   CONSTRAINT `sheds_ibfk_2` FOREIGN KEY (`flooring`) REFERENCES `floorings` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -267,4 +247,4 @@ CREATE TABLE `sheds` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-04-26 11:21:30
+-- Dump completed on 2018-04-27 15:13:59

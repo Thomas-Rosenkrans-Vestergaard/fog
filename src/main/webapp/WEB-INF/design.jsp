@@ -35,7 +35,7 @@
             </div>
         </div>
         <div class="row">
-            <div class="input-field col s12 m4">
+            <div class="input-field col s12">
                 <select id="width" name="width" required>
                     <option value="240">240 cm</option>
                     <option value="270">270 cm</option>
@@ -58,7 +58,9 @@
                 </select>
                 <label>Bredde</label>
             </div>
-            <div class="input-field col s12 m4">
+        </div>
+        <div class="row">
+            <div class="input-field col s12">
                 <select id="length" name="length" required>
                     <option value="240">240 cm</option>
                     <option value="270">270 cm</option>
@@ -82,7 +84,9 @@
                 </select>
                 <label>Længde</label>
             </div>
-            <div class="input-field col s12 m4">
+        </div>
+        <div class="row">
+            <div class="input-field col s12">
                 <select id="height" name="height" required>
                     <option value="180">180 cm</option>
                     <option value="210">210 cm</option>
@@ -99,7 +103,7 @@
             </div>
         </div>
         <div class="row">
-            <div class="input-field col s12 m6">
+            <div class="input-field col s12">
                 <select name="roofing" required>
                     <c:forEach items="${roofings}" var="roofing">
                         <option value="${roofing.getId()}"><c:out value="${roofing.getName()}"/></option>
@@ -107,8 +111,11 @@
                 </select>
                 <label>Tagbeklædning</label>
             </div>
-            <div class="input-field col s12 m6">
-                <input name="slope" id="slope" type="number" step="1" min="0" max="90" class="validate" required>
+        </div>
+        <div class="row">
+            <div class="input-field col s12">
+                <input name="slope" id="slope" type="number" step="1" min="0" max="90" class="validate"
+                       required>
                 <label for="slope">Hældningsgraden</label>
             </div>
         </div>
@@ -120,11 +127,11 @@
         <div class="row">
             <p>
                 <input name="rafters" type="radio" id="rafters-premade" value="PREBUILT" checked="checked" required/>
-                <label for="rafters-premade">PRÆLAVET</label>
+                <label for="rafters-premade">Færdiglavet spær</label>
             </p>
             <p>
                 <input name="rafters" type="radio" id="rafters-self" value="BUILD_SELF" required/>
-                <label for="rafters-self">SELVBYG</label>
+                <label for="rafters-self">Byg selv spær</label>
             </p>
         </div>
         <div class="row">
@@ -144,12 +151,14 @@
         </div>
         <div class="row shed-rows">
             <div class="input-field col s12 m6">
-                <input name="shed-width" id="shed-width" type="number" step="1" min="0" class="validate shed-input"
+                <input name="shed-width" id="shed-width" type="number" step="1" min="0"
+                       class="validate shed-input"
                        required>
                 <label for="shed-width">Bredde</label>
             </div>
             <div class="input-field col s12 m6">
-                <input name="shed-depth" id="shed-depth" type="number" step="1" min="0" class="validate shed-input"
+                <input name="shed-depth" id="shed-depth" type="number" step="1" min="0"
+                       class="validate shed-input"
                        required>
                 <label for="shed-depth">Dybde</label>
             </div>
@@ -186,7 +195,8 @@
         </div>
         <div class="row">
             <div class="input-field col s12">
-                <input name="customer-address" id="customer-address" type="text" minlength="10" data-length="255"
+                <input name="customer-address" id="customer-address" type="text" minlength="10"
+                       data-length="255"
                        class="validate" required>
                 <label for="customer-address">Address</label>
             </div>
@@ -211,7 +221,8 @@
                 <label for="contact-method-telephone">Telefon</label>
             </p>
             <p>
-                <input name="contact-method" type="radio" id="contact-method-email" value="EMAIL" checked="checked"
+                <input name="contact-method" type="radio" id="contact-method-email" value="EMAIL"
+                       checked="checked"
                        required/>
                 <label for="contact-method-email">Email</label>
             </p>

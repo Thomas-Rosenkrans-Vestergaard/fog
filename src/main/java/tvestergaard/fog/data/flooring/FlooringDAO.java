@@ -30,22 +30,18 @@ public interface FlooringDAO
     /**
      * Inserts a new flooring into the data storage.
      *
-     * @param name                The name of the flooring to create.
-     * @param description         The description of the flooring to create.
-     * @param pricePerSquareMeter The price per square meter of flooring (in øre).
-     * @param active              Whether or not the flooring can be applied to orders.
+     * @param blueprint The flooring blueprint that contains the information necessary to create the flooring.
      * @return The flooring instance representing the newly created flooring.
      * @throws DataAccessException When an exception occurs while performing the operation.
      */
-    Flooring create(String name, String description, int pricePerSquareMeter, boolean active)
-            throws DataAccessException;
+    Flooring create(FlooringBlueprint blueprint) throws DataAccessException;
 
     /**
      * Updates the entity in the data storage to match the provided {@code flooring}.
      *
-     * @param flooring The flooring to update the entity in the data storage to.
+     * @param updater The flooring updater that contains the information necessary to create the flooring.
      * @return {@link true} if the record was updated.
      * @throws DataAccessException When an exception occurs while performing the operation.
      */
-    boolean update(Flooring flooring) throws DataAccessException;
+    boolean update(FlooringUpdater updater) throws DataAccessException;
 }

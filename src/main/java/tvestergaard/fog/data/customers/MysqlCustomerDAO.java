@@ -2,7 +2,6 @@ package tvestergaard.fog.data.customers;
 
 import com.mysql.cj.jdbc.MysqlDataSource;
 import tvestergaard.fog.data.AbstractMysqlDAO;
-import tvestergaard.fog.data.DataAccessException;
 import tvestergaard.fog.data.MysqlDataAccessException;
 import tvestergaard.fog.data.constraints.Constraint;
 import tvestergaard.fog.data.constraints.StatementBinder;
@@ -49,7 +48,7 @@ public class MysqlCustomerDAO extends AbstractMysqlDAO implements CustomerDAO
     {
         try {
             final List<Customer> customers = new ArrayList<>();
-            final String SQL = generator.generate("SELECT * FROM customers", constraints);
+            final String         SQL       = generator.generate("SELECT * FROM customers", constraints);
             try (PreparedStatement statement = getConnection().prepareStatement(SQL)) {
                 binder.bind(statement, constraints);
                 ResultSet resultSet = statement.executeQuery();
@@ -94,38 +93,24 @@ public class MysqlCustomerDAO extends AbstractMysqlDAO implements CustomerDAO
     /**
      * Inserts a new customer into the data storage.
      *
-     * @param name          The name of the customer to create.
-     * @param address       The address of the customer to create.
-     * @param email
-     * @param phone         The phone number of the customer to create.
-     * @param password      The password of the customer to create.
-     * @param contactMethod The preferred contact method of the customer to create.
-     * @param active        Whether or not the customer can be applied to orders.     @return The customer instance
-     *                      representing the newly created customer.
+     * @param blueprint The cladding blueprint that contains the information necessary to create the cladding.
+     * @return The customer instance representing the newly created customer.
      * @throws MysqlDataAccessException When an exception occurs while performing the operation.
      */
-    @Override
-    public Customer create(String name,
-                           String address,
-                           String email,
-                           String phone,
-                           String password,
-                           ContactMethod contactMethod,
-                           boolean active) throws MysqlDataAccessException
+    @Override public Customer create(CustomerBlueprint blueprint) throws MysqlDataAccessException
     {
         try {
             final String SQL =
-                    "INSERT INTO customers (name, address, email, phone, password, contact_method, active) " +
-                            "VALUES (?, ?, ?, ?, ?, ?, ?)";
+                    "INSERT INTO customers (name, address, email, phone, password, active) " +
+                            "VALUES (?, ?, ?, ?, ?, ?)";
             Connection connection = getConnection();
             try (PreparedStatement statement = connection.prepareStatement(SQL, Statement.RETURN_GENERATED_KEYS)) {
-                statement.setString(1, name);
-                statement.setString(2, address);
-                statement.setString(3, email);
-                statement.setString(4, phone);
-                statement.setString(5, password);
-                statement.setInt(6, contactMethod.id);
-                statement.setBoolean(7, active);
+                statement.setString(1, blueprint.getName());
+                statement.setString(2, blueprint.getAddress());
+                statement.setString(3, blueprint.getEmail());
+                statement.setString(4, blueprint.getPhone());
+                statement.setString(5, blueprint.getPassword());
+                statement.setBoolean(6, blueprint.isActive());
                 int updated = statement.executeUpdate();
                 connection.commit();
                 if (updated == 0)
@@ -145,26 +130,24 @@ public class MysqlCustomerDAO extends AbstractMysqlDAO implements CustomerDAO
     /**
      * Updates the entity in the data storage to match the provided {@code customer}.
      *
-     * @param customer The customer to update the entity in the data storage to.
+     * @param updater The cladding updater that contains the information necessary to create the cladding.
      * @return {@link true} if the record was updated.
-     * @throws DataAccessException When an exception occurs while performing the operation.
+     * @throws MysqlDataAccessException When an exception occurs while performing the operation.
      */
-    @Override
-    public boolean update(Customer customer) throws DataAccessException
+    @Override public boolean update(CustomerUpdater updater) throws MysqlDataAccessException
     {
         try {
             final String SQL = "UPDATE customers SET name = ?, address = ?, email = ?, phone = ?," +
-                    "password = ?, contact_method = ?, active = ? WHERE id = ?";
+                    "password = ?, active = ? WHERE id = ?";
             Connection connection = getConnection();
             try (PreparedStatement statement = connection.prepareStatement(SQL)) {
-                statement.setString(1, customer.getName());
-                statement.setString(2, customer.getAddress());
-                statement.setString(3, customer.getEmail());
-                statement.setString(4, customer.getPhone());
-                statement.setString(5, customer.getPassword());
-                statement.setInt(6, customer.getContactMethod().id);
-                statement.setBoolean(7, customer.isActive());
-                statement.setInt(8, customer.getId());
+                statement.setString(1, updater.getName());
+                statement.setString(2, updater.getAddress());
+                statement.setString(3, updater.getEmail());
+                statement.setString(4, updater.getPhone());
+                statement.setString(5, updater.getPassword());
+                statement.setBoolean(6, updater.isActive());
+                statement.setInt(7, updater.getId());
                 int updated = statement.executeUpdate();
                 connection.commit();
                 return updated != 0;

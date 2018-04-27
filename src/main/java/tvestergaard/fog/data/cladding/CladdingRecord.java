@@ -2,9 +2,6 @@ package tvestergaard.fog.data.cladding;
 
 import java.util.Objects;
 
-/**
- * The default {@link Cladding} implementation.
- */
 public class CladdingRecord implements Cladding
 {
 
@@ -150,22 +147,20 @@ public class CladdingRecord implements Cladding
         this.active = active;
     }
 
-    @Override
-    public boolean equals(Object o)
+    @Override public boolean equals(Object o)
     {
         if (this == o) return true;
-        if (!(o instanceof Cladding)) return false;
-        Cladding that = (Cladding) o;
-        return id == that.getId() &&
-                pricePerSquareMeter == that.getPricePerSquareMeter() &&
-                active == that.isActive() &&
-                Objects.equals(name, that.getName()) &&
-                Objects.equals(description, that.getDescription());
+        if (!(o instanceof CladdingRecord)) return false;
+        CladdingRecord record = (CladdingRecord) o;
+        return getId() == record.getId() &&
+                getPricePerSquareMeter() == record.getPricePerSquareMeter() &&
+                isActive() == record.isActive() &&
+                Objects.equals(getName(), record.getName()) &&
+                Objects.equals(getDescription(), record.getDescription());
     }
 
-    @Override
-    public int hashCode()
+    @Override public int hashCode()
     {
-        return Objects.hash(id);
+        return Objects.hash(getId());
     }
 }

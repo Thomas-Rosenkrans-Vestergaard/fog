@@ -3,10 +3,7 @@ package tvestergaard.fog.logic.roofings;
 import tvestergaard.fog.data.DataAccessException;
 import tvestergaard.fog.data.ProductionDataSource;
 import tvestergaard.fog.data.constraints.Constraint;
-import tvestergaard.fog.data.roofing.MysqlRoofingDAO;
-import tvestergaard.fog.data.roofing.Roofing;
-import tvestergaard.fog.data.roofing.RoofingColumn;
-import tvestergaard.fog.data.roofing.RoofingDAO;
+import tvestergaard.fog.data.roofing.*;
 import tvestergaard.fog.logic.ApplicationException;
 
 import java.util.List;
@@ -89,14 +86,20 @@ public class RoofingFacade
      * @throws ApplicationException      When an exception occurs while performing the operation.
      * @throws RoofingValidatorException When the provided roofing information is considered invalid.
      */
-    public Roofing create(String name, String description, int minimumSlope, int maximumSlope, int pricePerSquareMeter, boolean active)
-            throws RoofingValidatorException
+    public Roofing create(String name,
+                          String description,
+                          int minimumSlope,
+                          int maximumSlope,
+                          int pricePerSquareMeter,
+                          boolean active) throws RoofingValidatorException
     {
         try {
-            Set<RoofingError> errors = validator.validate(name, description, minimumSlope, maximumSlope, pricePerSquareMeter);
+            RoofingBlueprint blueprint = Roofing.blueprint(name, description, minimumSlope,
+                    maximumSlope, pricePerSquareMeter, active);
+            Set<RoofingError> errors = validator.validate(blueprint);
             if (!errors.isEmpty())
                 throw new RoofingValidatorException(errors);
-            return dao.create(name, description, minimumSlope, maximumSlope, pricePerSquareMeter, active);
+            return dao.create(blueprint);
         } catch (DataAccessException e) {
             throw new ApplicationException(e);
         }
@@ -105,18 +108,32 @@ public class RoofingFacade
     /**
      * Updates the entity in the data storage to match the provided {@code roofing}.
      *
-     * @param roofing The roofing to update the entity in the data storage to.
+     * @param id                  The id of the roofing to update.
+     * @param name                The new name.
+     * @param description         The new description.
+     * @param minimumSlope        The new minimum slope.
+     * @param maximumSlope        The new maximum slope.
+     * @param pricePerSquareMeter The new price per square meter.
+     * @param active              Whether or not the roofing can be applied to orders.
      * @return {@link true} if the record was updated.
      * @throws ApplicationException      When an exception occurs while performing the operation.
      * @throws RoofingValidatorException When the provided roofing information is considered invalid.
      */
-    public boolean update(Roofing roofing) throws RoofingValidatorException
+    public boolean update(int id,
+                          String name,
+                          String description,
+                          int minimumSlope,
+                          int maximumSlope,
+                          int pricePerSquareMeter,
+                          boolean active) throws RoofingValidatorException
     {
         try {
-            Set<RoofingError> errors = validator.validate(roofing);
+            RoofingUpdater updater = Roofing.updater(id, name, description, minimumSlope, maximumSlope,
+                    pricePerSquareMeter, active);
+            Set<RoofingError> errors = validator.validate(updater);
             if (!errors.isEmpty())
                 throw new RoofingValidatorException(errors);
-            return dao.update(roofing);
+            return dao.update(updater);
         } catch (DataAccessException e) {
             throw new ApplicationException(e);
         }

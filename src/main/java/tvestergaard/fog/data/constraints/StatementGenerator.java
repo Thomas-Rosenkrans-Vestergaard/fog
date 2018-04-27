@@ -171,7 +171,7 @@ public class StatementGenerator<T extends Enum<T> & MysqlColumn>
         builder.append(' ');
         if (condition.column.useBacktick())
             builder.append('`');
-        builder.append(condition.column.getSQLName());
+        builder.append(condition.column.getMysqlName());
         if (condition.column.useBacktick())
             builder.append('`');
         builder.append(" != ?");
@@ -182,7 +182,7 @@ public class StatementGenerator<T extends Enum<T> & MysqlColumn>
         builder.append(' ');
         if (condition.column.useBacktick())
             builder.append('`');
-        builder.append(condition.column.getSQLName());
+        builder.append(condition.column.getMysqlName());
         if (condition.column.useBacktick())
             builder.append('`');
         builder.append(" = ?");
@@ -193,7 +193,7 @@ public class StatementGenerator<T extends Enum<T> & MysqlColumn>
         builder.append(' ');
         if (condition.column.useBacktick())
             builder.append('`');
-        builder.append(condition.column.getSQLName());
+        builder.append(condition.column.getMysqlName());
         if (condition.column.useBacktick())
             builder.append('`');
         builder.append(" LIKE ?");
@@ -211,7 +211,7 @@ public class StatementGenerator<T extends Enum<T> & MysqlColumn>
         builder.append(" ORDER BY ");
         if (constraint.getColumn().useBacktick())
             builder.append('`');
-        builder.append(constraint.getColumn().getSQLName());
+        builder.append(constraint.getColumn().getMysqlName());
         if (constraint.getColumn().useBacktick())
             builder.append('`');
         builder.append(' ');

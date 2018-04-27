@@ -18,7 +18,7 @@ public class PresentationFunctions
     public static Notifications notifications(HttpServletRequest request)
     {
         HttpSession session = request.getSession();
-        Object o = session.getAttribute("notifications");
+        Object      o       = session.getAttribute("notifications");
 
         if (o == null) {
             Notifications notifications = new Notifications();
@@ -27,20 +27,6 @@ public class PresentationFunctions
         }
 
         return (Notifications) o;
-    }
-
-    public static FormResponse formResponse(HttpServletRequest request)
-    {
-        HttpSession session = request.getSession();
-        Object o = session.getAttribute("formResponse");
-
-        if (o == null) {
-            FormResponse response = new FormResponse();
-            session.setAttribute("formResponse", response);
-            return response;
-        }
-
-        return (FormResponse) o;
     }
 
     private static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
@@ -71,7 +57,7 @@ public class PresentationFunctions
     public static String formatPrice(Integer priceInCents)
     {
         int cents = priceInCents % 100;
-        int dkk = (priceInCents - cents) / 100;
+        int dkk   = (priceInCents - cents) / 100;
 
         if (cents == 0)
             return Integer.toString(dkk);

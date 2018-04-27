@@ -7,18 +7,18 @@ public class CustomerValidatorException extends Exception
 {
 
     /**
-     * The reasons for throwing the {@link CustomerValidatorException}.
+     * The errors for throwing the {@link CustomerValidatorException}.
      */
-    private final Set<CustomerError> reasons;
+    private final Set<CustomerError> errors;
 
     /**
      * Creates a new {@link CustomerValidatorException}.
      *
-     * @param reasons The reasons for throwing the {@link CustomerValidatorException}.
+     * @param errors The errors for throwing the {@link CustomerValidatorException}.
      */
-    public CustomerValidatorException(Set<CustomerError> reasons)
+    public CustomerValidatorException(Set<CustomerError> errors)
     {
-        this.reasons = reasons;
+        this.errors = errors;
     }
 
     /**
@@ -28,8 +28,8 @@ public class CustomerValidatorException extends Exception
      */
     public CustomerValidatorException(CustomerError reason)
     {
-        this.reasons = new HashSet<>();
-        this.reasons.add(reason);
+        this.errors = new HashSet<>();
+        this.errors.add(reason);
     }
 
     /**
@@ -38,18 +38,18 @@ public class CustomerValidatorException extends Exception
      * @param reason The reason to check for.
      * @return {@code true} if the provided reason is a cause of the {@link CustomerValidatorException}.
      */
-    public boolean isReason(CustomerError reason)
+    public boolean hasError(CustomerError reason)
     {
-        return reasons.contains(reason);
+        return errors.contains(reason);
     }
 
     /**
-     * Returns the reasons for throwing the {@link CustomerValidatorException}.
+     * Returns the errors for throwing the {@link CustomerValidatorException}.
      *
-     * @return The reasons for throwing the {@link CustomerValidatorException}.
+     * @return The errors for throwing the {@link CustomerValidatorException}.
      */
-    public Set<CustomerError> getReasons()
+    public Set<CustomerError> getErrors()
     {
-        return this.reasons;
+        return this.errors;
     }
 }

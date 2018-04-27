@@ -9,14 +9,6 @@ public interface Command
 {
 
     /**
-     * Checks whether or not the command accepts the provided request.
-     *
-     * @param request The request.
-     * @return {@code true} when the commend accepts the request.
-     */
-    boolean accepts(HttpServletRequest request) throws ServletException, IOException;
-
-    /**
      * Delegates the request and response objects to this command.
      *
      * @param request  The request.

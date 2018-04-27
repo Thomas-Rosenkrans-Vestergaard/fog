@@ -20,6 +20,7 @@
             <th>Spær</th>
             <th>Redskabsskur</th>
             <th>Oprettet</th>
+            <th></th>
             </thead>
             <tbody>
             <c:forEach items="${orders}" var="order">
@@ -34,9 +35,10 @@
                     <td><a href="${order.getRoofing().getId()}"><c:out value="${order.getRoofing().getName()}"/></a>
                     </td>
                     <td>${order.getSlope()}</td>
-                    <th>${order.getRafterChoice()}</th>
+                    <td>${order.getRafterChoice()}</td>
                     <td><a href="${order.getShed().getId()}"><c:out value="${order.getRoofing().getId()}"/></a></td>
-                    <th>${f:formatDatetime(order.getCreatedAt())}</th>
+                    <td>${f:formatDatetime(order.getCreatedAt())}</td>
+                    <td><a href="orders?action=update&id=${order.getId()}" class="btn">VIS</a></td>
                 </tr>
             </c:forEach>
             </tbody>

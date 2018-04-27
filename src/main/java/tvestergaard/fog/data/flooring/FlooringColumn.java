@@ -1,40 +1,24 @@
 package tvestergaard.fog.data.flooring;
 
-import tvestergaard.fog.data.cladding.CladdingColumn;
 import tvestergaard.fog.data.constraints.MysqlColumn;
 
 public enum FlooringColumn implements MysqlColumn
 {
 
-    ID("id"),
-    NAME("name"),
-    DESCRIPTION("description"),
-    PRICE_PER_METER("price_per_square_meter"),
-    ACTIVE("active");
+    ID,
+    NAME,
+    DESCRIPTION,
+    PRICE_PER_SQUARE_METER,
+    ACTIVE;
 
     /**
-     * The name of the column in SQL.
-     */
-    private final String SQLName;
-
-    /**
-     * Creates a new {@link CladdingColumn}.
+     * Returns the name of the column in MySQL.
      *
-     * @param SQLName The name of the column in SQL.
-     */
-    FlooringColumn(String SQLName)
-    {
-        this.SQLName = SQLName;
-    }
-
-    /**
-     * Returns the name of the column in mysql.
-     *
-     * @return The name of the column in mysql.
+     * @return The name of the column in MySQL.
      */
     @Override
-    public String getSQLName()
+    public String getMysqlName()
     {
-        return SQLName;
+        return this.name().toLowerCase();
     }
 }

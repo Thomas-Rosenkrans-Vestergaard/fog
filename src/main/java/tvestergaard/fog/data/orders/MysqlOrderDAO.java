@@ -11,10 +11,14 @@ import tvestergaard.fog.data.constraints.StatementBinder;
 import tvestergaard.fog.data.constraints.StatementGenerator;
 import tvestergaard.fog.data.flooring.Flooring;
 import tvestergaard.fog.data.sheds.Shed;
+import tvestergaard.fog.data.sheds.ShedBlueprint;
 import tvestergaard.fog.data.sheds.ShedRecord;
-import tvestergaard.fog.data.sheds.ShedSpecification;
+import tvestergaard.fog.data.sheds.ShedUpdater;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -93,70 +97,47 @@ public class MysqlOrderDAO extends AbstractMysqlDAO implements OrderDAO
     /**
      * Inserts a new order into data storage.
      *
-     * @param customer The id of the customer who placed the order.
-     * @param cladding The id of the cladding used on the order.
-     * @param width    The width of the order.
-     * @param length   The length of the order.
-     * @param height   The height of the order.
-     * @param roofing  The id of the roofing used on the order.
-     * @param slope    The slope of the roofing used on the order.
-     * @param rafters  The rafters construction delivered with the order.
-     * @param shed     The shed to add to the order.
+     * @param blueprint The order blueprint that contains the information necessary to create the order.
      * @return The new order.
      * @throws DataAccessException When an exception occurs during the operation.
      */
-    @Override
-    public Order create(int customer,
-                        int cladding,
-                        int width,
-                        int length,
-                        int height,
-                        int roofing,
-                        int slope,
-                        RafterChoice rafters,
-                        ShedSpecification shed) throws DataAccessException
+    @Override public Order create(OrderBlueprint blueprint) throws DataAccessException
     {
         String orderSQL = "INSERT INTO orders " +
-                "(customer, cladding, width, `length`, height, roofing, slope, rafters, shed) " +
+                "(customer, cladding, width, `length`, height, roofing, slope, rafters) " +
                 "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
-        String shedSQL = "INSERT INTO sheds (width, depth, cladding, flooring) VALUES (?, ?, ?, ?)";
+        String shedSQL = "INSERT INTO sheds (`order`, width, depth, cladding, flooring) VALUES (?, ?, ?, ?, ?)";
 
         try {
             Connection con = getConnection();
             try {
 
-                int shedId = -1;
-                if (shed != null) {
-                    try (PreparedStatement shedStatement = con.prepareStatement(shedSQL, RETURN_GENERATED_KEYS)) {
-                        shedStatement.setInt(1, shed.getWidth());
-                        shedStatement.setInt(2, shed.getDepth());
-                        shedStatement.setInt(3, shed.getCladding());
-                        shedStatement.setInt(4, shed.getFlooring());
-                        shedStatement.executeUpdate();
-                        ResultSet resultSet = shedStatement.getGeneratedKeys();
-                        resultSet.first();
-                        shedId = resultSet.getInt(1);
-                    }
-                }
-
                 int orderId;
                 try (PreparedStatement orderStatement = con.prepareStatement(orderSQL, RETURN_GENERATED_KEYS)) {
-                    orderStatement.setInt(1, customer);
-                    orderStatement.setInt(2, cladding);
-                    orderStatement.setInt(3, width);
-                    orderStatement.setInt(4, length);
-                    orderStatement.setInt(5, height);
-                    orderStatement.setInt(6, roofing);
-                    orderStatement.setInt(7, slope);
-                    orderStatement.setInt(8, rafters.getId());
-                    if (shedId == -1)
-                        orderStatement.setNull(9, Types.INTEGER);
-                    else
-                        orderStatement.setInt(9, shedId);
+                    orderStatement.setInt(1, blueprint.getCustomer().getId());
+                    orderStatement.setInt(2, blueprint.getCladding().getId());
+                    orderStatement.setInt(3, blueprint.getWidth());
+                    orderStatement.setInt(4, blueprint.getLength());
+                    orderStatement.setInt(5, blueprint.getHeight());
+                    orderStatement.setInt(6, blueprint.getRoofing().getId());
+                    orderStatement.setInt(7, blueprint.getSlope());
+                    orderStatement.setInt(8, blueprint.getRafterChoice().getId());
                     orderStatement.executeUpdate();
                     ResultSet resultSet = orderStatement.getGeneratedKeys();
                     resultSet.first();
                     orderId = resultSet.getInt(1);
+                }
+
+                ShedBlueprint shed = blueprint.getShed();
+                if (shed != null) {
+                    try (PreparedStatement shedStatement = con.prepareStatement(shedSQL)) {
+                        shedStatement.setInt(1, orderId);
+                        shedStatement.setInt(2, shed.getWidth());
+                        shedStatement.setInt(3, shed.getDepth());
+                        shedStatement.setInt(4, shed.getCladding().getId());
+                        shedStatement.setInt(5, shed.getFlooring().getId());
+                        shedStatement.executeUpdate();
+                    }
                 }
 
                 con.commit();
@@ -175,30 +156,51 @@ public class MysqlOrderDAO extends AbstractMysqlDAO implements OrderDAO
     /**
      * Updates the entity in the data storage to match the provided {@code order}.
      *
-     * @param order The order to update the entity in the data storage to.
+     * @param updater The order updater that contains the information necessary to create the order.
      * @return {@link true} if the record was updated.
      * @throws MysqlDataAccessException When an exception occurs while performing the operation.
      */
-    @Override
-    public boolean update(Order order) throws MysqlDataAccessException
+    @Override public boolean update(OrderUpdater updater) throws MysqlDataAccessException
     {
         try {
-            final String SQL = "UPDATE orders SET cladding = ?, width = ?, `length` = ?, height = ?, " +
-                    "roofing = ?, slope = ?, rafters = ?, shed = ? WHERE id = ?";
-            Connection connection = getConnection();
-            try (PreparedStatement statement = connection.prepareStatement(SQL)) {
-                statement.setInt(1, order.getCladding().getId());
-                statement.setInt(2, order.getWidth());
-                statement.setInt(3, order.getLength());
-                statement.setInt(4, order.getHeight());
-                statement.setInt(5, order.getRoofing().getId());
-                statement.setInt(6, order.getSlope());
-                statement.setInt(7, order.getRafterChoice().getId());
-                statement.setInt(8, order.getShed() == null ? null : order.getShed().getId());
-                statement.setInt(9, order.getId());
-                int updated = statement.executeUpdate();
+            final String orderSQL = "UPDATE orders SET cladding = ?, width = ?, `length` = ?, height = ?, " +
+                    "roofing = ?, slope = ?, rafters = ? WHERE id = ?";
+            final String shedSQL    = "UPDATE sheds SET `order` = ?, `width` = ?, `depth` = ?, `cladding` = ?, `flooring` = ? WHERE id = ?";
+            Connection   connection = getConnection();
+            try {
+                try (PreparedStatement orderStatement = connection.prepareStatement(orderSQL)) {
+                    orderStatement.setInt(1, updater.getCladding().getId());
+                    orderStatement.setInt(2, updater.getWidth());
+                    orderStatement.setInt(3, updater.getLength());
+                    orderStatement.setInt(4, updater.getHeight());
+                    orderStatement.setInt(5, updater.getRoofing().getId());
+                    orderStatement.setInt(6, updater.getSlope());
+                    orderStatement.setInt(7, updater.getRafterChoice().getId());
+                    orderStatement.setInt(8, updater.getId());
+                    orderStatement.executeUpdate();
+                }
+
+                ShedUpdater shed = updater.getShed();
+                if (shed == null) {
+                    try (PreparedStatement delete = connection.prepareStatement("DELETE FROM sheds WHERE `order` = ?")) {
+                        delete.setInt(1, updater.getId());
+                        delete.executeUpdate();
+                    }
+                } else {
+                    try (PreparedStatement update = connection.prepareStatement(shedSQL)) {
+                        update.setInt(1, updater.getId());
+                        update.setInt(2, shed.getWidth());
+                        update.setInt(3, shed.getDepth());
+                        update.setInt(4, shed.getCladding().getId());
+                        update.setInt(5, shed.getFlooring().getId());
+                        update.executeUpdate();
+                    }
+                }
+
                 connection.commit();
-                return updated != 0;
+
+                return true;
+
             } catch (SQLException e) {
                 connection.rollback();
                 throw e;

@@ -3,7 +3,6 @@ package tvestergaard.fog.data;
 import com.mysql.cj.jdbc.MysqlDataSource;
 import tvestergaard.fog.data.cladding.Cladding;
 import tvestergaard.fog.data.cladding.CladdingRecord;
-import tvestergaard.fog.data.customers.ContactMethod;
 import tvestergaard.fog.data.customers.Customer;
 import tvestergaard.fog.data.customers.CustomerRecord;
 import tvestergaard.fog.data.flooring.Flooring;
@@ -29,7 +28,7 @@ public abstract class AbstractMysqlDAO
     private final MysqlDataSource source;
 
     /**
-     * The cahced connection for reuse.
+     * The cached connection for reuse.
      */
     private Connection connection = null;
 
@@ -93,7 +92,6 @@ public abstract class AbstractMysqlDAO
                 resultSet.getString("customers.email"),
                 resultSet.getString("customers.phone"),
                 resultSet.getString("customers.password"),
-                ContactMethod.from(resultSet.getInt("customers.contact_method")),
                 resultSet.getBoolean("customers.active"),
                 resultSet.getTimestamp("customers.created_at").toLocalDateTime()
         );

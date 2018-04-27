@@ -5,7 +5,6 @@ import tvestergaard.fog.data.ProductionDataSource;
 import tvestergaard.fog.data.cladding.CladdingColumn;
 import tvestergaard.fog.data.cladding.CladdingDAO;
 import tvestergaard.fog.data.cladding.MysqlCladdingDAO;
-import tvestergaard.fog.data.customers.ContactMethod;
 import tvestergaard.fog.data.customers.Customer;
 import tvestergaard.fog.data.flooring.FlooringColumn;
 import tvestergaard.fog.data.flooring.FlooringDAO;
@@ -15,13 +14,12 @@ import tvestergaard.fog.data.orders.RafterChoice;
 import tvestergaard.fog.data.roofing.MysqlRoofingDAO;
 import tvestergaard.fog.data.roofing.RoofingColumn;
 import tvestergaard.fog.data.roofing.RoofingDAO;
-import tvestergaard.fog.data.sheds.ShedSpecification;
 import tvestergaard.fog.logic.customers.CustomerError;
 import tvestergaard.fog.logic.customers.CustomerFacade;
 import tvestergaard.fog.logic.customers.CustomerValidatorException;
-import tvestergaard.fog.logic.OrderFacade;
-import tvestergaard.fog.logic.OrderValidationException;
-import tvestergaard.fog.presentation.FormResponse;
+import tvestergaard.fog.logic.orders.OrderFacade;
+import tvestergaard.fog.logic.orders.OrderValidatorException;
+import tvestergaard.fog.logic.orders.ShedSpecification;
 import tvestergaard.fog.presentation.Notifications;
 import tvestergaard.fog.presentation.Parameters;
 
@@ -33,12 +31,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.EnumSet;
 
 import static tvestergaard.fog.data.constraints.Constraint.eq;
 import static tvestergaard.fog.data.constraints.Constraint.where;
-import static tvestergaard.fog.logic.customers.CustomerError.*;
-import static tvestergaard.fog.presentation.PresentationFunctions.formResponse;
 import static tvestergaard.fog.presentation.PresentationFunctions.notifications;
 
 @WebServlet(urlPatterns = {"/design", ""})
@@ -87,7 +82,7 @@ public class DesignServlet extends HttpServlet
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException
     {
         Notifications notifications = notifications(req);
-        Parameters parameters = new Parameters(req);
+        Parameters    parameters    = new Parameters(req);
 
         if (!validateParameters(parameters)) {
             notifications.error("The provided data is invalid.");
@@ -102,7 +97,6 @@ public class DesignServlet extends HttpServlet
                     parameters.value("customer-address"),
                     parameters.value("customer-email"),
                     parameters.value("customer-phone"),
-                    parameters.getEnum("contact-method", EnumSet.allOf(ContactMethod.class)),
                     null,
                     true);
 
@@ -114,7 +108,7 @@ public class DesignServlet extends HttpServlet
                     parameters.getInt("height"),
                     parameters.getInt("roofing"),
                     parameters.getInt("slope"),
-                    parameters.getEnum("rafters", EnumSet.allOf(RafterChoice.class)),
+                    parameters.getEnum("rafters", RafterChoice.class),
                     createShed(parameters));
 
             notifications.success("Din ordre blev registreret.");
@@ -123,45 +117,34 @@ public class DesignServlet extends HttpServlet
         } catch (CustomerValidatorException e) {
 //            FormResponse response = formResponse(req);
 //            populateFormResponse(response, parameters, e);
-            for (CustomerError reason : e.getReasons())
+            for (CustomerError reason : e.getErrors())
                 notifications.error(reason.name());
             resp.sendRedirect("design");
-        } catch (OrderValidationException e) {
-            FormResponse response = formResponse(req);
-            populateFormResponse(response, parameters, e);
-            resp.sendRedirect("design");
+        } catch (OrderValidatorException e) {
+//            if (e.isReason(NAME_EMPTY))
+//                notifications.error("Navnet må ikke være tomt.");
+//            if (e.isReason(NAME_LONGER_THAN_255))
+//                notifications.error("Navnet må ikke være så langt.");
+//            if (e.isReason(ADDRESS_EMPTY))
+//                notifications.error("Addressen må ikke være tomt.");
+//            if (e.isReason(ADDRESS_LONGER_THAN_255))
+//                notifications.error( "Addressen må ikke være så langt.");
+//            if (e.isReason(EMAIL_INVALID))
+//                notifications.error("Email addressen er ikke valid.");
+//            if (e.isReason(EMAIL_LONGER_THAN_255))
+//                notifications.error("Emailadddressen må ikke være så langt.");
+//            if (e.isReason(EMAIL_TAKEN))
+//                notifications.error( "Den givne email er allerde i brug på siden.");
+//            if (e.isReason(PHONE_EMPTY))
+//                notifications.error( "Telefonnumeret må ikke være tomt.");
+//            if (e.isReason(PHONE_LONGER_THAN_30))
+//                notifications.error( "Telefonnumeret må ikke være så langt.");
+//            if (e.isReason(PASSWORD_SHORTER_THAN_4))
+//                notifications.error( "Adgangskoden skal være længere end 3.");
+//            if (e.isReason(UNKNOWN_CONTACT_METHOD))
+//                notifications.error( "Ukendt kontaktmetode.");
+//            resp.sendRedirect("design");
         }
-    }
-
-    private void populateFormResponse(FormResponse formResponse, Parameters parameters, OrderValidationException e)
-    {
-
-    }
-
-    private void populateFormResponse(FormResponse formResponse, Parameters parameters, CustomerValidatorException e)
-    {
-        if (e.isReason(NAME_EMPTY))
-            formResponse.addError("name", "Navnet må ikke være tomt.");
-        if (e.isReason(NAME_LONGER_THAN_255))
-            formResponse.addError("name", "Navnet må ikke være så langt.");
-        if (e.isReason(ADDRESS_EMPTY))
-            formResponse.addError("address", "Addressen må ikke være tomt.");
-        if (e.isReason(ADDRESS_LONGER_THAN_255))
-            formResponse.addError("address", "Addressen må ikke være så langt.");
-        if (e.isReason(EMAIL_INVALID))
-            formResponse.addError("email", "Email addressen er ikke valid.");
-        if (e.isReason(EMAIL_LONGER_THAN_255))
-            formResponse.addError("address", "Emailadddressen må ikke være så langt.");
-        if (e.isReason(EMAIL_TAKEN))
-            formResponse.addError("email", "Den givne email er allerde i brug på siden.");
-        if (e.isReason(PHONE_EMPTY))
-            formResponse.addError("phone", "Telefonnumeret må ikke være tomt.");
-        if (e.isReason(PHONE_LONGER_THAN_30))
-            formResponse.addError("phone", "Telefonnumeret må ikke være så langt.");
-        if (e.isReason(PASSWORD_SHORTER_THAN_4))
-            formResponse.addError("password", "Adgangskoden skal være længere end 3.");
-        if (e.isReason(UNKNOWN_CONTACT_METHOD))
-            formResponse.addError("contact-method", "Ukendt kontaktmetode.");
     }
 
     private ShedSpecification createShed(Parameters parameters)
@@ -192,7 +175,7 @@ public class DesignServlet extends HttpServlet
                 parameters.isInt("height") &&
                 parameters.isInt("roofing") &&
                 parameters.isInt("slope") &&
-                parameters.isEnum("rafters", EnumSet.allOf(RafterChoice.class)) &&
+                parameters.isEnum("rafters", RafterChoice.class) &&
                 (!parameters.isPresent("shed") || (
                         parameters.isInt("shed-width") &&
                                 parameters.isInt("shed-depth") &&
@@ -201,7 +184,6 @@ public class DesignServlet extends HttpServlet
                 parameters.isPresent("customer-name") &&
                 parameters.isPresent("customer-address") &&
                 parameters.isPresent("customer-email") &&
-                parameters.isPresent("customer-phone") &&
-                parameters.isEnum("contact-method", EnumSet.allOf(ContactMethod.class));
+                parameters.isPresent("customer-phone");
     }
 }

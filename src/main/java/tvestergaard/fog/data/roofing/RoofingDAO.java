@@ -30,28 +30,18 @@ public interface RoofingDAO
     /**
      * Inserts a new roofing into the data storage.
      *
-     * @param name                The name of the roofing to create.
-     * @param description         The description of the roofing to create.
-     * @param minimumSlope        The minimum slope at which the roofing to create can be laid.
-     * @param maximumSlope        The maximum slope at which the roofing to create can be laid.
-     * @param pricePerSquareMeter The price per square meter of roofing (in øre).
-     * @param active              Whether or not the roofing can be applied to orders.
+     * @param blueprint The roofing blueprint that contains the information necessary to create the roofing.
      * @return The roofing instance representing the newly created roofing.
      * @throws DataAccessException When an exception occurs while performing the operation.
      */
-    Roofing create(String name,
-                   String description,
-                   int minimumSlope,
-                   int maximumSlope,
-                   int pricePerSquareMeter,
-                   boolean active) throws DataAccessException;
+    Roofing create(RoofingBlueprint blueprint) throws DataAccessException;
 
     /**
      * Updates the entity in the data storage to match the provided {@code roofing}.
      *
-     * @param roofing The roofing to update the entity in the data storage to.
+     * @param updater The roofing updater that contains the information necessary to create the roofing.
      * @return {@link true} if the record was updated.
      * @throws DataAccessException When an exception occurs while performing the operation.
      */
-    boolean update(Roofing roofing) throws DataAccessException;
+    boolean update(RoofingUpdater updater) throws DataAccessException;
 }

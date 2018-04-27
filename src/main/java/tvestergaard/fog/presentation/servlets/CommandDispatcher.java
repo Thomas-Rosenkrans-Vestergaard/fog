@@ -4,25 +4,32 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
 
 public class CommandDispatcher
 {
 
+
     /**
      * The commands registered with the dispatcher.
      */
-    private List<Command> commands = new ArrayList<>();
+    private Map<Integer, Command> commands = new HashMap<>();
 
     /**
      * Registers the provided command with the dispatcher.
      *
      * @param command The command to register.
      */
-    public void register(Command command)
+    public void get(String action, Command command)
     {
-        this.commands.add(command);
+        this.commands.put(Objects.hash(HttpMethod.GET, action), command);
+    }
+
+    public void post(String action, Command command)
+    {
+        this.commands.put(Objects.hash(HttpMethod.POST, action), command);
     }
 
     /**
@@ -35,12 +42,11 @@ public class CommandDispatcher
     public boolean dispatch(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException
     {
-        for (Command command : commands) {
-            if (command.accepts(request)) {
-                command.dispatch(request, response);
-                return true;
-            }
-        }
+        Command command = commands.get(Objects.hash(HttpMethod.valueOf(request.getMethod()), request.getParameter
+                ("action")));
+
+        if (command != null)
+            command.dispatch(request, response);
 
         return false;
     }
