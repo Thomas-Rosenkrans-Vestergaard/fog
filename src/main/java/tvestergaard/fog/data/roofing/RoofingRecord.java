@@ -2,9 +2,6 @@ package tvestergaard.fog.data.roofing;
 
 import java.util.Objects;
 
-/**
- * The default implementation of {@link Roofing}.
- */
 public class RoofingRecord implements Roofing
 {
 

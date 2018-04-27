@@ -61,10 +61,10 @@ public class MysqlOrderDAO extends AbstractMysqlDAO implements OrderDAO
         final List<Order> orders = new ArrayList<>();
         final String SQL = generator.generate("SELECT * FROM orders o " +
                 "INNER JOIN customers ON o.customer = customers.id " +
-                "INNER JOIN claddings ON o.cladding = claddings.id " +
+                "INNER JOIN claddings o_cladding ON o.cladding = o_cladding.id " +
                 "INNER JOIN roofings ON o.roofing = roofings.id " +
-                "LEFT  JOIN sheds ON o.shed = sheds.id " +
-                "LEFT  JOIN claddings shed_cladding ON sheds.cladding = claddings.id " +
+                "LEFT  JOIN sheds ON o.id = sheds.order " +
+                "LEFT  JOIN claddings s_cladding ON sheds.cladding = s_cladding.id " +
                 "LEFT  JOIN floorings ON sheds.flooring = floorings.id", constraints);
         try (PreparedStatement statement = getConnection().prepareStatement(SQL)) {
             binder.bind(statement, constraints);
@@ -105,7 +105,7 @@ public class MysqlOrderDAO extends AbstractMysqlDAO implements OrderDAO
     {
         String orderSQL = "INSERT INTO orders " +
                 "(customer, cladding, width, `length`, height, roofing, slope, rafters) " +
-                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
         String shedSQL = "INSERT INTO sheds (`order`, width, depth, cladding, flooring) VALUES (?, ?, ?, ?, ?)";
 
         try {
@@ -234,6 +234,23 @@ public class MysqlOrderDAO extends AbstractMysqlDAO implements OrderDAO
         );
     }
 
+    /**
+     * Creates a new {@link Cladding} using the provided {@code ResultSet}.
+     *
+     * @param resultSet The {@code ResultSet} from which to create the instance of {@link Cladding}.
+     * @return The newly created instance of {@link Cladding}.
+     * @throws SQLException
+     */
+    protected Cladding createCladding(ResultSet resultSet) throws SQLException
+    {
+        return new CladdingRecord(
+                resultSet.getInt("o_cladding.id"),
+                resultSet.getString("o_cladding.name"),
+                resultSet.getString("o_cladding.description"),
+                resultSet.getInt("o_cladding.price_per_square_meter"),
+                resultSet.getBoolean("o_cladding.active")
+        );
+    }
 
     /**
      * Creates a new {@link Shed} from the provided {@code ResultSet}.
@@ -263,11 +280,11 @@ public class MysqlOrderDAO extends AbstractMysqlDAO implements OrderDAO
     protected Cladding createShedCladding(ResultSet resultSet) throws SQLException
     {
         return new CladdingRecord(
-                resultSet.getInt("shed_cladding.id"),
-                resultSet.getString("shed_cladding.name"),
-                resultSet.getString("shed_cladding.description"),
-                resultSet.getInt("shed_cladding.price_per_square_meter"),
-                resultSet.getBoolean("shed_cladding.active")
+                resultSet.getInt("s_cladding.id"),
+                resultSet.getString("s_cladding.name"),
+                resultSet.getString("s_cladding.description"),
+                resultSet.getInt("s_cladding.price_per_square_meter"),
+                resultSet.getBoolean("s_cladding.active")
         );
     }
 }

@@ -108,7 +108,7 @@ public class MysqlRoofingDAO extends AbstractMysqlDAO implements RoofingDAO
             try (PreparedStatement statement = connection.prepareStatement(SQL, Statement.RETURN_GENERATED_KEYS)) {
                 statement.setString(1, blueprint.getName());
                 statement.setString(2, blueprint.getDescription());
-                statement.setInt(3, blueprint.getMaximumSlope());
+                statement.setInt(3, blueprint.getMinimumSlope());
                 statement.setInt(4, blueprint.getMaximumSlope());
                 statement.setInt(5, blueprint.getPricePerSquareMeter());
                 statement.setBoolean(6, blueprint.isActive());

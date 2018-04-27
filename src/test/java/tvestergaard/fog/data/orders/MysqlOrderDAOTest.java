@@ -68,6 +68,7 @@ public class MysqlOrderDAOTest
     {
         Connection connection = TestDataSource.getSource().getConnection();
 
+        connection.createStatement().executeUpdate("DELETE FROM sheds");
         connection.createStatement().executeUpdate("DELETE FROM orders");
     }
 
@@ -97,6 +98,7 @@ public class MysqlOrderDAOTest
                 expectedHeight, expectedRoofing, expectedSlope, expectedRafters, shed1));
 
         assertEquals(expectedCustomer, actual.getCustomer());
+        assertEquals(expectedCladding, actual.getCladding());
         assertEquals(expectedWidth, actual.getWidth());
         assertEquals(expectedLength, actual.getLength());
         assertEquals(expectedHeight, actual.getHeight());

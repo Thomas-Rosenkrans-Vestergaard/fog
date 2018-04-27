@@ -8,9 +8,6 @@ import tvestergaard.fog.data.sheds.Shed;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
-/**
- * The default {@link Order} implementation.
- */
 public class OrderRecord implements Order
 {
 
