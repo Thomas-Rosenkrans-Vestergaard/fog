@@ -13,7 +13,8 @@ public enum OrderColumn implements MysqlColumn
     HEIGHT,
     ROOFING,
     SLOPE,
-    RAFTERS;
+    RAFTERS,
+    ACTIVE;
 
     /**
      * Returns the name of the column in MySQL.

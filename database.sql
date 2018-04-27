@@ -183,6 +183,7 @@ CREATE TABLE `orders` (
   `roofing` int(11) unsigned NOT NULL,
   `slope` tinyint(11) unsigned NOT NULL,
   `rafters` tinyint(11) unsigned NOT NULL,
+  `active` bit(1) NOT NULL DEFAULT b'1',
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`),
@@ -263,4 +264,4 @@ CREATE TABLE `sheds` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-04-28  0:59:26
+-- Dump completed on 2018-04-28  1:35:07

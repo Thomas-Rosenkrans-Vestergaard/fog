@@ -165,7 +165,7 @@ public class MysqlOrderDAO extends AbstractMysqlDAO implements OrderDAO
     {
         try {
             final String orderSQL = "UPDATE orders SET cladding = ?, width = ?, `length` = ?, height = ?, " +
-                    "roofing = ?, slope = ?, rafters = ? WHERE id = ?";
+                    "roofing = ?, slope = ?, rafters = ?, active = ? WHERE id = ?";
             final String shedSQL    = "UPDATE sheds SET `order` = ?, `width` = ?, `depth` = ?, `cladding` = ?, `flooring` = ? WHERE id = ?";
             Connection   connection = getConnection();
             try {
@@ -177,7 +177,8 @@ public class MysqlOrderDAO extends AbstractMysqlDAO implements OrderDAO
                     orderStatement.setInt(5, updater.getRoofing().getId());
                     orderStatement.setInt(6, updater.getSlope());
                     orderStatement.setInt(7, updater.getRafterChoice().getId());
-                    orderStatement.setInt(8, updater.getId());
+                    orderStatement.setBoolean(8, updater.isActive());
+                    orderStatement.setInt(9, updater.getId());
                     orderStatement.executeUpdate();
                 }
 
@@ -231,6 +232,7 @@ public class MysqlOrderDAO extends AbstractMysqlDAO implements OrderDAO
                 resultSet.getInt("o.slope"),
                 RafterChoice.from(resultSet.getInt("o.rafters")),
                 createShed(resultSet),
+                resultSet.getBoolean("o.active"),
                 resultSet.getInt("offers"),
                 resultSet.getTimestamp("o.created_at").toLocalDateTime()
         );

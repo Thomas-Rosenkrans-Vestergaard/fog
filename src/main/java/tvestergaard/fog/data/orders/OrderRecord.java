@@ -62,6 +62,11 @@ public class OrderRecord implements Order
     private Shed shed;
 
     /**
+     * Whether or not the order is considered active.
+     */
+    private boolean active;
+
+    /**
      * The number of offers that have been made regarding this order.
      */
     private int numberOfOffers;
@@ -84,6 +89,7 @@ public class OrderRecord implements Order
      * @param slope          The slope of the roofing.
      * @param rafters        The type of rafters chosen by the customer who placed the order.
      * @param shed           The shed included with the order.
+     * @param active         Whether or not the order is considered active.
      * @param numberOfOffers The number of offers that have been made regarding this order.
      * @param createdAt      The time when the order was placed.
      */
@@ -97,6 +103,7 @@ public class OrderRecord implements Order
                        int slope,
                        RafterChoice rafters,
                        Shed shed,
+                       boolean active,
                        int numberOfOffers,
                        LocalDateTime createdAt)
     {
@@ -111,6 +118,7 @@ public class OrderRecord implements Order
         this.rafters = rafters;
         this.shed = shed;
         this.numberOfOffers = numberOfOffers;
+        this.active = active;
         this.createdAt = createdAt;
     }
 
@@ -320,6 +328,16 @@ public class OrderRecord implements Order
     @Override public int getNumberOfOffers()
     {
         return numberOfOffers;
+    }
+
+    /**
+     * Returns whether or not the order is considered active.
+     *
+     * @return {@code true} if the order is considered active.
+     */
+    @Override public boolean isActive()
+    {
+        return active;
     }
 
     /**

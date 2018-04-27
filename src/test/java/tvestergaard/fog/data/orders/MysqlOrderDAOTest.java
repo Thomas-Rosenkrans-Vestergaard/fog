@@ -18,6 +18,7 @@ import tvestergaard.fog.data.sheds.ShedRecord;
 import java.sql.Connection;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import static tvestergaard.fog.data.constraints.Constraint.eq;
 
 public class MysqlOrderDAOTest
@@ -109,6 +110,7 @@ public class MysqlOrderDAOTest
         assertEquals(expectedShed.getDepth(), actual.getShed().getDepth());
         assertEquals(expectedShed.getCladding(), actual.getShed().getCladding());
         assertEquals(expectedShed.getFlooring(), actual.getShed().getFlooring());
+        assertTrue(actual.isActive());
         assertEquals(0, actual.getNumberOfOffers());
     }
 

@@ -35,7 +35,7 @@ public interface Order extends OrderUpdater
                                     ShedBlueprint shed)
     {
         return new OrderRecord(-1, customer, cladding, width, length, height, roofing, slope, rafterChoice,
-                shed == null ? null : new ShedRecord(-1, shed.getWidth(), shed.getDepth(), shed.getCladding(), shed.getFlooring()), -1,
+                shed == null ? null : new ShedRecord(-1, shed.getWidth(), shed.getDepth(), shed.getCladding(), shed.getFlooring()), false, -1,
                 null);
     }
 
