@@ -213,6 +213,25 @@ public class MysqlOrderDAO extends AbstractMysqlDAO implements OrderDAO
     }
 
     /**
+     * Returns the number of orders that are both active, and have not yet received any offers.
+     *
+     * @return The number of such orders.
+     * @throws MysqlDataAccessException When an exception occurs while performing the operation.
+     */
+    @Override public int getNumberOfNewOrders() throws MysqlDataAccessException
+    {
+        final String SQL = "SELECT count(*) AS count, (SELECT count(*) FROM offers WHERE `order` = orders.id) AS offers " +
+                "FROM orders WHERE active = b'1' HAVING offers = 0";
+        try (PreparedStatement statement = getConnection().prepareStatement(SQL)) {
+            ResultSet resultSet = statement.executeQuery();
+            resultSet.first();
+            return resultSet.getInt("count");
+        } catch (SQLException e) {
+            throw new MysqlDataAccessException(e);
+        }
+    }
+
+    /**
      * Creates a new {@link Order} instance from the provided {@code ResultSet}.
      *
      * @param resultSet The {@code ResultSet} from which to create the instance of {@link Flooring}.

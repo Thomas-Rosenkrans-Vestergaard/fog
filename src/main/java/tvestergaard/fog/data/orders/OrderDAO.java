@@ -45,4 +45,12 @@ public interface OrderDAO
      * @throws DataAccessException When an exception occurs while performing the operation.
      */
     boolean update(OrderUpdater updater) throws DataAccessException;
+
+    /**
+     * Returns the number of orders that are both active, and have not yet received any offers.
+     *
+     * @return The number of such orders.
+     * @throws DataAccessException When an exception occurs while performing the operation.
+     */
+    int getNumberOfNewOrders() throws DataAccessException;
 }

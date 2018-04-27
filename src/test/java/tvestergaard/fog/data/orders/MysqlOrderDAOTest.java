@@ -126,4 +126,12 @@ public class MysqlOrderDAOTest
     {
 
     }
+
+    @Test
+    public void getNumberOfNewOrders() throws Exception
+    {
+        assertEquals(2, dao.getNumberOfNewOrders());
+        dao.create(Order.blueprint(customer1, cladding1, 1, 2, 3, roofing1, 4, RafterChoice.BUILD_SELF, null));
+        assertEquals(3, dao.getNumberOfNewOrders());
+    }
 }
