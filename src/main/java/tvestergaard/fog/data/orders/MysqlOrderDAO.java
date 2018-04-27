@@ -59,13 +59,14 @@ public class MysqlOrderDAO extends AbstractMysqlDAO implements OrderDAO
     public List<Order> get(Constraint<OrderColumn>... constraints) throws MysqlDataAccessException
     {
         final List<Order> orders = new ArrayList<>();
-        final String SQL = generator.generate("SELECT * FROM orders o " +
-                "INNER JOIN customers ON o.customer = customers.id " +
-                "INNER JOIN claddings o_cladding ON o.cladding = o_cladding.id " +
-                "INNER JOIN roofings ON o.roofing = roofings.id " +
-                "LEFT  JOIN sheds ON o.id = sheds.order " +
-                "LEFT  JOIN claddings s_cladding ON sheds.cladding = s_cladding.id " +
-                "LEFT  JOIN floorings ON sheds.flooring = floorings.id", constraints);
+        final String SQL = generator.generate(
+                "SELECT *, (SELECT count(*) FROM offers WHERE `order` = o.id) AS offers FROM orders o " +
+                        "INNER JOIN customers ON o.customer = customers.id " +
+                        "INNER JOIN claddings o_cladding ON o.cladding = o_cladding.id " +
+                        "INNER JOIN roofings ON o.roofing = roofings.id " +
+                        "LEFT  JOIN sheds ON o.id = sheds.order " +
+                        "LEFT  JOIN claddings s_cladding ON sheds.cladding = s_cladding.id " +
+                        "LEFT  JOIN floorings ON sheds.flooring = floorings.id", constraints);
         try (PreparedStatement statement = getConnection().prepareStatement(SQL)) {
             binder.bind(statement, constraints);
             ResultSet resultSet = statement.executeQuery();
@@ -230,6 +231,7 @@ public class MysqlOrderDAO extends AbstractMysqlDAO implements OrderDAO
                 resultSet.getInt("o.slope"),
                 RafterChoice.from(resultSet.getInt("o.rafters")),
                 createShed(resultSet),
+                resultSet.getInt("offers"),
                 resultSet.getTimestamp("o.created_at").toLocalDateTime()
         );
     }

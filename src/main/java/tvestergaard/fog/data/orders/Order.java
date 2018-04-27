@@ -35,9 +35,16 @@ public interface Order extends OrderUpdater
                                     ShedBlueprint shed)
     {
         return new OrderRecord(-1, customer, cladding, width, length, height, roofing, slope, rafterChoice,
-                shed == null ? null : new ShedRecord(-1, shed.getWidth(), shed.getDepth(), shed.getCladding(), shed.getFlooring()),
+                shed == null ? null : new ShedRecord(-1, shed.getWidth(), shed.getDepth(), shed.getCladding(), shed.getFlooring()), -1,
                 null);
     }
+
+    /**
+     * Returns the number of offers that have been made regarding this order.
+     *
+     * @return The number of offsets that have been made regarding this order.
+     */
+    int getNumberOfOffers();
 
     /**
      * Returns a {@code LocalDateTime} representing the moment in time when the customer placed the {@link Order}.

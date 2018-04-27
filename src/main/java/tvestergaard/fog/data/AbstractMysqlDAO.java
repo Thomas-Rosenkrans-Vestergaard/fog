@@ -7,9 +7,6 @@ import tvestergaard.fog.data.customers.Customer;
 import tvestergaard.fog.data.customers.CustomerRecord;
 import tvestergaard.fog.data.flooring.Flooring;
 import tvestergaard.fog.data.flooring.FlooringRecord;
-import tvestergaard.fog.data.orders.Order;
-import tvestergaard.fog.data.orders.OrderRecord;
-import tvestergaard.fog.data.orders.RafterChoice;
 import tvestergaard.fog.data.roofing.Roofing;
 import tvestergaard.fog.data.roofing.RoofingRecord;
 import tvestergaard.fog.data.sheds.Shed;
@@ -112,30 +109,6 @@ public abstract class AbstractMysqlDAO
                 resultSet.getString("floorings.description"),
                 resultSet.getInt("floorings.price_per_square_meter"),
                 resultSet.getBoolean("floorings.active")
-        );
-    }
-
-    /**
-     * Creates a new {@link Order} instance from the provided {@code ResultSet}.
-     *
-     * @param resultSet The {@code ResultSet} from which to create the instance of {@link Flooring}.
-     * @return The newly create instance of {@link Order}.
-     * @throws SQLException
-     */
-    protected Order createOrder(ResultSet resultSet) throws SQLException
-    {
-        return new OrderRecord(
-                resultSet.getInt("orders.id"),
-                createCustomer(resultSet),
-                createCladding(resultSet),
-                resultSet.getInt("orders.width"),
-                resultSet.getInt("orders.length"),
-                resultSet.getInt("orders.height"),
-                createRoofing(resultSet),
-                resultSet.getInt("orders.slope"),
-                RafterChoice.from(resultSet.getInt("orders.rafters_type")),
-                createShed(resultSet),
-                resultSet.getTimestamp("orders.created_at").toLocalDateTime()
         );
     }
 

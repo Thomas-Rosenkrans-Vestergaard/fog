@@ -62,6 +62,11 @@ public class OrderRecord implements Order
     private Shed shed;
 
     /**
+     * The number of offers that have been made regarding this order.
+     */
+    private int numberOfOffers;
+
+    /**
      * The moment when the order was placed.
      */
     private LocalDateTime createdAt;
@@ -69,17 +74,18 @@ public class OrderRecord implements Order
     /**
      * Creates a new {@link OrderRecord}.
      *
-     * @param id        The unique identifier of the order.
-     * @param customer  The customer who placed the order.
-     * @param cladding  The cladding used on the order.
-     * @param width     The width of the order.
-     * @param length    The length of the order.
-     * @param height    The height of the order.
-     * @param roofing   The roofing used on the order.
-     * @param slope     The slope of the roofing.
-     * @param rafters   The type of rafters chosen by the customer who placed the order.
-     * @param shed      The shed included with the order.
-     * @param createdAt The time when the order was placed.
+     * @param id             The unique identifier of the order.
+     * @param customer       The customer who placed the order.
+     * @param cladding       The cladding used on the order.
+     * @param width          The width of the order.
+     * @param length         The length of the order.
+     * @param height         The height of the order.
+     * @param roofing        The roofing used on the order.
+     * @param slope          The slope of the roofing.
+     * @param rafters        The type of rafters chosen by the customer who placed the order.
+     * @param shed           The shed included with the order.
+     * @param numberOfOffers The number of offers that have been made regarding this order.
+     * @param createdAt      The time when the order was placed.
      */
     public OrderRecord(int id,
                        Customer customer,
@@ -91,6 +97,7 @@ public class OrderRecord implements Order
                        int slope,
                        RafterChoice rafters,
                        Shed shed,
+                       int numberOfOffers,
                        LocalDateTime createdAt)
     {
         this.id = id;
@@ -103,6 +110,7 @@ public class OrderRecord implements Order
         this.slope = slope;
         this.rafters = rafters;
         this.shed = shed;
+        this.numberOfOffers = numberOfOffers;
         this.createdAt = createdAt;
     }
 
@@ -302,6 +310,16 @@ public class OrderRecord implements Order
     public void setShed(Shed shed)
     {
         this.shed = shed;
+    }
+
+    /**
+     * Returns the number of offers that have been made regarding this order.
+     *
+     * @return The number of offsets that have been made regarding this order.
+     */
+    @Override public int getNumberOfOffers()
+    {
+        return numberOfOffers;
     }
 
     /**

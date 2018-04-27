@@ -109,6 +109,7 @@ public class MysqlOrderDAOTest
         assertEquals(expectedShed.getDepth(), actual.getShed().getDepth());
         assertEquals(expectedShed.getCladding(), actual.getShed().getCladding());
         assertEquals(expectedShed.getFlooring(), actual.getShed().getFlooring());
+        assertEquals(0, actual.getNumberOfOffers());
     }
 
     @Test
