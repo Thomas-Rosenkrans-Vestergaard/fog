@@ -1,5 +1,5 @@
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
-<%@ include file="includes/top.jspf" %>
+<%@ include file="top.jspf" %>
 <div class="row">
     <div class="col s12">
         <h2>Tag</h2>
@@ -33,4 +33,4 @@
         </table>
     </div>
 </div>
-<%@ include file="includes/bot.jspf" %>
+<%@ include file="bot.jspf" %>

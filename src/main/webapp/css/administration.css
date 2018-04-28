@@ -22,3 +22,11 @@ p {
 span.focus {
     color: #0D47A1;
 }
+
+#new-orders-counter {
+    background: red;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 20px;
+    margin-right: 10px;
+}

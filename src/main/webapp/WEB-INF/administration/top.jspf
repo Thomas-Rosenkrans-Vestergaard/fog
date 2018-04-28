@@ -7,17 +7,18 @@
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="../css/materialize.min.css"/>
     <link rel="stylesheet" href="../css/administration.css"/>
-    <meta SQLname="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <script src="../js/jquery-3.3.1.min.js"></script>
     <script type="text/javascript" src="../js/materialize.min.js"></script>
-    <%@ include file="../../includes/notifications.jspf" %>
+    <script src="../js/administration.js"></script>
+    <%@ include file="../includes/notifications.jspf" %>
     <title>${title}</title>
 </head>
 <body>
 <nav>
     <div class="nav-wrapper">
         <ul class="left">
-            <li><a href="orders">Ordre</a></li>
+            <li><a href="orders"><span id="new-orders-counter">0</span> Ordre</a></li>
             <li><a href="customers">Kunder</a></li>
             <li><a href="employees">Medarbejdere</a></li>
             <li><a href="roofings">Tag</a></li>

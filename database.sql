@@ -139,10 +139,11 @@ DROP TABLE IF EXISTS `materials`;
 CREATE TABLE `materials` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `number` varchar(12) NOT NULL,
-  `description` text NOT NULL,
+  `description` varchar(255) NOT NULL,
   `notes` text NOT NULL,
-  `scalable` bit(1) NOT NULL,
-  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `width` int(11) unsigned NOT NULL,
+  `height` int(11) unsigned NOT NULL,
+  `usage` int(11) unsigned NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`),
   UNIQUE KEY `product_number_UNIQUE` (`number`)
@@ -264,4 +265,4 @@ CREATE TABLE `sheds` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-04-28  1:35:07
+-- Dump completed on 2018-04-28 13:50:07

@@ -80,6 +80,7 @@ public class AdministrationCladdings extends HttpServlet
         {
             notifications(request);
             request.setAttribute("title", "Beklædninger");
+
             request.setAttribute("claddings", facade.get());
             request.getRequestDispatcher("/WEB-INF/administration/claddings.jsp").forward(request, response);
         }

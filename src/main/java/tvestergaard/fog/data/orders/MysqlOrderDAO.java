@@ -220,8 +220,10 @@ public class MysqlOrderDAO extends AbstractMysqlDAO implements OrderDAO
      */
     @Override public int getNumberOfNewOrders() throws MysqlDataAccessException
     {
-        final String SQL = "SELECT count(*) AS count, (SELECT count(*) FROM offers WHERE `order` = orders.id) AS offers " +
-                "FROM orders WHERE active = b'1' HAVING offers = 0";
+        final String SQL = "SELECT COUNT(*) AS count FROM " +
+                "(SELECT (" +
+                "SELECT count(*) FROM offers WHERE `order` = offers.id) AS offers FROM orders WHERE orders.active = b'1'" +
+                " HAVING offers = 0) AS `al`";
         try (PreparedStatement statement = getConnection().prepareStatement(SQL)) {
             ResultSet resultSet = statement.executeQuery();
             resultSet.first();

@@ -104,6 +104,21 @@ public class OrderFacade
     }
 
     /**
+     * Returns the number of orders that are both active, and have not yet received any offers.
+     *
+     * @return The number of such orders.
+     * @throws ApplicationException When an exception occurs while performing the operation.
+     */
+    public int getNumberOfNewOrders()
+    {
+        try {
+            return dao.getNumberOfNewOrders();
+        } catch (DataAccessException e) {
+            throw new ApplicationException(e);
+        }
+    }
+
+    /**
      * Validates the provided details for creating a new order.
      *
      * @param customer The customer variable to perform validation upon.

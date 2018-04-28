@@ -1,6 +1,6 @@
 <%@ page import="tvestergaard.fog.data.customers.ContactMethod" %>
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
-<%@ include file="includes/top.jspf" %>
+<%@ include file="top.jspf" %>
 <div class="row">
     <div class="col s12">
         <h2><span class="focus">${customer.getName()}</span></h2>
@@ -78,4 +78,4 @@
         </script>
     </form>
 </div>
-<%@ include file="includes/bot.jspf" %>
+<%@ include file="bot.jspf" %>
