@@ -16,6 +16,7 @@ public class ProductionDataSource
             source = new MysqlDataSource();
             source.setDatabaseName("fog");
             source.setUser("fog");
+            source.setURL("jdbc:mysql://localhost:3306/fog?user=fog&useUnicode=yes&characterEncoding=UTF8");
         }
 
         return source;

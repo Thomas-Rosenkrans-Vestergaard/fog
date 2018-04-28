@@ -85,7 +85,7 @@ public class AdministrationCustomers extends HttpServlet
             notifications(request);
             request.setAttribute("title", "Kunder");
             request.setAttribute("customers", facade.get());
-            request.getRequestDispatcher("/WEB-INF/administration/customers.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/administration/show_customers.jsp").forward(request, response);
         }
     }
 

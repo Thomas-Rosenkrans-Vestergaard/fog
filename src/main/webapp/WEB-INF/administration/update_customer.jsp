@@ -37,18 +37,6 @@
                 <label for="phone">Telefon</label>
             </div>
         </div>
-        <div class="row">
-            <div class="input-field col s12">
-                <select name="contact-method" id="contact-method" required>
-                    <c:set var="methods" value="<%= ContactMethod.values() %>"/>
-                    <c:forEach items="${methods}" var="method">
-                        <option ${customer.getContactMethod() == method ? 'selected' : ''}
-                                value="${method}">${method}</option>
-                    </c:forEach>
-                </select>
-                <label>Kontaktmetode</label>
-            </div>
-        </div>
         <div class="class row">
             <div class="col s12">
                 <p>
