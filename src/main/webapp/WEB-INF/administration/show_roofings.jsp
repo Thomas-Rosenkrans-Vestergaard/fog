@@ -19,7 +19,7 @@
             </thead>
             <tbody>
             <c:forEach items="${roofings}" var="roofing">
-                <tr>
+                <tr onclick="location.href = '?action=update&id=${cladding.getId()}'">
                     <td>${roofing.getId()}</td>
                     <td><c:out value="${roofing.getName()}"/></td>
                     <td><c:out value="${roofing.getDescription()}"/></td>

@@ -17,6 +17,7 @@ import tvestergaard.fog.data.roofing.RoofingDAO;
 import tvestergaard.fog.logic.customers.CustomerError;
 import tvestergaard.fog.logic.customers.CustomerFacade;
 import tvestergaard.fog.logic.customers.CustomerValidatorException;
+import tvestergaard.fog.logic.orders.OrderError;
 import tvestergaard.fog.logic.orders.OrderFacade;
 import tvestergaard.fog.logic.orders.OrderValidatorException;
 import tvestergaard.fog.logic.orders.ShedSpecification;
@@ -100,7 +101,7 @@ public class DesignServlet extends HttpServlet
                     null,
                     true);
 
-            Order order = orderFacade.create(
+            orderFacade.create(
                     customer.getId(),
                     parameters.getInt("cladding"),
                     parameters.getInt("width"),
@@ -115,35 +116,12 @@ public class DesignServlet extends HttpServlet
             resp.sendRedirect("administration/orders");
 
         } catch (CustomerValidatorException e) {
-//            FormResponse response = formResponse(req);
-//            populateFormResponse(response, parameters, e);
             for (CustomerError reason : e.getErrors())
                 notifications.error(reason.name());
             resp.sendRedirect("design");
         } catch (OrderValidatorException e) {
-//            if (e.isReason(NAME_EMPTY))
-//                notifications.error("Navnet må ikke være tomt.");
-//            if (e.isReason(NAME_LONGER_THAN_255))
-//                notifications.error("Navnet må ikke være så langt.");
-//            if (e.isReason(ADDRESS_EMPTY))
-//                notifications.error("Addressen må ikke være tomt.");
-//            if (e.isReason(ADDRESS_LONGER_THAN_255))
-//                notifications.error( "Addressen må ikke være så langt.");
-//            if (e.isReason(EMAIL_INVALID))
-//                notifications.error("Email addressen er ikke valid.");
-//            if (e.isReason(EMAIL_LONGER_THAN_255))
-//                notifications.error("Emailadddressen må ikke være så langt.");
-//            if (e.isReason(EMAIL_TAKEN))
-//                notifications.error( "Den givne email er allerde i brug på siden.");
-//            if (e.isReason(PHONE_EMPTY))
-//                notifications.error( "Telefonnumeret må ikke være tomt.");
-//            if (e.isReason(PHONE_LONGER_THAN_30))
-//                notifications.error( "Telefonnumeret må ikke være så langt.");
-//            if (e.isReason(PASSWORD_SHORTER_THAN_4))
-//                notifications.error( "Adgangskoden skal være længere end 3.");
-//            if (e.isReason(UNKNOWN_CONTACT_METHOD))
-//                notifications.error( "Ukendt kontaktmetode.");
-//            resp.sendRedirect("design");
+            for (OrderError error : e.getReasons())
+                notifications.error(error.name());
         }
     }
 

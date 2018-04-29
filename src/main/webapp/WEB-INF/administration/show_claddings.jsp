@@ -21,19 +21,15 @@
             <th>Beskrivelse</th>
             <th>Pris (m<sup>2</sup>)</th>
             <th>Aktiv</th>
-            <th>VIS</th>
             </thead>
             <tbody>
             <c:forEach items="${claddings}" var="cladding">
-                <tr>
+                <tr onclick="location.href = '?action=update&id=${cladding.getId()}'">
                     <td>${cladding.getId()}</td>
                     <td><c:out value="${cladding.getName()}"/></td>
                     <td><c:out value="${cladding.getDescription()}"/></td>
                     <td><c:out value="${f:formatPrice(cladding.getPricePerSquareMeter())}"/></td>
                     <td><c:out value="${f:formatBoolean(cladding.isActive())}"/></td>
-                    <th><a class="btn waves-effect waves-light" href="claddings?action=update&id=${cladding.getId()}">
-                        VIS
-                    </a></th>
                 </tr>
             </c:forEach>
             </tbody>

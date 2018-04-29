@@ -21,19 +21,15 @@
             <th>Beskrivelse</th>
             <th>Pris (m<sup>2</sup>)</th>
             <th>Aktiv</th>
-            <th>VIS</th>
             </thead>
             <tbody>
             <c:forEach items="${floorings}" var="flooring">
-                <tr>
+                <tr onclick="location.href = '?action=update&id=${cladding.getId()}'">
                     <td>${flooring.getId()}</td>
                     <td><c:out value="${flooring.getName()}"/></td>
                     <td><c:out value="${flooring.getDescription()}"/></td>
                     <td><c:out value="${f:formatPrice(flooring.getPricePerSquareMeter())}"/></td>
                     <td><c:out value="${f:formatBoolean(flooring.isActive())}"/></td>
-                    <th><a class="btn waves-effect waves-light" href="floorings?action=update&id=${flooring.getId()}">
-                        VIS
-                    </a></th>
                 </tr>
             </c:forEach>
             </tbody>

@@ -31,6 +31,6 @@ span.focus {
     margin-right: 10px;
 }
 
-tr {
+tbody tr {
     cursor: pointer;
 }

@@ -28,6 +28,8 @@ public class AdministrationRoofings extends HttpServlet
     {
         req.setAttribute("title", "Tag");
         req.setAttribute("roofings", facade.get());
-        req.getRequestDispatcher("/WEB-INF/administration/roofings.jsp").forward(req, resp);
+        req.getRequestDispatcher("/WEB-INF/administration/show_roofings.jsp").forward(req, resp);
     }
+
+
 }

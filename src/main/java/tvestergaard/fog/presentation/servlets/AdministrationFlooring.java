@@ -80,7 +80,7 @@ public class AdministrationFlooring extends HttpServlet
             notifications(request);
             request.setAttribute("title", "Gulve");
             request.setAttribute("floorings", facade.get());
-            request.getRequestDispatcher("/WEB-INF/administration/floorings.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/administration/show_floorings.jsp").forward(request, response);
         }
     }
 

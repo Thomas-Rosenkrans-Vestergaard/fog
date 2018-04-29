@@ -81,7 +81,7 @@ public class AdministrationCladdings extends HttpServlet
             request.setAttribute("title", "Beklædninger");
 
             request.setAttribute("claddings", facade.get());
-            request.getRequestDispatcher("/WEB-INF/administration/claddings.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/administration/show_claddings.jsp").forward(request, response);
         }
     }
 
