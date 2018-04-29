@@ -10,10 +10,6 @@ import tvestergaard.fog.data.constraints.Constraint;
 import tvestergaard.fog.data.constraints.StatementBinder;
 import tvestergaard.fog.data.constraints.StatementGenerator;
 import tvestergaard.fog.data.flooring.Flooring;
-import tvestergaard.fog.data.sheds.Shed;
-import tvestergaard.fog.data.sheds.ShedBlueprint;
-import tvestergaard.fog.data.sheds.ShedRecord;
-import tvestergaard.fog.data.sheds.ShedUpdater;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

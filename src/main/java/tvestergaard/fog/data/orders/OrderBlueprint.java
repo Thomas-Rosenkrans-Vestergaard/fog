@@ -3,8 +3,6 @@ package tvestergaard.fog.data.orders;
 import tvestergaard.fog.data.cladding.Cladding;
 import tvestergaard.fog.data.customers.Customer;
 import tvestergaard.fog.data.roofing.Roofing;
-import tvestergaard.fog.data.sheds.Shed;
-import tvestergaard.fog.data.sheds.ShedBlueprint;
 
 public interface OrderBlueprint
 {

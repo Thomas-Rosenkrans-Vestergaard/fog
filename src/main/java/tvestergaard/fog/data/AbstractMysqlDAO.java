@@ -9,8 +9,8 @@ import tvestergaard.fog.data.flooring.Flooring;
 import tvestergaard.fog.data.flooring.FlooringRecord;
 import tvestergaard.fog.data.roofing.Roofing;
 import tvestergaard.fog.data.roofing.RoofingRecord;
-import tvestergaard.fog.data.sheds.Shed;
-import tvestergaard.fog.data.sheds.ShedRecord;
+import tvestergaard.fog.data.orders.Shed;
+import tvestergaard.fog.data.orders.ShedRecord;
 
 import java.sql.Connection;
 import java.sql.ResultSet;

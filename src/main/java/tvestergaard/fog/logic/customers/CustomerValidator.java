@@ -40,8 +40,7 @@ public class CustomerValidator
      * @throws DataAccessException When a data access exception occurs.
      * @see CustomerFacade#register(String, String, String, String, String, boolean)
      */
-    public Set<CustomerError> validate(CustomerBlueprint blueprint)
-            throws DataAccessException
+    public Set<CustomerError> validate(CustomerBlueprint blueprint) throws DataAccessException
     {
         Set<CustomerError> errors = validate(
                 blueprint.getName(),

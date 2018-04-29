@@ -48,17 +48,15 @@ public class MysqlFlooringDAO extends AbstractMysqlDAO implements FlooringDAO
     @Override
     public List<Flooring> get(Constraint<FlooringColumn>... constraints) throws MysqlDataAccessException
     {
-        try {
-            final List<Flooring> floors = new ArrayList<>();
-            final String         SQL    = generator.generate("SELECT floorings.* FROM floorings", constraints);
-            try (java.sql.PreparedStatement statement = getConnection().prepareStatement(SQL)) {
-                binder.bind(statement, constraints);
-                ResultSet resultSet = statement.executeQuery();
-                while (resultSet.next())
-                    floors.add(createFlooring(resultSet));
+        final List<Flooring> floors = new ArrayList<>();
+        final String         SQL    = generator.generate("SELECT floorings.* FROM floorings", constraints);
+        try (java.sql.PreparedStatement statement = getConnection().prepareStatement(SQL)) {
+            binder.bind(statement, constraints);
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next())
+                floors.add(createFlooring(resultSet));
 
-                return floors;
-            }
+            return floors;
         } catch (SQLException e) {
             throw new MysqlDataAccessException(e);
         }
@@ -75,21 +73,9 @@ public class MysqlFlooringDAO extends AbstractMysqlDAO implements FlooringDAO
     @Override
     public Flooring first(Constraint<FlooringColumn>... constraints) throws MysqlDataAccessException
     {
-        constraints = append(constraints, limit(1));
+        List<Flooring> floorings = get(append(constraints, limit(1)));
 
-        try {
-            final String SQL = generator.generate("SELECT * FROM floorings", constraints);
-            try (PreparedStatement statement = getConnection().prepareStatement(SQL)) {
-                binder.bind(statement, constraints);
-                ResultSet resultSet = statement.executeQuery();
-                if (!resultSet.first())
-                    return null;
-
-                return createFlooring(resultSet);
-            }
-        } catch (SQLException e) {
-            throw new MysqlDataAccessException(e);
-        }
+        return floorings.isEmpty() ? null : floorings.get(0);
     }
 
     /**

@@ -47,17 +47,15 @@ public class MysqlCladdingDAO extends AbstractMysqlDAO implements CladdingDAO
     @Override
     public List<Cladding> get(Constraint<CladdingColumn>... constraints) throws MysqlDataAccessException
     {
-        try {
-            final List<Cladding> floors = new ArrayList<>();
-            final String         SQL    = generator.generate("SELECT * FROM claddings", constraints);
-            try (PreparedStatement statement = getConnection().prepareStatement(SQL)) {
-                binder.bind(statement, constraints);
-                ResultSet resultSet = statement.executeQuery();
-                while (resultSet.next())
-                    floors.add(createCladding(resultSet));
+        final List<Cladding> floors = new ArrayList<>();
+        final String         SQL    = generator.generate("SELECT * FROM claddings", constraints);
+        try (PreparedStatement statement = getConnection().prepareStatement(SQL)) {
+            binder.bind(statement, constraints);
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next())
+                floors.add(createCladding(resultSet));
 
-                return floors;
-            }
+            return floors;
         } catch (SQLException e) {
             throw new MysqlDataAccessException(e);
         }
@@ -74,21 +72,9 @@ public class MysqlCladdingDAO extends AbstractMysqlDAO implements CladdingDAO
     @Override
     public Cladding first(Constraint<CladdingColumn>... constraints) throws MysqlDataAccessException
     {
-        constraints = append(constraints, limit(1));
+        List<Cladding> claddings = get(append(constraints, limit(1)));
 
-        try {
-            final String SQL = generator.generate("SELECT * FROM claddings", constraints);
-            try (PreparedStatement statement = getConnection().prepareStatement(SQL)) {
-                binder.bind(statement, constraints);
-                ResultSet resultSet = statement.executeQuery();
-                if (!resultSet.first())
-                    return null;
-
-                return createCladding(resultSet);
-            }
-        } catch (SQLException e) {
-            throw new MysqlDataAccessException(e);
-        }
+        return claddings.isEmpty() ? null : claddings.get(0);
     }
 
     /**

@@ -47,17 +47,15 @@ public class MysqlRoofingDAO extends AbstractMysqlDAO implements RoofingDAO
     @Override
     public List<Roofing> get(Constraint<RoofingColumn>... constraints) throws MysqlDataAccessException
     {
-        try {
-            final List<Roofing> roofings = new ArrayList<>();
-            final String        SQL      = generator.generate("SELECT * FROM roofings", constraints);
-            try (PreparedStatement statement = getConnection().prepareStatement(SQL)) {
-                binder.bind(statement, constraints);
-                ResultSet resultSet = statement.executeQuery();
-                while (resultSet.next())
-                    roofings.add(createRoofing(resultSet));
+        final List<Roofing> roofings = new ArrayList<>();
+        final String        SQL      = generator.generate("SELECT * FROM roofings", constraints);
+        try (PreparedStatement statement = getConnection().prepareStatement(SQL)) {
+            binder.bind(statement, constraints);
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next())
+                roofings.add(createRoofing(resultSet));
 
-                return roofings;
-            }
+            return roofings;
         } catch (SQLException e) {
             throw new MysqlDataAccessException(e);
         }
@@ -74,21 +72,9 @@ public class MysqlRoofingDAO extends AbstractMysqlDAO implements RoofingDAO
     @Override
     public Roofing first(Constraint<RoofingColumn>... constraints) throws MysqlDataAccessException
     {
-        constraints = append(constraints, limit(1));
+        List<Roofing> roofings = get(append(constraints, limit(1)));
 
-        try {
-            final String SQL = generator.generate("SELECT * FROM roofings", constraints);
-            try (PreparedStatement statement = getConnection().prepareStatement(SQL)) {
-                binder.bind(statement, constraints);
-                ResultSet resultSet = statement.executeQuery();
-                if (!resultSet.first())
-                    return null;
-
-                return createRoofing(resultSet);
-            }
-        } catch (SQLException e) {
-            throw new MysqlDataAccessException(e);
-        }
+        return roofings.isEmpty() ? null : roofings.get(0);
     }
 
     /**

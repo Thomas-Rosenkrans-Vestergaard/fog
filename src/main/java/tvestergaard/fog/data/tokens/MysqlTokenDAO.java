@@ -1,4 +1,4 @@
-package tvestergaard.fog.data.customers;
+package tvestergaard.fog.data.tokens;
 
 import com.mysql.cj.jdbc.MysqlDataSource;
 import tvestergaard.fog.data.AbstractMysqlDAO;
@@ -12,20 +12,20 @@ import java.sql.SQLException;
 
 import static java.sql.Statement.RETURN_GENERATED_KEYS;
 
-public class MysqlRegistrationTokenDAO extends AbstractMysqlDAO implements RegistrationTokenDAO
+public class MysqlTokenDAO extends AbstractMysqlDAO implements TokenDAO
 {
 
     /**
-     * Creates a new {@link MysqlRegistrationTokenDAO}.
+     * Creates a new {@link MysqlTokenDAO}.
      *
      * @param source The {@link MysqlDataSource} being acted upon.
      */
-    public MysqlRegistrationTokenDAO(MysqlDataSource source)
+    public MysqlTokenDAO(MysqlDataSource source)
     {
         super(source);
     }
 
-    public MysqlRegistrationTokenDAO()
+    public MysqlTokenDAO()
     {
         this(ProductionDataSource.getSource());
     }
@@ -38,7 +38,7 @@ public class MysqlRegistrationTokenDAO extends AbstractMysqlDAO implements Regis
      * @return An instance representing the newly inserted token.
      * @throws MysqlDataAccessException When an exception occurs while performing the operation.
      */
-    @Override public RegistrationToken create(int customer, String token) throws MysqlDataAccessException
+    @Override public Token create(int customer, String token) throws MysqlDataAccessException
     {
         final String SQL = "INSERT INTO registration_tokens (`customer`, `hash`) VALUES (?, ?);";
         try {
@@ -65,14 +65,14 @@ public class MysqlRegistrationTokenDAO extends AbstractMysqlDAO implements Regis
      * provided id exists.
      * @throws MysqlDataAccessException When an exception occurs while performing the operation.
      */
-    @Override public RegistrationToken get(int id) throws MysqlDataAccessException
+    @Override public Token get(int id) throws MysqlDataAccessException
     {
         final String SQL = "SELECT * FROM registration_tokens INNER JOIN customers ON customer = customers.id WHERE registration_tokens.id = ?";
         try (PreparedStatement statement = getConnection().prepareStatement(SQL)) {
             statement.setInt(1, id);
             ResultSet resultSet = statement.executeQuery();
             resultSet.first();
-            return createRegistrationToken(resultSet);
+            return createToken(resultSet);
         } catch (SQLException e) {
             throw new MysqlDataAccessException(e);
         }
@@ -161,12 +161,13 @@ public class MysqlRegistrationTokenDAO extends AbstractMysqlDAO implements Regis
      * @return The newly created registration token.
      * @throws SQLException
      */
-    private RegistrationToken createRegistrationToken(ResultSet resultSet) throws SQLException
+    private Token createToken(ResultSet resultSet) throws SQLException
     {
-        return new RegistrationTokenRecord(
+        return new TokenRecord(
                 resultSet.getInt("id"),
                 createCustomer(resultSet),
                 resultSet.getString("hash"),
+                Use.valueOf(resultSet.getString("use")),
                 resultSet.getTimestamp("created_at").toLocalDateTime()
         );
     }

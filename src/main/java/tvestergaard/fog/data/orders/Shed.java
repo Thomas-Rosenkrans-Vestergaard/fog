@@ -1,4 +1,4 @@
-package tvestergaard.fog.data.sheds;
+package tvestergaard.fog.data.orders;
 
 import tvestergaard.fog.data.cladding.Cladding;
 import tvestergaard.fog.data.flooring.Flooring;

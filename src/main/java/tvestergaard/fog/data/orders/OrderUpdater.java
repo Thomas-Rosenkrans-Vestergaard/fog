@@ -1,7 +1,5 @@
 package tvestergaard.fog.data.orders;
 
-import tvestergaard.fog.data.sheds.ShedUpdater;
-
 public interface OrderUpdater extends OrderBlueprint
 {
 

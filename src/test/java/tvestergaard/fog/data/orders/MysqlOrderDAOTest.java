@@ -12,8 +12,6 @@ import tvestergaard.fog.data.flooring.Flooring;
 import tvestergaard.fog.data.flooring.MysqlFlooringDAO;
 import tvestergaard.fog.data.roofing.MysqlRoofingDAO;
 import tvestergaard.fog.data.roofing.Roofing;
-import tvestergaard.fog.data.sheds.Shed;
-import tvestergaard.fog.data.sheds.ShedRecord;
 
 import java.sql.Connection;
 

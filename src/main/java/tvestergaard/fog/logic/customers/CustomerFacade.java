@@ -6,14 +6,11 @@ import tvestergaard.fog.data.DataAccessException;
 import tvestergaard.fog.data.ProductionDataSource;
 import tvestergaard.fog.data.constraints.Constraint;
 import tvestergaard.fog.data.customers.*;
+import tvestergaard.fog.data.tokens.MysqlTokenDAO;
+import tvestergaard.fog.data.tokens.TokenDAO;
 import tvestergaard.fog.logic.ApplicationException;
-import tvestergaard.fog.logic.email.ApplicationMailer;
 
-import java.security.SecureRandom;
-import java.util.Base64;
-import java.util.Base64.Encoder;
 import java.util.List;
-import java.util.Random;
 import java.util.Set;
 
 import static tvestergaard.fog.data.constraints.Constraint.eq;
@@ -26,18 +23,13 @@ public class CustomerFacade
     /**
      * The {@link CustomerDAO} used to access and make changes to the data storage used by the application.
      */
-    private final CustomerDAO          customerDAO;
-    private final RegistrationTokenDAO tokenDAO;
-    private final MembershipRejecter   rejecter;
-    private final MembershipConfirmer  confirmer;
+    private final CustomerDAO     customerDAO;
+    private final EmailChallenger emailChallenger;
 
     /**
      * The validator used the validate the information provided to the {@link CustomerFacade}.
      */
     private final CustomerValidator validator;
-
-    private final ApplicationMailer mailer = new ApplicationMailer();
-    private final Random            random = new SecureRandom();
 
     /**
      * Creates a new {@link CustomerFacade}.
@@ -45,13 +37,11 @@ public class CustomerFacade
      * @param customerDAO The {@link CustomerDAO} used to access and make changes to the data storage used by the
      *                    application.
      */
-    public CustomerFacade(CustomerDAO customerDAO, RegistrationTokenDAO tokenDAO)
+    public CustomerFacade(CustomerDAO customerDAO, TokenDAO tokenDAO)
     {
         this.customerDAO = customerDAO;
-        this.tokenDAO = tokenDAO;
         this.validator = new CustomerValidator(customerDAO);
-        this.rejecter = new MembershipRejecter(tokenDAO);
-        this.confirmer = new MembershipConfirmer(tokenDAO);
+        this.emailChallenger = new EmailChallenger(customerDAO, tokenDAO, new SimpleJavaMailer());
     }
 
     /**
@@ -60,12 +50,12 @@ public class CustomerFacade
      */
     public CustomerFacade()
     {
+        mailer = new SimpleJavaMailer();
         MysqlDataSource source = ProductionDataSource.getSource();
         this.customerDAO = new MysqlCustomerDAO(source);
-        this.tokenDAO = new MysqlRegistrationTokenDAO(source);
+        TokenDAO tokenDAO = new MysqlTokenDAO(source);
         this.validator = new CustomerValidator(customerDAO);
-        this.rejecter = new MembershipRejecter(tokenDAO);
-        this.confirmer = new MembershipConfirmer(tokenDAO);
+        this.emailChallenger = new EmailChallenger(customerDAO, tokenDAO, new SimpleJavaMailer());
     }
 
     /**
@@ -128,7 +118,7 @@ public class CustomerFacade
                 throw new CustomerValidatorException(reasons);
             blueprint.setPassword(hash(password));
             Customer customer = customerDAO.create(blueprint);
-            sendRegistrationConfirmation(customer);
+            emailChallenger.challenge(customer);
             return customer;
         } catch (DataAccessException e) {
             throw new ApplicationException(e);
@@ -171,7 +161,7 @@ public class CustomerFacade
     public void reject(int id, String token) throws IncorrectTokenException, ExpiredTokenException
     {
         try {
-            rejecter.reject(id, token);
+            emailChallenger.reject(id, token);
         } catch (DataAccessException e) {
             throw new ApplicationException(e);
         }
@@ -189,34 +179,12 @@ public class CustomerFacade
     public void confirm(int id, String token) throws IncorrectTokenException, ExpiredTokenException
     {
         try {
-            confirmer.confirm(id, token);
+            emailChallenger.confirm(id, token);
         } catch (DataAccessException e) {
             throw new ApplicationException(e);
         }
     }
 
-    /**
-     * Sends a registration confirmation email to the provided customer.
-     *
-     * @param customer The customer to send the registration confirmation email to.
-     * @return {@code true} if the registration confirmation email was successfully sent.
-     * @throws DataAccessException
-     */
-    private void sendRegistrationConfirmation(Customer customer) throws DataAccessException
-    {
-        String            token   = generateRegistrationToken();
-        RegistrationToken tokenDB = tokenDAO.create(customer.getId(), hash(token));
-        RegistrationEmail email   = new RegistrationEmail(customer, tokenDB.getId(), token);
-        mailer.send(email);
-    }
-
-    private String generateRegistrationToken()
-    {
-        byte bytes[] = new byte[128];
-        random.nextBytes(bytes);
-        Encoder encoder = Base64.getUrlEncoder().withoutPadding();
-        return encoder.encodeToString(bytes);
-    }
 
     /**
      * Hashes the provided password using the b-crypt algorithm.
@@ -224,7 +192,7 @@ public class CustomerFacade
      * @param password The password to hash.
      * @return The resulting digest.
      */
-    private String hash(String password)
+    public static String hash(String password)
     {
         return BCrypt.hashpw(password, BCrypt.gensalt());
     }

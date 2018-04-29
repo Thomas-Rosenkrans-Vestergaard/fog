@@ -1,9 +1,11 @@
-package tvestergaard.fog.data.customers;
+package tvestergaard.fog.data.tokens;
+
+import tvestergaard.fog.data.customers.Customer;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
 
-public class RegistrationTokenRecord implements RegistrationToken
+public class TokenRecord implements Token
 {
     /**
      * The unique identifier of the registration token.
@@ -21,23 +23,30 @@ public class RegistrationTokenRecord implements RegistrationToken
     private final String hash;
 
     /**
+     * The use of the token.
+     */
+    private final Use use;
+
+    /**
      * The moment in time when the token was created.
      */
     private final LocalDateTime createdAt;
 
     /**
-     * Creates a new {@link RegistrationTokenRecord}.
+     * Creates a new {@link TokenRecord}.
      *
      * @param id        The unique identifier of the registration token.
      * @param customer  The customer the token was issued to.
      * @param hash      The hash of the token.
+     * @param use       The use of the token.
      * @param createdAt The moment in time when the token was created.
      */
-    public RegistrationTokenRecord(int id, Customer customer, String hash, LocalDateTime createdAt)
+    public TokenRecord(int id, Customer customer, String hash, Use use, LocalDateTime createdAt)
     {
         this.id = id;
         this.customer = customer;
         this.hash = hash;
+        this.use = use;
         this.createdAt = createdAt;
     }
 
@@ -72,6 +81,16 @@ public class RegistrationTokenRecord implements RegistrationToken
     }
 
     /**
+     * Returns the use of the token.
+     *
+     * @return The use of the token.
+     */
+    @Override public Use getUse()
+    {
+        return use;
+    }
+
+    /**
      * Returns the moment in time when the token was created.
      *
      * @return The moment in time when the token was created.
@@ -84,8 +103,8 @@ public class RegistrationTokenRecord implements RegistrationToken
     @Override public boolean equals(Object o)
     {
         if (this == o) return true;
-        if (!(o instanceof RegistrationToken)) return false;
-        RegistrationToken that = (RegistrationToken) o;
+        if (!(o instanceof Token)) return false;
+        Token that = (Token) o;
         return getId() == that.getId() &&
                 Objects.equals(getHash(), that.getHash()) &&
                 Objects.equals(getCreatedAt(), that.getCreatedAt());

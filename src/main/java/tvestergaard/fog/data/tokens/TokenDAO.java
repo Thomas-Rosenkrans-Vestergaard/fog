@@ -1,8 +1,8 @@
-package tvestergaard.fog.data.customers;
+package tvestergaard.fog.data.tokens;
 
 import tvestergaard.fog.data.DataAccessException;
 
-public interface RegistrationTokenDAO
+public interface TokenDAO
 {
 
 
@@ -14,7 +14,7 @@ public interface RegistrationTokenDAO
      * @return An instance representing the newly inserted token.
      * @throws DataAccessException When an exception occurs while performing the operation.
      */
-    RegistrationToken create(int customer, String token) throws DataAccessException;
+    Token create(int customer, String token) throws DataAccessException;
 
     /**
      * Returns the registration token with the provided id.
@@ -24,7 +24,7 @@ public interface RegistrationTokenDAO
      * provided id exists.
      * @throws DataAccessException When an exception occurs while performing the operation.
      */
-    RegistrationToken get(int id) throws DataAccessException;
+    Token get(int id) throws DataAccessException;
 
     /**
      * Confirms the membership confirmation challenge of the provided token.

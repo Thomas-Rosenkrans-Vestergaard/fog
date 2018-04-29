@@ -4,7 +4,7 @@ import tvestergaard.fog.data.DataAccessException;
 import tvestergaard.fog.data.ProductionDataSource;
 import tvestergaard.fog.data.constraints.Constraint;
 import tvestergaard.fog.data.orders.*;
-import tvestergaard.fog.data.sheds.ShedUpdater;
+import tvestergaard.fog.data.orders.ShedUpdater;
 import tvestergaard.fog.logic.ApplicationException;
 
 import java.util.HashSet;

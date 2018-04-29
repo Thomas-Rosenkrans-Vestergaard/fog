@@ -1,7 +1,4 @@
-package tvestergaard.fog.data.sheds;
-
-import tvestergaard.fog.data.cladding.Cladding;
-import tvestergaard.fog.data.flooring.Flooring;
+package tvestergaard.fog.data.orders;
 
 public interface ShedUpdater extends ShedBlueprint
 {

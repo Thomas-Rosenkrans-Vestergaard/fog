@@ -1,6 +1,6 @@
 package tvestergaard.fog.logic.orders;
 
-import tvestergaard.fog.data.sheds.ShedBlueprint;
+import tvestergaard.fog.data.orders.ShedBlueprint;
 
 public class ShedSpecification
 {

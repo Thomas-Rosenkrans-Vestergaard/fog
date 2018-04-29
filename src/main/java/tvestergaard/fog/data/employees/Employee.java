@@ -1,5 +1,6 @@
 package tvestergaard.fog.data.employees;
 
+import java.time.LocalDateTime;
 import java.util.Set;
 
 public interface Employee extends EmployeeUpdater
@@ -35,6 +36,13 @@ public interface Employee extends EmployeeUpdater
     {
         return new EmployeeRecord(id, name, username, password, active, roles, null);
     }
+
+    /**
+     * Returns the {@code LocalDataTime} representing the moment when the employee was created.
+     *
+     * @return The {@code LocalDataTime} representing the moment when the employee was created.
+     */
+    LocalDateTime getCreatedAt();
 
     /**
      * Checks that this employee equals another provided object. The two objects are only considered equal when all the

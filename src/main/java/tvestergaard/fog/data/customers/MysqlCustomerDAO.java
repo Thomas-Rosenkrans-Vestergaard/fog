@@ -46,17 +46,15 @@ public class MysqlCustomerDAO extends AbstractMysqlDAO implements CustomerDAO
     @Override
     public List<Customer> get(Constraint<CustomerColumn>... constraints) throws MysqlDataAccessException
     {
-        try {
-            final List<Customer> customers = new ArrayList<>();
-            final String         SQL       = generator.generate("SELECT * FROM customers", constraints);
-            try (PreparedStatement statement = getConnection().prepareStatement(SQL)) {
-                binder.bind(statement, constraints);
-                ResultSet resultSet = statement.executeQuery();
-                while (resultSet.next())
-                    customers.add(createCustomer(resultSet));
+        final List<Customer> customers = new ArrayList<>();
+        final String         SQL       = generator.generate("SELECT * FROM customers", constraints);
+        try (PreparedStatement statement = getConnection().prepareStatement(SQL)) {
+            binder.bind(statement, constraints);
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next())
+                customers.add(createCustomer(resultSet));
 
-                return customers;
-            }
+            return customers;
         } catch (SQLException e) {
             throw new MysqlDataAccessException(e);
         }
@@ -73,21 +71,9 @@ public class MysqlCustomerDAO extends AbstractMysqlDAO implements CustomerDAO
     @Override
     public Customer first(Constraint<CustomerColumn>... constraints) throws MysqlDataAccessException
     {
-        constraints = append(constraints, limit(1));
+        List<Customer> customers = get(append(constraints, limit(1)));
 
-        try {
-            final String SQL = generator.generate("SELECT * FROM customers", constraints);
-            try (PreparedStatement statement = getConnection().prepareStatement(SQL)) {
-                binder.bind(statement, constraints);
-                ResultSet resultSet = statement.executeQuery();
-                if (!resultSet.first())
-                    return null;
-
-                return createCustomer(resultSet);
-            }
-        } catch (SQLException e) {
-            throw new MysqlDataAccessException(e);
-        }
+        return customers.isEmpty() ? null : customers.get(0);
     }
 
     /**

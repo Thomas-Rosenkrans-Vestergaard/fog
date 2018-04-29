@@ -69,7 +69,8 @@
             <div class="col 12">
                 <h2 class="account-form-headers">Log ind</h2>
                 <p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.
-                    Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante.</p>
+                    Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante.
+                    <a href="forgot-password">Glemt password</a>.</p>
             </div>
         </div>
         <form method="post">

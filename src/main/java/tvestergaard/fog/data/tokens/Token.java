@@ -1,8 +1,10 @@
-package tvestergaard.fog.data.customers;
+package tvestergaard.fog.data.tokens;
+
+import tvestergaard.fog.data.customers.Customer;
 
 import java.time.LocalDateTime;
 
-public interface RegistrationToken
+public interface Token
 {
 
     /**
@@ -25,6 +27,13 @@ public interface RegistrationToken
      * @return The hash of the token.
      */
     String getHash();
+
+    /**
+     * Returns the use of the token.
+     *
+     * @return The use of the token.
+     */
+    Use getUse();
 
     /**
      * Returns the moment in time when the token was created.

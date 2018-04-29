@@ -47,17 +47,15 @@ public class MysqlMaterialDAO extends AbstractMysqlDAO implements MaterialDAO
     @Override
     public List<Material> get(Constraint<MaterialColumn>... constraints) throws MysqlDataAccessException
     {
-        try {
-            final List<Material> floors = new ArrayList<>();
-            final String         SQL    = generator.generate("SELECT * FROM materials", constraints);
-            try (PreparedStatement statement = getConnection().prepareStatement(SQL)) {
-                binder.bind(statement, constraints);
-                ResultSet resultSet = statement.executeQuery();
-                while (resultSet.next())
-                    floors.add(createMaterial(resultSet));
+        final List<Material> floors = new ArrayList<>();
+        final String         SQL    = generator.generate("SELECT * FROM materials", constraints);
+        try (PreparedStatement statement = getConnection().prepareStatement(SQL)) {
+            binder.bind(statement, constraints);
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next())
+                floors.add(createMaterial(resultSet));
 
-                return floors;
-            }
+            return floors;
         } catch (SQLException e) {
             throw new MysqlDataAccessException(e);
         }
@@ -95,21 +93,9 @@ public class MysqlMaterialDAO extends AbstractMysqlDAO implements MaterialDAO
     @Override
     public Material first(Constraint<MaterialColumn>... constraints) throws MysqlDataAccessException
     {
-        constraints = append(constraints, limit(1));
+        List<Material> materials = get(append(constraints, limit(1)));
 
-        try {
-            final String SQL = generator.generate("SELECT * FROM materials", constraints);
-            try (PreparedStatement statement = getConnection().prepareStatement(SQL)) {
-                binder.bind(statement, constraints);
-                ResultSet resultSet = statement.executeQuery();
-                if (!resultSet.first())
-                    return null;
-
-                return createMaterial(resultSet);
-            }
-        } catch (SQLException e) {
-            throw new MysqlDataAccessException(e);
-        }
+        return materials.isEmpty() ? null : materials.get(0);
     }
 
     /**
