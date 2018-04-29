@@ -18,7 +18,7 @@ public enum EmployeeColumn implements MysqlColumn
      */
     @Override public String getMysqlName()
     {
-        return String.format("e.%s", this.name().toLowerCase());
+        return this.name().toLowerCase();
     }
 
     /**

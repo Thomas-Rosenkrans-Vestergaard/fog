@@ -184,7 +184,7 @@ public class AdministrationCustomers extends HttpServlet
             }
 
             try {
-                Customer customer = facade.create(parameters.value("name"),
+                Customer customer = facade.register(parameters.value("name"),
                         parameters.value("address"),
                         parameters.value("email"),
                         parameters.value("phone"),

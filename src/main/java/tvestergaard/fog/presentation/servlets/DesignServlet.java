@@ -92,7 +92,7 @@ public class DesignServlet extends HttpServlet
 
         try {
 
-            Customer customer = customerFacade.create(
+            Customer customer = customerFacade.register(
                     parameters.value("customer-name"),
                     parameters.value("customer-address"),
                     parameters.value("customer-email"),

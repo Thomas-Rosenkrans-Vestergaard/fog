@@ -90,6 +90,7 @@ public abstract class AbstractMysqlDAO
                 resultSet.getString("customers.phone"),
                 resultSet.getString("customers.password"),
                 resultSet.getBoolean("customers.active"),
+                resultSet.getBoolean("customers.confirmed"),
                 resultSet.getTimestamp("customers.created_at").toLocalDateTime()
         );
     }

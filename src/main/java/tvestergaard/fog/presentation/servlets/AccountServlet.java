@@ -1,9 +1,7 @@
 package tvestergaard.fog.presentation.servlets;
 
 import tvestergaard.fog.data.customers.Customer;
-import tvestergaard.fog.logic.customers.CustomerError;
-import tvestergaard.fog.logic.customers.CustomerFacade;
-import tvestergaard.fog.logic.customers.CustomerValidatorException;
+import tvestergaard.fog.logic.customers.*;
 import tvestergaard.fog.presentation.Notifications;
 import tvestergaard.fog.presentation.Parameters;
 
@@ -52,6 +50,22 @@ public class AccountServlet extends HttpServlet
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException
     {
+        Parameters    parameters    = new Parameters(req);
+        Notifications notifications = notifications(req);
+
+        String action = parameters.value("action");
+
+
+        if ("confirm-membership".equals(action)) {
+            confirmMembership(req, resp, parameters, notifications);
+            return;
+        }
+
+        if ("reject-membership".equals(action)) {
+            rejectMembership(req, resp, parameters, notifications);
+            return;
+        }
+
         req.setAttribute("title", "Kundekonto");
         req.getRequestDispatcher("/WEB-INF/account.jsp").forward(req, resp);
     }
@@ -89,6 +103,56 @@ public class AccountServlet extends HttpServlet
         }
     }
 
+    private void confirmMembership(HttpServletRequest req,
+                                   HttpServletResponse resp,
+                                   Parameters parameters,
+                                   Notifications notifications) throws ServletException, IOException
+    {
+        if (!parameters.isInt("id") || !parameters.isPresent("token")) {
+            notifications.error("Bad challenge token.");
+            resp.sendRedirect("profile");
+            return;
+        }
+
+        try {
+            facade.confirm(parameters.getInt("id"), parameters.value("token"));
+            notifications.success("Din kundekonto blev bekræftet.");
+            return;
+        } catch (IncorrectTokenException e) {
+            notifications.error("The token was incorrect.");
+            resp.sendRedirect("profile");
+        } catch (ExpiredTokenException e) {
+            notifications.error("The token was expired.");
+            resp.sendRedirect("profile");
+        }
+    }
+
+
+    private void rejectMembership(HttpServletRequest req,
+                                  HttpServletResponse resp,
+                                  Parameters parameters,
+                                  Notifications notifications)
+            throws ServletException, IOException
+    {
+        if (!parameters.isInt("id") || !parameters.isPresent("token")) {
+            notifications.error("Bad challenge token.");
+            resp.sendRedirect("");
+            return;
+        }
+
+        try {
+            facade.reject(parameters.getInt("id"), parameters.value("token"));
+            notifications.success("Din kundekonto blev deaktiveret.");
+            return;
+        } catch (IncorrectTokenException e) {
+            notifications.error("The token was incorrect.");
+            resp.sendRedirect("profile");
+        } catch (ExpiredTokenException e) {
+            notifications.error("The token was expired.");
+            resp.sendRedirect("profile");
+        }
+    }
+
     private void processLogin(HttpServletRequest req,
                               HttpServletResponse resp,
                               Parameters parameters,
@@ -100,18 +164,26 @@ public class AccountServlet extends HttpServlet
             return;
         }
 
-        Customer customer = facade.authenticate(parameters.value("email"), parameters.value("password"));
-        if (customer == null) {
-            notifications.error("Ukorrekte akkreditiver.");
-            resp.sendRedirect("account");
+        try {
+            Customer customer = facade.authenticate(parameters.value("email"), parameters.value("password"));
+            if (customer == null) {
+                notifications.error("Ukorrekte akkreditiver.");
+                resp.sendRedirect("account");
+                return;
+            }
+
+            HttpSession session = req.getSession();
+            session.setAttribute("customer", customer);
+            notifications.success("Du er nu logget ind.");
+            resp.sendRedirect("profile");
+
+        } catch (NoPasswordException e) {
+            notifications.error("Denne konto har intet password.");
+            resp.sendRedirect("update-password");
             return;
         }
-
-        HttpSession session = req.getSession();
-        session.setAttribute("customer", customer);
-        notifications.success("Du er nu logget ind.");
-        resp.sendRedirect("profile");
     }
+
 
     private void processRegistration(HttpServletRequest req,
                                      HttpServletResponse resp,
@@ -130,7 +202,7 @@ public class AccountServlet extends HttpServlet
 
         try {
 
-            Customer customer = facade.create(
+            Customer customer = facade.register(
                     parameters.value("name"),
                     parameters.value("address"),
                     parameters.value("email"),

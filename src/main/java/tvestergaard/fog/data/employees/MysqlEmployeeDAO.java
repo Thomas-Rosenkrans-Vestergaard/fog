@@ -8,7 +8,6 @@ import tvestergaard.fog.data.constraints.StatementBinder;
 import tvestergaard.fog.data.constraints.StatementGenerator;
 
 import java.sql.*;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -49,17 +48,19 @@ public class MysqlEmployeeDAO extends AbstractMysqlDAO implements EmployeeDAO
      */
     @Override public List<Employee> get(Constraint<EmployeeColumn>... constraints) throws MysqlDataAccessException
     {
-        try {
-            final List<Employee> employees = new ArrayList<>();
-            final String         SQL       = generator.generate("SELECT * FROM employees e INNER JOIN `roles` r ON r.employee = e.id", constraints);
-            try (PreparedStatement statement = getConnection().prepareStatement(SQL)) {
-                binder.bind(statement, constraints);
-                ResultSet resultSet = statement.executeQuery();
-                while (resultSet.next())
-                    employees.add(createEmployee(resultSet));
-
-                return employees;
+        final List<Employee> employees = new ArrayList<>();
+        final String         SQL       = generator.generate("SELECT * FROM employees", constraints);
+        try (PreparedStatement statement = getConnection().prepareStatement(SQL)) {
+            PreparedStatement rolesStatement = getConnection().prepareStatement("SELECT * FROM roles WHERE employee = ?");
+            binder.bind(statement, constraints);
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                rolesStatement.setInt(1, resultSet.getInt("id"));
+                ResultSet roles = rolesStatement.executeQuery();
+                employees.add(createEmployee(resultSet, roles));
             }
+
+            return employees;
         } catch (SQLException e) {
             throw new MysqlDataAccessException(e);
         }
@@ -75,21 +76,9 @@ public class MysqlEmployeeDAO extends AbstractMysqlDAO implements EmployeeDAO
      */
     @Override public Employee first(Constraint<EmployeeColumn>... constraints) throws MysqlDataAccessException
     {
-        constraints = append(constraints, limit(1));
+        List<Employee> employees = get(append(constraints, limit(1)));
 
-        try {
-            final String SQL = generator.generate("SELECT * FROM employees e INNER JOIN `roles` r ON r.employee = e.id", constraints);
-            try (PreparedStatement statement = getConnection().prepareStatement(SQL)) {
-                binder.bind(statement, constraints);
-                ResultSet resultSet = statement.executeQuery();
-                if (!resultSet.first())
-                    return null;
-
-                return createEmployee(resultSet);
-            }
-        } catch (SQLException e) {
-            throw new MysqlDataAccessException(e);
-        }
+        return employees.isEmpty() ? null : employees.get(0);
     }
 
     /**
@@ -168,43 +157,29 @@ public class MysqlEmployeeDAO extends AbstractMysqlDAO implements EmployeeDAO
     /**
      * Creates a new {@link Employee} instance from the provided {@code ResultSet}.
      *
-     * @param resultSet The {@code ResultSet} from which to create the {@link Employee} instance.
+     * @param employees
+     * @param roles     The {@code ResultSet} from which to create the {@link Employee} instance.
      * @return The newly created {@link Employee} instance.
      * @throws SQLException
      */
-    protected Employee createEmployee(ResultSet resultSet) throws SQLException
+    protected Employee createEmployee(ResultSet employees, ResultSet roles) throws SQLException
     {
         return new EmployeeRecord(
-                resultSet.getInt("e.id"),
-                resultSet.getString("e.name"),
-                resultSet.getString("e.username"),
-                resultSet.getString("e.password"),
-                resultSet.getBoolean("e.active"),
-                createRoleSet(resultSet),
-                getLocalDateTime(resultSet)
+                employees.getInt("id"),
+                employees.getString("name"),
+                employees.getString("username"),
+                employees.getString("password"),
+                employees.getBoolean("active"),
+                createRoleSet(roles),
+                employees.getTimestamp("created_at").toLocalDateTime()
         );
-    }
-
-    protected LocalDateTime getLocalDateTime(ResultSet resultSet) throws SQLException
-    {
-        resultSet.previous();
-        LocalDateTime result = resultSet.getTimestamp("e.created_at").toLocalDateTime();
-        resultSet.next();
-        return result;
     }
 
     Set<Role> createRoleSet(ResultSet resultSet) throws SQLException
     {
-        Set<Role> roles     = new HashSet<>();
-        int       currentId = resultSet.getInt("e.id");
-        roles.add(Role.valueOf(resultSet.getString("r.role")));
+        Set<Role> roles = new HashSet<>();
         while (resultSet.next()) {
-            if (currentId == resultSet.getInt("e.id")) {
-                roles.add(Role.valueOf(resultSet.getString("r.role")));
-            } else {
-                resultSet.previous();
-                return roles;
-            }
+            roles.add(Role.valueOf(resultSet.getString("role")));
         }
 
         return roles;

@@ -38,7 +38,7 @@ public class CustomerValidator
      * @param blueprint The blueprint to perform validation upon.
      * @return The errors with the provided information.
      * @throws DataAccessException When a data access exception occurs.
-     * @see CustomerFacade#create(String, String, String, String, String, boolean)
+     * @see CustomerFacade#register(String, String, String, String, String, boolean)
      */
     public Set<CustomerError> validate(CustomerBlueprint blueprint)
             throws DataAccessException

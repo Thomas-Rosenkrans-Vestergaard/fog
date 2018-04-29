@@ -135,6 +135,7 @@ public class MysqlCustomersDAOTest
         assertEquals(phone, actual.getPhone());
         assertEquals(password, actual.getPassword());
         assertEquals(active, actual.isActive());
+        assertFalse(actual.isConfirmed());
     }
 
     @Test

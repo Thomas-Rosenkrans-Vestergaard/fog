@@ -17,7 +17,7 @@ public interface Customer extends CustomerUpdater
      */
     static CustomerBlueprint blueprint(String name, String address, String email, String phone, String password, boolean active)
     {
-        return new CustomerRecord(-1, name, address, email, phone, password, active, null);
+        return new CustomerRecord(-1, name, address, email, phone, password, active, false, null);
     }
 
     /**
@@ -35,8 +35,15 @@ public interface Customer extends CustomerUpdater
      */
     static CustomerUpdater updater(int id, String name, String address, String email, String phone, String password, boolean active)
     {
-        return new CustomerRecord(id, name, address, email, phone, password, active, null);
+        return new CustomerRecord(id, name, address, email, phone, password, active, false, null);
     }
+
+    /**
+     * Returns whether or not the customer has confirmed their membership using their email address.
+     *
+     * @return {@code true} if the customer has confirmed their membership using their email address.
+     */
+    boolean isConfirmed();
 
     /**
      * Checks that this customer equals another provided object. The two objects are only considered equal when all the

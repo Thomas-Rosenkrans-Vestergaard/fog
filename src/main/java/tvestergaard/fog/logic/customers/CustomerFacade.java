@@ -1,13 +1,19 @@
 package tvestergaard.fog.logic.customers;
 
+import com.mysql.cj.jdbc.MysqlDataSource;
 import org.mindrot.jbcrypt.BCrypt;
 import tvestergaard.fog.data.DataAccessException;
 import tvestergaard.fog.data.ProductionDataSource;
 import tvestergaard.fog.data.constraints.Constraint;
 import tvestergaard.fog.data.customers.*;
 import tvestergaard.fog.logic.ApplicationException;
+import tvestergaard.fog.logic.email.ApplicationMailer;
 
+import java.security.SecureRandom;
+import java.util.Base64;
+import java.util.Base64.Encoder;
 import java.util.List;
+import java.util.Random;
 import java.util.Set;
 
 import static tvestergaard.fog.data.constraints.Constraint.eq;
@@ -20,12 +26,18 @@ public class CustomerFacade
     /**
      * The {@link CustomerDAO} used to access and make changes to the data storage used by the application.
      */
-    private final CustomerDAO customerDAO;
+    private final CustomerDAO          customerDAO;
+    private final RegistrationTokenDAO tokenDAO;
+    private final MembershipRejecter   rejecter;
+    private final MembershipConfirmer  confirmer;
 
     /**
      * The validator used the validate the information provided to the {@link CustomerFacade}.
      */
     private final CustomerValidator validator;
+
+    private final ApplicationMailer mailer = new ApplicationMailer();
+    private final Random            random = new SecureRandom();
 
     /**
      * Creates a new {@link CustomerFacade}.
@@ -33,10 +45,13 @@ public class CustomerFacade
      * @param customerDAO The {@link CustomerDAO} used to access and make changes to the data storage used by the
      *                    application.
      */
-    public CustomerFacade(CustomerDAO customerDAO)
+    public CustomerFacade(CustomerDAO customerDAO, RegistrationTokenDAO tokenDAO)
     {
         this.customerDAO = customerDAO;
+        this.tokenDAO = tokenDAO;
         this.validator = new CustomerValidator(customerDAO);
+        this.rejecter = new MembershipRejecter(tokenDAO);
+        this.confirmer = new MembershipConfirmer(tokenDAO);
     }
 
     /**
@@ -45,27 +60,12 @@ public class CustomerFacade
      */
     public CustomerFacade()
     {
-        this(new MysqlCustomerDAO(ProductionDataSource.getSource()));
-    }
-
-    /**
-     * Attempts to authenticate a customer using the provided email and password.
-     *
-     * @param email    The email to authenticate with.
-     * @param password The password to authenticate with.
-     * @return The customer who was authenticated. {@code null} in case no customer with the provided credentials exist.
-     */
-    public Customer authenticate(String email, String password)
-    {
-        try {
-            Customer customer = customerDAO.first(where(eq(EMAIL, email)));
-            if (customer == null)
-                return null;
-
-            return BCrypt.checkpw(password, customer.getPassword()) ? customer : null;
-        } catch (DataAccessException e) {
-            throw new ApplicationException(e);
-        }
+        MysqlDataSource source = ProductionDataSource.getSource();
+        this.customerDAO = new MysqlCustomerDAO(source);
+        this.tokenDAO = new MysqlRegistrationTokenDAO(source);
+        this.validator = new CustomerValidator(customerDAO);
+        this.rejecter = new MembershipRejecter(tokenDAO);
+        this.confirmer = new MembershipConfirmer(tokenDAO);
     }
 
     /**
@@ -114,12 +114,12 @@ public class CustomerFacade
      * @throws CustomerValidatorException When the provided details are invalid.
      * @throws ApplicationException       When an exception occurs while performing the operation.
      */
-    public Customer create(String name,
-                           String address,
-                           String email,
-                           String phone,
-                           String password,
-                           boolean active) throws CustomerValidatorException
+    public Customer register(String name,
+                             String address,
+                             String email,
+                             String phone,
+                             String password,
+                             boolean active) throws CustomerValidatorException
     {
         try {
             CustomerBlueprint  blueprint = Customer.blueprint(name, address, email, phone, password, active);
@@ -127,10 +127,95 @@ public class CustomerFacade
             if (!reasons.isEmpty())
                 throw new CustomerValidatorException(reasons);
             blueprint.setPassword(hash(password));
-            return customerDAO.create(blueprint);
+            Customer customer = customerDAO.create(blueprint);
+            sendRegistrationConfirmation(customer);
+            return customer;
         } catch (DataAccessException e) {
             throw new ApplicationException(e);
         }
+    }
+
+    /**
+     * Attempts to authenticate a customer using the provided email and password.
+     *
+     * @param email    The email to authenticate with.
+     * @param password The password to authenticate with.
+     * @return The customer who was authenticated. {@code null} in case no customer with the provided credentials exist.
+     * @throws NoPasswordException When the provided customer has no password.
+     */
+    public Customer authenticate(String email, String password) throws NoPasswordException
+    {
+        try {
+            Customer customer = customerDAO.first(where(eq(EMAIL, email)));
+            if (customer == null)
+                return null;
+
+            if (customer.getPassword() == null)
+                throw new NoPasswordException();
+
+            return BCrypt.checkpw(password, customer.getPassword()) ? customer : null;
+        } catch (DataAccessException e) {
+            throw new ApplicationException(e);
+        }
+    }
+
+    /**
+     * Rejects the membership matching the provided token details.
+     *
+     * @param id    The id of the token.
+     * @param token The secret token.
+     * @throws ApplicationException
+     * @throws IncorrectTokenException
+     * @throws ExpiredTokenException
+     */
+    public void reject(int id, String token) throws IncorrectTokenException, ExpiredTokenException
+    {
+        try {
+            rejecter.reject(id, token);
+        } catch (DataAccessException e) {
+            throw new ApplicationException(e);
+        }
+    }
+
+    /**
+     * Confirms the membership matching the provided token details.
+     *
+     * @param id    The id of the token.
+     * @param token The secret token.
+     * @throws ApplicationException
+     * @throws IncorrectTokenException
+     * @throws ExpiredTokenException
+     */
+    public void confirm(int id, String token) throws IncorrectTokenException, ExpiredTokenException
+    {
+        try {
+            confirmer.confirm(id, token);
+        } catch (DataAccessException e) {
+            throw new ApplicationException(e);
+        }
+    }
+
+    /**
+     * Sends a registration confirmation email to the provided customer.
+     *
+     * @param customer The customer to send the registration confirmation email to.
+     * @return {@code true} if the registration confirmation email was successfully sent.
+     * @throws DataAccessException
+     */
+    private void sendRegistrationConfirmation(Customer customer) throws DataAccessException
+    {
+        String            token   = generateRegistrationToken();
+        RegistrationToken tokenDB = tokenDAO.create(customer.getId(), hash(token));
+        RegistrationEmail email   = new RegistrationEmail(customer, tokenDB.getId(), token);
+        mailer.send(email);
+    }
+
+    private String generateRegistrationToken()
+    {
+        byte bytes[] = new byte[128];
+        random.nextBytes(bytes);
+        Encoder encoder = Base64.getUrlEncoder().withoutPadding();
+        return encoder.encodeToString(bytes);
     }
 
     /**

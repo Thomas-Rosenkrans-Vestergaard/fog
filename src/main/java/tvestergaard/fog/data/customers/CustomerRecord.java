@@ -42,6 +42,11 @@ public class CustomerRecord implements Customer
     private boolean active;
 
     /**
+     * Whether or not the customer has confirmed their membership using their email address.
+     */
+    private boolean confirmed;
+
+    /**
      * The moment in time when the customer was created.
      */
     private LocalDateTime createdAt;
@@ -56,10 +61,11 @@ public class CustomerRecord implements Customer
      * @param phone     The phone number of the customer.
      * @param password  The password of the customer.
      * @param active    Whether or not the customer is active.
+     * @param confirmed Whether or not the customer has confirmed their membership using their email address.
      * @param createdAt The moment in time when the customer was created.
      */
     public CustomerRecord(int id, String name, String address, String email, String phone, String password,
-                          boolean active, LocalDateTime createdAt)
+                          boolean active, boolean confirmed, LocalDateTime createdAt)
     {
         this.id = id;
         this.name = name;
@@ -68,6 +74,7 @@ public class CustomerRecord implements Customer
         this.phone = phone;
         this.password = password;
         this.active = active;
+        this.confirmed = confirmed;
         this.createdAt = createdAt;
     }
 
@@ -76,8 +83,7 @@ public class CustomerRecord implements Customer
      *
      * @return The unique identifier of the customer.
      */
-    @Override
-    public int getId()
+    @Override public int getId()
     {
         return id;
     }
@@ -87,8 +93,7 @@ public class CustomerRecord implements Customer
      *
      * @return The name of the customer.
      */
-    @Override
-    public String getName()
+    @Override public String getName()
     {
         return name;
     }
@@ -98,8 +103,7 @@ public class CustomerRecord implements Customer
      *
      * @param name The new name.
      */
-    @Override
-    public void setName(String name)
+    @Override public void setName(String name)
     {
         this.name = name;
     }
@@ -109,8 +113,7 @@ public class CustomerRecord implements Customer
      *
      * @return The address of the customer.
      */
-    @Override
-    public String getAddress()
+    @Override public String getAddress()
     {
         return address;
     }
@@ -120,8 +123,7 @@ public class CustomerRecord implements Customer
      *
      * @param address The new address.
      */
-    @Override
-    public void setAddress(String address)
+    @Override public void setAddress(String address)
     {
         this.address = address;
     }
@@ -142,8 +144,7 @@ public class CustomerRecord implements Customer
      *
      * @param email The new email.
      */
-    @Override
-    public void setEmail(String email)
+    @Override public void setEmail(String email)
     {
         this.email = email;
     }
@@ -164,8 +165,7 @@ public class CustomerRecord implements Customer
      *
      * @param phone The new phone number.
      */
-    @Override
-    public void setPhone(String phone)
+    @Override public void setPhone(String phone)
     {
         this.phone = phone;
     }
@@ -175,8 +175,7 @@ public class CustomerRecord implements Customer
      *
      * @return The password of the customer.
      */
-    @Override
-    public String getPassword()
+    @Override public String getPassword()
     {
         return password;
     }
@@ -186,8 +185,7 @@ public class CustomerRecord implements Customer
      *
      * @param password The new password.
      */
-    @Override
-    public void setPassword(String password)
+    @Override public void setPassword(String password)
     {
         this.password = password;
     }
@@ -197,8 +195,7 @@ public class CustomerRecord implements Customer
      *
      * @return {@code true} if the customer is active.
      */
-    @Override
-    public boolean isActive()
+    @Override public boolean isActive()
     {
         return active;
     }
@@ -208,10 +205,19 @@ public class CustomerRecord implements Customer
      *
      * @param state The new state.
      */
-    @Override
-    public void setActive(boolean state)
+    @Override public void setActive(boolean state)
     {
         this.active = state;
+    }
+
+    /**
+     * Returns whether or not the customer has confirmed their membership using their email address.
+     *
+     * @return {@code true} if the customer has confirmed their membership using their email address.
+     */
+    @Override public boolean isConfirmed()
+    {
+        return confirmed;
     }
 
     /**
