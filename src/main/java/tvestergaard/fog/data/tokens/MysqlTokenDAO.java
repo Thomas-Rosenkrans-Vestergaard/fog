@@ -35,17 +35,19 @@ public class MysqlTokenDAO extends AbstractMysqlDAO implements TokenDAO
      *
      * @param customer The customer the token is issued to.
      * @param token    The token to insert.
+     * @param use      The usage of the token to create.
      * @return An instance representing the newly inserted token.
      * @throws MysqlDataAccessException When an exception occurs while performing the operation.
      */
-    @Override public Token create(int customer, String token) throws MysqlDataAccessException
+    @Override public Token create(int customer, String token, Use use) throws MysqlDataAccessException
     {
-        final String SQL = "INSERT INTO registration_tokens (`customer`, `hash`) VALUES (?, ?);";
+        final String SQL = "INSERT INTO tokens (`customer`, `hash`, `use`) VALUES (?, ?, ?);";
         try {
             Connection connection = getConnection();
             try (PreparedStatement statement = connection.prepareStatement(SQL, RETURN_GENERATED_KEYS)) {
                 statement.setInt(1, customer);
                 statement.setString(2, token);
+                statement.setString(3, use.name());
                 statement.executeUpdate();
                 connection.commit();
                 ResultSet generated = statement.getGeneratedKeys();
@@ -67,7 +69,7 @@ public class MysqlTokenDAO extends AbstractMysqlDAO implements TokenDAO
      */
     @Override public Token get(int id) throws MysqlDataAccessException
     {
-        final String SQL = "SELECT * FROM registration_tokens INNER JOIN customers ON customer = customers.id WHERE registration_tokens.id = ?";
+        final String SQL = "SELECT * FROM tokens INNER JOIN customers ON customer = customers.id WHERE tokens.id = ?";
         try (PreparedStatement statement = getConnection().prepareStatement(SQL)) {
             statement.setInt(1, id);
             ResultSet resultSet = statement.executeQuery();
@@ -92,13 +94,13 @@ public class MysqlTokenDAO extends AbstractMysqlDAO implements TokenDAO
             try {
 
                 final String updateSQL = "UPDATE customers SET confirmed = TRUE " +
-                        "WHERE id = (SELECT customer FROM registration_tokens WHERE registration_tokens.id = ? LIMIT 1);";
+                        "WHERE id = (SELECT customer FROM tokens WHERE tokens.id = ? LIMIT 1);";
                 try (PreparedStatement statement = connection.prepareStatement(updateSQL)) {
                     statement.setInt(1, token);
                     statement.executeUpdate();
                 }
 
-                final String deleteSQL = "DELETE FROM registration_tokens WHERE id = ?";
+                final String deleteSQL = "DELETE FROM tokens WHERE id = ?";
                 try (PreparedStatement statement = connection.prepareStatement(deleteSQL)) {
                     statement.setInt(1, token);
                     statement.executeUpdate();
@@ -130,13 +132,13 @@ public class MysqlTokenDAO extends AbstractMysqlDAO implements TokenDAO
             try {
 
                 final String updateSQL = "DELETE FROM customers " +
-                        "WHERE id = (SELECT customer FROM registration_tokens WHERE registration_tokens.id = ? LIMIT 1);";
+                        "WHERE id = (SELECT customer FROM tokens WHERE tokens.id = ? LIMIT 1);";
                 try (PreparedStatement statement = connection.prepareStatement(updateSQL)) {
                     statement.setInt(1, token);
                     statement.executeUpdate();
                 }
 
-                final String deleteSQL = "DELETE FROM registration_tokens WHERE id = ?";
+                final String deleteSQL = "DELETE FROM tokens WHERE id = ?";
                 try (PreparedStatement statement = connection.prepareStatement(deleteSQL)) {
                     statement.setInt(1, token);
                     statement.executeUpdate();

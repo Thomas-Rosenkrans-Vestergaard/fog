@@ -1,7 +1,8 @@
 package tvestergaard.fog.presentation.servlets;
 
 import tvestergaard.fog.logic.customers.CustomerFacade;
-import tvestergaard.fog.logic.customers.UnknownEmailException;
+import tvestergaard.fog.logic.customers.ExpiredTokenException;
+import tvestergaard.fog.logic.customers.IncorrectTokenException;
 import tvestergaard.fog.presentation.Notifications;
 import tvestergaard.fog.presentation.Parameters;
 
@@ -14,14 +15,14 @@ import java.io.IOException;
 
 import static tvestergaard.fog.presentation.PresentationFunctions.notifications;
 
-@WebServlet(urlPatterns = "/forgot-password")
-public class ForgotPasswordServlet extends HttpServlet
+@WebServlet(urlPatterns = "/reset-password")
+public class ResetPasswordServlet extends HttpServlet
 {
 
     private final CustomerFacade customerFacade = new CustomerFacade();
 
     /**
-     * Displays a page, where customers can request to reset their password.
+     * Displays a page, where customers can reset their password.
      *
      * @param req  an {@link HttpServletRequest} object that contains the request the client has made of the servlet
      * @param resp an {@link HttpServletResponse} object that contains the response the servlet sends to the client
@@ -30,13 +31,23 @@ public class ForgotPasswordServlet extends HttpServlet
      */
     @Override protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException
     {
-        req.setAttribute("title", "Glemt password");
-        req.setAttribute("navigation", "forgot-password");
-        req.getRequestDispatcher("/WEB-INF/forgot-password.jsp").forward(req, resp);
+        Parameters    parameters    = new Parameters(req);
+        Notifications notifications = notifications(req);
+
+        if (!parameters.isInt("tokenId") || !parameters.isPresent("tokenSecret")) {
+            notifications.error("Ulovlige parametre.");
+            resp.sendRedirect("reset-password");
+            return;
+        }
+
+        req.setAttribute("title", "Gensæt adgangskode");
+        req.setAttribute("tokenId", parameters.getInt("tokenId"));
+        req.setAttribute("tokenSecret", parameters.value("tokenSecret"));
+        req.getRequestDispatcher("/WEB-INF/reset-password.jsp").forward(req, resp);
     }
 
     /**
-     * Accepts the data posted from /forgot-password.
+     * Accepts the new password.
      *
      * @param req  an {@link HttpServletRequest} object that contains the request the client has made of the servlet
      * @param resp an {@link HttpServletResponse} object that contains the response the servlet sends  to the client
@@ -48,20 +59,21 @@ public class ForgotPasswordServlet extends HttpServlet
         Parameters    parameters    = new Parameters(req);
         Notifications notifications = notifications(req);
 
-        if (!parameters.isPresent("email")) {
-            notifications.error("Manglende email adresse.");
-            resp.sendRedirect("forgot-password");
-            return;
+        if (!parameters.isInt("tokenId") || !parameters.isPresent("tokenSecret") || !parameters.isPresent("password")) {
+            notifications.error("Incomplete form post.");
+            resp.sendRedirect(req.getQueryString());
         }
 
         try {
-            String email = parameters.value("email");
-            customerFacade.sendPasswordReset(email);
-            notifications.success("En email er blevet sendt.");
-            resp.sendRedirect("forgot-password");
-        } catch (UnknownEmailException e) {
-            notifications.error("Den angivede maøiladresse er ikke registreret i systemet.");
-            resp.sendRedirect("forgot-password");
+            customerFacade.resetPassword(parameters.getInt("tokenId"), parameters.value("tokenSecret"), parameters.value("password"));
+            notifications.success("Din adgangskode er nu ændret.");
+            resp.sendRedirect("account");
+        } catch (IncorrectTokenException e) {
+            notifications.error("Ukorrekt token.");
+            resp.sendRedirect(req.getQueryString());
+        } catch (ExpiredTokenException e) {
+            notifications.error("Token udløbet.");
+            resp.sendRedirect(req.getQueryString());
         }
     }
 }

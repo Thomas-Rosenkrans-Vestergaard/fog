@@ -43,8 +43,7 @@ public class MysqlCustomerDAO extends AbstractMysqlDAO implements CustomerDAO
      * @return The resulting customers.
      * @throws MysqlDataAccessException When an exception occurs while performing the operation.
      */
-    @Override
-    public List<Customer> get(Constraint<CustomerColumn>... constraints) throws MysqlDataAccessException
+    @Override public List<Customer> get(Constraint<CustomerColumn>... constraints) throws MysqlDataAccessException
     {
         final List<Customer> customers = new ArrayList<>();
         final String         SQL       = generator.generate("SELECT * FROM customers", constraints);
@@ -68,8 +67,7 @@ public class MysqlCustomerDAO extends AbstractMysqlDAO implements CustomerDAO
      * the provided constraints.
      * @throws MysqlDataAccessException When an exception occurs while performing the operation.
      */
-    @Override
-    public Customer first(Constraint<CustomerColumn>... constraints) throws MysqlDataAccessException
+    @Override public Customer first(Constraint<CustomerColumn>... constraints) throws MysqlDataAccessException
     {
         List<Customer> customers = get(append(constraints, limit(1)));
 
@@ -141,6 +139,42 @@ public class MysqlCustomerDAO extends AbstractMysqlDAO implements CustomerDAO
                 connection.rollback();
                 throw e;
             }
+        } catch (SQLException e) {
+            throw new MysqlDataAccessException(e);
+        }
+    }
+
+    /**
+     * Resets the password of the customer the provided token was issued to. The token is then deleted.
+     *
+     * @param tokenId     The token identifying the customer to reset the password of.
+     * @param newPassword The new password.
+     * @throws MysqlDataAccessException When an exception occurs while performing the operation.
+     */
+    @Override public void resetPassword(int tokenId, String newPassword) throws MysqlDataAccessException
+    {
+        try {
+            Connection connection = getConnection();
+            try {
+                String SQL = "UPDATE customers SET `password` = ? WHERE id = (SELECT customer FROM tokens WHERE id = ? LIMIT 1);";
+                try (PreparedStatement statement = connection.prepareStatement(SQL)) {
+                    statement.setString(1, newPassword);
+                    statement.setInt(2, tokenId);
+                    statement.executeUpdate();
+                }
+
+                String deleteSQL = "DELETE FROM tokens WHERE id = ?;";
+                try (PreparedStatement delete = connection.prepareStatement(deleteSQL)) {
+                    delete.setInt(1, tokenId);
+                    delete.executeUpdate();
+                }
+
+                connection.commit();
+            } catch (SQLException e) {
+                connection.rollback();
+                throw e;
+            }
+
         } catch (SQLException e) {
             throw new MysqlDataAccessException(e);
         }

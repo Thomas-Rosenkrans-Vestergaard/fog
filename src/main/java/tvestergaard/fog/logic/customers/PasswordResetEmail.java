@@ -9,10 +9,14 @@ public class PasswordResetEmail implements ApplicationEmail
 {
 
     private final Customer customer;
+    private final int      tokenId;
+    private final String   tokenSecret;
 
-    public PasswordResetEmail(Customer customer)
+    public PasswordResetEmail(Customer customer, int tokenId, String tokenSecret)
     {
         this.customer = customer;
+        this.tokenId = tokenId;
+        this.tokenSecret = tokenSecret;
     }
 
     /**
@@ -42,7 +46,7 @@ public class PasswordResetEmail implements ApplicationEmail
         builder.append("<html>");
         builder.append("<body>");
         builder.append("<h1>Glemt adgangskode.</h1>");
-        builder.append("<p><a href='localhost:8080/fog/reset-password'>Forny</a></p>");
+        builder.append(String.format("/fog/reset-password?tokenId=%d&tokenSecret=%s", tokenId, tokenSecret));
         builder.append("</body>");
         builder.append("</html>");
 

@@ -6,11 +6,11 @@ import tvestergaard.fog.data.customers.Customer;
 import tvestergaard.fog.data.customers.CustomerDAO;
 import tvestergaard.fog.data.tokens.Token;
 import tvestergaard.fog.data.tokens.TokenDAO;
+import tvestergaard.fog.data.tokens.Use;
 import tvestergaard.fog.logic.email.ApplicationMailer;
 
 import java.security.SecureRandom;
 import java.time.LocalDateTime;
-import java.util.Base64;
 
 import static tvestergaard.fog.logic.customers.CustomerFacade.hash;
 
@@ -57,18 +57,10 @@ public class EmailChallenger
      */
     public void challenge(Customer customer) throws DataAccessException
     {
-        String            token   = generateRegistrationToken();
-        Token             tokenDB = tokenDAO.create(customer.getId(), hash(token));
+        String            token   = new TokenGenerator().generate();
+        Token             tokenDB = tokenDAO.create(customer.getId(), hash(token), Use.EMAIL_CHALLENGE);
         RegistrationEmail email   = new RegistrationEmail(customer, tokenDB.getId(), token);
         mailer.send(email);
-    }
-
-    private String generateRegistrationToken()
-    {
-        byte bytes[] = new byte[128];
-        random.nextBytes(bytes);
-        Base64.Encoder encoder = Base64.getUrlEncoder().withoutPadding();
-        return encoder.encodeToString(bytes);
     }
 
     /**

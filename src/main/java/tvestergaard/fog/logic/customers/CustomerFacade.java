@@ -30,6 +30,7 @@ public class CustomerFacade
      * The validator used the validate the information provided to the {@link CustomerFacade}.
      */
     private final CustomerValidator validator;
+    private final PasswordResetter  passwordResetter;
 
     /**
      * Creates a new {@link CustomerFacade}.
@@ -42,6 +43,7 @@ public class CustomerFacade
         this.customerDAO = customerDAO;
         this.validator = new CustomerValidator(customerDAO);
         this.emailChallenger = new EmailChallenger(customerDAO, tokenDAO, new SimpleJavaMailer());
+        this.passwordResetter = new PasswordResetter(customerDAO, tokenDAO, new SimpleJavaMailer(), new TokenGenerator());
     }
 
     /**
@@ -50,12 +52,12 @@ public class CustomerFacade
      */
     public CustomerFacade()
     {
-        mailer = new SimpleJavaMailer();
         MysqlDataSource source = ProductionDataSource.getSource();
         this.customerDAO = new MysqlCustomerDAO(source);
         TokenDAO tokenDAO = new MysqlTokenDAO(source);
         this.validator = new CustomerValidator(customerDAO);
         this.emailChallenger = new EmailChallenger(customerDAO, tokenDAO, new SimpleJavaMailer());
+        this.passwordResetter = new PasswordResetter(customerDAO, tokenDAO, new SimpleJavaMailer(), new TokenGenerator());
     }
 
     /**
@@ -225,6 +227,41 @@ public class CustomerFacade
             if (!reasons.isEmpty())
                 throw new CustomerValidatorException(reasons);
             return customerDAO.update(updater);
+        } catch (DataAccessException e) {
+            throw new ApplicationException(e);
+        }
+    }
+
+    /**
+     * Sends an email to the provided email address containing a link where the customer can reset their password.
+     *
+     * @param email The email address to send the password reset link to.
+     * @throws ApplicationException  When a generic exception occurs.
+     * @throws UnknownEmailException When the provided email is not registered with the application.
+     */
+    public void sendPasswordReset(String email) throws UnknownEmailException
+    {
+        try {
+            passwordResetter.send(email);
+        } catch (DataAccessException e) {
+            throw new ApplicationException(e);
+        }
+    }
+
+    /**
+     * Attempts to reset the password of some customer using the provided token and the new password.
+     *
+     * @param tokenId     The id of the token.
+     * @param tokenSecret The secret token.
+     * @param newPassword The new password.
+     * @throws ApplicationException    When a generic exception occurs.
+     * @throws IncorrectTokenException When the provided token credentials are incorrect.
+     * @throws ExpiredTokenException   When the provided token exists, but have expired.
+     */
+    public void resetPassword(int tokenId, String tokenSecret, String newPassword) throws IncorrectTokenException, ExpiredTokenException
+    {
+        try {
+            passwordResetter.reset(tokenId, tokenSecret, newPassword);
         } catch (DataAccessException e) {
             throw new ApplicationException(e);
         }

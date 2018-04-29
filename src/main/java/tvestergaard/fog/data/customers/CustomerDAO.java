@@ -44,4 +44,13 @@ public interface CustomerDAO
      * @throws DataAccessException When an exception occurs while performing the operation.
      */
     boolean update(CustomerUpdater updater) throws DataAccessException;
+
+    /**
+     * Resets the password of the customer the provided token was issued to. The token is then deleted.
+     *
+     * @param tokenId     The token identifying the customer to reset the password of.
+     * @param newPassword The new password.
+     * @throws DataAccessException When an exception occurs while performing the operation.
+     */
+    void resetPassword(int tokenId, String newPassword) throws DataAccessException;
 }

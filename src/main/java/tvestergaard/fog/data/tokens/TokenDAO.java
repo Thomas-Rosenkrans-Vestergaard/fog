@@ -11,10 +11,11 @@ public interface TokenDAO
      *
      * @param customer The customer the token is issued to.
      * @param token    The token to insert.
+     * @param use      The usage of the token to create.
      * @return An instance representing the newly inserted token.
      * @throws DataAccessException When an exception occurs while performing the operation.
      */
-    Token create(int customer, String token) throws DataAccessException;
+    Token create(int customer, String token, Use use) throws DataAccessException;
 
     /**
      * Returns the registration token with the provided id.
