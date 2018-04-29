@@ -179,4 +179,80 @@ public class MysqlCustomerDAO extends AbstractMysqlDAO implements CustomerDAO
             throw new MysqlDataAccessException(e);
         }
     }
+
+    /**
+     * Confirms the membership confirmation challenge of the provided token.
+     *
+     * @param token The id of the token to confirm.
+     * @throws MysqlDataAccessException When an exception occurs while performing the operation.
+     */
+    @Override public void confirmMembership(int token) throws MysqlDataAccessException
+    {
+        try {
+            Connection connection = getConnection();
+
+            try {
+
+                final String updateSQL = "UPDATE customers SET confirmed = TRUE " +
+                        "WHERE id = (SELECT customer FROM tokens WHERE tokens.id = ? LIMIT 1);";
+                try (PreparedStatement statement = connection.prepareStatement(updateSQL)) {
+                    statement.setInt(1, token);
+                    statement.executeUpdate();
+                }
+
+                final String deleteSQL = "DELETE FROM tokens WHERE id = ?";
+                try (PreparedStatement statement = connection.prepareStatement(deleteSQL)) {
+                    statement.setInt(1, token);
+                    statement.executeUpdate();
+                }
+
+                connection.commit();
+
+            } catch (SQLException e) {
+                connection.rollback();
+                throw e;
+            }
+
+        } catch (SQLException e) {
+            throw new MysqlDataAccessException(e);
+        }
+    }
+
+    /**
+     * Rejects the membership confirmation challenge of the provided token. Deletes the account the token was issued for.
+     *
+     * @param token The id of the token to reject.
+     * @throws MysqlDataAccessException When an exception occurs while performing the operation.
+     */
+    @Override public void rejectMembership(int token) throws MysqlDataAccessException
+    {
+        try {
+            Connection connection = getConnection();
+
+            try {
+
+                final String updateSQL = "DELETE FROM customers " +
+                        "WHERE id = (SELECT customer FROM tokens WHERE tokens.id = ? LIMIT 1);";
+                try (PreparedStatement statement = connection.prepareStatement(updateSQL)) {
+                    statement.setInt(1, token);
+                    statement.executeUpdate();
+                }
+
+                final String deleteSQL = "DELETE FROM tokens WHERE id = ?";
+                try (PreparedStatement statement = connection.prepareStatement(deleteSQL)) {
+                    statement.setInt(1, token);
+                    statement.executeUpdate();
+                }
+
+                connection.commit();
+
+            } catch (SQLException e) {
+                connection.rollback();
+                throw e;
+            }
+
+        } catch (SQLException e) {
+            throw new MysqlDataAccessException(e);
+        }
+    }
 }

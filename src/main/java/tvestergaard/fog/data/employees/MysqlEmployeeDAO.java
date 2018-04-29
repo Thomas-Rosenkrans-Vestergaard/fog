@@ -32,7 +32,7 @@ public class MysqlEmployeeDAO extends AbstractMysqlDAO implements EmployeeDAO
     /**
      * Creates a new {@link MysqlEmployeeDAO}.
      *
-     * @param source The source {@link MysqlEmployeeDAO}.
+     * @param source The {@link MysqlDataSource} that provides the connection used by the {@link EmployeeDAO}.
      */
     public MysqlEmployeeDAO(MysqlDataSource source)
     {

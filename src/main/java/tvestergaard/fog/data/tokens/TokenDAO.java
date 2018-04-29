@@ -5,7 +5,6 @@ import tvestergaard.fog.data.DataAccessException;
 public interface TokenDAO
 {
 
-
     /**
      * Inserts a new registration token into the data storage.
      *
@@ -26,20 +25,4 @@ public interface TokenDAO
      * @throws DataAccessException When an exception occurs while performing the operation.
      */
     Token get(int id) throws DataAccessException;
-
-    /**
-     * Confirms the membership confirmation challenge of the provided token.
-     *
-     * @param token The id of the token to confirm.
-     * @throws DataAccessException When an exception occurs while performing the operation.
-     */
-    void confirm(int token) throws DataAccessException;
-
-    /**
-     * Rejects the membership confirmation challenge of the provided token.
-     *
-     * @param token The id of the token to reject.
-     * @throws DataAccessException When an exception occurs while performing the operation.
-     */
-    void reject(int token) throws DataAccessException;
 }

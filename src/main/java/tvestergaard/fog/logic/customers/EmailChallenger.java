@@ -87,7 +87,7 @@ public class EmailChallenger
             throw new IncorrectTokenException();
         }
 
-        tokenDAO.reject(id);
+        customerDAO.rejectMembership(id);
     }
 
 
@@ -115,6 +115,6 @@ public class EmailChallenger
             throw new IncorrectTokenException();
         }
 
-        tokenDAO.confirm(id);
+        customerDAO.confirmMembership(id);
     }
 }
