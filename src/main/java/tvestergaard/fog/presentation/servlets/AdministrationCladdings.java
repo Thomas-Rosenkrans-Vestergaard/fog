@@ -1,7 +1,6 @@
 package tvestergaard.fog.presentation.servlets;
 
 import tvestergaard.fog.data.cladding.Cladding;
-import tvestergaard.fog.data.cladding.CladdingRecord;
 import tvestergaard.fog.logic.claddings.CladdingError;
 import tvestergaard.fog.logic.claddings.CladdingFacade;
 import tvestergaard.fog.logic.claddings.CladdingValidatorException;
@@ -130,12 +129,11 @@ public class AdministrationCladdings extends HttpServlet
             }
 
             try {
-                facade.update(new CladdingRecord(
-                        parameters.getInt("id"),
+                facade.update(parameters.getInt("id"),
                         parameters.value("name"),
                         parameters.value("description"),
                         parameters.getInt("price"),
-                        parameters.getBoolean("active")));
+                        parameters.getBoolean("active"));
 
                 notifications.success("Beklædningen blev opdateret.");
                 response.sendRedirect("?action=update&id=" + parameters.getInt("id"));

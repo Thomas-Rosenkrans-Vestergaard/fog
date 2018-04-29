@@ -114,10 +114,10 @@ public class CustomerFacade
                              boolean active) throws CustomerValidatorException
     {
         try {
-            CustomerBlueprint  blueprint = Customer.blueprint(name, address, email, phone, password, active);
-            Set<CustomerError> reasons   = validator.validate(blueprint);
+            Set<CustomerError> reasons = validator.validateRegister(name, address, email, phone, password);
             if (!reasons.isEmpty())
                 throw new CustomerValidatorException(reasons);
+            CustomerBlueprint blueprint = Customer.blueprint(name, address, email, phone, password, active);
             blueprint.setPassword(hash(password));
             Customer customer = customerDAO.create(blueprint);
             emailChallenger.challenge(customer);
@@ -223,7 +223,7 @@ public class CustomerFacade
     {
         try {
             CustomerUpdater    updater = Customer.updater(id, name, address, email, phone, password, active);
-            Set<CustomerError> reasons = validator.validate(updater);
+            Set<CustomerError> reasons = validator.validateUpdate(id, name, address, email, phone, password);
             if (!reasons.isEmpty())
                 throw new CustomerValidatorException(reasons);
             return customerDAO.update(updater);

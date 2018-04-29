@@ -3,7 +3,10 @@ package tvestergaard.fog.logic.floorings;
 import tvestergaard.fog.data.DataAccessException;
 import tvestergaard.fog.data.ProductionDataSource;
 import tvestergaard.fog.data.constraints.Constraint;
-import tvestergaard.fog.data.flooring.*;
+import tvestergaard.fog.data.flooring.Flooring;
+import tvestergaard.fog.data.flooring.FlooringColumn;
+import tvestergaard.fog.data.flooring.FlooringDAO;
+import tvestergaard.fog.data.flooring.MysqlFlooringDAO;
 import tvestergaard.fog.logic.ApplicationException;
 
 import java.util.List;
@@ -88,11 +91,10 @@ public class FlooringFacade
             throws FlooringValidatorException
     {
         try {
-            FlooringBlueprint  blueprint = Flooring.blueprint(name, description, pricePerSquareMeter, active);
-            Set<FlooringError> reasons   = validator.validate(blueprint);
+            Set<FlooringError> reasons = validator.validate(name, description, pricePerSquareMeter);
             if (!reasons.isEmpty())
                 throw new FlooringValidatorException(reasons);
-            return dao.create(blueprint);
+            return dao.create(Flooring.blueprint(name, description, pricePerSquareMeter, active));
         } catch (DataAccessException e) {
             throw new ApplicationException(e);
         }
@@ -101,18 +103,19 @@ public class FlooringFacade
     /**
      * Updates the entity in the data storage to match the provided {@code flooring}.
      *
-     * @param flooring The flooring to update the entity in the data storage to.
+     * @param id The
      * @return {@link true} if the record was updated.
      * @throws ApplicationException       When an exception occurs while performing the operation.
      * @throws FlooringValidatorException When the provided information is considered invalid.
      */
-    public boolean update(Flooring flooring) throws FlooringValidatorException
+    public boolean update(int id, String name, String description, int pricePerSquareMeter, boolean active)
+            throws FlooringValidatorException
     {
         try {
-            Set<FlooringError> reasons = validator.validate(flooring);
+            Set<FlooringError> reasons = validator.validate(name, description, pricePerSquareMeter);
             if (!reasons.isEmpty())
                 throw new FlooringValidatorException(reasons);
-            return dao.update(flooring);
+            return dao.update(Flooring.updater(id, name, description, pricePerSquareMeter, active));
         } catch (DataAccessException e) {
             throw new ApplicationException(e);
         }

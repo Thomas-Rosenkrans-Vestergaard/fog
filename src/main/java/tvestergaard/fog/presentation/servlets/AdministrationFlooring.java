@@ -1,7 +1,6 @@
 package tvestergaard.fog.presentation.servlets;
 
 import tvestergaard.fog.data.flooring.Flooring;
-import tvestergaard.fog.data.flooring.FlooringRecord;
 import tvestergaard.fog.logic.floorings.FlooringError;
 import tvestergaard.fog.logic.floorings.FlooringFacade;
 import tvestergaard.fog.logic.floorings.FlooringValidatorException;
@@ -129,12 +128,12 @@ public class AdministrationFlooring extends HttpServlet
             }
 
             try {
-                facade.update(new FlooringRecord(
+                facade.update(
                         parameters.getInt("id"),
                         parameters.value("name"),
                         parameters.value("description"),
                         parameters.getInt("price"),
-                        parameters.getBoolean("active")));
+                        parameters.getBoolean("active"));
 
                 notifications.success("Gulvet blev opdateret.");
                 response.sendRedirect("?action=update&id=" + parameters.getInt("id"));

@@ -2,9 +2,7 @@ package tvestergaard.fog.logic.customers;
 
 import org.apache.commons.validator.routines.EmailValidator;
 import tvestergaard.fog.data.DataAccessException;
-import tvestergaard.fog.data.customers.CustomerBlueprint;
 import tvestergaard.fog.data.customers.CustomerDAO;
-import tvestergaard.fog.data.customers.CustomerUpdater;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -35,20 +33,19 @@ public class CustomerValidator
     /**
      * Validates the provided customer blueprint.
      *
-     * @param blueprint The blueprint to perform validation upon.
+     * @param name     The name of the customer to validate.
+     * @param address  The address of the customer to validate.
+     * @param email    The email of the customer to validate.
+     * @param phone    The phone number of the customer to validate.
+     * @param password The password of the customer to validate.
      * @return The errors with the provided information.
      * @throws DataAccessException When a data access exception occurs.
      * @see CustomerFacade#register(String, String, String, String, String, boolean)
      */
-    public Set<CustomerError> validate(CustomerBlueprint blueprint) throws DataAccessException
+    public Set<CustomerError> validateRegister(String name, String address, String email, String phone, String password) throws DataAccessException
     {
-        Set<CustomerError> errors = validate(
-                blueprint.getName(),
-                blueprint.getAddress(),
-                blueprint.getEmail(),
-                blueprint.getPhone(),
-                blueprint.getPassword());
-        if (customerDAO.first(where(eq(EMAIL, blueprint.getEmail()))) != null)
+        Set<CustomerError> errors = validateInformation(name, address, email, phone, password);
+        if (customerDAO.first(where(eq(EMAIL, email))) != null)
             errors.add(EMAIL_TAKEN);
 
         return errors;
@@ -57,21 +54,20 @@ public class CustomerValidator
     /**
      * Validates the provided customer updater.
      *
-     * @param updater The customer updater to perform validation upon.
+     * @param id       The id of the customer to validate.
+     * @param name     The name of the customer to validate.
+     * @param address  The address of the customer to validate.
+     * @param email    The email of the customer to validate.
+     * @param phone    The phone number of the customer to validate.
+     * @param password The password of the customer to validate.
      * @return The errors with the provided information.
      * @throws DataAccessException When a data access exception occurs.
      * @see CustomerFacade#update(int, String, String, String, String, String, boolean)
      */
-    public Set<CustomerError> validate(CustomerUpdater updater) throws DataAccessException
+    public Set<CustomerError> validateUpdate(int id, String name, String address, String email, String phone, String password) throws DataAccessException
     {
-        Set<CustomerError> errors = validate(
-                updater.getName(),
-                updater.getAddress(),
-                updater.getEmail(),
-                updater.getPhone(),
-                updater.getPassword());
-
-        if (customerDAO.first(where(eq(EMAIL, updater.getEmail()), and(not(ID, updater.getId())))) != null)
+        Set<CustomerError> errors = validateInformation(name, address, email, phone, password);
+        if (customerDAO.first(where(eq(EMAIL, email), and(not(ID, id)))) != null)
             errors.add(CustomerError.EMAIL_TAKEN);
 
         return errors;
@@ -87,7 +83,7 @@ public class CustomerValidator
      * @param password The password of the customer to validate.
      * @return The errors with the provided information.
      */
-    public Set<CustomerError> validate(String name, String address, String email, String phone, String password)
+    private Set<CustomerError> validateInformation(String name, String address, String email, String phone, String password)
     {
         Set<CustomerError> reasons = new HashSet<>();
 

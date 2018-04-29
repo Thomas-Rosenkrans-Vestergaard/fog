@@ -41,7 +41,7 @@ public interface Flooring extends FlooringUpdater
      * @param active              Whether or not the flooring to specify in the blueprint can be applied to orders.
      * @return The newly created flooring blueprint.
      */
-    static FlooringBlueprint updater(int id, String name, String description, int pricePerSquareMeter, boolean active)
+    static FlooringUpdater updater(int id, String name, String description, int pricePerSquareMeter, boolean active)
     {
         return new FlooringRecord(id, name, description, pricePerSquareMeter, active);
     }

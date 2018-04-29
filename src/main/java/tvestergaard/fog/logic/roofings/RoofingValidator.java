@@ -1,7 +1,5 @@
 package tvestergaard.fog.logic.roofings;
 
-import tvestergaard.fog.data.roofing.RoofingBlueprint;
-
 import java.util.HashSet;
 import java.util.Set;
 
@@ -13,18 +11,16 @@ public class RoofingValidator
     /**
      * Validates the provided roofing blueprint.
      *
-     * @param blueprint The roofing blueprint to perform validation upon.
+     * @param name                The name to validate.
+     * @param description         The description to validate.
+     * @param pricePerSquareMeter The price per square meter to validate.
+     * @param minimumSlope        The minimum slope to validate.
+     * @param maximumSlope        The maximum slope to validate.
      * @return The errors with the provided roofing information.
      */
-    public Set<RoofingError> validate(RoofingBlueprint blueprint)
+    public Set<RoofingError> validate(String name, String description, int pricePerSquareMeter, int minimumSlope, int maximumSlope)
     {
         Set<RoofingError> errors = new HashSet<>();
-
-        String name                = blueprint.getName();
-        String description         = blueprint.getDescription();
-        int    pricePerSquareMeter = blueprint.getPricePerSquareMeter();
-        int    minimumSlope        = blueprint.getMinimumSlope();
-        int    maximumSlope        = blueprint.getMaximumSlope();
 
         if (name == null || name.isEmpty())
             errors.add(EMPTY_NAME);

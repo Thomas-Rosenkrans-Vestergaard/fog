@@ -88,8 +88,8 @@ public class CladdingFacade
             throws CladdingValidatorException
     {
         try {
+            Set<CladdingError> reasons   = validator.validate(name, description, pricePerSquareMeter);
             CladdingBlueprint  blueprint = Cladding.blueprint(name, description, pricePerSquareMeter, active);
-            Set<CladdingError> reasons   = validator.validate(blueprint);
             if (!reasons.isEmpty())
                 throw new CladdingValidatorException(reasons);
             return dao.create(blueprint);
@@ -101,18 +101,22 @@ public class CladdingFacade
     /**
      * Updates the entity in the data storage to match the provided {@code cladding}.
      *
-     * @param updater The cladding to update the entity in the data storage to.
+     * @param id                  The id of the cladding to update.
+     * @param name                The name of the cladding to update to.
+     * @param description         The description of the cladding to update to.
+     * @param pricePerSquareMeter The price per square meter to update to.
+     * @param active              The active state to update to.
      * @return {@link true} if the record was updated.
      * @throws ApplicationException       When an exception occurs while performing the operation.
      * @throws CladdingValidatorException When the provided information is considered invalid.
      */
-    public boolean update(CladdingUpdater updater) throws CladdingValidatorException
+    public boolean update(int id, String name, String description, int pricePerSquareMeter, boolean active) throws CladdingValidatorException
     {
         try {
-            Set<CladdingError> reasons = validator.validate(updater);
+            Set<CladdingError> reasons = validator.validate(name, description, pricePerSquareMeter);
             if (!reasons.isEmpty())
                 throw new CladdingValidatorException(reasons);
-            return dao.update(updater);
+            return dao.update(Cladding.updater(id, name, description, pricePerSquareMeter, active));
         } catch (DataAccessException e) {
             throw new ApplicationException(e);
         }

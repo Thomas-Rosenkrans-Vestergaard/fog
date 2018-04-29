@@ -94,11 +94,10 @@ public class RoofingFacade
                           boolean active) throws RoofingValidatorException
     {
         try {
-            RoofingBlueprint blueprint = Roofing.blueprint(name, description, minimumSlope,
-                    maximumSlope, pricePerSquareMeter, active);
-            Set<RoofingError> errors = validator.validate(blueprint);
+            Set<RoofingError> errors = validator.validate(name, description, minimumSlope, maximumSlope, pricePerSquareMeter);
             if (!errors.isEmpty())
                 throw new RoofingValidatorException(errors);
+            RoofingBlueprint blueprint = Roofing.blueprint(name, description, minimumSlope, maximumSlope, pricePerSquareMeter, active);
             return dao.create(blueprint);
         } catch (DataAccessException e) {
             throw new ApplicationException(e);
@@ -128,11 +127,10 @@ public class RoofingFacade
                           boolean active) throws RoofingValidatorException
     {
         try {
-            RoofingUpdater updater = Roofing.updater(id, name, description, minimumSlope, maximumSlope,
-                    pricePerSquareMeter, active);
-            Set<RoofingError> errors = validator.validate(updater);
+            Set<RoofingError> errors = validator.validate(name, description, minimumSlope, maximumSlope, pricePerSquareMeter);
             if (!errors.isEmpty())
                 throw new RoofingValidatorException(errors);
+            RoofingUpdater updater = Roofing.updater(id, name, description, minimumSlope, maximumSlope, pricePerSquareMeter, active);
             return dao.update(updater);
         } catch (DataAccessException e) {
             throw new ApplicationException(e);

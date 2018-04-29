@@ -7,10 +7,10 @@ import tvestergaard.fog.data.customers.Customer;
 import tvestergaard.fog.data.customers.CustomerRecord;
 import tvestergaard.fog.data.flooring.Flooring;
 import tvestergaard.fog.data.flooring.FlooringRecord;
-import tvestergaard.fog.data.roofing.Roofing;
-import tvestergaard.fog.data.roofing.RoofingRecord;
 import tvestergaard.fog.data.orders.Shed;
 import tvestergaard.fog.data.orders.ShedRecord;
+import tvestergaard.fog.data.roofing.Roofing;
+import tvestergaard.fog.data.roofing.RoofingRecord;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -43,7 +43,7 @@ public abstract class AbstractMysqlDAO
      * Returns a connection from the provided {@code MysqlDataSource} with autocommit disabled.
      *
      * @return The connection from the provided {@code MysqlDataSource} with autocommit disabled.
-     * @throws SQLException
+     * @throws SQLException When a new connection cannot be created.
      */
     protected final Connection getConnection() throws SQLException
     {
@@ -60,7 +60,7 @@ public abstract class AbstractMysqlDAO
      *
      * @param resultSet The {@code ResultSet} from which to create the instance of {@link Cladding}.
      * @return The newly created instance of {@link Cladding}.
-     * @throws SQLException
+     * @throws SQLException When an exception occurs while creating the entity.
      */
     protected Cladding createCladding(ResultSet resultSet) throws SQLException
     {
@@ -78,7 +78,7 @@ public abstract class AbstractMysqlDAO
      *
      * @param resultSet The {@code ResultSet} from which to create the {@link Customer} instance.
      * @return The newly created {@link Customer} instance.
-     * @throws SQLException
+     * @throws SQLException When an exception occurs while creating the entity.
      */
     protected Customer createCustomer(ResultSet resultSet) throws SQLException
     {
@@ -100,7 +100,7 @@ public abstract class AbstractMysqlDAO
      *
      * @param resultSet The {@code ResultSet} from which to create the instance of {@link Flooring}.
      * @return The newly created instance of {@link Flooring}.
-     * @throws SQLException
+     * @throws SQLException When an exception occurs while creating the entity.
      */
     protected Flooring createFlooring(ResultSet resultSet) throws SQLException
     {
@@ -118,7 +118,7 @@ public abstract class AbstractMysqlDAO
      *
      * @param resultSet The {@code ResultSet} from which to create the {@link Roofing} implementation.
      * @return The resulting instance of {@link Roofing}.
-     * @throws SQLException
+     * @throws SQLException When an exception occurs while creating the entity.
      */
     protected Roofing createRoofing(ResultSet resultSet) throws SQLException
     {
@@ -138,7 +138,7 @@ public abstract class AbstractMysqlDAO
      *
      * @param resultSet The {@code ResultSet} from which to create the {@link Shed} implementation.
      * @return The resulting instance of {@link Shed}.
-     * @throws SQLException
+     * @throws SQLException When an exception occurs while creating the entity.
      */
     protected Shed createShed(ResultSet resultSet) throws SQLException
     {
