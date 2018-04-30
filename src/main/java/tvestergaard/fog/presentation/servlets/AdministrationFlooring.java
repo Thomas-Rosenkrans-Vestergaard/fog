@@ -72,7 +72,6 @@ public class AdministrationFlooring extends HttpServlet
         dispatcher.dispatch(req, resp);
     }
 
-
     private class ShowTableCommand implements Command
     {
         @Override public void dispatch(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
@@ -139,14 +138,8 @@ public class AdministrationFlooring extends HttpServlet
                 response.sendRedirect("?action=update&id=" + parameters.getInt("id"));
 
             } catch (FlooringValidatorException e) {
-                if (e.hasReason(EMPTY_NAME))
-                    notifications.error("Det givne navn må ikke være tom.");
-                if (e.hasReason(NAME_LONGER_THAN_255))
-                    notifications.error("Det givne navn er for langt.");
-                if (e.hasReason(EMPTY_DESCRIPTION))
-                    notifications.error("Den givne beskrivelse må ikke være tom.");
-                if (e.hasReason(NEGATIVE_PRICE))
-                    notifications.error("Den givne pris må ikke være negativ.");
+                for (FlooringError error : e.getErrors())
+                    notifications.error(errors.get(error));
                 response.sendRedirect("?action=update&id=" + parameters.getInt("id"));
                 return;
             }
@@ -191,14 +184,8 @@ public class AdministrationFlooring extends HttpServlet
                 response.sendRedirect("?action=update&id=" + flooring.getId());
 
             } catch (FlooringValidatorException e) {
-                if (e.hasReason(EMPTY_NAME))
-                    notifications.error(errors.get(EMPTY_NAME));
-                if (e.hasReason(NAME_LONGER_THAN_255))
-                    notifications.error(errors.get(NAME_LONGER_THAN_255));
-                if (e.hasReason(EMPTY_DESCRIPTION))
-                    notifications.error(errors.get(EMPTY_DESCRIPTION));
-                if (e.hasReason(NEGATIVE_PRICE))
-                    notifications.error(errors.get(NEGATIVE_PRICE));
+                for (FlooringError error : e.getErrors())
+                    notifications.error(errors.get(error));
                 response.sendRedirect("?action=create");
             }
         }

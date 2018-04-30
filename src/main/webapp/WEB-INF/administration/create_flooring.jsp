@@ -2,7 +2,7 @@
 <%@ include file="top.jspf" %>
 <div class="row">
     <div class="col s12">
-        <h2><span class="focus">${flooringId.getName()}</span></h2>
+        <h2><span class="focus">OPRET GULV</span></h2>
     </div>
 </div>
 <div class="row">
@@ -15,7 +15,8 @@
         </div>
         <div class="row">
             <div class="input-field col s12">
-                <textarea id="description" name="description" class="materialize-textarea validate" required></textarea>
+                <textarea id="description" name="description" data-length="255" class="materialize-textarea validate"
+                          required></textarea>
                 <label for="description">Beskrivelse</label>
             </div>
         </div>

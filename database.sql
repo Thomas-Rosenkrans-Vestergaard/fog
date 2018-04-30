@@ -72,6 +72,27 @@ CREATE TABLE `claddings` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Table structure for table `claddings_materials`
+--
+
+DROP TABLE IF EXISTS `claddings_materials`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `claddings_materials` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `usage` int(11) unsigned NOT NULL,
+  `cladding` int(11) unsigned NOT NULL,
+  `material` int(11) unsigned NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`),
+  KEY `cladding` (`cladding`),
+  KEY `material` (`material`),
+  CONSTRAINT `claddings_materials_ibfk_1` FOREIGN KEY (`cladding`) REFERENCES `claddings` (`id`),
+  CONSTRAINT `claddings_materials_ibfk_2` FOREIGN KEY (`material`) REFERENCES `materials` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Table structure for table `customers`
 --
 
@@ -131,6 +152,27 @@ CREATE TABLE `floorings` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Table structure for table `floorings_materials`
+--
+
+DROP TABLE IF EXISTS `floorings_materials`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `floorings_materials` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `usage` int(11) unsigned NOT NULL,
+  `flooring` int(11) unsigned NOT NULL,
+  `material` int(11) unsigned NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`),
+  KEY `flooring` (`flooring`),
+  KEY `material` (`material`),
+  CONSTRAINT `floorings_materials_ibfk_1` FOREIGN KEY (`flooring`) REFERENCES `floorings` (`id`),
+  CONSTRAINT `floorings_materials_ibfk_2` FOREIGN KEY (`material`) REFERENCES `materials` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Table structure for table `materials`
 --
 
@@ -144,11 +186,10 @@ CREATE TABLE `materials` (
   `notes` text NOT NULL,
   `width` int(11) unsigned NOT NULL,
   `height` int(11) unsigned NOT NULL,
-  `usage` int(11) unsigned NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`),
   UNIQUE KEY `product_number_UNIQUE` (`number`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -178,7 +219,7 @@ DROP TABLE IF EXISTS `orders`;
 CREATE TABLE `orders` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `customer` int(11) unsigned NOT NULL,
-  `claddingId` int(11) unsigned NOT NULL,
+  `cladding` int(11) unsigned NOT NULL,
   `width` int(11) unsigned NOT NULL,
   `length` int(11) unsigned NOT NULL,
   `height` int(11) unsigned NOT NULL,
@@ -190,7 +231,7 @@ CREATE TABLE `orders` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`),
   KEY `customer` (`customer`),
-  KEY `claddingId` (`roofing`),
+  KEY `cladding` (`roofing`),
   CONSTRAINT `orders_ibfk_1` FOREIGN KEY (`customer`) REFERENCES `customers` (`id`),
   CONSTRAINT `orders_ibfk_2` FOREIGN KEY (`roofing`) REFERENCES `roofings` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -229,7 +270,28 @@ CREATE TABLE `roofings` (
   `active` bit(1) NOT NULL DEFAULT b'1',
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `roofings_materials`
+--
+
+DROP TABLE IF EXISTS `roofings_materials`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `roofings_materials` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `usage` int(11) unsigned NOT NULL,
+  `roofing` int(11) unsigned NOT NULL,
+  `material` int(11) unsigned NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`),
+  KEY `roofing` (`roofing`),
+  KEY `material` (`material`),
+  CONSTRAINT `roofings_materials_ibfk_1` FOREIGN KEY (`roofing`) REFERENCES `roofings` (`id`),
+  CONSTRAINT `roofings_materials_ibfk_2` FOREIGN KEY (`material`) REFERENCES `materials` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -244,15 +306,15 @@ CREATE TABLE `sheds` (
   `order` int(11) unsigned NOT NULL,
   `width` int(11) unsigned NOT NULL,
   `depth` int(11) unsigned NOT NULL,
-  `claddingId` int(11) unsigned NOT NULL,
+  `cladding` int(11) unsigned NOT NULL,
   `flooring` int(11) unsigned NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`),
   UNIQUE KEY `order_UNIQUE` (`order`),
-  KEY `claddingId` (`claddingId`),
+  KEY `cladding` (`cladding`),
   KEY `flooring` (`flooring`),
   CONSTRAINT `fk_orders` FOREIGN KEY (`order`) REFERENCES `orders` (`id`),
-  CONSTRAINT `sheds_ibfk_1` FOREIGN KEY (`claddingId`) REFERENCES `claddings` (`id`),
+  CONSTRAINT `sheds_ibfk_1` FOREIGN KEY (`cladding`) REFERENCES `claddings` (`id`),
   CONSTRAINT `sheds_ibfk_2` FOREIGN KEY (`flooring`) REFERENCES `floorings` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -286,4 +348,4 @@ CREATE TABLE `tokens` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-04-30  7:20:57
+-- Dump completed on 2018-04-30 20:59:08

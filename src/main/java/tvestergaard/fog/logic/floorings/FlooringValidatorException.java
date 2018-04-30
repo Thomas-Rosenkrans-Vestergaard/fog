@@ -6,28 +6,27 @@ public class FlooringValidatorException extends Exception
 {
 
     /**
-     * The reasons for throwing the exception.
+     * The errors that caused the {@link FlooringValidatorException}.
      */
-    private Set<FlooringError> reasons;
+    private Set<FlooringError> errors;
 
     /**
      * Creates a new {@link FlooringValidatorException}.
      *
-     * @param reasons The reasons for throwing the exception.
+     * @param errors The errors that caused the {@link FlooringValidatorException}.
      */
-    public FlooringValidatorException(Set<FlooringError> reasons)
+    public FlooringValidatorException(Set<FlooringError> errors)
     {
-        this.reasons = reasons;
+        this.errors = errors;
     }
 
     /**
-     * Checks if the provided reason was a cause of the exception.
+     * Returns the errors that caused the {@link FlooringValidatorException}.
      *
-     * @param reason The reason to check for.
-     * @return {@code true} if the provided reason was a cause of the exception.
+     * @return The errors that caused the {@link FlooringValidatorException}.
      */
-    public boolean hasReason(FlooringError reason)
+    public Set<FlooringError> getErrors()
     {
-        return this.reasons.contains(reason);
+        return this.errors;
     }
 }
