@@ -179,8 +179,10 @@ public class AccountServlet extends HttpServlet
 
         } catch (NoPasswordException e) {
             notifications.error("Denne konto har intet password.");
-            resp.sendRedirect("update-password");
-            return;
+            resp.sendRedirect("forgot-password");
+        } catch (InactiveCustomerException e){
+            notifications.error("Denne konto er inaktiv.");
+            resp.sendRedirect("account");
         }
     }
 

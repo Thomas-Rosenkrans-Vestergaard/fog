@@ -134,9 +134,10 @@ public class CustomerFacade
      * @param email    The email to authenticate with.
      * @param password The password to authenticate with.
      * @return The customer who was authenticated. {@code null} in case no customer with the provided credentials exist.
-     * @throws NoPasswordException When the provided customer has no password.
+     * @throws NoPasswordException       When the provided customer has no password.
+     * @throws InactiveCustomerException When the provided customer is marked inactive.
      */
-    public Customer authenticate(String email, String password) throws NoPasswordException
+    public Customer authenticate(String email, String password) throws NoPasswordException, InactiveCustomerException
     {
         try {
             Customer customer = customerDAO.first(where(eq(EMAIL, email)));
@@ -145,6 +146,9 @@ public class CustomerFacade
 
             if (customer.getPassword() == null)
                 throw new NoPasswordException();
+
+            if (!customer.isActive())
+                throw new InactiveCustomerException();
 
             return BCrypt.checkpw(password, customer.getPassword()) ? customer : null;
         } catch (DataAccessException e) {
