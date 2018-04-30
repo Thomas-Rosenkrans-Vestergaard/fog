@@ -24,7 +24,7 @@
             </thead>
             <tbody>
             <c:forEach items="${floorings}" var="flooring">
-                <tr onclick="location.href = '?action=update&id=${cladding.getId()}'">
+                <tr onclick="location.href = '?action=update&id=${flooring.getId()}'">
                     <td>${flooring.getId()}</td>
                     <td><c:out value="${flooring.getName()}"/></td>
                     <td><c:out value="${flooring.getDescription()}"/></td>

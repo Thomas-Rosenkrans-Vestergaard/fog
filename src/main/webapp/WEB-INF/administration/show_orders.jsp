@@ -23,7 +23,7 @@
             </thead>
             <tbody>
             <c:forEach items="${orders}" var="order">
-                <tr onclick="location.href = '?action=update&id=${cladding.getId()}'">
+                <tr onclick="location.href = '?action=update&id=${order.getId()}'">
                     <td>${order.getId()}</td>
                     <td><a href="${order.getCustomer().getId()}"><c:out value="${order.getCustomer().getName()}"/></a>
                     </td>
