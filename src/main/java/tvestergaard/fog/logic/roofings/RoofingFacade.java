@@ -97,7 +97,7 @@ public class RoofingFacade
             Set<RoofingError> errors = validator.validate(name, description, minimumSlope, maximumSlope, pricePerSquareMeter);
             if (!errors.isEmpty())
                 throw new RoofingValidatorException(errors);
-            RoofingBlueprint blueprint = Roofing.blueprint(name, description, minimumSlope, maximumSlope, pricePerSquareMeter, active);
+            RoofingBlueprint blueprint = RoofingBlueprint.from(name, description, minimumSlope, maximumSlope, pricePerSquareMeter, active);
             return dao.create(blueprint);
         } catch (DataAccessException e) {
             throw new ApplicationException(e);
@@ -130,7 +130,7 @@ public class RoofingFacade
             Set<RoofingError> errors = validator.validate(name, description, minimumSlope, maximumSlope, pricePerSquareMeter);
             if (!errors.isEmpty())
                 throw new RoofingValidatorException(errors);
-            RoofingUpdater updater = Roofing.updater(id, name, description, minimumSlope, maximumSlope, pricePerSquareMeter, active);
+            RoofingUpdater updater = RoofingUpdater.from(id, name, description, minimumSlope, maximumSlope, pricePerSquareMeter, active);
             return dao.update(updater);
         } catch (DataAccessException e) {
             throw new ApplicationException(e);

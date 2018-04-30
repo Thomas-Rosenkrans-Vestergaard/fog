@@ -89,7 +89,7 @@ public class CladdingFacade
     {
         try {
             Set<CladdingError> reasons   = validator.validate(name, description, pricePerSquareMeter);
-            CladdingBlueprint  blueprint = Cladding.blueprint(name, description, pricePerSquareMeter, active);
+            CladdingBlueprint  blueprint = CladdingBlueprint.from(name, description, pricePerSquareMeter, active);
             if (!reasons.isEmpty())
                 throw new CladdingValidatorException(reasons);
             return dao.create(blueprint);
@@ -116,7 +116,7 @@ public class CladdingFacade
             Set<CladdingError> reasons = validator.validate(name, description, pricePerSquareMeter);
             if (!reasons.isEmpty())
                 throw new CladdingValidatorException(reasons);
-            return dao.update(Cladding.updater(id, name, description, pricePerSquareMeter, active));
+            return dao.update(CladdingUpdater.from(id, name, description, pricePerSquareMeter, active));
         } catch (DataAccessException e) {
             throw new ApplicationException(e);
         }

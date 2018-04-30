@@ -1,10 +1,21 @@
 package tvestergaard.fog.data.orders;
 
-import tvestergaard.fog.data.cladding.Cladding;
-import tvestergaard.fog.data.flooring.Flooring;
-
 public interface ShedBlueprint
 {
+
+    /**
+     * Returns a new roofing blueprint from the provided information.
+     *
+     * @param width    The width of the roofing to specify in the blueprint.
+     * @param depth    The depth of the roofing to specify in the blueprint.
+     * @param cladding The cladding of the roofing to specify in the blueprint.
+     * @param flooring The flooring of the roofing to specify in the blueprint.
+     * @return The newly created roofing blueprint.
+     */
+    static ShedBlueprint from(int width, int depth, int cladding, int flooring)
+    {
+        return new ShedRecord(-1, width, depth, cladding, null, flooring, null);
+    }
 
     /**
      * Returns the width of the shed.
@@ -35,30 +46,30 @@ public interface ShedBlueprint
     void setDepth(int depth);
 
     /**
-     * Returns the cladding used on the shed.
+     * Returns the id of the cladding used on the shed.
      *
      * @return The cladding used on the shed.
      */
-    Cladding getCladding();
+    int getCladdingId();
 
     /**
-     * Sets hte cladding used on the shed.
+     * Sets the id of the cladding used on the shed.
      *
      * @param cladding The new cladding.
      */
-    void setCladding(Cladding cladding);
+    void setCladdingId(int cladding);
 
     /**
-     * Returns the flooring used on the shed.
+     * Returns the id of the flooring used on the shed.
      *
      * @return The flooring used on the shed.
      */
-    Flooring getFlooring();
+    int getFlooringId();
 
     /**
-     * Sets the flooring used on the shed.
+     * Sets the id of the flooring used on the shed.
      *
      * @param flooring The new flooring.
      */
-    void setFlooring(Flooring flooring);
+    void setFlooringId(int flooring);
 }

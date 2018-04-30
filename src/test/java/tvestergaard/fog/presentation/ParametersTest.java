@@ -6,6 +6,8 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.EnumSet;
+import java.util.HashMap;
+import java.util.Map;
 
 import static org.junit.Assert.*;
 
@@ -16,79 +18,52 @@ public class ParametersTest
 
     public ParametersTest()
     {
-        this.parameters = new Parameters(parameterName -> {
+        Map<String, String> parameters = new HashMap<>();
+        parameters.put("text", "Some Text");
+        parameters.put("zero", "0");
+        parameters.put("int-min", "-2147483648");
+        parameters.put("int-max", "+2147483647");
+        parameters.put("long-min", "-9223372036854775808");
+        parameters.put("long-max", "+9223372036854775807");
+        parameters.put("float-min", "3.40282346638528860e-38");
+        parameters.put("float-max", "3.40282346638528860e+38");
+        parameters.put("double-min", "1.7976931348623157e-308");
+        parameters.put("double-max", "1.7976931348623157e+308");
+        parameters.put("true", "true");
+        parameters.put("false", "false");
+        parameters.put("on", "on");
+        parameters.put("off", "off");
+        parameters.put("date-in-bounds", "2001-01-01");
+        parameters.put("date-out-bounds", "2000-18-23");
+        parameters.put("datetime-in-bounds", "2007-12-03T10:15:30");
+        parameters.put("datetime-out-bounds", "2007-12-03T10:99:30");
+        parameters.put("time-in-bounds", "23:59");
+        parameters.put("time-out-bounds", "23:60");
+        parameters.put("A", "A");
+        parameters.put("B", "B");
+        parameters.put("C", "C");
 
-            if ("text".equals(parameterName))
-                return "Some Text";
+        this.parameters = new Parameters(new Provider(parameters));
+    }
 
-            if ("zero".equals(parameterName))
-                return "0";
+    private class Provider implements ParameterProvider
+    {
+        private Map<String, String> parameters;
 
-            if ("int-min".equals(parameterName))
-                return "-2147483648";
+        public Provider(Map<String, String> parameters)
+        {
+            this.parameters = parameters;
+        }
 
-            if ("int-max".equals(parameterName))
-                return "+2147483647";
+        @Override public String getParameter(String parameterName)
+        {
+            return parameters.get(parameterName);
+        }
 
-            if ("long-min".equals(parameterName))
-                return "-9223372036854775808";
-
-            if ("long-max".equals(parameterName))
-                return "+9223372036854775807";
-
-            if ("float-min".equals(parameterName))
-                return "3.40282346638528860e-38";
-
-            if ("float-max".equals(parameterName))
-                return "3.40282346638528860e+38";
-
-            if ("double-min".equals(parameterName))
-                return "1.7976931348623157e-308";
-
-            if ("double-max".equals(parameterName))
-                return "1.7976931348623157e+308";
-
-            if ("true".equals(parameterName))
-                return "true";
-
-            if ("false".equals(parameterName))
-                return "false";
-
-            if ("on".equals(parameterName))
-                return "on";
-
-            if ("off".equals(parameterName))
-                return "off";
-
-            if ("date-in-bounds".equals(parameterName))
-                return "2001-01-01";
-
-            if ("date-out-bounds".equals(parameterName))
-                return "2000-18-23";
-
-            if ("datetime-in-bounds".equals(parameterName))
-                return "2007-12-03T10:15:30";
-
-            if ("datetime-out-bounds".equals(parameterName))
-                return "2007-12-03T10:99:30";
-
-            if ("time-in-bounds".equals(parameterName))
-                return "23:59";
-
-            if ("time-out-bounds".equals(parameterName))
-                return "23:60";
-
-            if ("A".equals(parameterName))
-                return "A";
-
-            if ("B".equals(parameterName))
-                return "B";
-
-            if ("C".equals(parameterName))
-                return "C";
-
-            return null;
-        });
+        @Override public String[] getParameterValues(String parameterName)
+        {
+            throw new UnsupportedOperationException();
+        }
     }
 
     @Test

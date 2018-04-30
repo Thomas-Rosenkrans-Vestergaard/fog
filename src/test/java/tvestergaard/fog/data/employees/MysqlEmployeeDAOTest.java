@@ -42,11 +42,11 @@ public class MysqlEmployeeDAOTest
     @Before
     public void createData() throws Exception
     {
-        employee1 = dao.create(Employee.blueprint("name1", "username1", "password1", set(HEAD_OF_CENTER), true));
-        employee2 = dao.create(Employee.blueprint("name2", "username2", "password2", set(SALESMAN), false));
-        employee3 = dao.create(Employee.blueprint("name3", "username3", "password3", set(HEAD_OF_MATERIALS), true));
-        employee4 = dao.create(Employee.blueprint("name4", "username4", "password4", set(), false));
-        employee5 = dao.create(Employee.blueprint("name5", "username5", "password5", set(HEAD_OF_CENTER, HEAD_OF_MATERIALS), true));
+        employee1 = dao.create(EmployeeBlueprint.from("name1", "username1", "password1", set(HEAD_OF_CENTER), true));
+        employee2 = dao.create(EmployeeBlueprint.from("name2", "username2", "password2", set(SALESMAN), false));
+        employee3 = dao.create(EmployeeBlueprint.from("name3", "username3", "password3", set(HEAD_OF_MATERIALS), true));
+        employee4 = dao.create(EmployeeBlueprint.from("name4", "username4", "password4", set(), false));
+        employee5 = dao.create(EmployeeBlueprint.from("name5", "username5", "password5", set(HEAD_OF_CENTER, HEAD_OF_MATERIALS), true));
     }
 
     @After
@@ -142,7 +142,7 @@ public class MysqlEmployeeDAOTest
         roles.add(HEAD_OF_CENTER);
         roles.add(HEAD_OF_MATERIALS);
 
-        Employee actual = dao.create(Employee.blueprint(name, username, password, roles, active));
+        Employee actual = dao.create(EmployeeBlueprint.from(name, username, password, roles, active));
         assertEquals(name, actual.getName());
         assertEquals(username, actual.getUsername());
         assertEquals(password, actual.getPassword());

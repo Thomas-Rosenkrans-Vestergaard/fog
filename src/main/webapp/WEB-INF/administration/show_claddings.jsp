@@ -23,13 +23,13 @@
             <th>Aktiv</th>
             </thead>
             <tbody>
-            <c:forEach items="${claddings}" var="cladding">
-                <tr onclick="location.href = '?action=update&id=${cladding.getId()}'">
-                    <td>${cladding.getId()}</td>
-                    <td><c:out value="${cladding.getName()}"/></td>
-                    <td><c:out value="${cladding.getDescription()}"/></td>
-                    <td><c:out value="${f:formatPrice(cladding.getPricePerSquareMeter())}"/></td>
-                    <td><c:out value="${f:formatBoolean(cladding.isActive())}"/></td>
+            <c:forEach items="${claddings}" var="claddingId">
+                <tr onclick="location.href = '?action=update&id=${claddingId.getId()}'">
+                    <td>${claddingId.getId()}</td>
+                    <td><c:out value="${claddingId.getName()}"/></td>
+                    <td><c:out value="${claddingId.getDescription()}"/></td>
+                    <td><c:out value="${f:formatPrice(claddingId.getPricePerSquareMeter())}"/></td>
+                    <td><c:out value="${f:formatBoolean(claddingId.isActive())}"/></td>
                 </tr>
             </c:forEach>
             </tbody>

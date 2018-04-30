@@ -7,20 +7,14 @@ public class ShedSpecification
 
     private final int width;
     private final int depth;
-    private final int cladding;
-    private final int flooring;
-
-    public ShedSpecification(ShedBlueprint blueprint)
-    {
-        this(blueprint.getWidth(), blueprint.getDepth(), blueprint.getCladding().getId(), blueprint.getFlooring().getId());
-    }
-
-    public ShedSpecification(int width, int depth, int cladding, int flooring)
+    private final int claddingId;
+    private final int flooringId;
+    public ShedSpecification(int width, int depth, int claddingId, int flooringId)
     {
         this.width = width;
         this.depth = depth;
-        this.cladding = cladding;
-        this.flooring = flooring;
+        this.claddingId = claddingId;
+        this.flooringId = flooringId;
     }
 
     /**
@@ -44,23 +38,22 @@ public class ShedSpecification
     }
 
     /**
-     * Returns the cladding used on the shed.
+     * Returns the id of the cladding used on the shed.
      *
-     * @return The cladding used on the shed.
+     * @return The id of the cladding used on the shed.
      */
-    public int getCladding()
+    public int getCladdingId()
     {
-        return cladding;
+        return claddingId;
     }
 
-
     /**
-     * Returns the flooring used on the shed.
+     * Returns the id of the flooring used on the shed.
      *
-     * @return The flooring used on the shed.
+     * @return The id of the flooring used on the shed.
      */
-    public int getFlooring()
+    public int getFlooringId()
     {
-        return flooring;
+        return flooringId;
     }
 }

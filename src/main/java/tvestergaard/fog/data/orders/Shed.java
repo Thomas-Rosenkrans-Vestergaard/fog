@@ -7,33 +7,18 @@ public interface Shed extends ShedUpdater
 {
 
     /**
-     * Returns a new roofing blueprint from the provided information.
+     * Returns the cladding used on the shed.
      *
-     * @param width    The width of the roofing to specify in the blueprint.
-     * @param depth    The depth of the roofing to specify in the blueprint.
-     * @param cladding The cladding of the roofing to specify in the blueprint.
-     * @param flooring The flooring of the roofing to specify in the blueprint.
-     * @return The newly created roofing blueprint.
+     * @return The cladding used on the shed.
      */
-    static ShedBlueprint blueprint(int width, int depth, Cladding cladding, Flooring flooring)
-    {
-        return new ShedRecord(-1, width, depth, cladding, flooring);
-    }
+    Cladding getCladding();
 
     /**
-     * Returns a new roofing blueprint from the provided information.
+     * Returns the flooring used on the shed.
      *
-     * @param id       The id of the roofing to update.
-     * @param width    The width of the roofing to specify in the blueprint.
-     * @param depth    The depth of the roofing to specify in the blueprint.
-     * @param cladding The cladding of the roofing to specify in the blueprint.
-     * @param flooring The flooring of the roofing to specify in the blueprint.
-     * @return The newly created roofing blueprint.
+     * @return The flooring used on the shed.
      */
-    static ShedBlueprint updater(int id, int width, int depth, Cladding cladding, Flooring flooring)
-    {
-        return new ShedRecord(id, width, depth, cladding, flooring);
-    }
+    Flooring getFlooring();
 
     /**
      * Checks that this shed equals another provided object. The two objects are only considered equal when all the

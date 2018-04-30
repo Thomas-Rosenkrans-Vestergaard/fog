@@ -4,6 +4,22 @@ public interface RoofingBlueprint
 {
 
     /**
+     * Returns a new roofing blueprint from the provided information.
+     *
+     * @param name                The name of the roofing to specify in the blueprint.
+     * @param description         The description of the roofing to specify in the blueprint.
+     * @param minSlope            The minimum slope of the roofing to specify in the blueprint.
+     * @param maxSlope            The maximum slope of the roofing to specify in the blueprint.
+     * @param pricePerSquareMeter The price of the roofing to specify in the blueprint.
+     * @param active              Whether or not the roofing to specify in the blueprint can be applied to orders.
+     * @return The newly created roofing blueprint.
+     */
+    static RoofingBlueprint from(String name, String description, int minSlope, int maxSlope, int pricePerSquareMeter, boolean active)
+    {
+        return new RoofingRecord(-1, name, description, minSlope, maxSlope, pricePerSquareMeter, active);
+    }
+
+    /**
      * Returns the name of the roofing.
      *
      * @return The name of the roofing.

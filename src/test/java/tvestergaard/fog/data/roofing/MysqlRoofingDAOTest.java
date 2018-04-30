@@ -30,11 +30,11 @@ public class MysqlRoofingDAOTest
     @Before
     public void createData() throws Exception
     {
-        roofing1 = dao.create(Roofing.blueprint("name1", "description1", 1, 1, 1, true));
-        roofing2 = dao.create(Roofing.blueprint("name2", "description2", 2, 2, 2, false));
-        roofing3 = dao.create(Roofing.blueprint("name3", "description3", 3, 3, 3, true));
-        roofing4 = dao.create(Roofing.blueprint("name4", "description4", 4, 4, 4, false));
-        roofing5 = dao.create(Roofing.blueprint("name5", "description5", 5, 5, 5, true));
+        roofing1 = dao.create(RoofingBlueprint.from("name1", "description1", 1, 1, 1, true));
+        roofing2 = dao.create(RoofingBlueprint.from("name2", "description2", 2, 2, 2, false));
+        roofing3 = dao.create(RoofingBlueprint.from("name3", "description3", 3, 3, 3, true));
+        roofing4 = dao.create(RoofingBlueprint.from("name4", "description4", 4, 4, 4, false));
+        roofing5 = dao.create(RoofingBlueprint.from("name5", "description5", 5, 5, 5, true));
     }
 
     @After
@@ -127,7 +127,7 @@ public class MysqlRoofingDAOTest
         int              maximumSlope = 77;
         int              price        = 234873;
         boolean          active       = false;
-        RoofingBlueprint blueprint    = Roofing.blueprint(name, description, minimumSlope, maximumSlope, price, active);
+        RoofingBlueprint blueprint    = RoofingBlueprint.from(name, description, minimumSlope, maximumSlope, price, active);
         Roofing          actual       = dao.create(blueprint);
         assertEquals(name, actual.getName());
         assertEquals(description, actual.getDescription());

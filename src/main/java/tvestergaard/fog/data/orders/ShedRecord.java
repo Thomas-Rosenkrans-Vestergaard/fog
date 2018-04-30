@@ -23,10 +23,14 @@ public class ShedRecord implements Shed
      */
     private int depth;
 
+    private int claddingId;
+
     /**
      * The cladding on the shed.
      */
     private Cladding cladding;
+
+    private int flooringId;
 
     /**
      * The flooring on the shed.
@@ -36,18 +40,22 @@ public class ShedRecord implements Shed
     /**
      * Creates a new {@link ShedRecord}.
      *
-     * @param id       The unique identifier of the shed.
-     * @param width    The width of the shed.
-     * @param depth    The depth of the shed.
-     * @param cladding The cladding on the shed.
-     * @param flooring The flooring on the shed.
+     * @param id         The unique identifier of the shed.
+     * @param width      The width of the shed.
+     * @param depth      The depth of the shed.
+     * @param claddingId The id of the cladding used on the shed.
+     * @param cladding   The cladding on the shed.
+     * @param flooringId The id of the flooring used on the shed.
+     * @param flooring   The flooring on the shed.
      */
-    public ShedRecord(int id, int width, int depth, Cladding cladding, Flooring flooring)
+    public ShedRecord(int id, int width, int depth, int claddingId, Cladding cladding, int flooringId, Flooring flooring)
     {
         this.id = id;
         this.width = width;
         this.depth = depth;
+        this.claddingId = claddingId;
         this.cladding = cladding;
+        this.flooringId = flooringId;
         this.flooring = flooring;
     }
 
@@ -111,10 +119,19 @@ public class ShedRecord implements Shed
      *
      * @return The cladding used on the shed.
      */
-    @Override
-    public Cladding getCladding()
+    @Override public Cladding getCladding()
     {
         return cladding;
+    }
+
+    /**
+     * Returns the id of the cladding used on the shed.
+     *
+     * @return The cladding used on the shed.
+     */
+    @Override public int getCladdingId()
+    {
+        return claddingId;
     }
 
     /**
@@ -122,10 +139,9 @@ public class ShedRecord implements Shed
      *
      * @param cladding The new cladding.
      */
-    @Override
-    public void setCladding(Cladding cladding)
+    @Override public void setCladdingId(int cladding)
     {
-        this.cladding = cladding;
+        this.claddingId = cladding;
     }
 
     /**
@@ -140,15 +156,26 @@ public class ShedRecord implements Shed
     }
 
     /**
+     * Returns the id of the flooring used on the shed.
+     *
+     * @return The flooring used on the shed.
+     */
+    @Override public int getFlooringId()
+    {
+        return flooringId;
+    }
+
+    /**
      * Sets the flooring used on the shed.
      *
      * @param flooring The new flooring.
      */
     @Override
-    public void setFlooring(Flooring flooring)
+    public void setFlooringId(int flooring)
     {
-        this.flooring = flooring;
+        this.flooringId = flooring;
     }
+
 
     @Override
     public boolean equals(Object o)

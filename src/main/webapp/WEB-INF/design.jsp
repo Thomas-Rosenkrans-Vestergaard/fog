@@ -26,9 +26,9 @@
         </div>
         <div class="row">
             <div class="input-field col s12">
-                <select name="cladding" required>
-                    <c:forEach items="${claddings}" var="cladding">
-                        <option value="${cladding.getId()}"><c:out value="${cladding.getName()}"/></option>
+                <select name="claddingId" required>
+                    <c:forEach items="${claddings}" var="claddingId">
+                        <option value="${claddingId.getId()}"><c:out value="${claddingId.getName()}"/></option>
                     </c:forEach>
                 </select>
                 <label>Beklædning</label>
@@ -173,9 +173,9 @@
                 <label>Gulv</label>
             </div>
             <div class="input-field col s12 m6">
-                <select name="shed-cladding" class="shed-input" required>
-                    <c:forEach items="${claddings}" var="cladding">
-                        <option value="${cladding.getId()}"><c:out value="${cladding.getName()}"/></option>
+                <select name="shed-claddingId" class="shed-input" required>
+                    <c:forEach items="${claddings}" var="claddingId">
+                        <option value="${claddingId.getId()}"><c:out value="${claddingId.getName()}"/></option>
                     </c:forEach>
                 </select>
                 <label>Beklædning</label>

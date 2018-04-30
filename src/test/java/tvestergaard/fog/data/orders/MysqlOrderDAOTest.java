@@ -4,14 +4,18 @@ import com.mysql.cj.jdbc.MysqlDataSource;
 import org.junit.*;
 import tvestergaard.fog.data.TestDataSource;
 import tvestergaard.fog.data.cladding.Cladding;
+import tvestergaard.fog.data.cladding.CladdingBlueprint;
 import tvestergaard.fog.data.cladding.MysqlCladdingDAO;
 import tvestergaard.fog.data.constraints.Constraint;
 import tvestergaard.fog.data.customers.Customer;
+import tvestergaard.fog.data.customers.CustomerBlueprint;
 import tvestergaard.fog.data.customers.MysqlCustomerDAO;
 import tvestergaard.fog.data.flooring.Flooring;
+import tvestergaard.fog.data.flooring.FlooringBlueprint;
 import tvestergaard.fog.data.flooring.MysqlFlooringDAO;
 import tvestergaard.fog.data.roofing.MysqlRoofingDAO;
 import tvestergaard.fog.data.roofing.Roofing;
+import tvestergaard.fog.data.roofing.RoofingBlueprint;
 
 import java.sql.Connection;
 
@@ -43,23 +47,24 @@ public class MysqlOrderDAOTest
     @BeforeClass
     public static void before() throws Exception
     {
-        customer1 = customerDAO.create(Customer.blueprint("name1", "address1", "email1", "phone1", "password1", true));
-        customer2 = customerDAO.create(Customer.blueprint("name2", "address2", "email2", "phone2", "password2", false));
+        customer1 = customerDAO.create(CustomerBlueprint.from("name1", "address1", "email1", "phone1", "password1", true));
+        customer2 = customerDAO.create(CustomerBlueprint.from("name2", "address2", "email2", "phone2", "password2", false));
 
-        cladding1 = claddingDAO.create(Cladding.blueprint("name1", "description1", 1, true));
-        cladding2 = claddingDAO.create(Cladding.blueprint("name2", "description2", 2, false));
+        cladding1 = claddingDAO.create(CladdingBlueprint.from("name1", "description1", 1, true));
+        cladding2 = claddingDAO.create(CladdingBlueprint.from("name2", "description2", 2, false));
 
-        roofing1 = roofingDAO.create(Roofing.blueprint("name1", "description1", 1, 2, 4, true));
-        roofing2 = roofingDAO.create(Roofing.blueprint("name2", "description2", 10, 6, 5, false));
+        roofing1 = roofingDAO.create(RoofingBlueprint.from("name1", "description1", 1, 2, 4, true));
+        roofing2 = roofingDAO.create(RoofingBlueprint.from("name2", "description2", 10, 6, 5, false));
 
-        shed1 = new ShedRecord(0, 1, 2, cladding1, flooringDAO.create(Flooring.blueprint("name1", "description1", 0, true)));
+        Flooring flooring = flooringDAO.create(FlooringBlueprint.from("name1", "description1", 0, true));
+        shed1 = new ShedRecord(0, 1, 2, cladding1.getId(), cladding1, flooring.getId(), flooring);
     }
 
     @Before
     public void setUp() throws Exception
     {
-        this.order1 = dao.create(Order.blueprint(customer1, cladding1, 1, 2, 3, roofing1, 6, RafterChoice.PREBUILT, shed1));
-        this.order2 = dao.create(Order.blueprint(customer2, cladding2, 10, 11, 12, roofing2, 34, RafterChoice.BUILD_SELF, null));
+        this.order1 = dao.create(OrderBlueprint.from(customer1.getId(), cladding1.getId(), 1, 2, 3, roofing1.getId(), 6, RafterChoice.PREBUILT, shed1));
+        this.order2 = dao.create(OrderBlueprint.from(customer2.getId(), cladding2.getId(), 10, 11, 12, roofing2.getId(), 34, RafterChoice.BUILD_SELF, null));
     }
 
     @After
@@ -93,8 +98,8 @@ public class MysqlOrderDAOTest
         RafterChoice expectedRafters  = RafterChoice.BUILD_SELF;
         Shed         expectedShed     = shed1;
 
-        Order actual = dao.create(Order.blueprint(expectedCustomer, expectedCladding, expectedWidth, expectedLength,
-                expectedHeight, expectedRoofing, expectedSlope, expectedRafters, shed1));
+        Order actual = dao.create(OrderBlueprint.from(expectedCustomer.getId(), expectedCladding.getId(), expectedWidth, expectedLength,
+                expectedHeight, expectedRoofing.getId(), expectedSlope, expectedRafters, shed1));
 
         assertEquals(expectedCustomer, actual.getCustomer());
         assertEquals(expectedCladding, actual.getCladding());
@@ -129,7 +134,7 @@ public class MysqlOrderDAOTest
     public void getNumberOfNewOrders() throws Exception
     {
         assertEquals(2, dao.getNumberOfNewOrders());
-        dao.create(Order.blueprint(customer1, cladding1, 1, 2, 3, roofing1, 4, RafterChoice.BUILD_SELF, null));
+        dao.create(OrderBlueprint.from(customer1.getId(), cladding1.getId(), 1, 2, 3, roofing1.getId(), 4, RafterChoice.BUILD_SELF, null));
         assertEquals(3, dao.getNumberOfNewOrders());
     }
 }

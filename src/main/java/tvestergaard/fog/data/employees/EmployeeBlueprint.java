@@ -6,6 +6,21 @@ public interface EmployeeBlueprint
 {
 
     /**
+     * Returns a new employee blueprint from the provided information.
+     *
+     * @param name     The name of the employee to specify in the blueprint.
+     * @param username The username of the employee to specify in the blueprint.
+     * @param password The password of the employee to specify in the blueprint.
+     * @param roles    The roles of the employee to specify in the blueprint.
+     * @param active   Whether or not the employee to specify in the blueprint is active.
+     * @return The newly created employee blueprint.
+     */
+    static EmployeeBlueprint from(String name, String username, String password, Set<Role> roles, boolean active)
+    {
+        return new EmployeeRecord(-1, name, username, password, active, roles, null);
+    }
+
+    /**
      * Returns the name of the employee.
      *
      * @return The name of the employee.

@@ -30,11 +30,11 @@ public class MysqlCustomersDAOTest
     @Before
     public void createData() throws Exception
     {
-        customer1 = dao.create(Customer.blueprint("name1", "address1", "email1", "phone1", "password1", true));
-        customer2 = dao.create(Customer.blueprint("name2", "address2", "email2", "phone2", "password2", false));
-        customer3 = dao.create(Customer.blueprint("name3", "address3", "email3", "phone3", "password3", true));
-        customer4 = dao.create(Customer.blueprint("name4", "address4", "email4", "phone4", "password4", false));
-        customer5 = dao.create(Customer.blueprint("name5", "address5", "email5", "phone5", "password5", true));
+        customer1 = dao.create(CustomerBlueprint.from("name1", "address1", "email1", "phone1", "password1", true));
+        customer2 = dao.create(CustomerBlueprint.from("name2", "address2", "email2", "phone2", "password2", false));
+        customer3 = dao.create(CustomerBlueprint.from("name3", "address3", "email3", "phone3", "password3", true));
+        customer4 = dao.create(CustomerBlueprint.from("name4", "address4", "email4", "phone4", "password4", false));
+        customer5 = dao.create(CustomerBlueprint.from("name5", "address5", "email5", "phone5", "password5", true));
     }
 
     @After
@@ -128,7 +128,7 @@ public class MysqlCustomersDAOTest
         String  password = randomString();
         boolean active   = randomBoolean();
 
-        Customer actual = dao.create(Customer.blueprint(name, address, email, phone, password, active));
+        Customer actual = dao.create(CustomerBlueprint.from(name, address, email, phone, password, active));
         assertEquals(name, actual.getName());
         assertEquals(address, actual.getAddress());
         assertEquals(email, actual.getEmail());

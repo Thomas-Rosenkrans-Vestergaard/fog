@@ -3,10 +3,7 @@ package tvestergaard.fog.logic.floorings;
 import tvestergaard.fog.data.DataAccessException;
 import tvestergaard.fog.data.ProductionDataSource;
 import tvestergaard.fog.data.constraints.Constraint;
-import tvestergaard.fog.data.flooring.Flooring;
-import tvestergaard.fog.data.flooring.FlooringColumn;
-import tvestergaard.fog.data.flooring.FlooringDAO;
-import tvestergaard.fog.data.flooring.MysqlFlooringDAO;
+import tvestergaard.fog.data.flooring.*;
 import tvestergaard.fog.logic.ApplicationException;
 
 import java.util.List;
@@ -94,7 +91,7 @@ public class FlooringFacade
             Set<FlooringError> reasons = validator.validate(name, description, pricePerSquareMeter);
             if (!reasons.isEmpty())
                 throw new FlooringValidatorException(reasons);
-            return dao.create(Flooring.blueprint(name, description, pricePerSquareMeter, active));
+            return dao.create(FlooringBlueprint.from(name, description, pricePerSquareMeter, active));
         } catch (DataAccessException e) {
             throw new ApplicationException(e);
         }
@@ -115,7 +112,7 @@ public class FlooringFacade
             Set<FlooringError> reasons = validator.validate(name, description, pricePerSquareMeter);
             if (!reasons.isEmpty())
                 throw new FlooringValidatorException(reasons);
-            return dao.update(Flooring.updater(id, name, description, pricePerSquareMeter, active));
+            return dao.update(FlooringUpdater.from(id, name, description, pricePerSquareMeter, active));
         } catch (DataAccessException e) {
             throw new ApplicationException(e);
         }

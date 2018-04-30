@@ -4,6 +4,20 @@ public interface FlooringBlueprint
 {
 
     /**
+     * Returns a new flooring blueprint from the provided information.
+     *
+     * @param name                The name of the flooring to specify in the blueprint.
+     * @param description         The description of the flooring to specify in the blueprint.
+     * @param pricePerSquareMeter The price of the flooring to specify in the blueprint.
+     * @param active              Whether or not the flooring to specify in the blueprint can be applied to orders.
+     * @return The newly created flooring blueprint.
+     */
+    static FlooringBlueprint from(String name, String description, int pricePerSquareMeter, boolean active)
+    {
+        return new FlooringRecord(-1, name, description, pricePerSquareMeter, active);
+    }
+
+    /**
      * Returns the name of the flooring.
      *
      * @return The name of the flooring.

@@ -2,7 +2,7 @@
 <%@ include file="top.jspf" %>
 <div class="row">
     <div class="col s12">
-        <h2><span class="focus">${flooring.getName()}</span></h2>
+        <h2><span class="focus">${flooringId.getName()}</span></h2>
     </div>
 </div>
 <div class="row">

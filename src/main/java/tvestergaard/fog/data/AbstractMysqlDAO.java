@@ -146,7 +146,9 @@ public abstract class AbstractMysqlDAO
                 resultSet.getInt("sheds.id"),
                 resultSet.getInt("sheds.width"),
                 resultSet.getInt("sheds.depth"),
+                resultSet.getInt("sheds.cladding"),
                 createCladding(resultSet),
+                resultSet.getInt("sheds.flooring"),
                 createFlooring(resultSet)
         );
     }

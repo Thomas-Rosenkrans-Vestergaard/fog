@@ -15,6 +15,8 @@ public class OrderRecord implements Order
      */
     private final int id;
 
+    private int customerId;
+
     /**
      * The customer who placed the order.
      */
@@ -24,6 +26,8 @@ public class OrderRecord implements Order
      * The cladding used on the order.
      */
     private Cladding cladding;
+
+    private int claddingId;
 
     /**
      * The width of the order.
@@ -44,6 +48,8 @@ public class OrderRecord implements Order
      * The roofing used on the order.
      */
     private Roofing roofing;
+
+    private int roofingId;
 
     /**
      * The slope of the roofing.
@@ -93,11 +99,14 @@ public class OrderRecord implements Order
      * @param createdAt      The time when the order was placed.
      */
     public OrderRecord(int id,
+                       int customerId,
                        Customer customer,
+                       int claddingId,
                        Cladding cladding,
                        int width,
                        int length,
                        int height,
+                       int roofingId,
                        Roofing roofing,
                        int slope,
                        RafterChoice rafters,
@@ -107,11 +116,14 @@ public class OrderRecord implements Order
                        LocalDateTime createdAt)
     {
         this.id = id;
+        this.customerId = customerId;
         this.customer = customer;
+        this.claddingId = claddingId;
         this.cladding = cladding;
         this.width = width;
         this.length = length;
         this.height = height;
+        this.roofingId = roofingId;
         this.roofing = roofing;
         this.slope = slope;
         this.rafters = rafters;
@@ -143,6 +155,11 @@ public class OrderRecord implements Order
         return customer;
     }
 
+    @Override public int getCustomerId()
+    {
+        return this.customerId;
+    }
+
     /**
      * Returns the cladding used on the order.
      *
@@ -154,15 +171,21 @@ public class OrderRecord implements Order
         return cladding;
     }
 
+    @Override
+    public int getCladdingId()
+    {
+        return claddingId;
+    }
+
     /**
      * Sets the cladding used on the order.
      *
      * @param cladding The new cladding.
      */
     @Override
-    public void setCladding(Cladding cladding)
+    public void setCladdingId(int cladding)
     {
-        this.cladding = cladding;
+        this.claddingId = cladding;
     }
 
     /**
@@ -242,15 +265,20 @@ public class OrderRecord implements Order
         return roofing;
     }
 
+    @Override public int getRoofingId()
+    {
+        return this.roofingId;
+    }
+
     /**
      * Sets the roofing used on the order.
      *
      * @param roofing The new roofing.
      */
     @Override
-    public void setRoofing(Roofing roofing)
+    public void setRoofingId(int roofing)
     {
-        this.roofing = roofing;
+        this.roofingId = roofing;
     }
 
     /**

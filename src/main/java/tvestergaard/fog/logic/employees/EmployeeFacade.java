@@ -106,7 +106,7 @@ public class EmployeeFacade
             Set<EmployeeError> reasons = validator.validateRegister(name, username, password);
             if (!reasons.isEmpty())
                 throw new EmployeeValidatorException(reasons);
-            EmployeeBlueprint blueprint = Employee.blueprint(name, username, password, createRoleSet(roles), active);
+            EmployeeBlueprint blueprint = EmployeeBlueprint.from(name, username, password, createRoleSet(roles), active);
             blueprint.setPassword(hash(password));
             Employee employee = employeeDAO.create(blueprint);
             return employee;
@@ -175,7 +175,7 @@ public class EmployeeFacade
             Employee employee = employeeDAO.first(where(eq(ID, id)));
             if (employee == null)
                 throw new UnknownEmployeeException();
-            EmployeeUpdater updater = Employee.updater(id, name, username, employee.getPassword(), createRoleSet(roles), active);
+            EmployeeUpdater updater = EmployeeUpdater.from(id, name, username, employee.getPassword(), createRoleSet(roles), active);
             if (password != null)
                 updater.setPassword(hash(password));
             return employeeDAO.update(updater);

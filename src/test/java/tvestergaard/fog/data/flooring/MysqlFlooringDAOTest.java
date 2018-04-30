@@ -29,11 +29,11 @@ public class MysqlFlooringDAOTest
     @Before
     public void createData() throws Exception
     {
-        flooring1 = dao.create(Flooring.blueprint("name1", "description1", 1, true));
-        flooring2 = dao.create(Flooring.blueprint("name2", "description2", 2, false));
-        flooring3 = dao.create(Flooring.blueprint("name3", "description3", 3, false));
-        flooring4 = dao.create(Flooring.blueprint("name4", "description4", 4, true));
-        flooring5 = dao.create(Flooring.blueprint("name5", "description5", 5, false));
+        flooring1 = dao.create(FlooringBlueprint.from("name1", "description1", 1, true));
+        flooring2 = dao.create(FlooringBlueprint.from("name2", "description2", 2, false));
+        flooring3 = dao.create(FlooringBlueprint.from("name3", "description3", 3, false));
+        flooring4 = dao.create(FlooringBlueprint.from("name4", "description4", 4, true));
+        flooring5 = dao.create(FlooringBlueprint.from("name5", "description5", 5, false));
     }
 
     @After
@@ -124,7 +124,7 @@ public class MysqlFlooringDAOTest
         String   description         = "some_random_description";
         int      pricePerSquareMeter = 234873;
         boolean  active              = false;
-        Flooring actual              = dao.create(Flooring.blueprint(name, description, pricePerSquareMeter, active));
+        Flooring actual              = dao.create(FlooringBlueprint.from(name, description, pricePerSquareMeter, active));
         assertEquals(name, actual.getName());
         assertEquals(description, actual.getDescription());
         assertEquals(pricePerSquareMeter, actual.getPricePerSquareMeter());

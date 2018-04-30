@@ -30,11 +30,11 @@ public class MysqlCladdingDAOTest
     @Before
     public void before() throws Exception
     {
-        cladding1 = dao.create(Cladding.blueprint("name1", "description1", 1, false));
-        cladding2 = dao.create(Cladding.blueprint("name2", "description2", 2, true));
-        cladding3 = dao.create(Cladding.blueprint("name3", "description3", 3, false));
-        cladding4 = dao.create(Cladding.blueprint("name4", "description4", 4, true));
-        cladding5 = dao.create(Cladding.blueprint("name5", "description5", 5, false));
+        cladding1 = dao.create(CladdingBlueprint.from("name1", "description1", 1, false));
+        cladding2 = dao.create(CladdingBlueprint.from("name2", "description2", 2, true));
+        cladding3 = dao.create(CladdingBlueprint.from("name3", "description3", 3, false));
+        cladding4 = dao.create(CladdingBlueprint.from("name4", "description4", 4, true));
+        cladding5 = dao.create(CladdingBlueprint.from("name5", "description5", 5, false));
     }
 
     @After
@@ -124,7 +124,7 @@ public class MysqlCladdingDAOTest
         String   description         = randomString();
         int      pricePerSquareMeter = randomInt(0, 100000);
         boolean  active              = randomBoolean();
-        Cladding actual              = dao.create(Cladding.blueprint(name, description, pricePerSquareMeter, active));
+        Cladding actual              = dao.create(CladdingBlueprint.from(name, description, pricePerSquareMeter, active));
         assertEquals(name, actual.getName());
         assertEquals(description, actual.getDescription());
         assertEquals(pricePerSquareMeter, actual.getPricePerSquareMeter());

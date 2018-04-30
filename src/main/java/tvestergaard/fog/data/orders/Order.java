@@ -10,32 +10,32 @@ public interface Order extends OrderUpdater
 {
 
     /**
-     * Returns a new order blueprint from the provided information.
+     * Returns the customer who placed the order.
      *
-     * @param customer     The customer of the order to specify in the blueprint.
-     * @param cladding     The cladding of the order to specify in the blueprint.
-     * @param width        The width of the order to specify in the blueprint.
-     * @param length       The length of the order to specify in the blueprint.
-     * @param height       The height of the order to specify in the blueprint.
-     * @param roofing      The roofing of the order to specify in the blueprint.
-     * @param slope        The slope of the order to specify in the blueprint.
-     * @param rafterChoice The choice of rafters on the order to specify in the blueprint.
-     * @return The newly created order blueprint.
+     * @return The customer who placed the order.
      */
-    static OrderBlueprint blueprint(Customer customer,
-                                    Cladding cladding,
-                                    int width,
-                                    int length,
-                                    int height,
-                                    Roofing roofing,
-                                    int slope,
-                                    RafterChoice rafterChoice,
-                                    ShedBlueprint shed)
-    {
-        return new OrderRecord(-1, customer, cladding, width, length, height, roofing, slope, rafterChoice,
-                shed == null ? null : new ShedRecord(-1, shed.getWidth(), shed.getDepth(), shed.getCladding(), shed.getFlooring()), false, -1,
-                null);
-    }
+    Customer getCustomer();
+
+    /**
+     * Returns the cladding used on the order.
+     *
+     * @return The cladding used on the order.
+     */
+    Cladding getCladding();
+
+    /**
+     * Returns the roofing used on the order.
+     *
+     * @return The roofing used on the order.
+     */
+    Roofing getRoofing();
+
+    /**
+     * Returns the shed installed in the order.
+     *
+     * @return The shed installed in the order.
+     */
+    @Override Shed getShed();
 
     /**
      * Returns the number of offers that have been made regarding this order.

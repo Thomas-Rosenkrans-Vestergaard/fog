@@ -32,11 +32,11 @@ public class MysqlMaterialDAOTest
     @Before
     public void before() throws Exception
     {
-        material1 = dao.create(Material.blueprint("number1", "description1", "notes1", 1, 6, 11));
-        material2 = dao.create(Material.blueprint("number2", "description2", "notes2", 2, 7, 12));
-        material3 = dao.create(Material.blueprint("number3", "description3", "notes3", 3, 8, 13));
-        material4 = dao.create(Material.blueprint("number4", "description4", "notes4", 4, 9, 14));
-        material5 = dao.create(Material.blueprint("number5", "description5", "notes5", 5, 10, 15));
+        material1 = dao.create(MaterialBlueprint.from("number1", "description1", "notes1", 1, 6, 11));
+        material2 = dao.create(MaterialBlueprint.from("number2", "description2", "notes2", 2, 7, 12));
+        material3 = dao.create(MaterialBlueprint.from("number3", "description3", "notes3", 3, 8, 13));
+        material4 = dao.create(MaterialBlueprint.from("number4", "description4", "notes4", 4, 9, 14));
+        material5 = dao.create(MaterialBlueprint.from("number5", "description5", "notes5", 5, 10, 15));
     }
 
     @After
@@ -115,7 +115,7 @@ public class MysqlMaterialDAOTest
     public void getActive() throws Exception
     {
         Material newMaterial = dao.create(
-                Material.blueprint(randomString(), randomString(), randomString(), randomInt(0, 100), randomInt(0, 100), 11)
+                MaterialBlueprint.from(randomString(), randomString(), randomString(), randomInt(0, 100), randomInt(0, 100), 11)
                                          );
 
         List<Material> active = dao.getActive();
@@ -143,7 +143,7 @@ public class MysqlMaterialDAOTest
         int      width       = randomInt(0, 100000);
         int      height      = randomInt(0, 100000);
         int      usage       = randomInt(0, 100000);
-        Material actual      = dao.create(Material.blueprint(number, description, notes, width, height, usage));
+        Material actual      = dao.create(MaterialBlueprint.from(number, description, notes, width, height, usage));
         assertEquals(number, actual.getNumber());
         assertEquals(description, actual.getDescription());
         assertEquals(notes, actual.getNotes());

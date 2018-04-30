@@ -178,7 +178,7 @@ DROP TABLE IF EXISTS `orders`;
 CREATE TABLE `orders` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `customer` int(11) unsigned NOT NULL,
-  `cladding` int(11) unsigned NOT NULL,
+  `claddingId` int(11) unsigned NOT NULL,
   `width` int(11) unsigned NOT NULL,
   `length` int(11) unsigned NOT NULL,
   `height` int(11) unsigned NOT NULL,
@@ -190,7 +190,7 @@ CREATE TABLE `orders` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`),
   KEY `customer` (`customer`),
-  KEY `cladding` (`roofing`),
+  KEY `claddingId` (`roofing`),
   CONSTRAINT `orders_ibfk_1` FOREIGN KEY (`customer`) REFERENCES `customers` (`id`),
   CONSTRAINT `orders_ibfk_2` FOREIGN KEY (`roofing`) REFERENCES `roofings` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -244,15 +244,15 @@ CREATE TABLE `sheds` (
   `order` int(11) unsigned NOT NULL,
   `width` int(11) unsigned NOT NULL,
   `depth` int(11) unsigned NOT NULL,
-  `cladding` int(11) unsigned NOT NULL,
+  `claddingId` int(11) unsigned NOT NULL,
   `flooring` int(11) unsigned NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`),
   UNIQUE KEY `order_UNIQUE` (`order`),
-  KEY `cladding` (`cladding`),
+  KEY `claddingId` (`claddingId`),
   KEY `flooring` (`flooring`),
   CONSTRAINT `fk_orders` FOREIGN KEY (`order`) REFERENCES `orders` (`id`),
-  CONSTRAINT `sheds_ibfk_1` FOREIGN KEY (`cladding`) REFERENCES `claddings` (`id`),
+  CONSTRAINT `sheds_ibfk_1` FOREIGN KEY (`claddingId`) REFERENCES `claddings` (`id`),
   CONSTRAINT `sheds_ibfk_2` FOREIGN KEY (`flooring`) REFERENCES `floorings` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;

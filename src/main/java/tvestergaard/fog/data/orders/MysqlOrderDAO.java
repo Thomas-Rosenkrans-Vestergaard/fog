@@ -111,12 +111,12 @@ public class MysqlOrderDAO extends AbstractMysqlDAO implements OrderDAO
 
                 int orderId;
                 try (PreparedStatement orderStatement = con.prepareStatement(orderSQL, RETURN_GENERATED_KEYS)) {
-                    orderStatement.setInt(1, blueprint.getCustomer().getId());
-                    orderStatement.setInt(2, blueprint.getCladding().getId());
+                    orderStatement.setInt(1, blueprint.getCustomerId());
+                    orderStatement.setInt(2, blueprint.getCladdingId());
                     orderStatement.setInt(3, blueprint.getWidth());
                     orderStatement.setInt(4, blueprint.getLength());
                     orderStatement.setInt(5, blueprint.getHeight());
-                    orderStatement.setInt(6, blueprint.getRoofing().getId());
+                    orderStatement.setInt(6, blueprint.getRoofingId());
                     orderStatement.setInt(7, blueprint.getSlope());
                     orderStatement.setInt(8, blueprint.getRafterChoice().getId());
                     orderStatement.executeUpdate();
@@ -131,8 +131,8 @@ public class MysqlOrderDAO extends AbstractMysqlDAO implements OrderDAO
                         shedStatement.setInt(1, orderId);
                         shedStatement.setInt(2, shed.getWidth());
                         shedStatement.setInt(3, shed.getDepth());
-                        shedStatement.setInt(4, shed.getCladding().getId());
-                        shedStatement.setInt(5, shed.getFlooring().getId());
+                        shedStatement.setInt(4, shed.getCladdingId());
+                        shedStatement.setInt(5, shed.getFlooringId());
                         shedStatement.executeUpdate();
                     }
                 }
@@ -166,11 +166,11 @@ public class MysqlOrderDAO extends AbstractMysqlDAO implements OrderDAO
             Connection   connection = getConnection();
             try {
                 try (PreparedStatement orderStatement = connection.prepareStatement(orderSQL)) {
-                    orderStatement.setInt(1, updater.getCladding().getId());
+                    orderStatement.setInt(1, updater.getCladdingId());
                     orderStatement.setInt(2, updater.getWidth());
                     orderStatement.setInt(3, updater.getLength());
                     orderStatement.setInt(4, updater.getHeight());
-                    orderStatement.setInt(5, updater.getRoofing().getId());
+                    orderStatement.setInt(5, updater.getRoofingId());
                     orderStatement.setInt(6, updater.getSlope());
                     orderStatement.setInt(7, updater.getRafterChoice().getId());
                     orderStatement.setBoolean(8, updater.isActive());
@@ -189,8 +189,8 @@ public class MysqlOrderDAO extends AbstractMysqlDAO implements OrderDAO
                         update.setInt(1, updater.getId());
                         update.setInt(2, shed.getWidth());
                         update.setInt(3, shed.getDepth());
-                        update.setInt(4, shed.getCladding().getId());
-                        update.setInt(5, shed.getFlooring().getId());
+                        update.setInt(4, shed.getCladdingId());
+                        update.setInt(5, shed.getFlooringId());
                         update.executeUpdate();
                     }
                 }
@@ -240,11 +240,14 @@ public class MysqlOrderDAO extends AbstractMysqlDAO implements OrderDAO
     {
         return new OrderRecord(
                 resultSet.getInt("o.id"),
+                resultSet.getInt("o.customer"),
                 createCustomer(resultSet),
+                resultSet.getInt("o.cladding"),
                 createCladding(resultSet),
                 resultSet.getInt("o.width"),
                 resultSet.getInt("o.length"),
                 resultSet.getInt("o.height"),
+                resultSet.getInt("o.roofing"),
                 createRoofing(resultSet),
                 resultSet.getInt("o.slope"),
                 RafterChoice.from(resultSet.getInt("o.rafters")),
@@ -286,7 +289,9 @@ public class MysqlOrderDAO extends AbstractMysqlDAO implements OrderDAO
                 resultSet.getInt("sheds.id"),
                 resultSet.getInt("sheds.width"),
                 resultSet.getInt("sheds.depth"),
+                resultSet.getInt("sheds.cladding"),
                 createShedCladding(resultSet),
+                resultSet.getInt("sheds.flooring"),
                 createFlooring(resultSet)
         );
     }

@@ -4,6 +4,20 @@ public interface CladdingBlueprint
 {
 
     /**
+     * Returns a new cladding blueprint from the provided information.
+     *
+     * @param name                The name of the cladding to specify in the blueprint.
+     * @param description         The description of the cladding to specify in the blueprint.
+     * @param pricePerSquareMeter The price of the cladding to specify in the blueprint.
+     * @param active              Whether or not the cladding to specify in the blueprint can be applied to orders.
+     * @return The newly created cladding blueprint.
+     */
+    static CladdingBlueprint from(String name, String description, int pricePerSquareMeter, boolean active)
+    {
+        return new CladdingRecord(-1, name, description, pricePerSquareMeter, active);
+    }
+
+    /**
      * Returns the name of the cladding.
      *
      * @return The name of the cladding.

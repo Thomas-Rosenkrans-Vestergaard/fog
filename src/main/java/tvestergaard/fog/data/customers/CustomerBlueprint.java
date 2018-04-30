@@ -6,6 +6,23 @@ public interface CustomerBlueprint
 {
 
     /**
+     * Returns a new customer blueprint from the provided information.
+     *
+     * @param name     The name of the customer to specify in the blueprint.
+     * @param address  The address of the customer to specify in the blueprint.
+     * @param email    The email of the customer to specify in the blueprint.
+     * @param phone    The phone of the customer to specify in the blueprint.
+     * @param phone    The phone of the customer to specify in the blueprint.
+     * @param password The password of the customer to specify in the blueprint.
+     * @param active   Whether or not the customer to specify in the blueprint is active.
+     * @return The newly created customer blueprint.
+     */
+    static CustomerBlueprint from(String name, String address, String email, String phone, String password, boolean active)
+    {
+        return new CustomerRecord(-1, name, address, email, phone, password, active, false, null);
+    }
+
+    /**
      * Returns the name of the customer.
      *
      * @return The name of the customer.

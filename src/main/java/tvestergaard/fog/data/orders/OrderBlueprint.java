@@ -1,32 +1,56 @@
 package tvestergaard.fog.data.orders;
 
-import tvestergaard.fog.data.cladding.Cladding;
-import tvestergaard.fog.data.customers.Customer;
-import tvestergaard.fog.data.roofing.Roofing;
-
 public interface OrderBlueprint
 {
 
     /**
-     * Returns the customer who placed the order.
+     * Returns a new order blueprint from the provided information.
+     *
+     * @param customer     The customer of the order to specify in the blueprint.
+     * @param cladding     The cladding of the order to specify in the blueprint.
+     * @param width        The width of the order to specify in the blueprint.
+     * @param length       The length of the order to specify in the blueprint.
+     * @param height       The height of the order to specify in the blueprint.
+     * @param roofing      The roofing of the order to specify in the blueprint.
+     * @param slope        The slope of the order to specify in the blueprint.
+     * @param rafterChoice The choice of rafters on the order to specify in the blueprint.
+     * @return The newly created order blueprint.
+     */
+    static OrderBlueprint from(int customer,
+                               int cladding,
+                               int width,
+                               int length,
+                               int height,
+                               int roofing,
+                               int slope,
+                               RafterChoice rafterChoice,
+                               ShedBlueprint shed)
+    {
+        return new OrderRecord(-1, customer, null, cladding, null, width, length, height, roofing, null, slope, rafterChoice,
+                shed == null ? null : new ShedRecord(-1, shed.getWidth(), shed.getDepth(), shed.getCladdingId(), null, shed.getFlooringId(), null), false, -1,
+                null);
+    }
+
+    /**
+     * Returns the id of the customer who placed the order.
      *
      * @return The customer who placed the order.
      */
-    Customer getCustomer();
+    int getCustomerId();
 
     /**
-     * Returns the cladding used on the order.
+     * Returns the id of the cladding used on the order.
      *
      * @return The cladding used on the order.
      */
-    Cladding getCladding();
+    int getCladdingId();
 
     /**
-     * Sets the cladding used on the order.
+     * Sets the id of the cladding used on the order.
      *
      * @param cladding The new cladding.
      */
-    void setCladding(Cladding cladding);
+    void setCladdingId(int cladding);
 
     /**
      * Returns the width of the order.
@@ -71,18 +95,18 @@ public interface OrderBlueprint
     void setHeight(int height);
 
     /**
-     * Returns the roofing used on the order.
+     * Returns the id of the roofing used on the order.
      *
      * @return The roofing used on the order.
      */
-    Roofing getRoofing();
+    int getRoofingId();
 
     /**
-     * Sets the roofing used on the order.
+     * Sets the id of the roofing used on the order.
      *
      * @param roofing The new roofing.
      */
-    void setRoofing(Roofing roofing);
+    void setRoofingId(int roofing);
 
     /**
      * Returns the slope of the roofing.

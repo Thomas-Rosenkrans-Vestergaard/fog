@@ -3,32 +3,20 @@ package tvestergaard.fog.logic.orders;
 import com.mysql.cj.jdbc.MysqlDataSource;
 import tvestergaard.fog.data.DataAccessException;
 import tvestergaard.fog.data.ProductionDataSource;
-import tvestergaard.fog.data.cladding.Cladding;
-import tvestergaard.fog.data.cladding.CladdingColumn;
 import tvestergaard.fog.data.cladding.CladdingDAO;
 import tvestergaard.fog.data.cladding.MysqlCladdingDAO;
 import tvestergaard.fog.data.constraints.Constraint;
-import tvestergaard.fog.data.customers.Customer;
-import tvestergaard.fog.data.customers.CustomerColumn;
 import tvestergaard.fog.data.customers.CustomerDAO;
 import tvestergaard.fog.data.customers.MysqlCustomerDAO;
-import tvestergaard.fog.data.flooring.Flooring;
-import tvestergaard.fog.data.flooring.FlooringColumn;
 import tvestergaard.fog.data.flooring.FlooringDAO;
 import tvestergaard.fog.data.flooring.MysqlFlooringDAO;
 import tvestergaard.fog.data.orders.*;
 import tvestergaard.fog.data.roofing.MysqlRoofingDAO;
-import tvestergaard.fog.data.roofing.Roofing;
-import tvestergaard.fog.data.roofing.RoofingColumn;
 import tvestergaard.fog.data.roofing.RoofingDAO;
 import tvestergaard.fog.logic.ApplicationException;
 
 import java.util.List;
 import java.util.Set;
-
-import static tvestergaard.fog.data.constraints.Constraint.eq;
-import static tvestergaard.fog.data.constraints.Constraint.where;
-import static tvestergaard.fog.logic.orders.OrderError.*;
 
 public class OrderFacade
 {
@@ -98,68 +86,41 @@ public class OrderFacade
     /**
      * Creates a new order.
      *
-     * @param customerId The id of the customer who placed the order to create.
-     * @param claddingId The id of the cladding used on the order to create.
-     * @param width      The width of the order to create.
-     * @param length     The length of the order to create.
-     * @param height     The height of the order to create.
-     * @param roofingId  The id of the roofing used on the order to create.
-     * @param slope      The slope of the roofing used on the order to create.
-     * @param rafters    The rafters construction delivered with the order to create.
-     * @param shed       The shed to add to the order.
+     * @param customer The id of the customer who placed the order to create.
+     * @param cladding The id of the cladding used on the order to create.
+     * @param width    The width of the order to create.
+     * @param length   The length of the order to create.
+     * @param height   The height of the order to create.
+     * @param roofing  The id of the roofing used on the order to create.
+     * @param slope    The slope of the roofing used on the order to create.
+     * @param rafters  The rafters construction delivered with the order to create.
+     * @param shed     The shed to add to the order.
      * @return The new order.
      * @throws OrderValidatorException When the provided details are considered invalid.
      * @throws ApplicationException    When an exception occurs during the operation.
      */
     public Order create(
-            int customerId,
-            int claddingId,
+            int customer,
+            int cladding,
             int width,
             int length,
             int height,
-            int roofingId,
+            int roofing,
             int slope,
             RafterChoice rafters,
             ShedSpecification shed) throws OrderValidatorException
     {
         try {
 
-            Set<OrderError> reasons = validator.validate(customerId, claddingId, width, length, height, roofingId, slope, shed);
+            Set<OrderError> reasons = validator.validate(customer, cladding, width, length, height, roofing, slope, shed);
             if (!reasons.isEmpty())
                 throw new OrderValidatorException(reasons);
-
-
-            Customer customer = customerDAO.first(where(eq(CustomerColumn.ID, customerId)));
-            if (customer == null)
-                reasons.add(UNKNOWN_CUSTOMER);
-
-            Cladding cladding = claddingDAO.first(where(eq(CladdingColumn.ID, claddingId)));
-            if (cladding == null)
-                reasons.add(UNKNOWN_CLADDING);
-
-            Roofing roofing = roofingDAO.first(where(eq(RoofingColumn.ID, roofingId)));
-            if (roofing == null)
-                reasons.add(UNKNOWN_ROOFING);
-
-            Cladding shedCladding = null;
-            if (shed != null) {
-                shedCladding = claddingDAO.first(where(eq(CladdingColumn.ID, shed.getCladding())));
-                if (shedCladding == null)
-                    reasons.add(UNKNOWN_SHED_CLADDING);
-            }
-
-            Flooring shedFlooring = null;
-            if (shed != null) {
-                shedFlooring = flooringDAO.first(where(eq(FlooringColumn.ID, shed.getFlooring())));
-                if (shedFlooring == null)
-                    reasons.add(UNKNOWN_SHED_FLOORING);
-            }
 
             if (!reasons.isEmpty())
                 throw new OrderValidatorException(reasons);
 
 
-            return dao.create(Order.blueprint(
+            return dao.create(OrderBlueprint.from(
                     customer,
                     cladding,
                     width,
@@ -168,7 +129,7 @@ public class OrderFacade
                     roofing,
                     slope,
                     rafters,
-                    shed == null ? null : Shed.blueprint(shed.getWidth(), shed.getDepth(), shedCladding, shedFlooring)));
+                    shed == null ? null : ShedBlueprint.from(shed.getWidth(), shed.getDepth(), shed.getCladdingId(), shed.getFlooringId())));
         } catch (DataAccessException e) {
             throw new ApplicationException(e);
         }
@@ -190,32 +151,24 @@ public class OrderFacade
         }
     }
 
-    /**
-     * Updates the entity in the data storage to match the provided {@code order}.
-     *
-     * @param updater The order to update the entity in the data storage to.
-     * @return {@link true} if the record was updated.
-     * @throws ApplicationException When an exception occurs while performing the operation.
-     * @see OrderFacade#update(OrderUpdater)
-     */
-    public boolean update(int customerId,
-            int claddingId,
-            int width,
-            int length,
-            int height,
-            int roofingId,
-            int slope,
-            RafterChoice rafters,
-            ShedSpecification shed) throws OrderValidatorException
+    public boolean update(int id,
+                          int customer,
+                          int cladding,
+                          int width,
+                          int length,
+                          int height,
+                          int roofing,
+                          int slope,
+                          RafterChoice rafters,
+                          ShedSpecification shed) throws OrderValidatorException
     {
         try {
-            Set<OrderError> reasons = validator.validate(customerId, claddingId, width, length, height, roofingId, slope, shed);
+            Set<OrderError> reasons = validator.validate(customer, cladding, width, length, height, roofing, slope, shed);
             if (!reasons.isEmpty())
                 throw new OrderValidatorException(reasons);
 
 
-
-            return dao.update(updater);
+            return dao.update(OrderUpdater.from(id, customer, cladding, width, length, height, roofing, slope, rafters, ShedBlueprint.from(shed.getWidth(), shed.getDepth(), shed.getCladdingId(), shed.getFlooringId())));
         } catch (DataAccessException e) {
             throw new ApplicationException(e);
         }
