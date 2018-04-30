@@ -1,7 +1,6 @@
 package tvestergaard.fog.data.employees;
 
 import java.time.LocalDateTime;
-import java.util.Set;
 
 public interface Employee extends EmployeeUpdater
 {

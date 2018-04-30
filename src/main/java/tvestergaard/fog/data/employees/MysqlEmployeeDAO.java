@@ -107,7 +107,7 @@ public class MysqlEmployeeDAO extends AbstractMysqlDAO implements EmployeeDAO
                 try (PreparedStatement roleStatement = connection.prepareStatement(roleSQL)) {
                     roleStatement.setInt(1, employeeId);
                     for (Role role : blueprint.getRoles()) {
-                        roleStatement.setInt(2, role.getId());
+                        roleStatement.setString(2, role.name());
                         roleStatement.executeUpdate();
                     }
                 }
