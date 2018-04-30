@@ -38,13 +38,13 @@ public enum Role
      */
     public static Role from(int id)
     {
-        if (id == 0)
-            return HEAD_OF_CENTER;
         if (id == 1)
-            return HEAD_OF_MATERIALS;
+            return HEAD_OF_CENTER;
         if (id == 2)
+            return HEAD_OF_MATERIALS;
+        if (id == 3)
             return SALESMAN;
 
-        throw new IllegalStateException();
+        throw new IllegalStateException("Unknown role with provided id.");
     }
 }

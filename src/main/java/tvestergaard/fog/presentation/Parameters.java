@@ -407,6 +407,57 @@ public class Parameters
     }
 
     /**
+     * Checks that the value of the provided parameter can safely be extracted to an array of ints using the {@link
+     * Parameters#getIntArray(String)} method.
+     *
+     * @param parameter The name of the parameter to test the format of.
+     * @return {@code true} if the value of the provided parameter can safely be extracted to an array of ints using
+     * the {@link Parameters#getIntArray(String)} method.
+     */
+    public boolean isIntArray(String parameter)
+    {
+        String[] parameterValues = provider.getParameterValues(parameter);
+
+        if (parameter == null)
+            return false;
+
+        for (String parameterValue : parameterValues) {
+            try {
+                Integer.parseInt(parameterValue);
+            } catch (Exception e) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+
+    /**
+     * Extracts the time value of the value of the provided parameter to an array of ints.
+     * <p>
+     * This method will not throw an exception when the {@link Parameters#isIntArray(String)} method returns true for the
+     * same parameter name.
+     *
+     * @param parameter The name of the parameter to extract the time value from.
+     * @return The resulting array of ints from the provided parameter.
+     * @throws ParametersConversionException When an error occurs while extracting the time value.
+     */
+    public int[] getIntArray(String parameter) throws ParametersConversionException
+    {
+        try {
+            String[] parameterValues = provider.getParameterValues(parameter);
+            int[]    result          = new int[parameterValues.length];
+            for (int x = 0; x < parameterValues.length; x++) {
+                result[x] = Integer.parseInt(parameterValues[x]);
+            }
+            return result;
+        } catch (Exception e) {
+            throw new ParametersConversionException(e);
+        }
+    }
+
+    /**
      * Returns the string value of the provided parameter name.
      *
      * @param parameterName The name of the parameter to return the string value of.

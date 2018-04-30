@@ -136,15 +136,33 @@ public class MysqlEmployeeDAO extends AbstractMysqlDAO implements EmployeeDAO
         try {
             final String SQL        = "UPDATE employees SET `name` = ?, username = ?, `password` = ?, active = ?  WHERE id = ?";
             Connection   connection = getConnection();
-            try (PreparedStatement statement = connection.prepareStatement(SQL)) {
-                statement.setString(1, updater.getName());
-                statement.setString(2, updater.getUsername());
-                statement.setString(3, updater.getPassword());
-                statement.setBoolean(4, updater.isActive());
-                statement.setInt(5, updater.getId());
-                int updated = statement.executeUpdate();
+            try {
+                try (PreparedStatement statement = connection.prepareStatement(SQL)) {
+                    statement.setString(1, updater.getName());
+                    statement.setString(2, updater.getUsername());
+                    statement.setString(3, updater.getPassword());
+                    statement.setBoolean(4, updater.isActive());
+                    statement.setInt(5, updater.getId());
+                    statement.executeUpdate();
+                }
+                String deleteSQL = "DELETE FROM roles WHERE employee = ?";
+                try (PreparedStatement statement = connection.prepareStatement(deleteSQL)) {
+                    statement.setInt(1, updater.getId());
+                    statement.executeUpdate();
+                }
+
+                String rolesSQL = "INSERT INTO roles (employee, `role`) VALUES (?, ?)";
+                try (PreparedStatement statement = connection.prepareStatement(rolesSQL)) {
+                    statement.setInt(1, updater.getId());
+                    for (Role role : updater.getRoles()) {
+                        statement.setString(2, role.name());
+                        statement.executeUpdate();
+                    }
+                }
+
                 connection.commit();
-                return updated != 0;
+                return true;
+
             } catch (SQLException e) {
                 connection.rollback();
                 throw e;

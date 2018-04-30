@@ -2,7 +2,7 @@
 <%@ include file="top.jspf" %>
 <div class="row">
     <div class="col s12">
-        <h2><span class="focus">${flooring.getName()}</span></h2>
+        <h2>Opret medarbejder</h2>
     </div>
 </div>
 <div class="row">
@@ -26,10 +26,13 @@
             </div>
         </div>
         <div class="row">
-            <div class="col s12 input-field">
-                <input type="password" name="password-repeat" id="password-repeat" class="validate" minlength="4"
-                       required>
-                <label for="password-repeat">Gentag adgangskode</label>
+            <div class="input-field col s12">
+                <select multiple name="roles">
+                    <c:forEach items="${roles}" var="role">
+                        <option value="${role.getId()}"><c:out value="${role.name()}"/></option>
+                    </c:forEach>
+                </select>
+                <label>Roller</label>
             </div>
         </div>
         <div class="class row">
@@ -53,7 +56,8 @@
         </div>
         <script>
             $(document).ready(function () {
-                $('input#name').characterCounter();
+                $('input#name, input#username').characterCounter();
+                $('select').material_select();
             });
         </script>
     </form>

@@ -2,7 +2,7 @@
 <%@ include file="top.jspf" %>
 <div class="row">
     <div class="col s12">
-        <h2>Ordre</h2>
+        <h2>Kunder</h2>
     </div>
 </div>
 <div class="row">

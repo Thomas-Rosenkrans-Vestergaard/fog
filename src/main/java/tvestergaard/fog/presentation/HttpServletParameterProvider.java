@@ -23,4 +23,16 @@ public class HttpServletParameterProvider implements ParameterProvider
     {
         return request.getParameter(parameterName);
     }
+
+    /**
+     * Returns an array of String objects containing all of the values the given request parameter has, or null if the
+     * parameter does not exist. If the parameter has a single value, the array has a length of 1.
+     *
+     * @param parameterName The name of the parameter.
+     * @return an array of String objects containing the parameter's values
+     */
+    @Override public String[] getParameterValues(String parameterName)
+    {
+        return request.getParameterValues(parameterName);
+    }
 }
