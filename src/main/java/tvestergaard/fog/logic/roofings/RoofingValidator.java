@@ -13,12 +13,12 @@ public class RoofingValidator
      *
      * @param name                The name to validate.
      * @param description         The description to validate.
-     * @param pricePerSquareMeter The price per square meter to validate.
      * @param minimumSlope        The minimum slope to validate.
      * @param maximumSlope        The maximum slope to validate.
+     * @param pricePerSquareMeter The price per square meter to validate.
      * @return The errors with the provided roofing information.
      */
-    public Set<RoofingError> validate(String name, String description, int pricePerSquareMeter, int minimumSlope, int maximumSlope)
+    public Set<RoofingError> validate(String name, String description, int minimumSlope, int maximumSlope, int pricePerSquareMeter)
     {
         Set<RoofingError> errors = new HashSet<>();
 

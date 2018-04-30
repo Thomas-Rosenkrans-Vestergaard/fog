@@ -1,5 +1,6 @@
 package tvestergaard.fog.logic.roofings;
 
+import java.util.Collections;
 import java.util.Set;
 
 public class RoofingValidatorException extends Exception
@@ -7,16 +8,16 @@ public class RoofingValidatorException extends Exception
     /**
      * The reasons for throwing the exception.
      */
-    private Set<RoofingError> reasons;
+    private Set<RoofingError> errors;
 
     /**
      * Creates a new {@link RoofingValidatorException}.
      *
-     * @param reasons The reasons for throwing the exception.
+     * @param errors The reasons for throwing the exception.
      */
-    public RoofingValidatorException(Set<RoofingError> reasons)
+    public RoofingValidatorException(Set<RoofingError> errors)
     {
-        this.reasons = reasons;
+        this.errors = errors;
     }
 
     /**
@@ -25,8 +26,18 @@ public class RoofingValidatorException extends Exception
      * @param reason The reason to check for.
      * @return {@code true} if the provided reason was a cause of the exception.
      */
-    public boolean hasReason(RoofingError reason)
+    public boolean hasError(RoofingError reason)
     {
-        return this.reasons.contains(reason);
+        return this.errors.contains(reason);
+    }
+
+    /**
+     * Returns the errors that caused the exception to be thrown.
+     *
+     * @return The errors that caused the exception to be thrown.
+     */
+    public Set<RoofingError> getErrors()
+    {
+        return Collections.unmodifiableSet(errors);
     }
 }

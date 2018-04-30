@@ -7,6 +7,13 @@
 </div>
 <div class="row">
     <div class="col s12">
+        <a class="btn-floating btn-large waves-effect waves-light red" href="?action=create">
+            <i class="material-icons">add</i>
+        </a>
+    </div>
+</div>
+<div class="row">
+    <div class="col s12">
         <table class="highlight">
             <thead>
             <th>ID</th>

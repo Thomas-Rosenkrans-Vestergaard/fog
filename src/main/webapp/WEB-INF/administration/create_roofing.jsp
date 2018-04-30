@@ -2,7 +2,7 @@
 <%@ include file="top.jspf" %>
 <div class="row">
     <div class="col s12">
-        <h2><span class="focus">${flooring.getName()}</span></h2>
+        <h2><span class="focus">${roofing.getName()}</span></h2>
     </div>
 </div>
 <div class="row">
@@ -17,6 +17,18 @@
             <div class="input-field col s12">
                 <textarea id="description" name="description" class="materialize-textarea validate" required></textarea>
                 <label for="description">Beskrivelse</label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="input-field col s12">
+                <input type="number" step="1" name="minimum-slope" min="1" max="89" id="minimum-slope">
+                <label for="minimum-slope">Mindste hældning</label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="input-field col s12">
+                <input type="number" step="1" name="maximum-slope" min="1" max="89" id="maximum-slope">
+                <label for="maximum-slope">Største hældning</label>
             </div>
         </div>
         <div class="row">
