@@ -1,9 +1,7 @@
-package tvestergaard.fog.logic.customers;
+package tvestergaard.fog.logic.email;
 
 import org.simplejavamail.mailer.Mailer;
 import org.simplejavamail.mailer.config.TransportStrategy;
-import tvestergaard.fog.logic.email.ApplicationEmail;
-import tvestergaard.fog.logic.email.ApplicationMailer;
 
 public class SimpleJavaMailer implements ApplicationMailer
 {

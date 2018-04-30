@@ -9,6 +9,7 @@ import tvestergaard.fog.data.customers.*;
 import tvestergaard.fog.data.tokens.MysqlTokenDAO;
 import tvestergaard.fog.data.tokens.TokenDAO;
 import tvestergaard.fog.logic.ApplicationException;
+import tvestergaard.fog.logic.email.SimpleJavaMailer;
 
 import java.util.List;
 import java.util.Set;

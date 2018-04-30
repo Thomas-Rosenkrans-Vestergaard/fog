@@ -1,31 +1,65 @@
 package tvestergaard.fog.logic.orders;
 
+import com.mysql.cj.jdbc.MysqlDataSource;
 import tvestergaard.fog.data.DataAccessException;
 import tvestergaard.fog.data.ProductionDataSource;
+import tvestergaard.fog.data.cladding.Cladding;
+import tvestergaard.fog.data.cladding.CladdingColumn;
+import tvestergaard.fog.data.cladding.CladdingDAO;
+import tvestergaard.fog.data.cladding.MysqlCladdingDAO;
 import tvestergaard.fog.data.constraints.Constraint;
+import tvestergaard.fog.data.customers.Customer;
+import tvestergaard.fog.data.customers.CustomerColumn;
+import tvestergaard.fog.data.customers.CustomerDAO;
+import tvestergaard.fog.data.customers.MysqlCustomerDAO;
+import tvestergaard.fog.data.flooring.Flooring;
+import tvestergaard.fog.data.flooring.FlooringColumn;
+import tvestergaard.fog.data.flooring.FlooringDAO;
+import tvestergaard.fog.data.flooring.MysqlFlooringDAO;
 import tvestergaard.fog.data.orders.*;
-import tvestergaard.fog.data.orders.ShedUpdater;
+import tvestergaard.fog.data.roofing.MysqlRoofingDAO;
+import tvestergaard.fog.data.roofing.Roofing;
+import tvestergaard.fog.data.roofing.RoofingColumn;
+import tvestergaard.fog.data.roofing.RoofingDAO;
 import tvestergaard.fog.logic.ApplicationException;
 
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import static tvestergaard.fog.data.constraints.Constraint.eq;
+import static tvestergaard.fog.data.constraints.Constraint.where;
 import static tvestergaard.fog.logic.orders.OrderError.*;
 
 public class OrderFacade
 {
 
-    private final OrderDAO dao;
+    private final OrderDAO       dao;
+    private final OrderValidator validator;
 
-    public OrderFacade(OrderDAO dao)
+    private final CustomerDAO customerDAO;
+    private final CladdingDAO claddingDAO;
+    private final RoofingDAO  roofingDAO;
+    private final FlooringDAO flooringDAO;
+
+    public OrderFacade(OrderDAO dao, OrderValidator validator, CustomerDAO customerDAO, CladdingDAO claddingDAO, RoofingDAO roofingDAO, FlooringDAO flooringDAO)
     {
         this.dao = dao;
+        this.validator = validator;
+        this.customerDAO = customerDAO;
+        this.claddingDAO = claddingDAO;
+        this.roofingDAO = roofingDAO;
+        this.flooringDAO = flooringDAO;
     }
 
     public OrderFacade()
     {
-        this(new MysqlOrderDAO(ProductionDataSource.getSource()));
+        MysqlDataSource source = ProductionDataSource.getSource();
+        this.dao = new MysqlOrderDAO(source);
+        this.validator = new OrderValidator();
+        this.customerDAO = new MysqlCustomerDAO(source);
+        this.claddingDAO = new MysqlCladdingDAO(source);
+        this.roofingDAO = new MysqlRoofingDAO(source);
+        this.flooringDAO = new MysqlFlooringDAO(source);
     }
 
     /**
@@ -64,43 +98,80 @@ public class OrderFacade
     /**
      * Creates a new order.
      *
-     * @param customer The id of the customer who placed the order to create.
-     * @param cladding The id of the cladding used on the order to create.
-     * @param width    The width of the order to create.
-     * @param length   The length of the order to create.
-     * @param height   The height of the order to create.
-     * @param roofing  The id of the roofing used on the order to create.
-     * @param slope    The slope of the roofing used on the order to create.
-     * @param rafters  The rafters construction delivered with the order to create.
-     * @param shed     The shed to add to the order.
+     * @param customerId The id of the customer who placed the order to create.
+     * @param claddingId The id of the cladding used on the order to create.
+     * @param width      The width of the order to create.
+     * @param length     The length of the order to create.
+     * @param height     The height of the order to create.
+     * @param roofingId  The id of the roofing used on the order to create.
+     * @param slope      The slope of the roofing used on the order to create.
+     * @param rafters    The rafters construction delivered with the order to create.
+     * @param shed       The shed to add to the order.
      * @return The new order.
      * @throws OrderValidatorException When the provided details are considered invalid.
      * @throws ApplicationException    When an exception occurs during the operation.
      */
     public Order create(
-            int customer,
-            int cladding,
+            int customerId,
+            int claddingId,
             int width,
             int length,
             int height,
-            int roofing,
+            int roofingId,
             int slope,
             RafterChoice rafters,
             ShedSpecification shed) throws OrderValidatorException
     {
-//        try {
+        try {
 
-//            OrderBlueprint blueprint = OrderBlueprint.from()
-//                                               Set < OrderError > reasons = validateCreateOrder(customer, cladding, width, length, height, roofing, slope, shed);
-//            if (!reasons.isEmpty())
-//                throw new OrderValidatorException(reasons);
-//
-//            return dao.create(customer, cladding, width, length, height, roofing, slope, rafters, shed);
+            Set<OrderError> reasons = validator.validate(customerId, claddingId, width, length, height, roofingId, slope, shed);
+            if (!reasons.isEmpty())
+                throw new OrderValidatorException(reasons);
 
-        return null;
-//        } catch (DataAccessException e) {
-//            throw new ApplicationException(e);
-//        }
+
+            Customer customer = customerDAO.first(where(eq(CustomerColumn.ID, customerId)));
+            if (customer == null)
+                reasons.add(UNKNOWN_CUSTOMER);
+
+            Cladding cladding = claddingDAO.first(where(eq(CladdingColumn.ID, claddingId)));
+            if (cladding == null)
+                reasons.add(UNKNOWN_CLADDING);
+
+            Roofing roofing = roofingDAO.first(where(eq(RoofingColumn.ID, roofingId)));
+            if (roofing == null)
+                reasons.add(UNKNOWN_ROOFING);
+
+            Cladding shedCladding = null;
+            if (shed != null) {
+                shedCladding = claddingDAO.first(where(eq(CladdingColumn.ID, shed.getCladding())));
+                if (shedCladding == null)
+                    reasons.add(UNKNOWN_SHED_CLADDING);
+            }
+
+            Flooring shedFlooring = null;
+            if (shed != null) {
+                shedFlooring = flooringDAO.first(where(eq(FlooringColumn.ID, shed.getFlooring())));
+                if (shedFlooring == null)
+                    reasons.add(UNKNOWN_SHED_FLOORING);
+            }
+
+            if (!reasons.isEmpty())
+                throw new OrderValidatorException(reasons);
+
+
+            return dao.create(Order.blueprint(
+                    customer,
+                    cladding,
+                    width,
+                    length,
+                    height,
+                    roofing,
+                    slope,
+                    rafters,
+                    shed == null ? null : Shed.blueprint(shed.getWidth(), shed.getDepth(), shedCladding, shedFlooring)));
+        } catch (DataAccessException e) {
+            throw new ApplicationException(e);
+        }
     }
 
     /**
@@ -109,6 +180,7 @@ public class OrderFacade
      * @return The number of such orders.
      * @throws ApplicationException When an exception occurs while performing the operation.
      */
+
     public int getNumberOfNewOrders()
     {
         try {
@@ -119,114 +191,33 @@ public class OrderFacade
     }
 
     /**
-     * Validates the provided details for creating a new order.
-     *
-     * @param customer The customer variable to perform validation upon.
-     * @param cladding The cladding variable to perform validation upon.
-     * @param width    The width variable to perform validation upon.
-     * @param length   The length variable to perform validation upon.
-     * @param height   The height variable to perform validation upon.
-     * @param roofing  The roofing variable to perform validation upon.
-     * @param slope    The slope variable to perform validation upon.
-     * @param shed     The shed variable to perform validation upon.
-     * @return Any reasons why the provided information is invalid.
-     */
-    private Set<OrderError> validateCreateOrder(
-            int customer,
-            int cladding,
-            int width,
-            int length,
-            int height,
-            int roofing,
-            int slope,
-            ShedSpecification shed)
-    {
-
-        return validateOrderInformation(customer, cladding, width, length, height, roofing, slope, shed);
-    }
-
-    /**
-     * Validates the provided details for creating a new order.
-     *
-     * @param customer The customer variable to perform validation upon.
-     * @param cladding The cladding variable to perform validation upon.
-     * @param width    The width variable to perform validation upon.
-     * @param length   The length variable to perform validation upon.
-     * @param height   The height variable to perform validation upon.
-     * @param roofing  The roofing variable to perform validation upon.
-     * @param slope    The slope variable to perform validation upon.
-     * @param shed     The shed variable to perform validation upon.
-     * @return Any reasons why the provided information is invalid.
-     */
-    private Set<OrderError> validateOrderInformation(
-            int customer,
-            int cladding,
-            int width,
-            int length,
-            int height,
-            int roofing,
-            int slope,
-            ShedSpecification shed)
-    {
-        Set<OrderError> reasons = new HashSet<>();
-
-        if (width < 240 || width % 30 != 0 || width > 750)
-            reasons.add(ILLEGAL_WIDTH);
-
-        if (length < 240 || length % 30 != 0 && length > 780)
-            reasons.add(ILLEGAL_LENGTH);
-
-        if (height < 180 && length % 30 != 0 && height > 300)
-            reasons.add(ILLEGAL_HEIGHT);
-
-        if (slope < 1 && slope > 89)
-            reasons.add(ILLEGAL_SLOPE);
-
-        return reasons;
-    }
-
-    /**
      * Updates the entity in the data storage to match the provided {@code order}.
      *
-     * @param order The order to update the entity in the data storage to.
+     * @param updater The order to update the entity in the data storage to.
      * @return {@link true} if the record was updated.
      * @throws ApplicationException When an exception occurs while performing the operation.
-     * @see OrderFacade#update(Order)
+     * @see OrderFacade#update(OrderUpdater)
      */
-    public boolean update(Order order) throws OrderValidatorException
+    public boolean update(int customerId,
+            int claddingId,
+            int width,
+            int length,
+            int height,
+            int roofingId,
+            int slope,
+            RafterChoice rafters,
+            ShedSpecification shed) throws OrderValidatorException
     {
         try {
-            Set<OrderError> reasons = validate(order);
+            Set<OrderError> reasons = validator.validate(customerId, claddingId, width, length, height, roofingId, slope, shed);
             if (!reasons.isEmpty())
                 throw new OrderValidatorException(reasons);
 
-            return dao.update(order);
+
+
+            return dao.update(updater);
         } catch (DataAccessException e) {
             throw new ApplicationException(e);
         }
-    }
-
-    /**
-     * Validates the provided details for updating an order.
-     *
-     * @param updater The order to validate.
-     * @return Any reasons why the provided information is invalid.
-     * @throws OrderValidatorException When the provided details are considered invalid.
-     */
-    private Set<OrderError> validate(OrderUpdater updater)
-    {
-        // TODO: validate that customer, cladding, roofing and shed are all active
-        ShedUpdater shed = updater.getShed();
-        Set<OrderError> reasons = validateOrderInformation(
-                updater.getCustomer().getId(),
-                updater.getCladding().getId(),
-                updater.getWidth(),
-                updater.getLength(),
-                updater.getHeight(),
-                updater.getRoofing().getId(),
-                updater.getSlope(),
-                new ShedSpecification(shed.getWidth(), shed.getDepth(), shed.getCladding().getId(),
-                        shed.getFlooring().getId()));
-        return reasons;
     }
 }
