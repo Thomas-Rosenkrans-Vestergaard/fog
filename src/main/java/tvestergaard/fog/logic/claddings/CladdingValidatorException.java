@@ -6,28 +6,33 @@ public class CladdingValidatorException extends Exception
 {
 
     /**
-     * The reasons for throwing the exception.
+     * The errors for throwing the exception.
      */
-    private Set<CladdingError> reasons;
+    private Set<CladdingError> errors;
 
     /**
      * Creates a new {@link CladdingValidatorException}.
      *
-     * @param reasons The reasons for throwing the exception.
+     * @param errors The errors for throwing the exception.
      */
-    public CladdingValidatorException(Set<CladdingError> reasons)
+    public CladdingValidatorException(Set<CladdingError> errors)
     {
-        this.reasons = reasons;
+        this.errors = errors;
     }
 
     /**
-     * Checks if the provided reason was a cause of the exception.
+     * Checks if the provided error was a cause of the exception.
      *
-     * @param reason The reason to check for.
-     * @return {@code true} if the provided reason was a cause of the exception.
+     * @param error The error to check for.
+     * @return {@code true} if the provided error was a cause of the exception.
      */
-    public boolean hasReason(CladdingError reason)
+    public boolean hasError(CladdingError error)
     {
-        return this.reasons.contains(reason);
+        return this.errors.contains(error);
+    }
+
+    public Set<CladdingError> getErrors()
+    {
+        return this.errors;
     }
 }

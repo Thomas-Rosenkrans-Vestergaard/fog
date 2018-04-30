@@ -19,7 +19,6 @@
             <th>ID</th>
             <th>Navn</th>
             <th>Beskrivelse</th>
-            <th>Pris (m<sup>2</sup>)</th>
             <th>Aktiv</th>
             </thead>
             <tbody>
@@ -28,7 +27,6 @@
                     <td>${flooring.getId()}</td>
                     <td><c:out value="${flooring.getName()}"/></td>
                     <td><c:out value="${flooring.getDescription()}"/></td>
-                    <td><c:out value="${f:formatPrice(flooring.getPricePerSquareMeter())}"/></td>
                     <td><c:out value="${f:formatBoolean(flooring.isActive())}"/></td>
                 </tr>
             </c:forEach>

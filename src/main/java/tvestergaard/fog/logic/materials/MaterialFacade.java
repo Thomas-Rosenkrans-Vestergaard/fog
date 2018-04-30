@@ -81,19 +81,19 @@ public class MaterialFacade
      * @param notes       The notes on the material to create.
      * @param width       The width of the material to create.
      * @param height      The height of the material to create.
-     * @param usage       The usage of the material to create.
+     * @param price       The price of the material to create.
      * @return The material instance representing the newly created material.
      * @throws ApplicationException       When an exception occurs while performing the operation.
      * @throws MaterialValidatorException When the provided information is considered invalid.
      */
-    public Material create(String number, String description, String notes, int width, int height, int usage)
+    public Material create(String number, String description, String notes, int width, int height, int price)
             throws MaterialValidatorException
     {
         try {
-            Set<MaterialError> reasons = validator.validate(number, description, notes, width, height);
+            Set<MaterialError> reasons = validator.validate(number, description, notes, width, height, price);
             if (!reasons.isEmpty())
                 throw new MaterialValidatorException(reasons);
-            return dao.create(MaterialBlueprint.from(number, description, notes, width, height, usage));
+            return dao.create(MaterialBlueprint.from(number, description, notes, width, height, price));
         } catch (DataAccessException e) {
             throw new ApplicationException(e);
         }
@@ -108,19 +108,19 @@ public class MaterialFacade
      * @param notes       The notes on the material to create.
      * @param width       The width of the material to create.
      * @param height      The height of the material to create.
-     * @param usage       The usage of the material to create.
+     * @param price       The price of the material to create.
      * @return {@link true} if the record was updated.
      * @throws ApplicationException       When an exception occurs while performing the operation.
      * @throws MaterialValidatorException When the provided information is considered invalid.
      */
-    public boolean update(int id, String number, String description, String notes, int width, int height, int usage)
+    public boolean update(int id, String number, String description, String notes, int width, int height, int price)
             throws MaterialValidatorException
     {
         try {
-            Set<MaterialError> reasons = validator.validate(number, description, notes, width, height);
+            Set<MaterialError> reasons = validator.validate(number, description, notes, width, height, price);
             if (!reasons.isEmpty())
                 throw new MaterialValidatorException(reasons);
-            return dao.update(MaterialUpdater.from(id, number, description, notes, width, height, usage));
+            return dao.update(MaterialUpdater.from(id, number, description, notes, width, height, price));
         } catch (DataAccessException e) {
             throw new ApplicationException(e);
         }

@@ -10,13 +10,12 @@ public interface RoofingBlueprint
      * @param description         The description of the roofing to specify in the blueprint.
      * @param minSlope            The minimum slope of the roofing to specify in the blueprint.
      * @param maxSlope            The maximum slope of the roofing to specify in the blueprint.
-     * @param pricePerSquareMeter The price of the roofing to specify in the blueprint.
      * @param active              Whether or not the roofing to specify in the blueprint can be applied to orders.
      * @return The newly created roofing blueprint.
      */
-    static RoofingBlueprint from(String name, String description, int minSlope, int maxSlope, int pricePerSquareMeter, boolean active)
+    static RoofingBlueprint from(String name, String description, int minSlope, int maxSlope, boolean active)
     {
-        return new RoofingRecord(-1, name, description, minSlope, maxSlope, pricePerSquareMeter, active);
+        return new RoofingRecord(-1, name, description, minSlope, maxSlope, active);
     }
 
     /**
@@ -74,20 +73,6 @@ public interface RoofingBlueprint
      * @param maximumSlope The new maximum slope. Range between 0 and 90 (exclusive).
      */
     void setMaximumSlope(int maximumSlope);
-
-    /**
-     * Returns the price of the roofing per square meter (in øre).
-     *
-     * @return The price of the roofing per square meter (in øre).
-     */
-    int getPricePerSquareMeter();
-
-    /**
-     * Sets the price of the roofing per square meter.
-     *
-     * @param price The new price (in øre).
-     */
-    void setPricePerSquareMeter(int price);
 
     /**
      * Returns {@code true} if the roofing can currently be applied to new orders.

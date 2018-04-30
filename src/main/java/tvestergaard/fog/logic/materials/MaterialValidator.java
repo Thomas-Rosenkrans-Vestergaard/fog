@@ -16,9 +16,10 @@ public class MaterialValidator
      * @param notes       The notes on the material to validate.
      * @param width       The width of the material to validate.
      * @param height      The height of the material to validate.
+     * @param price       The price of the material to validate.
      * @return The errors (if any) resulting from the provided information.
      */
-    public Set<MaterialError> validate(String number, String description, String notes, int width, int height)
+    public Set<MaterialError> validate(String number, String description, String notes, int width, int height, int price)
     {
         Set<MaterialError> errors = new HashSet<>();
 
@@ -37,6 +38,9 @@ public class MaterialValidator
 
         if (height < 1)
             errors.add(HEIGHT_LESS_THAN_1);
+
+        if (price < 0)
+            errors.add(PRICE_NEGATIVE);
 
         return errors;
     }

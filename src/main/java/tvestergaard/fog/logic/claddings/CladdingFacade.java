@@ -78,18 +78,16 @@ public class CladdingFacade
      *
      * @param name                The name of the cladding to create.
      * @param description         The description of the cladding to create.
-     * @param pricePerSquareMeter The price per square meter of cladding (in øre).
      * @param active              Whether or not the cladding can be applied to orders.
      * @return The cladding instance representing the newly created cladding.
      * @throws ApplicationException       When an exception occurs while performing the operation.
      * @throws CladdingValidatorException When the provided information is considered invalid.
      */
-    public Cladding create(String name, String description, int pricePerSquareMeter, boolean active)
-            throws CladdingValidatorException
+    public Cladding create(String name, String description, boolean active) throws CladdingValidatorException
     {
         try {
-            Set<CladdingError> reasons   = validator.validate(name, description, pricePerSquareMeter);
-            CladdingBlueprint  blueprint = CladdingBlueprint.from(name, description, pricePerSquareMeter, active);
+            Set<CladdingError> reasons   = validator.validate(name, description);
+            CladdingBlueprint  blueprint = CladdingBlueprint.from(name, description, active);
             if (!reasons.isEmpty())
                 throw new CladdingValidatorException(reasons);
             return dao.create(blueprint);
@@ -104,19 +102,18 @@ public class CladdingFacade
      * @param id                  The id of the cladding to update.
      * @param name                The name of the cladding to update to.
      * @param description         The description of the cladding to update to.
-     * @param pricePerSquareMeter The price per square meter to update to.
      * @param active              The active state to update to.
      * @return {@link true} if the record was updated.
      * @throws ApplicationException       When an exception occurs while performing the operation.
      * @throws CladdingValidatorException When the provided information is considered invalid.
      */
-    public boolean update(int id, String name, String description, int pricePerSquareMeter, boolean active) throws CladdingValidatorException
+    public boolean update(int id, String name, String description, boolean active) throws CladdingValidatorException
     {
         try {
-            Set<CladdingError> reasons = validator.validate(name, description, pricePerSquareMeter);
+            Set<CladdingError> reasons = validator.validate(name, description);
             if (!reasons.isEmpty())
                 throw new CladdingValidatorException(reasons);
-            return dao.update(CladdingUpdater.from(id, name, description, pricePerSquareMeter, active));
+            return dao.update(CladdingUpdater.from(id, name, description, active));
         } catch (DataAccessException e) {
             throw new ApplicationException(e);
         }

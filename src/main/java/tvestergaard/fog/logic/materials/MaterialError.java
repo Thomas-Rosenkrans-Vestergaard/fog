@@ -8,4 +8,5 @@ public enum MaterialError
     DESCRIPTION_LONGER_THAN_255,
     WIDTH_LESS_THAN_1,
     HEIGHT_LESS_THAN_1,
+    PRICE_NEGATIVE,
 }

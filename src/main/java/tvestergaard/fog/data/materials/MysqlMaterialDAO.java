@@ -62,27 +62,6 @@ public class MysqlMaterialDAO extends AbstractMysqlDAO implements MaterialDAO
     }
 
     /**
-     * Returns a list of the active materials (those that are used during construction).
-     *
-     * @return The active materials (those that are used during construction)l.
-     * @throws MysqlDataAccessException When an exception occurs while performing the operation.
-     */
-    @Override public List<Material> getActive() throws MysqlDataAccessException
-    {
-        final String         SQL    = "SELECT * FROM materials WHERE id IN ((SELECT MAX(id) FROM materials GROUP BY `usage`))";
-        final List<Material> active = new ArrayList<>();
-        try (PreparedStatement statement = getConnection().prepareStatement(SQL)) {
-            ResultSet resultSet = statement.executeQuery();
-            while (resultSet.next())
-                active.add(createMaterial(resultSet));
-
-            return active;
-        } catch (SQLException e) {
-            throw new MysqlDataAccessException(e);
-        }
-    }
-
-    /**
      * Returns the first material matching the provided constraints.
      *
      * @param constraints The constraints that modify the resulting list.
@@ -108,15 +87,16 @@ public class MysqlMaterialDAO extends AbstractMysqlDAO implements MaterialDAO
     @Override public Material create(MaterialBlueprint blueprint) throws MysqlDataAccessException
     {
         try {
-            final String SQL        = "INSERT INTO materials (`number`, description, notes, width, height, `usage`) VALUES (?, ?, ?, ?, ?, ?)";
-            Connection   connection = getConnection();
+            final String SQL = "INSERT INTO materials (`number`, description, notes, width, height, price) " +
+                    "VALUES (?, ?, ?, ?, ?, ?)";
+            Connection connection = getConnection();
             try (PreparedStatement statement = connection.prepareStatement(SQL, Statement.RETURN_GENERATED_KEYS)) {
                 statement.setString(1, blueprint.getNumber());
                 statement.setString(2, blueprint.getDescription());
                 statement.setString(3, blueprint.getNotes());
                 statement.setInt(4, blueprint.getWidth());
                 statement.setInt(5, blueprint.getHeight());
-                statement.setInt(6, blueprint.getUsage());
+                statement.setInt(6, blueprint.getPrice());
                 int updated = statement.executeUpdate();
                 connection.commit();
                 if (updated == 0)
@@ -130,7 +110,7 @@ public class MysqlMaterialDAO extends AbstractMysqlDAO implements MaterialDAO
                         blueprint.getNotes(),
                         blueprint.getWidth(),
                         blueprint.getHeight(),
-                        blueprint.getUsage()
+                        blueprint.getPrice()
                 );
             } catch (SQLException e) {
                 connection.rollback();
@@ -180,7 +160,7 @@ public class MysqlMaterialDAO extends AbstractMysqlDAO implements MaterialDAO
                 resultSet.getString("materials.notes"),
                 resultSet.getInt("materials.width"),
                 resultSet.getInt("materials.height"),
-                resultSet.getInt("materials.usage")
+                resultSet.getInt("materials.price")
         );
     }
 }

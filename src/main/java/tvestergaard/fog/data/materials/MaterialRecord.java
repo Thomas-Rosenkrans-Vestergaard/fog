@@ -36,9 +36,9 @@ public class MaterialRecord implements Material
     private int height;
 
     /**
-     * The identifier of the usage of the material when constructing some structure.
+     * The price of the material.
      */
-    private final int usage;
+    private int price;
 
     /**
      * Creates a new {@link MaterialRecord}.
@@ -49,9 +49,9 @@ public class MaterialRecord implements Material
      * @param notes       Some additional information about the material.
      * @param width       The height of the material.
      * @param height      The width of the material.
-     * @param usage       The identifier of the usage of the material when constructing some structure.
+     * @param price       The price of the material.
      */
-    public MaterialRecord(int id, String number, String description, String notes, int width, int height, int usage)
+    public MaterialRecord(int id, String number, String description, String notes, int width, int height, int price)
     {
         this.id = id;
         this.number = number;
@@ -59,7 +59,7 @@ public class MaterialRecord implements Material
         this.notes = notes;
         this.width = width;
         this.height = height;
-        this.usage = usage;
+        this.price = price;
     }
 
     /**
@@ -163,13 +163,23 @@ public class MaterialRecord implements Material
     }
 
     /**
-     * Returns the identifier of the usage of the material when constructing some structure.
+     * Returns the price of the material.
      *
-     * @return The identifier of the usage of the material when constructing some structure.
+     * @return The price of the material.
      */
-    @Override public int getUsage()
+    @Override public int getPrice()
     {
-        return usage;
+        return price;
+    }
+
+    /**
+     * Sets the price of the material.
+     *
+     * @param price The new price.
+     */
+    @Override public void setPrice(int price)
+    {
+        this.price = price;
     }
 
     @Override public boolean equals(Object o)
@@ -180,7 +190,7 @@ public class MaterialRecord implements Material
         return getId() == that.getId() &&
                 getHeight() == that.getHeight() &&
                 getWidth() == that.getWidth() &&
-                getUsage() == that.getUsage() &&
+                getPrice() == that.getPrice() &&
                 Objects.equals(getNumber(), that.getNumber()) &&
                 Objects.equals(getDescription(), that.getDescription()) &&
                 Objects.equals(getNotes(), that.getNotes());

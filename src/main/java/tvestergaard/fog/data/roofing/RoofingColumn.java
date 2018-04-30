@@ -10,7 +10,6 @@ public enum RoofingColumn implements MysqlColumn
     DESCRIPTION,
     MINIMUM_SLOPE,
     MAXIMUM_SLOPE,
-    PRICE_PER_SQUARE_METER,
     ACTIVE;
 
     /**

@@ -87,13 +87,12 @@ public class MysqlCladdingDAO extends AbstractMysqlDAO implements CladdingDAO
     @Override public Cladding create(CladdingBlueprint blueprint) throws MysqlDataAccessException
     {
         try {
-            final String SQL        = "INSERT INTO claddings (name, description, price_per_square_meter, active) VALUES (?, ?, ?, ?)";
+            final String SQL        = "INSERT INTO claddings (name, description, active) VALUES (?, ?, ?)";
             Connection   connection = getConnection();
             try (PreparedStatement statement = connection.prepareStatement(SQL, Statement.RETURN_GENERATED_KEYS)) {
                 statement.setString(1, blueprint.getName());
                 statement.setString(2, blueprint.getDescription());
-                statement.setInt(3, blueprint.getPricePerSquareMeter());
-                statement.setBoolean(4, blueprint.isActive());
+                statement.setBoolean(3, blueprint.isActive());
                 int updated = statement.executeUpdate();
                 connection.commit();
                 if (updated == 0)
@@ -104,7 +103,6 @@ public class MysqlCladdingDAO extends AbstractMysqlDAO implements CladdingDAO
                         generated.getInt(1),
                         blueprint.getName(),
                         blueprint.getDescription(),
-                        blueprint.getPricePerSquareMeter(),
                         blueprint.isActive());
             } catch (SQLException e) {
                 connection.rollback();
@@ -125,14 +123,13 @@ public class MysqlCladdingDAO extends AbstractMysqlDAO implements CladdingDAO
     @Override public boolean update(CladdingUpdater updater) throws MysqlDataAccessException
     {
         try {
-            final String SQL        = "UPDATE claddings SET name = ?, description = ?, price_per_square_meter = ?, active = ? WHERE id = ?";
+            final String SQL        = "UPDATE claddings SET name = ?, description = ?, active = ? WHERE id = ?";
             Connection   connection = getConnection();
             try (PreparedStatement statement = connection.prepareStatement(SQL)) {
                 statement.setString(1, updater.getName());
                 statement.setString(2, updater.getDescription());
-                statement.setInt(3, updater.getPricePerSquareMeter());
-                statement.setBoolean(4, updater.isActive());
-                statement.setInt(5, updater.getId());
+                statement.setBoolean(3, updater.isActive());
+                statement.setInt(4, updater.getId());
                 int updated = statement.executeUpdate();
                 connection.commit();
                 return updated != 0;

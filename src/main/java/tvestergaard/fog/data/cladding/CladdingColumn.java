@@ -8,7 +8,6 @@ public enum CladdingColumn implements MysqlColumn
     ID,
     NAME,
     DESCRIPTION,
-    PRICE_PER_SQUARE_METER,
     ACTIVE;
 
     /**

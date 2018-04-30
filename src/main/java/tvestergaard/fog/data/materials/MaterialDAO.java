@@ -18,14 +18,6 @@ public interface MaterialDAO
     List<Material> get(Constraint<MaterialColumn>... constraints) throws DataAccessException;
 
     /**
-     * Returns a list of the active materials (those that are used during construction).
-     *
-     * @return The active materials (those that are used during construction)l.
-     * @throws DataAccessException When an exception occurs while performing the operation.
-     */
-    List<Material> getActive() throws DataAccessException;
-
-    /**
      * Returns the first material matching the provided constraints.
      *
      * @param constraints The constraints that modify the resulting list.

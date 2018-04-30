@@ -41,7 +41,6 @@ public class AdministrationCladdings extends HttpServlet
         errors.put(EMPTY_NAME, "Det givne navn må ikke være tom.");
         errors.put(NAME_LONGER_THAN_255, "Det givne navn er for langt.");
         errors.put(EMPTY_DESCRIPTION, "Den givne beskrivelse må ikke være tom.");
-        errors.put(NEGATIVE_PRICE, "Den givne pris må ikke være negativ.");
     }
 
     /**
@@ -121,7 +120,6 @@ public class AdministrationCladdings extends HttpServlet
             if (!parameters.isInt("id") ||
                     !parameters.isPresent("name") ||
                     !parameters.isPresent("description") ||
-                    !parameters.isInt("price") ||
                     !parameters.isBoolean("active")) {
                 notifications.error("Cannot format parameters.");
                 response.sendRedirect("claddings");
@@ -132,21 +130,14 @@ public class AdministrationCladdings extends HttpServlet
                 facade.update(parameters.getInt("id"),
                         parameters.value("name"),
                         parameters.value("description"),
-                        parameters.getInt("price"),
                         parameters.getBoolean("active"));
 
                 notifications.success("Beklædningen blev opdateret.");
                 response.sendRedirect("?action=update&id=" + parameters.getInt("id"));
 
             } catch (CladdingValidatorException e) {
-                if (e.hasReason(EMPTY_NAME))
-                    notifications.error("Det givne navn må ikke være tom.");
-                if (e.hasReason(NAME_LONGER_THAN_255))
-                    notifications.error("Det givne navn er for langt.");
-                if (e.hasReason(EMPTY_DESCRIPTION))
-                    notifications.error("Den givne beskrivelse må ikke være tom.");
-                if (e.hasReason(NEGATIVE_PRICE))
-                    notifications.error("Den givne pris må ikke være negativ.");
+                for (CladdingError error : e.getErrors())
+                    notifications.error(errors.get(error));
                 response.sendRedirect("?action=update&id=" + parameters.getInt("id"));
                 return;
             }
@@ -174,7 +165,6 @@ public class AdministrationCladdings extends HttpServlet
 
             if (!parameters.isPresent("name") ||
                     !parameters.isPresent("description") ||
-                    !parameters.isInt("price") ||
                     !parameters.isBoolean("active")) {
                 notifications.error("Cannot format parameters.");
                 response.sendRedirect("claddings");
@@ -182,23 +172,17 @@ public class AdministrationCladdings extends HttpServlet
             }
 
             try {
-                Cladding cladding = facade.create(parameters.value("name"),
+                Cladding cladding = facade.create(
+                        parameters.value("name"),
                         parameters.value("description"),
-                        parameters.getInt("price"),
                         parameters.getBoolean("active"));
 
                 notifications.success("Beklædningen blev oprettet.");
                 response.sendRedirect("?action=update&id=" + cladding.getId());
 
             } catch (CladdingValidatorException e) {
-                if (e.hasReason(EMPTY_NAME))
-                    notifications.error(errors.get(EMPTY_NAME));
-                if (e.hasReason(NAME_LONGER_THAN_255))
-                    notifications.error(errors.get(NAME_LONGER_THAN_255));
-                if (e.hasReason(EMPTY_DESCRIPTION))
-                    notifications.error(errors.get(EMPTY_DESCRIPTION));
-                if (e.hasReason(NEGATIVE_PRICE))
-                    notifications.error(errors.get(NEGATIVE_PRICE));
+                for (CladdingError error : e.getErrors())
+                    notifications.error(errors.get(error));
                 response.sendRedirect("?action=create");
             }
         }

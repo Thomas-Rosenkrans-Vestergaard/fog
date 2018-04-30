@@ -8,13 +8,12 @@ public interface FlooringBlueprint
      *
      * @param name                The name of the flooring to specify in the blueprint.
      * @param description         The description of the flooring to specify in the blueprint.
-     * @param pricePerSquareMeter The price of the flooring to specify in the blueprint.
      * @param active              Whether or not the flooring to specify in the blueprint can be applied to orders.
      * @return The newly created flooring blueprint.
      */
-    static FlooringBlueprint from(String name, String description, int pricePerSquareMeter, boolean active)
+    static FlooringBlueprint from(String name, String description, boolean active)
     {
-        return new FlooringRecord(-1, name, description, pricePerSquareMeter, active);
+        return new FlooringRecord(-1, name, description, active);
     }
 
     /**
@@ -44,20 +43,6 @@ public interface FlooringBlueprint
      * @param description The new description.
      */
     void setDescription(String description);
-
-    /**
-     * Returns the price of the flooring per square meter (in øre).
-     *
-     * @return the price of the flooring per square meter (in øre).
-     */
-    int getPricePerSquareMeter();
-
-    /**
-     * Sets the price per square meter of flooring.
-     *
-     * @param price The new price.
-     */
-    void setPricePerSquareMeter(int price);
 
     /**
      * Returns {@code true} if the flooring can currently be applied to new orders.

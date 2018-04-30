@@ -13,10 +13,9 @@ public class FlooringValidator
      *
      * @param name                The name of the flooring to validate.
      * @param description         The description of the flooring to validate.
-     * @param pricePerSquareMeter The price per square meter to validate.
      * @return The errors with the provided flooring information.
      */
-    public Set<FlooringError> validate(String name, String description, int pricePerSquareMeter)
+    public Set<FlooringError> validate(String name, String description)
     {
         Set<FlooringError> errors = new HashSet<>();
 
@@ -28,9 +27,6 @@ public class FlooringValidator
 
         if (description == null || name.isEmpty())
             errors.add(EMPTY_DESCRIPTION);
-
-        if (pricePerSquareMeter < 1)
-            errors.add(NEGATIVE_PRICE);
 
         return errors;
     }

@@ -31,11 +31,6 @@ public class RoofingRecord implements Roofing
     private int maximumSlope;
 
     /**
-     * The price of the roofing per square meter (in øre).
-     */
-    private int pricePerSquareMeter;
-
-    /**
      * Whether or not the roofing can currently be applied to new orders.
      */
     private boolean active;
@@ -48,18 +43,15 @@ public class RoofingRecord implements Roofing
      * @param description         The description of the roofing.
      * @param minimumSlope        The minimum slope the roofing must have.
      * @param maximumSlope        The maximum slope the roofing must have.
-     * @param pricePerSquareMeter The price of the roofing per square meter (in øre).
      * @param active              Whether or not the roofing can currently be applied to new orders.
      */
-    public RoofingRecord(int id, String name, String description, int minimumSlope, int maximumSlope,
-                         int pricePerSquareMeter, boolean active)
+    public RoofingRecord(int id, String name, String description, int minimumSlope, int maximumSlope, boolean active)
     {
         this.id = id;
         this.name = name;
         this.description = description;
         this.minimumSlope = minimumSlope;
         this.maximumSlope = maximumSlope;
-        this.pricePerSquareMeter = pricePerSquareMeter;
         this.active = active;
     }
 
@@ -163,28 +155,6 @@ public class RoofingRecord implements Roofing
     }
 
     /**
-     * Returns the price of the roofing per square meter (in øre).
-     *
-     * @return The price of the roofing per square meter (in øre).
-     */
-    @Override
-    public int getPricePerSquareMeter()
-    {
-        return pricePerSquareMeter;
-    }
-
-    /**
-     * Sets the price of the roofing per square meter.
-     *
-     * @param price The new price (in øre).
-     */
-    @Override
-    public void setPricePerSquareMeter(int price)
-    {
-        this.pricePerSquareMeter = price;
-    }
-
-    /**
      * Returns {@code true} if the roofing can currently be applied to new orders.
      *
      * @return {@link true} if the roofing can currently be applied to new orders.
@@ -215,7 +185,6 @@ public class RoofingRecord implements Roofing
         return id == that.getId() &&
                 minimumSlope == that.getMinimumSlope() &&
                 maximumSlope == that.getMaximumSlope() &&
-                pricePerSquareMeter == that.getPricePerSquareMeter() &&
                 active == that.isActive() &&
                 Objects.equals(name, that.getName()) &&
                 Objects.equals(description, that.getDescription());

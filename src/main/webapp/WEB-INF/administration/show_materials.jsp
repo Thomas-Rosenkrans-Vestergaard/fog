@@ -21,7 +21,7 @@
             <th>Noter</th>
             <th>Bredde</th>
             <th>Højde</th>
-            <th>Brug</th>
+            <th>Pris</th>
             </thead>
             <tbody>
             <c:forEach items="${materials}" var="material">
@@ -31,7 +31,7 @@
                     <td><c:out value="${material.getNotes()}"/></td>
                     <td><c:out value="${material.getHeight()}"/></td>
                     <td><c:out value="${material.getWidth()}"/></td>
-                    <td><c:out value="${material.getUsage()}"/></td>
+                    <td><c:out value="${f:formatPrice(material.getPrice())}"/></td>
                 </tr>
             </c:forEach>
             </tbody>

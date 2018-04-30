@@ -87,17 +87,15 @@ public class MysqlRoofingDAO extends AbstractMysqlDAO implements RoofingDAO
     @Override public Roofing create(RoofingBlueprint blueprint) throws MysqlDataAccessException
     {
         try {
-            final String SQL = "INSERT INTO roofings " +
-                    "(name, description, minimum_slope, maximum_slope, price_per_square_meter, active) VALUES (?,?,?," +
-                    "?,?,?)";
+            final String SQL = "INSERT INTO roofings (`name`, description, minimum_slope, maximum_slope, active) " +
+                    "VALUES (?, ?, ?, ?, ?)";
             Connection connection = getConnection();
             try (PreparedStatement statement = connection.prepareStatement(SQL, Statement.RETURN_GENERATED_KEYS)) {
                 statement.setString(1, blueprint.getName());
                 statement.setString(2, blueprint.getDescription());
                 statement.setInt(3, blueprint.getMinimumSlope());
                 statement.setInt(4, blueprint.getMaximumSlope());
-                statement.setInt(5, blueprint.getPricePerSquareMeter());
-                statement.setBoolean(6, blueprint.isActive());
+                statement.setBoolean(5, blueprint.isActive());
                 int updated = statement.executeUpdate();
                 connection.commit();
                 if (updated == 0)
@@ -105,7 +103,7 @@ public class MysqlRoofingDAO extends AbstractMysqlDAO implements RoofingDAO
                 ResultSet generated = statement.getGeneratedKeys();
                 generated.first();
                 return new RoofingRecord(generated.getInt(1), blueprint.getName(), blueprint.getDescription(),
-                        blueprint.getMinimumSlope(), blueprint.getMaximumSlope(), blueprint.getPricePerSquareMeter(),
+                        blueprint.getMinimumSlope(), blueprint.getMaximumSlope(),
                         blueprint.isActive());
             } catch (SQLException e) {
                 connection.rollback();
@@ -127,16 +125,15 @@ public class MysqlRoofingDAO extends AbstractMysqlDAO implements RoofingDAO
     {
         try {
             final String SQL = "UPDATE roofings SET name = ?, description = ?, minimum_slope = ?, maximum_slope = ?," +
-                    " price_per_square_meter = ?, active = ? WHERE id = ?";
+                    " active = ? WHERE id = ?";
             Connection connection = getConnection();
             try (PreparedStatement statement = connection.prepareStatement(SQL)) {
                 statement.setString(1, updater.getName());
                 statement.setString(2, updater.getDescription());
                 statement.setInt(3, updater.getMinimumSlope());
                 statement.setInt(4, updater.getMaximumSlope());
-                statement.setInt(5, updater.getPricePerSquareMeter());
-                statement.setBoolean(6, updater.isActive());
-                statement.setInt(7, updater.getId());
+                statement.setBoolean(5, updater.isActive());
+                statement.setInt(6, updater.getId());
                 int updated = statement.executeUpdate();
                 connection.commit();
                 return updated != 0;

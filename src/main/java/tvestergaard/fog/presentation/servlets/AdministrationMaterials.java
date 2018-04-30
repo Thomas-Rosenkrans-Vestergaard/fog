@@ -1,7 +1,6 @@
 package tvestergaard.fog.presentation.servlets;
 
 import tvestergaard.fog.data.materials.Material;
-import tvestergaard.fog.data.materials.MaterialUsage;
 import tvestergaard.fog.logic.materials.MaterialError;
 import tvestergaard.fog.logic.materials.MaterialFacade;
 import tvestergaard.fog.logic.materials.MaterialValidatorException;
@@ -107,7 +106,7 @@ public class AdministrationMaterials extends HttpServlet
                     !parameters.isPresent("notes") ||
                     !parameters.isInt("width") ||
                     !parameters.isInt("height") ||
-                    !parameters.isInt("usage")) {
+                    !parameters.isInt("price")) {
                 notifications.error("Cannot format parameters.");
                 response.sendRedirect("materials");
                 return;
@@ -121,7 +120,7 @@ public class AdministrationMaterials extends HttpServlet
                         parameters.value("notes"),
                         parameters.getInt("width"),
                         parameters.getInt("height"),
-                        parameters.getInt("usage"));
+                        parameters.getInt("price"));
 
                 notifications.success("Materialet blev opdateret.");
                 response.sendRedirect("?action=update&id=" + parameters.getInt("id"));
@@ -142,7 +141,6 @@ public class AdministrationMaterials extends HttpServlet
         {
             notifications(request);
             request.setAttribute("title", "Opret materiale");
-            request.setAttribute("usages", MaterialUsage.values());
             request.getRequestDispatcher("/WEB-INF/administration/create_material.jsp").forward(request, response);
         }
     }
@@ -160,7 +158,7 @@ public class AdministrationMaterials extends HttpServlet
                     !parameters.isPresent("notes") ||
                     !parameters.isInt("width") ||
                     !parameters.isInt("height") ||
-                    !parameters.isInt("usage")) {
+                    !parameters.isInt("price")) {
                 notifications.error("Cannot format parameters.");
                 response.sendRedirect("materials");
                 return;
@@ -173,7 +171,7 @@ public class AdministrationMaterials extends HttpServlet
                         parameters.value("notes"),
                         parameters.getInt("width"),
                         parameters.getInt("height"),
-                        parameters.getInt("usage"));
+                        parameters.getInt("price"));
 
                 notifications.success("Materialeet blev oprettet.");
                 response.sendRedirect("?action=update&id=" + material.getId());

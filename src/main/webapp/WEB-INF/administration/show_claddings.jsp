@@ -19,7 +19,6 @@
             <th>ID</th>
             <th>Navn</th>
             <th>Beskrivelse</th>
-            <th>Pris (m<sup>2</sup>)</th>
             <th>Aktiv</th>
             </thead>
             <tbody>
@@ -28,7 +27,6 @@
                     <td>${claddingId.getId()}</td>
                     <td><c:out value="${claddingId.getName()}"/></td>
                     <td><c:out value="${claddingId.getDescription()}"/></td>
-                    <td><c:out value="${f:formatPrice(claddingId.getPricePerSquareMeter())}"/></td>
                     <td><c:out value="${f:formatBoolean(claddingId.isActive())}"/></td>
                 </tr>
             </c:forEach>

@@ -21,7 +21,6 @@
             <th>Beskrivelse</th>
             <th>Minimum hældning</th>
             <th>Maximum hældning</th>
-            <th>Pris (m<sup>2</sup>)</th>
             <th>Aktiv</th>
             </thead>
             <tbody>
@@ -32,7 +31,6 @@
                     <td><c:out value="${roofing.getDescription()}"/></td>
                     <td><c:out value="${roofing.getMinimumSlope()}"/></td>
                     <td><c:out value="${roofing.getMaximumSlope()}"/></td>
-                    <td><c:out value="${f:formatPrice(roofing.getPricePerSquareMeter())}"/></td>
                     <td><c:out value="${f:formatBoolean(roofing.isActive())}"/></td>
                 </tr>
             </c:forEach>

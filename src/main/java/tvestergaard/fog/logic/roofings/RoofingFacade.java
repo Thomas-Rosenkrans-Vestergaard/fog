@@ -76,28 +76,23 @@ public class RoofingFacade
     /**
      * Inserts a new roofing into the data storage.
      *
-     * @param name                The name of the roofing to create.
-     * @param description         The description of the roofing to create.
-     * @param minimumSlope        The minimum slope at which the roofing to create can be laid.
-     * @param maximumSlope        The maximum slope at which the roofing to create can be laid.
-     * @param pricePerSquareMeter The price per square meter of roofing (in øre).
-     * @param active              Whether or not the roofing can be applied to orders.
+     * @param name         The name of the roofing to create.
+     * @param description  The description of the roofing to create.
+     * @param minimumSlope The minimum slope at which the roofing to create can be laid.
+     * @param maximumSlope The maximum slope at which the roofing to create can be laid.
+     * @param active       Whether or not the roofing can be applied to orders.
      * @return The roofing instance representing the newly created roofing.
      * @throws ApplicationException      When an exception occurs while performing the operation.
      * @throws RoofingValidatorException When the provided roofing information is considered invalid.
      */
-    public Roofing create(String name,
-                          String description,
-                          int minimumSlope,
-                          int maximumSlope,
-                          int pricePerSquareMeter,
-                          boolean active) throws RoofingValidatorException
+    public Roofing create(String name, String description, int minimumSlope, int maximumSlope, boolean active)
+            throws RoofingValidatorException
     {
         try {
-            Set<RoofingError> errors = validator.validate(name, description, minimumSlope, maximumSlope, pricePerSquareMeter);
+            Set<RoofingError> errors = validator.validate(name, description, minimumSlope, maximumSlope);
             if (!errors.isEmpty())
                 throw new RoofingValidatorException(errors);
-            RoofingBlueprint blueprint = RoofingBlueprint.from(name, description, minimumSlope, maximumSlope, pricePerSquareMeter, active);
+            RoofingBlueprint blueprint = RoofingBlueprint.from(name, description, minimumSlope, maximumSlope, active);
             return dao.create(blueprint);
         } catch (DataAccessException e) {
             throw new ApplicationException(e);
@@ -112,25 +107,19 @@ public class RoofingFacade
      * @param description         The new description.
      * @param minimumSlope        The new minimum slope.
      * @param maximumSlope        The new maximum slope.
-     * @param pricePerSquareMeter The new price per square meter.
      * @param active              Whether or not the roofing can be applied to orders.
      * @return {@link true} if the record was updated.
      * @throws ApplicationException      When an exception occurs while performing the operation.
      * @throws RoofingValidatorException When the provided roofing information is considered invalid.
      */
-    public boolean update(int id,
-                          String name,
-                          String description,
-                          int minimumSlope,
-                          int maximumSlope,
-                          int pricePerSquareMeter,
-                          boolean active) throws RoofingValidatorException
+    public boolean update(int id, String name, String description, int minimumSlope, int maximumSlope, boolean active)
+            throws RoofingValidatorException
     {
         try {
-            Set<RoofingError> errors = validator.validate(name, description, minimumSlope, maximumSlope, pricePerSquareMeter);
+            Set<RoofingError> errors = validator.validate(name, description, minimumSlope, maximumSlope);
             if (!errors.isEmpty())
                 throw new RoofingValidatorException(errors);
-            RoofingUpdater updater = RoofingUpdater.from(id, name, description, minimumSlope, maximumSlope, pricePerSquareMeter, active);
+            RoofingUpdater updater = RoofingUpdater.from(id, name, description, minimumSlope, maximumSlope, active);
             return dao.update(updater);
         } catch (DataAccessException e) {
             throw new ApplicationException(e);

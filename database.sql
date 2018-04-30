@@ -64,7 +64,6 @@ CREATE TABLE `claddings` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(255) NOT NULL,
   `description` text NOT NULL,
-  `price_per_square_meter` int(11) NOT NULL,
   `active` bit(1) NOT NULL DEFAULT b'1',
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`)
@@ -144,7 +143,6 @@ CREATE TABLE `floorings` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(255) NOT NULL,
   `description` text NOT NULL,
-  `price_per_square_meter` int(11) NOT NULL,
   `active` bit(1) NOT NULL DEFAULT b'1',
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`)
@@ -186,10 +184,11 @@ CREATE TABLE `materials` (
   `notes` text NOT NULL,
   `width` int(11) unsigned NOT NULL,
   `height` int(11) unsigned NOT NULL,
+  `price` int(11) unsigned NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`),
   UNIQUE KEY `product_number_UNIQUE` (`number`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -264,7 +263,6 @@ CREATE TABLE `roofings` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(255) NOT NULL,
   `description` text NOT NULL,
-  `price_per_square_meter` int(11) NOT NULL,
   `minimum_slope` tinyint(3) unsigned NOT NULL,
   `maximum_slope` tinyint(3) unsigned NOT NULL,
   `active` bit(1) NOT NULL DEFAULT b'1',
@@ -348,4 +346,4 @@ CREATE TABLE `tokens` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-04-30 20:59:08
+-- Dump completed on 2018-05-01  0:13:05

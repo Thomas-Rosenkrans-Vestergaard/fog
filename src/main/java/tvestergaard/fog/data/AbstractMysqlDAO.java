@@ -68,7 +68,6 @@ public abstract class AbstractMysqlDAO
                 resultSet.getInt("claddings.id"),
                 resultSet.getString("claddings.name"),
                 resultSet.getString("claddings.description"),
-                resultSet.getInt("claddings.price_per_square_meter"),
                 resultSet.getBoolean("claddings.active")
         );
     }
@@ -108,7 +107,6 @@ public abstract class AbstractMysqlDAO
                 resultSet.getInt("floorings.id"),
                 resultSet.getString("floorings.name"),
                 resultSet.getString("floorings.description"),
-                resultSet.getInt("floorings.price_per_square_meter"),
                 resultSet.getBoolean("floorings.active")
         );
     }
@@ -128,7 +126,6 @@ public abstract class AbstractMysqlDAO
                 resultSet.getString("roofings.description"),
                 resultSet.getInt("roofings.minimum_slope"),
                 resultSet.getInt("roofings.maximum_slope"),
-                resultSet.getInt("roofings.price_per_square_meter"),
                 resultSet.getBoolean("roofings.active")
         );
     }

@@ -11,14 +11,13 @@ public class RoofingValidator
     /**
      * Validates the provided roofing blueprint.
      *
-     * @param name                The name to validate.
-     * @param description         The description to validate.
-     * @param minimumSlope        The minimum slope to validate.
-     * @param maximumSlope        The maximum slope to validate.
-     * @param pricePerSquareMeter The price per square meter to validate.
+     * @param name         The name to validate.
+     * @param description  The description to validate.
+     * @param minimumSlope The minimum slope to validate.
+     * @param maximumSlope The maximum slope to validate.
      * @return The errors with the provided roofing information.
      */
-    public Set<RoofingError> validate(String name, String description, int minimumSlope, int maximumSlope, int pricePerSquareMeter)
+    public Set<RoofingError> validate(String name, String description, int minimumSlope, int maximumSlope)
     {
         Set<RoofingError> errors = new HashSet<>();
 
@@ -30,9 +29,6 @@ public class RoofingValidator
 
         if (description == null || description.isEmpty())
             errors.add(EMPTY_DESCRIPTION);
-
-        if (pricePerSquareMeter < 1)
-            errors.add(NEGATIVE_PRICE);
 
         if (minimumSlope < 1)
             errors.add(MINIMUM_SLOPE_LESS_THAN_1);

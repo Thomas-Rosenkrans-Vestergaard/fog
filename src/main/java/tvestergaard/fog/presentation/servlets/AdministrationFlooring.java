@@ -41,7 +41,6 @@ public class AdministrationFlooring extends HttpServlet
         errors.put(EMPTY_NAME, "Det givne navn må ikke være tom.");
         errors.put(NAME_LONGER_THAN_255, "Det givne navn er for langt.");
         errors.put(EMPTY_DESCRIPTION, "Den givne beskrivelse må ikke være tom.");
-        errors.put(NEGATIVE_PRICE, "Den givne pris må ikke være negativ.");
     }
 
     /**
@@ -119,7 +118,6 @@ public class AdministrationFlooring extends HttpServlet
             if (!parameters.isInt("id") ||
                     !parameters.isPresent("name") ||
                     !parameters.isPresent("description") ||
-                    !parameters.isInt("price") ||
                     !parameters.isBoolean("active")) {
                 notifications.error("Cannot format parameters.");
                 response.sendRedirect("floorings");
@@ -131,7 +129,6 @@ public class AdministrationFlooring extends HttpServlet
                         parameters.getInt("id"),
                         parameters.value("name"),
                         parameters.value("description"),
-                        parameters.getInt("price"),
                         parameters.getBoolean("active"));
 
                 notifications.success("Gulvet blev opdateret.");
@@ -167,7 +164,6 @@ public class AdministrationFlooring extends HttpServlet
 
             if (!parameters.isPresent("name") ||
                     !parameters.isPresent("description") ||
-                    !parameters.isInt("price") ||
                     !parameters.isBoolean("active")) {
                 notifications.error("Cannot format parameters.");
                 response.sendRedirect("floorings");
@@ -175,9 +171,9 @@ public class AdministrationFlooring extends HttpServlet
             }
 
             try {
-                Flooring flooring = facade.create(parameters.value("name"),
+                Flooring flooring = facade.create(
+                        parameters.value("name"),
                         parameters.value("description"),
-                        parameters.getInt("price"),
                         parameters.getBoolean("active"));
 
                 notifications.success("Gulvet blev oprettet.");

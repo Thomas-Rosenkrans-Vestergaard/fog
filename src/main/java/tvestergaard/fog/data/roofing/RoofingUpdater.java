@@ -11,7 +11,6 @@ public interface RoofingUpdater extends RoofingBlueprint
      * @param description         The description of the roofing to specify in the updater.
      * @param minimumSlope        The minimum slope of the roofing to specify in the updater.
      * @param maximumSlope        The maximum slope of the roofing to specify in the updater.
-     * @param pricePerSquareMeter The price of the roofing to specify in the updater.
      * @param active              Whether or not the roofing to specify in the updater can be applied to orders.
      * @return The newly created roofing updater.
      */
@@ -20,10 +19,9 @@ public interface RoofingUpdater extends RoofingBlueprint
                                String description,
                                int minimumSlope,
                                int maximumSlope,
-                               int pricePerSquareMeter,
                                boolean active)
     {
-        return new RoofingRecord(id, name, description, minimumSlope, maximumSlope, pricePerSquareMeter, active);
+        return new RoofingRecord(id, name, description, minimumSlope, maximumSlope, active);
     }
 
     /**

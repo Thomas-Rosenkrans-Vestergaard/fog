@@ -29,11 +29,11 @@ public class MysqlFlooringDAOTest
     @Before
     public void createData() throws Exception
     {
-        flooring1 = dao.create(FlooringBlueprint.from("name1", "description1", 1, true));
-        flooring2 = dao.create(FlooringBlueprint.from("name2", "description2", 2, false));
-        flooring3 = dao.create(FlooringBlueprint.from("name3", "description3", 3, false));
-        flooring4 = dao.create(FlooringBlueprint.from("name4", "description4", 4, true));
-        flooring5 = dao.create(FlooringBlueprint.from("name5", "description5", 5, false));
+        flooring1 = dao.create(FlooringBlueprint.from("name1", "description1", true));
+        flooring2 = dao.create(FlooringBlueprint.from("name2", "description2", false));
+        flooring3 = dao.create(FlooringBlueprint.from("name3", "description3", false));
+        flooring4 = dao.create(FlooringBlueprint.from("name4", "description4", true));
+        flooring5 = dao.create(FlooringBlueprint.from("name5", "description5", false));
     }
 
     @After
@@ -120,14 +120,12 @@ public class MysqlFlooringDAOTest
     @Test
     public void create() throws Exception
     {
-        String   name                = "some_random_name";
-        String   description         = "some_random_description";
-        int      pricePerSquareMeter = 234873;
-        boolean  active              = false;
-        Flooring actual              = dao.create(FlooringBlueprint.from(name, description, pricePerSquareMeter, active));
+        String   name        = "some_random_name";
+        String   description = "some_random_description";
+        boolean  active      = false;
+        Flooring actual      = dao.create(FlooringBlueprint.from(name, description, active));
         assertEquals(name, actual.getName());
         assertEquals(description, actual.getDescription());
-        assertEquals(pricePerSquareMeter, actual.getPricePerSquareMeter());
         assertEquals(active, actual.isActive());
     }
 
@@ -136,7 +134,6 @@ public class MysqlFlooringDAOTest
     {
         flooring1.setName("new_name");
         flooring1.setDescription("new_description");
-        flooring1.setPricePerSquareMeter(2897342);
         flooring1.setActive(true);
 
         assertTrue(dao.update(flooring1));

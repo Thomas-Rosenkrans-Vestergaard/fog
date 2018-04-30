@@ -89,21 +89,23 @@ public class MysqlFlooringDAO extends AbstractMysqlDAO implements FlooringDAO
     {
         try {
             final String SQL =
-                    "INSERT INTO floorings (name, description, price_per_square_meter, active) VALUES (?,?,?,?)";
+                    "INSERT INTO floorings (name, description, active) VALUES (?, ?, ?)";
             Connection connection = getConnection();
             try (PreparedStatement statement = connection.prepareStatement(SQL, Statement.RETURN_GENERATED_KEYS)) {
                 statement.setString(1, blueprint.getName());
                 statement.setString(2, blueprint.getDescription());
-                statement.setInt(3, blueprint.getPricePerSquareMeter());
-                statement.setBoolean(4, blueprint.isActive());
+                statement.setBoolean(3, blueprint.isActive());
                 int updated = statement.executeUpdate();
                 connection.commit();
                 if (updated == 0)
                     return null;
                 ResultSet generated = statement.getGeneratedKeys();
                 generated.first();
-                return new FlooringRecord(generated.getInt(1), blueprint.getName(), blueprint.getDescription(),
-                        blueprint.getPricePerSquareMeter(), blueprint.isActive());
+                return new FlooringRecord(
+                        generated.getInt(1),
+                        blueprint.getName(),
+                        blueprint.getDescription(),
+                        blueprint.isActive());
             } catch (SQLException e) {
                 connection.rollback();
                 throw e;
@@ -123,14 +125,13 @@ public class MysqlFlooringDAO extends AbstractMysqlDAO implements FlooringDAO
     @Override public boolean update(FlooringUpdater updater) throws DataAccessException
     {
         try {
-            final String SQL        = "UPDATE floorings SET name = ?, description = ?, price_per_square_meter = ?, active = ? WHERE id = ?";
+            final String SQL        = "UPDATE floorings SET name = ?, description = ?, active = ? WHERE id = ?";
             Connection   connection = getConnection();
             try (PreparedStatement statement = connection.prepareStatement(SQL)) {
                 statement.setString(1, updater.getName());
                 statement.setString(2, updater.getDescription());
-                statement.setInt(3, updater.getPricePerSquareMeter());
-                statement.setBoolean(4, updater.isActive());
-                statement.setInt(5, updater.getId());
+                statement.setBoolean(3, updater.isActive());
+                statement.setInt(4, updater.getId());
                 int updated = statement.executeUpdate();
                 connection.commit();
                 return updated != 0;

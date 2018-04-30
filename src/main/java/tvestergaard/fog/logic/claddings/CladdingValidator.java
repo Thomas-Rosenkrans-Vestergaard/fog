@@ -13,10 +13,9 @@ public class CladdingValidator
      *
      * @param name                The name to validate.
      * @param description         The description to validate.
-     * @param pricePerSquareMeter The price per square meter to validate.
      * @return The errors with the provided cladding information.
      */
-    public Set<CladdingError> validate(String name, String description, int pricePerSquareMeter)
+    public Set<CladdingError> validate(String name, String description)
     {
         Set<CladdingError> errors = new HashSet<>();
 
@@ -28,9 +27,6 @@ public class CladdingValidator
 
         if (description == null || name.isEmpty())
             errors.add(EMPTY_DESCRIPTION);
-
-        if (pricePerSquareMeter < 1)
-            errors.add(NEGATIVE_PRICE);
 
         return errors;
     }

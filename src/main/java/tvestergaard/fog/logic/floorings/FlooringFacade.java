@@ -76,22 +76,20 @@ public class FlooringFacade
     /**
      * Inserts a new flooring into the data storage.
      *
-     * @param name                The name of the flooring to create.
-     * @param description         The description of the flooring to create.
-     * @param pricePerSquareMeter The price per square meter of flooring (in øre).
-     * @param active              Whether or not the flooring can be applied to orders.
+     * @param name        The name of the flooring to create.
+     * @param description The description of the flooring to create.
+     * @param active      Whether or not the flooring can be applied to orders.
      * @return The flooring instance representing the newly created flooring.
      * @throws ApplicationException       When an exception occurs while performing the operation.
      * @throws FlooringValidatorException When the provided information is considered invalid.
      */
-    public Flooring create(String name, String description, int pricePerSquareMeter, boolean active)
-            throws FlooringValidatorException
+    public Flooring create(String name, String description, boolean active) throws FlooringValidatorException
     {
         try {
-            Set<FlooringError> reasons = validator.validate(name, description, pricePerSquareMeter);
+            Set<FlooringError> reasons = validator.validate(name, description);
             if (!reasons.isEmpty())
                 throw new FlooringValidatorException(reasons);
-            return dao.create(FlooringBlueprint.from(name, description, pricePerSquareMeter, active));
+            return dao.create(FlooringBlueprint.from(name, description, active));
         } catch (DataAccessException e) {
             throw new ApplicationException(e);
         }
@@ -100,19 +98,20 @@ public class FlooringFacade
     /**
      * Updates the entity in the data storage to match the provided {@code flooring}.
      *
-     * @param id The
+     * @param id     The id of the flooring to update.
+     * @param name   The new name.
+     * @param active The new active status.
      * @return {@link true} if the record was updated.
      * @throws ApplicationException       When an exception occurs while performing the operation.
      * @throws FlooringValidatorException When the provided information is considered invalid.
      */
-    public boolean update(int id, String name, String description, int pricePerSquareMeter, boolean active)
-            throws FlooringValidatorException
+    public boolean update(int id, String name, String description, boolean active) throws FlooringValidatorException
     {
         try {
-            Set<FlooringError> reasons = validator.validate(name, description, pricePerSquareMeter);
+            Set<FlooringError> reasons = validator.validate(name, description);
             if (!reasons.isEmpty())
                 throw new FlooringValidatorException(reasons);
-            return dao.update(FlooringUpdater.from(id, name, description, pricePerSquareMeter, active));
+            return dao.update(FlooringUpdater.from(id, name, description, active));
         } catch (DataAccessException e) {
             throw new ApplicationException(e);
         }

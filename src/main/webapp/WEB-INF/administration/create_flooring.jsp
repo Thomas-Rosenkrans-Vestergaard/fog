@@ -20,12 +20,6 @@
                 <label for="description">Beskrivelse</label>
             </div>
         </div>
-        <div class="row">
-            <div class="col s12 input-field">
-                <input type="number" name="price" id="price" min="1" class="validate" required>
-                <label for="price">Pris (m<sup>2</sup>)</label>
-            </div>
-        </div>
         <div class="class row">
             <div class="col s12">
                 <p>

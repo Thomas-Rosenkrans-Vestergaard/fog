@@ -6,16 +6,15 @@ public interface FlooringUpdater extends FlooringBlueprint
     /**
      * Returns a new flooring blueprint from the provided information.
      *
-     * @param id                  The id of the flooring to specify in the blueprint.
-     * @param name                The name of the flooring to specify in the blueprint.
-     * @param description         The description of the flooring to specify in the blueprint.
-     * @param pricePerSquareMeter The price of the flooring to specify in the blueprint.
-     * @param active              Whether or not the flooring to specify in the blueprint can be applied to orders.
+     * @param id          The id of the flooring to specify in the blueprint.
+     * @param name        The name of the flooring to specify in the blueprint.
+     * @param description The description of the flooring to specify in the blueprint.
+     * @param active      Whether or not the flooring to specify in the blueprint can be applied to orders.
      * @return The newly created flooring blueprint.
      */
-    static FlooringUpdater from(int id, String name, String description, int pricePerSquareMeter, boolean active)
+    static FlooringUpdater from(int id, String name, String description, boolean active)
     {
-        return new FlooringRecord(id, name, description, pricePerSquareMeter, active);
+        return new FlooringRecord(id, name, description, active);
     }
 
     /**

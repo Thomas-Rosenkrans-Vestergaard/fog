@@ -41,7 +41,6 @@ public class AdministrationRoofings extends HttpServlet
         errors.put(EMPTY_NAME, "Det givne navn må ikke være tom.");
         errors.put(NAME_LONGER_THAN_255, "Det givne navn er for langt.");
         errors.put(EMPTY_DESCRIPTION, "Den givne beskrivelse må ikke være tom.");
-        errors.put(NEGATIVE_PRICE, "Den givne pris må ikke være negativ.");
         errors.put(MINIMUM_SLOPE_LESS_THAN_1, "Mindste hældning må ikke være mindre end 1.");
         errors.put(MINIMUM_SLOPE_GREATER_THAN_89, "Mindste hældning må ikke være større end 89.");
         errors.put(MAXIMUM_SLOPE_LESS_THAN_1, "Største hældning må ikke være mindre end 1.");
@@ -127,7 +126,6 @@ public class AdministrationRoofings extends HttpServlet
                     !parameters.isPresent("description") ||
                     !parameters.isInt("minimum-slope") ||
                     !parameters.isInt("maximum-slope") ||
-                    !parameters.isInt("price") ||
                     !parameters.isBoolean("active")) {
                 notifications.error("Cannot format parameters.");
                 response.sendRedirect("roofings");
@@ -141,7 +139,6 @@ public class AdministrationRoofings extends HttpServlet
                         parameters.value("description"),
                         parameters.getInt("minimum-slope"),
                         parameters.getInt("maximum-slope"),
-                        parameters.getInt("price"),
                         parameters.getBoolean("active"));
 
                 notifications.success("Taget blev opdateret.");
@@ -179,7 +176,6 @@ public class AdministrationRoofings extends HttpServlet
                     !parameters.isPresent("description") ||
                     !parameters.isInt("minimum-slope") ||
                     !parameters.isInt("maximum-slope") ||
-                    !parameters.isInt("price") ||
                     !parameters.isBoolean("active")) {
                 notifications.error("Cannot format parameters.");
                 response.sendRedirect("roofings");
@@ -187,11 +183,11 @@ public class AdministrationRoofings extends HttpServlet
             }
 
             try {
-                Roofing roofing = facade.create(parameters.value("name"),
+                Roofing roofing = facade.create(
+                        parameters.value("name"),
                         parameters.value("description"),
                         parameters.getInt("minimum-slope"),
                         parameters.getInt("maximum-slope"),
-                        parameters.getInt("price"),
                         parameters.getBoolean("active"));
 
                 notifications.success("Taget blev oprettet.");

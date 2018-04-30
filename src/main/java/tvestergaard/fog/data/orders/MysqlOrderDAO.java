@@ -271,7 +271,6 @@ public class MysqlOrderDAO extends AbstractMysqlDAO implements OrderDAO
                 resultSet.getInt("o_cladding.id"),
                 resultSet.getString("o_cladding.name"),
                 resultSet.getString("o_cladding.description"),
-                resultSet.getInt("o_cladding.price_per_square_meter"),
                 resultSet.getBoolean("o_cladding.active")
         );
     }
@@ -309,7 +308,6 @@ public class MysqlOrderDAO extends AbstractMysqlDAO implements OrderDAO
                 resultSet.getInt("s_cladding.id"),
                 resultSet.getString("s_cladding.name"),
                 resultSet.getString("s_cladding.description"),
-                resultSet.getInt("s_cladding.price_per_square_meter"),
                 resultSet.getBoolean("s_cladding.active")
         );
     }

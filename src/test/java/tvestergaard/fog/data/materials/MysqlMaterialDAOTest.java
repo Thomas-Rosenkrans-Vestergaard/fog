@@ -112,22 +112,6 @@ public class MysqlMaterialDAOTest
     }
 
     @Test
-    public void getActive() throws Exception
-    {
-        Material newMaterial = dao.create(
-                MaterialBlueprint.from(randomString(), randomString(), randomString(), randomInt(0, 100), randomInt(0, 100), 11)
-                                         );
-
-        List<Material> active = dao.getActive();
-
-        assertEquals(material2, active.get(0));
-        assertEquals(material3, active.get(1));
-        assertEquals(material4, active.get(2));
-        assertEquals(material5, active.get(3));
-        assertEquals(newMaterial, active.get(4));
-    }
-
-    @Test
     public void first() throws Exception
     {
         assertEquals(material3, dao.first(where(eq(ID, material3.getId()))));
@@ -142,14 +126,14 @@ public class MysqlMaterialDAOTest
         String   notes       = randomString();
         int      width       = randomInt(0, 100000);
         int      height      = randomInt(0, 100000);
-        int      usage       = randomInt(0, 100000);
-        Material actual      = dao.create(MaterialBlueprint.from(number, description, notes, width, height, usage));
+        int      price       = randomInt(0, 100000);
+        Material actual      = dao.create(MaterialBlueprint.from(number, description, notes, width, height, price));
         assertEquals(number, actual.getNumber());
         assertEquals(description, actual.getDescription());
         assertEquals(notes, actual.getNotes());
         assertEquals(width, actual.getWidth());
         assertEquals(height, actual.getHeight());
-        assertEquals(usage, actual.getUsage());
+        assertEquals(price, actual.getPrice());
     }
 
     @Test

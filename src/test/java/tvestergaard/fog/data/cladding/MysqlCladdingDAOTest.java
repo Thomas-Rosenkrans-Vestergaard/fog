@@ -30,11 +30,11 @@ public class MysqlCladdingDAOTest
     @Before
     public void before() throws Exception
     {
-        cladding1 = dao.create(CladdingBlueprint.from("name1", "description1", 1, false));
-        cladding2 = dao.create(CladdingBlueprint.from("name2", "description2", 2, true));
-        cladding3 = dao.create(CladdingBlueprint.from("name3", "description3", 3, false));
-        cladding4 = dao.create(CladdingBlueprint.from("name4", "description4", 4, true));
-        cladding5 = dao.create(CladdingBlueprint.from("name5", "description5", 5, false));
+        cladding1 = dao.create(CladdingBlueprint.from("name1", "description1", false));
+        cladding2 = dao.create(CladdingBlueprint.from("name2", "description2", true));
+        cladding3 = dao.create(CladdingBlueprint.from("name3", "description3", false));
+        cladding4 = dao.create(CladdingBlueprint.from("name4", "description4", true));
+        cladding5 = dao.create(CladdingBlueprint.from("name5", "description5", false));
     }
 
     @After
@@ -122,12 +122,10 @@ public class MysqlCladdingDAOTest
     {
         String   name                = randomString();
         String   description         = randomString();
-        int      pricePerSquareMeter = randomInt(0, 100000);
         boolean  active              = randomBoolean();
-        Cladding actual              = dao.create(CladdingBlueprint.from(name, description, pricePerSquareMeter, active));
+        Cladding actual              = dao.create(CladdingBlueprint.from(name, description, active));
         assertEquals(name, actual.getName());
         assertEquals(description, actual.getDescription());
-        assertEquals(pricePerSquareMeter, actual.getPricePerSquareMeter());
         assertEquals(active, actual.isActive());
     }
 
@@ -136,7 +134,6 @@ public class MysqlCladdingDAOTest
     {
         cladding1.setName(randomString());
         cladding1.setDescription(randomString());
-        cladding1.setPricePerSquareMeter(randomInt(0, 100000));
         cladding1.setActive(randomBoolean());
 
         assertTrue(dao.update(cladding1));
