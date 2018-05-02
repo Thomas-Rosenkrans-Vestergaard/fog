@@ -2,7 +2,6 @@ package tvestergaard.fog.presentation.servlets;
 
 import tvestergaard.fog.logic.offers.OfferError;
 import tvestergaard.fog.logic.offers.OfferFacade;
-import tvestergaard.fog.logic.offers.OfferValidator;
 import tvestergaard.fog.logic.offers.OfferValidatorException;
 import tvestergaard.fog.presentation.Authentication;
 import tvestergaard.fog.presentation.Notifications;
@@ -28,7 +27,6 @@ public class AdministrationOffers extends HttpServlet
 
     private final OfferFacade             offerFacade = Facades.offerFacade;
     private final CommandDispatcher       dispatcher  = new CommandDispatcher();
-    private final OfferValidator          validator   = new OfferValidator();
     private final Map<OfferError, String> errors      = new HashMap();
 
     public AdministrationOffers()

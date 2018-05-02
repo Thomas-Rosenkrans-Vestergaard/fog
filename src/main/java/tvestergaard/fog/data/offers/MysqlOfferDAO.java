@@ -7,9 +7,7 @@ import tvestergaard.fog.data.constraints.Constraint;
 import tvestergaard.fog.data.constraints.StatementBinder;
 import tvestergaard.fog.data.constraints.StatementGenerator;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -110,6 +108,26 @@ public class MysqlOfferDAO extends AbstractMysqlDAO implements OfferDAO
      */
     @Override public Offer create(OfferBlueprint blueprint) throws MysqlDataAccessException
     {
-        return null;
+        try {
+            final String SQL        = "INSERT INTO offers (`order`, `employee`, price) VALUES (?, ?, ?)";
+            Connection   connection = getConnection();
+            try (PreparedStatement statement = connection.prepareStatement(SQL, Statement.RETURN_GENERATED_KEYS)) {
+                statement.setInt(1, blueprint.getOrderId());
+                statement.setInt(2, blueprint.getEmployeeId());
+                statement.setInt(3, blueprint.getPrice());
+                int updated = statement.executeUpdate();
+                connection.commit();
+                if (updated == 0)
+                    return null;
+                ResultSet generated = statement.getGeneratedKeys();
+                generated.first();
+                return first(where(eq(OfferColumn.ID, generated.getInt(1))));
+            } catch (SQLException e) {
+                connection.rollback();
+                throw e;
+            }
+        } catch (SQLException e) {
+            throw new MysqlDataAccessException(e);
+        }
     }
 }
