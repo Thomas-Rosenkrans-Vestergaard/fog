@@ -6,6 +6,13 @@
     </div>
 </div>
 <div class="row">
+    <div class="col s12">
+        <a href="offers?action=create&order=${order.getId()}" class="waves-effect waves-light btn-large">
+            <i class="material-icons right">add</i>OPRET TILBUD
+        </a>
+    </div>
+</div>
+<div class="row">
     <form method="post" class="col s12">
         <input type="hidden" value="${order.getId()}" name="id">
         <div class="row">

@@ -7,8 +7,8 @@
 </div>
 <div class="row">
     <div class="col s12">
-        <a class="btn-floating btn-large waves-effect waves-light red" href="?action=create">
-            <i class="material-icons">add</i>
+        <a href="?action=create" class="waves-effect waves-light btn-large">
+            <i class="material-icons right">add</i>OPRET
         </a>
     </div>
 </div>
