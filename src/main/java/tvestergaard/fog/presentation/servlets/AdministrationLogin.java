@@ -20,7 +20,7 @@ import static tvestergaard.fog.presentation.PresentationFunctions.notifications;
 public class AdministrationLogin extends HttpServlet
 {
 
-    private final EmployeeFacade facade = Facades.emplyeeFacade;
+    private final EmployeeFacade facade = Facades.employeeFacade;
 
     /**
      * Shows a page where employees can authenticate themselves.

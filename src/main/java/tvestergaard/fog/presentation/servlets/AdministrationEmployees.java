@@ -28,7 +28,7 @@ import static tvestergaard.fog.presentation.PresentationFunctions.notifications;
 @WebServlet(urlPatterns = "/administration/employees")
 public class AdministrationEmployees extends HttpServlet
 {
-    private final EmployeeFacade             facade     = Facades.emplyeeFacade;
+    private final EmployeeFacade             facade     = Facades.employeeFacade;
     private final CommandDispatcher          dispatcher = new CommandDispatcher();
     private final Map<EmployeeError, String> errors     = new HashMap<>();
 

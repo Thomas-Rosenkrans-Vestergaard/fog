@@ -148,6 +148,7 @@
         <script>
             $(document).ready(function () {
                 $('input#name').characterCounter();
+                $('select').material_select();
             });
         </script>
     </form>

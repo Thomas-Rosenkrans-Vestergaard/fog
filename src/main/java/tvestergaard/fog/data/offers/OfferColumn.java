@@ -19,6 +19,16 @@ public enum OfferColumn implements MysqlColumn
      */
     @Override public String getMysqlName()
     {
-        return this.name().toLowerCase();
+        return "offers." + this.name().toLowerCase();
+    }
+
+    /**
+     * Whether or not the generator should use backtick (`) on the column name.
+     *
+     * @return {@code true} if the generator should use backtick (`) on the column name.
+     */
+    @Override public boolean useBacktick()
+    {
+        return false;
     }
 }
