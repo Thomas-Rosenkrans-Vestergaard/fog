@@ -3,7 +3,6 @@ package tvestergaard.fog.data.tokens;
 import com.mysql.cj.jdbc.MysqlDataSource;
 import tvestergaard.fog.data.AbstractMysqlDAO;
 import tvestergaard.fog.data.MysqlDataAccessException;
-import tvestergaard.fog.data.ProductionDataSource;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -68,7 +67,8 @@ public class MysqlTokenDAO extends AbstractMysqlDAO implements TokenDAO
         try (PreparedStatement statement = getConnection().prepareStatement(SQL)) {
             statement.setInt(1, id);
             ResultSet resultSet = statement.executeQuery();
-            resultSet.first();
+            if (!resultSet.first())
+                return null;
             return createToken(resultSet);
         } catch (SQLException e) {
             throw new MysqlDataAccessException(e);
