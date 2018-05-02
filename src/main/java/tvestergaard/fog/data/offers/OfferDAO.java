@@ -18,6 +18,15 @@ public interface OfferDAO
     List<Offer> get(Constraint<OfferColumn>... constraints) throws DataAccessException;
 
     /**
+     * Returns the offers issued to the order with the provided id.
+     *
+     * @param order The id of the order to return the related offers of.
+     * @return The offers related to the order with the provided id.
+     * @throws DataAccessException  When a data storage exception occurs while performing the operation.
+     */
+    List get(int order) throws DataAccessException;
+
+    /**
      * Returns the first offer matching the provided constraints.
      *
      * @param constraints The constraints that modify the resulting list.

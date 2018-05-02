@@ -13,6 +13,10 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import static tvestergaard.fog.data.constraints.Constraint.eq;
+import static tvestergaard.fog.data.constraints.Constraint.where;
+import static tvestergaard.fog.data.offers.OfferColumn.ORDER;
+
 public class MysqlOfferDAO extends AbstractMysqlDAO implements OfferDAO
 {
 
@@ -70,6 +74,18 @@ public class MysqlOfferDAO extends AbstractMysqlDAO implements OfferDAO
         } catch (SQLException e) {
             throw new MysqlDataAccessException(e);
         }
+    }
+
+    /**
+     * Returns the offers issued to the order with the provided id.
+     *
+     * @param order The id of the order to return the related offers of.
+     * @return The offers related to the order with the provided id.
+     * @throws MysqlDataAccessException When a data storage exception occurs while performing the operation.
+     */
+    @Override public List<Offer> get(int order) throws MysqlDataAccessException
+    {
+        return get(where(eq(ORDER, order)));
     }
 
     /**
