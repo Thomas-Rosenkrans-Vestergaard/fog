@@ -9,6 +9,13 @@ public interface Offer extends OfferBlueprint
 {
 
     /**
+     * Returns the unique identifier of the offer.
+     *
+     * @return The unique identifier of the offer.
+     */
+    int getId();
+
+    /**
      * Returns the order the offer was issued for.
      *
      * @return The order the offer was issued for.

@@ -8,6 +8,7 @@ import java.time.LocalDateTime;
 public class OfferRecord implements Offer
 {
 
+    private final int           id;
     private final Order         order;
     private final int           orderId;
     private final Employee      employee;
@@ -15,8 +16,9 @@ public class OfferRecord implements Offer
     private final int           price;
     private final LocalDateTime createdAt;
 
-    public OfferRecord(Order order, int orderId, Employee employee, int employeeId, int price, LocalDateTime createdAt)
+    public OfferRecord(int id, Order order, int orderId, Employee employee, int employeeId, int price, LocalDateTime createdAt)
     {
+        this.id = id;
         this.order = order;
         this.orderId = orderId;
         this.employee = employee;
@@ -24,6 +26,8 @@ public class OfferRecord implements Offer
         this.price = price;
         this.createdAt = createdAt;
     }
+
+
 
     /**
      * Returns the id of the order that the offer was issued for.
