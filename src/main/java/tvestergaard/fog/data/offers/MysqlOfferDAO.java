@@ -51,7 +51,7 @@ public class MysqlOfferDAO extends AbstractMysqlDAO implements OfferDAO
     {
         final List<Offer> offers = new ArrayList<>();
         final String SQL = generator.generate(
-                "SELECT *, (SELECT count(*) FROM offers WHERE `order` = o.id) AS `o.offers` FROM offers" +
+                "SELECT *, (SELECT count(*) FROM offers WHERE `order` = o.id) AS `o.offers` FROM offers " +
                         "INNER JOIN orders o ON offers.order = o.id " +
                         "INNER JOIN customers ON o.customer = customers.id " +
                         "INNER JOIN claddings o_cladding ON o.cladding = o_cladding.id " +
@@ -59,7 +59,7 @@ public class MysqlOfferDAO extends AbstractMysqlDAO implements OfferDAO
                         "LEFT  JOIN sheds ON o.id = sheds.order " +
                         "LEFT  JOIN claddings s_cladding ON sheds.cladding = s_cladding.id " +
                         "LEFT  JOIN floorings ON sheds.flooring = floorings.id " +
-                        "INNER JOIN employees ON off.employee = employees.id", constraints);
+                        "INNER JOIN employees ON offers.employee = employees.id", constraints);
         try (PreparedStatement statement = getConnection().prepareStatement(SQL);
              PreparedStatement rolesStatement = getConnection().prepareStatement("SELECT * FROM roles WHERE employee = ?")) {
             binder.bind(statement, constraints);
