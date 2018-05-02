@@ -27,7 +27,15 @@ public class OfferRecord implements Offer
         this.createdAt = createdAt;
     }
 
-
+    /**
+     * Returns the unique identifier of the offer.
+     *
+     * @return The unique identifier of the offer.
+     */
+    @Override public int getId()
+    {
+        return id;
+    }
 
     /**
      * Returns the id of the order that the offer was issued for.

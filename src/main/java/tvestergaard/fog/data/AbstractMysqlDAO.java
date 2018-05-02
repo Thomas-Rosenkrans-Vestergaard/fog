@@ -258,6 +258,7 @@ public abstract class AbstractMysqlDAO
         Employee employee = createEmployee(employeeTable, resultSet, "roles", roles);
 
         return new OfferRecord(
+                resultSet.getInt(table + ".id"),
                 order, order.getId(),
                 employee,
                 employee.getId(),
