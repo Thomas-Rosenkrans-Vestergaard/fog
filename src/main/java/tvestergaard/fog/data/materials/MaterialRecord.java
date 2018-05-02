@@ -21,9 +21,14 @@ public class MaterialRecord implements Material
     private String description;
 
     /**
-     * Some additional information about the material.
+     * The price of the material.
      */
-    private String notes;
+    private int price;
+
+    /**
+     * The unit of the materials.
+     */
+    private int unit;
 
     /**
      * The height of the material.
@@ -36,30 +41,25 @@ public class MaterialRecord implements Material
     private int height;
 
     /**
-     * The price of the material.
-     */
-    private int price;
-
-    /**
      * Creates a new {@link MaterialRecord}.
      *
-     * @param id          The unique identifier of the material.
-     * @param number      The material number.
-     * @param description The description of the material.
-     * @param notes       Some additional information about the material.
-     * @param width       The height of the material.
-     * @param height      The width of the material.
+     * @param id          The id of the material to update.
+     * @param number      The material number to specify in the updater.
+     * @param description The material description to specify in the updater.
      * @param price       The price of the material.
+     * @param unit        The type of unit the material is in.
+     * @param width       The width of the material to specify in the updater.
+     * @param height      The height of the material to specify in the updater.
      */
-    public MaterialRecord(int id, String number, String description, String notes, int width, int height, int price)
+    public MaterialRecord(int id, String number, String description, int price, int unit, int width, int height)
     {
         this.id = id;
         this.number = number;
         this.description = description;
-        this.notes = notes;
+        this.price = price;
+        this.unit = unit;
         this.width = width;
         this.height = height;
-        this.price = price;
     }
 
     /**
@@ -103,23 +103,43 @@ public class MaterialRecord implements Material
     }
 
     /**
-     * Returns some additional information about the material.
+     * Returns the price of the material.
      *
-     * @return Some additional information about the material.
+     * @return The price of the material.
      */
-    @Override public String getNotes()
+    @Override public int getPrice()
     {
-        return notes;
+        return price;
     }
 
     /**
-     * Sets the additional information about the usage of the material.
+     * Sets the price of the material.
      *
-     * @param notes The new notes about the usage of the material.
+     * @param price The new price.
      */
-    @Override public void setNotes(String notes)
+    @Override public void setPrice(int price)
     {
-        this.notes = notes;
+        this.price = price;
+    }
+
+    /**
+     * Returns the unit size of the material.
+     *
+     * @return the unit size of the material.
+     */
+    @Override public int getUnit()
+    {
+        return unit;
+    }
+
+    /**
+     * Sets the unit size of the material.
+     *
+     * @param unit The new unit size of the material.
+     */
+    @Override public void setUnit(int unit)
+    {
+        this.unit = unit;
     }
 
     /**
@@ -162,38 +182,18 @@ public class MaterialRecord implements Material
         this.height = height;
     }
 
-    /**
-     * Returns the price of the material.
-     *
-     * @return The price of the material.
-     */
-    @Override public int getPrice()
-    {
-        return price;
-    }
-
-    /**
-     * Sets the price of the material.
-     *
-     * @param price The new price.
-     */
-    @Override public void setPrice(int price)
-    {
-        this.price = price;
-    }
-
     @Override public boolean equals(Object o)
     {
         if (this == o) return true;
-        if (!(o instanceof Material)) return false;
-        Material that = (Material) o;
+        if (!(o instanceof MaterialRecord)) return false;
+        MaterialRecord that = (MaterialRecord) o;
         return getId() == that.getId() &&
-                getHeight() == that.getHeight() &&
-                getWidth() == that.getWidth() &&
                 getPrice() == that.getPrice() &&
+                getUnit() == that.getUnit() &&
+                getWidth() == that.getWidth() &&
+                getHeight() == that.getHeight() &&
                 Objects.equals(getNumber(), that.getNumber()) &&
-                Objects.equals(getDescription(), that.getDescription()) &&
-                Objects.equals(getNotes(), that.getNotes());
+                Objects.equals(getDescription(), that.getDescription());
     }
 
     @Override public int hashCode()

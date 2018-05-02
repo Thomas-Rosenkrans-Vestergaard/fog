@@ -38,12 +38,12 @@ public class RoofingRecord implements Roofing
     /**
      * Creates a new {@link RoofingRecord}.
      *
-     * @param id                  The unique identifier of the roofing.
-     * @param name                The name of the roofing.
-     * @param description         The description of the roofing.
-     * @param minimumSlope        The minimum slope the roofing must have.
-     * @param maximumSlope        The maximum slope the roofing must have.
-     * @param active              Whether or not the roofing can currently be applied to new orders.
+     * @param id           The unique identifier of the roofing.
+     * @param name         The name of the roofing.
+     * @param description  The description of the roofing.
+     * @param minimumSlope The minimum slope the roofing must have.
+     * @param maximumSlope The maximum slope the roofing must have.
+     * @param active       Whether or not the roofing can currently be applied to new orders.
      */
     public RoofingRecord(int id, String name, String description, int minimumSlope, int maximumSlope, boolean active)
     {
@@ -60,8 +60,7 @@ public class RoofingRecord implements Roofing
      *
      * @return The unique identifier of the roofing.
      */
-    @Override
-    public int getId()
+    @Override public int getId()
     {
         return id;
     }
@@ -71,8 +70,7 @@ public class RoofingRecord implements Roofing
      *
      * @return The name of the roofing.
      */
-    @Override
-    public String getName()
+    @Override public String getName()
     {
         return name;
     }
@@ -82,8 +80,7 @@ public class RoofingRecord implements Roofing
      *
      * @param name The new name.
      */
-    @Override
-    public void setName(String name)
+    @Override public void setName(String name)
     {
         this.name = name;
     }
@@ -93,8 +90,7 @@ public class RoofingRecord implements Roofing
      *
      * @return The description of the roofing.
      */
-    @Override
-    public String getDescription()
+    @Override public String getDescription()
     {
         return description;
     }
@@ -115,8 +111,7 @@ public class RoofingRecord implements Roofing
      *
      * @return The minimum slope the roofing must have. Returns an integer between 0 and 90 (exclusive).
      */
-    @Override
-    public int getMinimumSlope()
+    @Override public int getMinimumSlope()
     {
         return minimumSlope;
     }
@@ -126,8 +121,7 @@ public class RoofingRecord implements Roofing
      *
      * @param minimumSlope The new minimum slope. Range between 0 and 90 (exclusive).
      */
-    @Override
-    public void setMinimumSlope(int minimumSlope)
+    @Override public void setMinimumSlope(int minimumSlope)
     {
         this.minimumSlope = minimumSlope;
     }
@@ -137,8 +131,7 @@ public class RoofingRecord implements Roofing
      *
      * @return The maximum slope the roofing must have. Returns an integer between 0 and 90 (exclusive).
      */
-    @Override
-    public int getMaximumSlope()
+    @Override public int getMaximumSlope()
     {
         return maximumSlope;
     }
@@ -148,8 +141,7 @@ public class RoofingRecord implements Roofing
      *
      * @param maximumSlope The new maximum slope. Range between 0 and 90 (exclusive).
      */
-    @Override
-    public void setMaximumSlope(int maximumSlope)
+    @Override public void setMaximumSlope(int maximumSlope)
     {
         this.maximumSlope = maximumSlope;
     }
@@ -159,8 +151,7 @@ public class RoofingRecord implements Roofing
      *
      * @return {@link true} if the roofing can currently be applied to new orders.
      */
-    @Override
-    public boolean isActive()
+    @Override public boolean isActive()
     {
         return active;
     }
@@ -176,8 +167,7 @@ public class RoofingRecord implements Roofing
         this.active = active;
     }
 
-    @Override
-    public boolean equals(Object o)
+    @Override public boolean equals(Object o)
     {
         if (this == o) return true;
         if (!(o instanceof Roofing)) return false;
@@ -190,8 +180,7 @@ public class RoofingRecord implements Roofing
                 Objects.equals(description, that.getDescription());
     }
 
-    @Override
-    public int hashCode()
+    @Override public int hashCode()
     {
         return Objects.hash(getId());
     }

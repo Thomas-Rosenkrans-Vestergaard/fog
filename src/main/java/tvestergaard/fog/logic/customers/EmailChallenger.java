@@ -12,8 +12,6 @@ import tvestergaard.fog.logic.email.ApplicationMailer;
 import java.security.SecureRandom;
 import java.time.LocalDateTime;
 
-import static tvestergaard.fog.logic.customers.CustomerFacade.hash;
-
 /**
  * Challenges new customers to verify their email address.
  */
@@ -61,6 +59,11 @@ public class EmailChallenger
         Token             tokenDB = tokenDAO.create(customer.getId(), hash(token), Use.EMAIL_CHALLENGE);
         RegistrationEmail email   = new RegistrationEmail(customer, tokenDB.getId(), token);
         mailer.send(email);
+    }
+
+    private String hash(String token)
+    {
+        return BCrypt.hashpw(token, BCrypt.gensalt());
     }
 
     /**

@@ -42,7 +42,7 @@ public class MysqlCladdingDAO extends AbstractMysqlDAO implements CladdingDAO
      *
      * @param constraints The constraints that modify the resulting list.
      * @return The resulting claddings.
-     * @throws MysqlDataAccessException When an exception occurs while performing the operation.
+     * @throws MysqlDataAccessException When a data storage exception occurs while performing the operation.
      */
     @Override
     public List<Cladding> get(Constraint<CladdingColumn>... constraints) throws MysqlDataAccessException
@@ -53,7 +53,7 @@ public class MysqlCladdingDAO extends AbstractMysqlDAO implements CladdingDAO
             binder.bind(statement, constraints);
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next())
-                floors.add(createCladding(resultSet));
+                floors.add(createCladding("claddings", resultSet));
 
             return floors;
         } catch (SQLException e) {
@@ -67,7 +67,7 @@ public class MysqlCladdingDAO extends AbstractMysqlDAO implements CladdingDAO
      * @param constraints The constraints that modify the resulting list.
      * @return The first cladding matching the provided constraints. Returns {@code null} when no constraints matches
      * the provided constraints.
-     * @throws MysqlDataAccessException When an exception occurs while performing the operation.
+     * @throws MysqlDataAccessException When a data storage exception occurs while performing the operation.
      */
     @Override
     public Cladding first(Constraint<CladdingColumn>... constraints) throws MysqlDataAccessException
@@ -82,7 +82,7 @@ public class MysqlCladdingDAO extends AbstractMysqlDAO implements CladdingDAO
      *
      * @param blueprint The cladding blueprint that contains the information necessary to create the cladding.
      * @return The cladding instance representing the newly created cladding.
-     * @throws MysqlDataAccessException When an exception occurs while performing the operation.
+     * @throws MysqlDataAccessException When a data storage exception occurs while performing the operation.
      */
     @Override public Cladding create(CladdingBlueprint blueprint) throws MysqlDataAccessException
     {
@@ -118,7 +118,7 @@ public class MysqlCladdingDAO extends AbstractMysqlDAO implements CladdingDAO
      *
      * @param updater The cladding updater that contains the information necessary to create the cladding.
      * @return {@link true} if the record was updated.
-     * @throws MysqlDataAccessException When an exception occurs while performing the operation.
+     * @throws MysqlDataAccessException When a data storage exception occurs while performing the operation.
      */
     @Override public boolean update(CladdingUpdater updater) throws MysqlDataAccessException
     {

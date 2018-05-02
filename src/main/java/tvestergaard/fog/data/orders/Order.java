@@ -50,20 +50,4 @@ public interface Order extends OrderUpdater
      * @return The {@code LocalDateTime}.
      */
     LocalDateTime getCreatedAt();
-
-    /**
-     * Checks that this order equals another provided object. The two objects are only considered equal when all the
-     * attributes of the two orders are considered equal.
-     *
-     * @param other The object to compare with.
-     * @return {@code true} if the two objects are considered equal.
-     */
-    boolean equals(Object other);
-
-    /**
-     * Returns the id of the order.
-     *
-     * @return The id of the order.
-     */
-    int hashCode();
 }

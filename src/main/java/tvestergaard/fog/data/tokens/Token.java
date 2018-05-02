@@ -41,20 +41,4 @@ public interface Token
      * @return The moment in time when the token was created.
      */
     LocalDateTime getCreatedAt();
-
-    /**
-     * Checks that this registration token equals another provided object. The two objects are considered equal when
-     * all the attributes of the instances are equal.
-     *
-     * @param other The object to compare with.
-     * @return {@code true} if the two objects are considered equal.
-     */
-    boolean equals(Object other);
-
-    /**
-     * Returns the id of the registration token.
-     *
-     * @return The id of the registration token.
-     */
-    int hashCode();
 }

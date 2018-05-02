@@ -76,24 +76,24 @@ public class MaterialFacade
     /**
      * Inserts a new material into the data storage.
      *
-     * @param number      The number of the material to create.
-     * @param description The description of the material to create.
-     * @param notes       The notes on the material to create.
+     * @param number      The material number to create.
+     * @param description The material description to create.
+     * @param price       The price of the material to create.
+     * @param unit        The unit size of the material to create.
      * @param width       The width of the material to create.
      * @param height      The height of the material to create.
-     * @param price       The price of the material to create.
      * @return The material instance representing the newly created material.
      * @throws ApplicationException       When an exception occurs while performing the operation.
      * @throws MaterialValidatorException When the provided information is considered invalid.
      */
-    public Material create(String number, String description, String notes, int width, int height, int price)
+    public Material create(String number, String description, int price, int unit, int width, int height)
             throws MaterialValidatorException
     {
         try {
-            Set<MaterialError> reasons = validator.validate(number, description, notes, width, height, price);
+            Set<MaterialError> reasons = validator.validate(number, description, price, unit, width, height);
             if (!reasons.isEmpty())
                 throw new MaterialValidatorException(reasons);
-            return dao.create(MaterialBlueprint.from(number, description, notes, width, height, price));
+            return dao.create(MaterialBlueprint.from(number, description, price, unit, width, height));
         } catch (DataAccessException e) {
             throw new ApplicationException(e);
         }
@@ -103,24 +103,24 @@ public class MaterialFacade
      * Updates the entity in the data storage to match the provided material.
      *
      * @param id          The id of the material to update.
-     * @param number      The number of the material to create.
-     * @param description The description of the material to create.
-     * @param notes       The notes on the material to create.
-     * @param width       The width of the material to create.
-     * @param height      The height of the material to create.
-     * @param price       The price of the material to create.
+     * @param number      The material number to update to.
+     * @param description The material description to update to.
+     * @param price       The price of the material to update to.
+     * @param unit        The unit size of the material to update to.
+     * @param width       The width of the material to update to.
+     * @param height      The height of the material to update to.
      * @return {@link true} if the record was updated.
      * @throws ApplicationException       When an exception occurs while performing the operation.
      * @throws MaterialValidatorException When the provided information is considered invalid.
      */
-    public boolean update(int id, String number, String description, String notes, int width, int height, int price)
+    public boolean update(int id, String number, String description, String notes, int price, int unit, int width, int height)
             throws MaterialValidatorException
     {
         try {
-            Set<MaterialError> reasons = validator.validate(number, description, notes, width, height, price);
+            Set<MaterialError> reasons = validator.validate(number, description, price, unit, width, height);
             if (!reasons.isEmpty())
                 throw new MaterialValidatorException(reasons);
-            return dao.update(MaterialUpdater.from(id, number, description, notes, width, height, price));
+            return dao.update(MaterialUpdater.from(id, number, description, price, unit, width, height));
         } catch (DataAccessException e) {
             throw new ApplicationException(e);
         }

@@ -37,7 +37,7 @@ public class MysqlTokenDAO extends AbstractMysqlDAO implements TokenDAO
      * @param token    The token to insert.
      * @param use      The usage of the token to create.
      * @return An instance representing the newly inserted token.
-     * @throws MysqlDataAccessException When an exception occurs while performing the operation.
+     * @throws MysqlDataAccessException When a data storage exception occurs while performing the operation.
      */
     @Override public Token create(int customer, String token, Use use) throws MysqlDataAccessException
     {
@@ -65,7 +65,7 @@ public class MysqlTokenDAO extends AbstractMysqlDAO implements TokenDAO
      * @param id The id of the registration token to return.
      * @return The registration token with the provided id. Returns {@code null} in case no registration token with the
      * provided id exists.
-     * @throws MysqlDataAccessException When an exception occurs while performing the operation.
+     * @throws MysqlDataAccessException When a data storage exception occurs while performing the operation.
      */
     @Override public Token get(int id) throws MysqlDataAccessException
     {
@@ -91,7 +91,7 @@ public class MysqlTokenDAO extends AbstractMysqlDAO implements TokenDAO
     {
         return new TokenRecord(
                 resultSet.getInt("id"),
-                createCustomer(resultSet),
+                createCustomer("customers", resultSet),
                 resultSet.getString("hash"),
                 Use.valueOf(resultSet.getString("use")),
                 resultSet.getTimestamp("created_at").toLocalDateTime()

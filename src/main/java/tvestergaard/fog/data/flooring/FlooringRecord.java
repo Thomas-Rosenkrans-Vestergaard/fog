@@ -28,10 +28,10 @@ public class FlooringRecord implements Flooring
     /**
      * Creates a new {@link MysqlFlooringDAO}.
      *
-     * @param id                  The unique identifier of the flooring.
-     * @param name                The name of the flooring.
-     * @param description         The description of the flooring.
-     * @param active              Whether or not the flooring can be applied to new orders.
+     * @param id          The unique identifier of the flooring.
+     * @param name        The name of the flooring.
+     * @param description The description of the flooring.
+     * @param active      Whether or not the flooring can be applied to new orders.
      */
     public FlooringRecord(int id, String name, String description, boolean active)
     {
@@ -66,8 +66,7 @@ public class FlooringRecord implements Flooring
      *
      * @param name The updated name.
      */
-    @Override
-    public void setName(String name)
+    @Override public void setName(String name)
     {
         this.name = name;
     }

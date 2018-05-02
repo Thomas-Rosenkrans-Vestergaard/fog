@@ -9,9 +9,7 @@ import tvestergaard.fog.data.constraints.StatementGenerator;
 
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import static tvestergaard.fog.data.constraints.Constraint.*;
 import static tvestergaard.fog.data.employees.EmployeeColumn.ID;
@@ -44,7 +42,7 @@ public class MysqlEmployeeDAO extends AbstractMysqlDAO implements EmployeeDAO
      *
      * @param constraints The constraints that modify the resulting list.
      * @return The resulting employees.
-     * @throws MysqlDataAccessException When an exception occurs while performing the operation.
+     * @throws MysqlDataAccessException When a data storage exception occurs while performing the operation.
      */
     @Override public List<Employee> get(Constraint<EmployeeColumn>... constraints) throws MysqlDataAccessException
     {
@@ -57,7 +55,7 @@ public class MysqlEmployeeDAO extends AbstractMysqlDAO implements EmployeeDAO
             while (resultSet.next()) {
                 rolesStatement.setInt(1, resultSet.getInt("id"));
                 ResultSet roles = rolesStatement.executeQuery();
-                employees.add(createEmployee(resultSet, roles));
+                employees.add(createEmployee("employees", resultSet, "roles", roles));
             }
 
             return employees;
@@ -72,7 +70,7 @@ public class MysqlEmployeeDAO extends AbstractMysqlDAO implements EmployeeDAO
      * @param constraints The constraints that modify the resulting list.
      * @return The first employee matching the provided constraints. Returns {@code null} when no constraints matches
      * the provided constraints.
-     * @throws MysqlDataAccessException When an exception occurs while performing the operation.
+     * @throws MysqlDataAccessException When a data storage exception occurs while performing the operation.
      */
     @Override public Employee first(Constraint<EmployeeColumn>... constraints) throws MysqlDataAccessException
     {
@@ -86,7 +84,7 @@ public class MysqlEmployeeDAO extends AbstractMysqlDAO implements EmployeeDAO
      *
      * @param blueprint The cladding blueprint that contains the information necessary to create the cladding.
      * @return The employee instance representing the newly created employee.
-     * @throws MysqlDataAccessException When an exception occurs while performing the operation.
+     * @throws MysqlDataAccessException When a data storage exception occurs while performing the operation.
      */
     @Override public Employee create(EmployeeBlueprint blueprint) throws MysqlDataAccessException
     {
@@ -129,7 +127,7 @@ public class MysqlEmployeeDAO extends AbstractMysqlDAO implements EmployeeDAO
      *
      * @param updater The cladding updater that contains the information necessary to create the cladding.
      * @return {@link true} if the record was updated.
-     * @throws MysqlDataAccessException When an exception occurs while performing the operation.
+     * @throws MysqlDataAccessException When a data storage exception occurs while performing the operation.
      */
     @Override public boolean update(EmployeeUpdater updater) throws MysqlDataAccessException
     {
@@ -170,36 +168,5 @@ public class MysqlEmployeeDAO extends AbstractMysqlDAO implements EmployeeDAO
         } catch (SQLException e) {
             throw new MysqlDataAccessException(e);
         }
-    }
-
-    /**
-     * Creates a new {@link Employee} instance from the provided {@code ResultSet}.
-     *
-     * @param employees
-     * @param roles     The {@code ResultSet} from which to create the {@link Employee} instance.
-     * @return The newly created {@link Employee} instance.
-     * @throws SQLException
-     */
-    protected Employee createEmployee(ResultSet employees, ResultSet roles) throws SQLException
-    {
-        return new EmployeeRecord(
-                employees.getInt("id"),
-                employees.getString("name"),
-                employees.getString("username"),
-                employees.getString("password"),
-                employees.getBoolean("active"),
-                createRoleSet(roles),
-                employees.getTimestamp("created_at").toLocalDateTime()
-        );
-    }
-
-    Set<Role> createRoleSet(ResultSet resultSet) throws SQLException
-    {
-        Set<Role> roles = new HashSet<>();
-        while (resultSet.next()) {
-            roles.add(Role.valueOf(resultSet.getString("role")));
-        }
-
-        return roles;
     }
 }

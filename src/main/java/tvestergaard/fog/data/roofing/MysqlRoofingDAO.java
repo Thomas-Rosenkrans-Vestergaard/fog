@@ -42,7 +42,7 @@ public class MysqlRoofingDAO extends AbstractMysqlDAO implements RoofingDAO
      *
      * @param constraints The constraints that modify the resulting list.
      * @return The resulting roofings.
-     * @throws MysqlDataAccessException When an exception occurs while performing the operation.
+     * @throws MysqlDataAccessException When a data storage exception occurs while performing the operation.
      */
     @Override
     public List<Roofing> get(Constraint<RoofingColumn>... constraints) throws MysqlDataAccessException
@@ -53,7 +53,7 @@ public class MysqlRoofingDAO extends AbstractMysqlDAO implements RoofingDAO
             binder.bind(statement, constraints);
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next())
-                roofings.add(createRoofing(resultSet));
+                roofings.add(createRoofing("roofings", resultSet));
 
             return roofings;
         } catch (SQLException e) {
@@ -67,7 +67,7 @@ public class MysqlRoofingDAO extends AbstractMysqlDAO implements RoofingDAO
      * @param constraints The constraints that modify the resulting list.
      * @return The first roofing matching the provided constraints. Returns {@code null} when no constraints matches the
      * provided constraints.
-     * @throws MysqlDataAccessException When an exception occurs while performing the operation.
+     * @throws MysqlDataAccessException When a data storage exception occurs while performing the operation.
      */
     @Override
     public Roofing first(Constraint<RoofingColumn>... constraints) throws MysqlDataAccessException
@@ -82,7 +82,7 @@ public class MysqlRoofingDAO extends AbstractMysqlDAO implements RoofingDAO
      *
      * @param blueprint The roofing blueprint that contains the information necessary to create the roofing.
      * @return The roofing instance representing the newly created roofing.
-     * @throws MysqlDataAccessException When an exception occurs while performing the operation.
+     * @throws MysqlDataAccessException When a data storage exception occurs while performing the operation.
      */
     @Override public Roofing create(RoofingBlueprint blueprint) throws MysqlDataAccessException
     {
@@ -119,7 +119,7 @@ public class MysqlRoofingDAO extends AbstractMysqlDAO implements RoofingDAO
      *
      * @param updater The roofing updater that contains the information necessary to create the roofing.
      * @return {@link true} if the record was updated.
-     * @throws MysqlDataAccessException When an exception occurs while performing the operation.
+     * @throws MysqlDataAccessException When a data storage exception occurs while performing the operation.
      */
     @Override public boolean update(RoofingUpdater updater) throws MysqlDataAccessException
     {

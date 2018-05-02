@@ -13,7 +13,7 @@ public interface CustomerDAO
      *
      * @param constraints The constraints that modify the resulting list.
      * @return The resulting customers.
-     * @throws DataAccessException When an exception occurs while performing the operation.
+     * @throws DataAccessException When a data storage exception occurs while performing the operation.
      */
     List<Customer> get(Constraint<CustomerColumn>... constraints) throws DataAccessException;
 
@@ -23,7 +23,7 @@ public interface CustomerDAO
      * @param constraints The constraints that modify the resulting list.
      * @return The first customer matching the provided constraints. Returns {@code null} when no constraints matches
      * the provided constraints.
-     * @throws DataAccessException When an exception occurs while performing the operation.
+     * @throws DataAccessException When a data storage exception occurs while performing the operation.
      */
     Customer first(Constraint<CustomerColumn>... constraints) throws DataAccessException;
 
@@ -32,7 +32,7 @@ public interface CustomerDAO
      *
      * @param blueprint The cladding blueprint that contains the information necessary to create the cladding.
      * @return The customer instance representing the newly created customer.
-     * @throws DataAccessException When an exception occurs while performing the operation.
+     * @throws DataAccessException When a data storage exception occurs while performing the operation.
      */
     Customer create(CustomerBlueprint blueprint) throws DataAccessException;
 
@@ -41,7 +41,7 @@ public interface CustomerDAO
      *
      * @param updater The cladding updater that contains the information necessary to create the cladding.
      * @return {@link true} if the record was updated.
-     * @throws DataAccessException When an exception occurs while performing the operation.
+     * @throws DataAccessException When a data storage exception occurs while performing the operation.
      */
     boolean update(CustomerUpdater updater) throws DataAccessException;
 
@@ -50,7 +50,7 @@ public interface CustomerDAO
      *
      * @param tokenId     The token identifying the customer to reset the password of.
      * @param newPassword The new password.
-     * @throws DataAccessException When an exception occurs while performing the operation.
+     * @throws DataAccessException When a data storage exception occurs while performing the operation.
      */
     void resetPassword(int tokenId, String newPassword) throws DataAccessException;
 
@@ -58,7 +58,7 @@ public interface CustomerDAO
      * Confirms the membership confirmation challenge of the provided token.
      *
      * @param token The id of the token to confirm.
-     * @throws DataAccessException When an exception occurs while performing the operation.
+     * @throws DataAccessException When a data storage exception occurs while performing the operation.
      */
     void confirmMembership(int token) throws DataAccessException;
 
@@ -66,7 +66,7 @@ public interface CustomerDAO
      * Rejects the membership confirmation challenge of the provided token.
      *
      * @param token The id of the token to reject.
-     * @throws DataAccessException When an exception occurs while performing the operation.
+     * @throws DataAccessException When a data storage exception occurs while performing the operation.
      */
     void rejectMembership(int token) throws DataAccessException;
 }

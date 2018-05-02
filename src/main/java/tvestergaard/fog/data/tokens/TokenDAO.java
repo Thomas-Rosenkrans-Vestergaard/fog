@@ -12,7 +12,7 @@ public interface TokenDAO
      * @param token    The token to insert.
      * @param use      The usage of the token to create.
      * @return An instance representing the newly inserted token.
-     * @throws DataAccessException When an exception occurs while performing the operation.
+     * @throws DataAccessException When a data storage exception occurs while performing the operation.
      */
     Token create(int customer, String token, Use use) throws DataAccessException;
 
@@ -22,7 +22,7 @@ public interface TokenDAO
      * @param id The id of the registration token to return.
      * @return The registration token with the provided id. Returns {@code null} in case no registration token with the
      * provided id exists.
-     * @throws DataAccessException When an exception occurs while performing the operation.
+     * @throws DataAccessException When a data storage exception occurs while performing the operation.
      */
     Token get(int id) throws DataAccessException;
 }

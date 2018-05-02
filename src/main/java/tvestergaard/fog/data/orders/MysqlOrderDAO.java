@@ -4,12 +4,9 @@ import com.mysql.cj.jdbc.MysqlDataSource;
 import tvestergaard.fog.data.AbstractMysqlDAO;
 import tvestergaard.fog.data.DataAccessException;
 import tvestergaard.fog.data.MysqlDataAccessException;
-import tvestergaard.fog.data.cladding.Cladding;
-import tvestergaard.fog.data.cladding.CladdingRecord;
 import tvestergaard.fog.data.constraints.Constraint;
 import tvestergaard.fog.data.constraints.StatementBinder;
 import tvestergaard.fog.data.constraints.StatementGenerator;
-import tvestergaard.fog.data.flooring.Flooring;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -49,14 +46,14 @@ public class MysqlOrderDAO extends AbstractMysqlDAO implements OrderDAO
      *
      * @param constraints The constraints that modify the resulting list.
      * @return The resulting orders.
-     * @throws MysqlDataAccessException When an exception occurs while performing the operation.
+     * @throws MysqlDataAccessException When a data storage exception occurs while performing the operation.
      */
     @Override
     public List<Order> get(Constraint<OrderColumn>... constraints) throws MysqlDataAccessException
     {
         final List<Order> orders = new ArrayList<>();
         final String SQL = generator.generate(
-                "SELECT *, (SELECT count(*) FROM offers WHERE `order` = o.id) AS offers FROM orders o " +
+                "SELECT *, (SELECT count(*) FROM offers WHERE `order` = o.id) AS `o.offers` FROM orders o " +
                         "INNER JOIN customers ON o.customer = customers.id " +
                         "INNER JOIN claddings o_cladding ON o.cladding = o_cladding.id " +
                         "INNER JOIN roofings ON o.roofing = roofings.id " +
@@ -67,7 +64,7 @@ public class MysqlOrderDAO extends AbstractMysqlDAO implements OrderDAO
             binder.bind(statement, constraints);
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next())
-                orders.add(createOrder(resultSet));
+                orders.add(createOrder(resultSet, "o", "customers", "o_cladding", "roofings", "sheds", "s_cladding", "floorings"));
 
             return orders;
         } catch (SQLException e) {
@@ -81,7 +78,7 @@ public class MysqlOrderDAO extends AbstractMysqlDAO implements OrderDAO
      * @param constraints The constraints that modify the resulting list.
      * @return The first order matching the provided constraints. Returns {@code null} when no constraints matches the
      * provided constraints.
-     * @throws MysqlDataAccessException When an exception occurs while performing the operation.
+     * @throws MysqlDataAccessException When a data storage exception occurs while performing the operation.
      */
     @Override
     public Order first(Constraint<OrderColumn>... constraints) throws MysqlDataAccessException
@@ -96,7 +93,7 @@ public class MysqlOrderDAO extends AbstractMysqlDAO implements OrderDAO
      *
      * @param blueprint The order blueprint that contains the information necessary to create the order.
      * @return The new order.
-     * @throws DataAccessException When an exception occurs during the operation.
+     * @throws DataAccessException When a data storage exception occurs during the operation.
      */
     @Override public Order create(OrderBlueprint blueprint) throws DataAccessException
     {
@@ -155,7 +152,7 @@ public class MysqlOrderDAO extends AbstractMysqlDAO implements OrderDAO
      *
      * @param updater The order updater that contains the information necessary to create the order.
      * @return {@link true} if the record was updated.
-     * @throws MysqlDataAccessException When an exception occurs while performing the operation.
+     * @throws MysqlDataAccessException When a data storage exception occurs while performing the operation.
      */
     @Override public boolean update(OrderUpdater updater) throws MysqlDataAccessException
     {
@@ -212,7 +209,7 @@ public class MysqlOrderDAO extends AbstractMysqlDAO implements OrderDAO
      * Returns the number of orders that are both active, and have not yet received any offers.
      *
      * @return The number of such orders.
-     * @throws MysqlDataAccessException When an exception occurs while performing the operation.
+     * @throws MysqlDataAccessException When a data storage exception occurs while performing the operation.
      */
     @Override public int getNumberOfNewOrders() throws MysqlDataAccessException
     {
@@ -227,88 +224,5 @@ public class MysqlOrderDAO extends AbstractMysqlDAO implements OrderDAO
         } catch (SQLException e) {
             throw new MysqlDataAccessException(e);
         }
-    }
-
-    /**
-     * Creates a new {@link Order} instance from the provided {@code ResultSet}.
-     *
-     * @param resultSet The {@code ResultSet} from which to create the instance of {@link Flooring}.
-     * @return The newly create instance of {@link Order}.
-     * @throws SQLException
-     */
-    protected Order createOrder(ResultSet resultSet) throws SQLException
-    {
-        return new OrderRecord(
-                resultSet.getInt("o.id"),
-                resultSet.getInt("o.customer"),
-                createCustomer(resultSet),
-                resultSet.getInt("o.cladding"),
-                createCladding(resultSet),
-                resultSet.getInt("o.width"),
-                resultSet.getInt("o.length"),
-                resultSet.getInt("o.height"),
-                resultSet.getInt("o.roofing"),
-                createRoofing(resultSet),
-                resultSet.getInt("o.slope"),
-                RafterChoice.from(resultSet.getInt("o.rafters")),
-                createShed(resultSet),
-                resultSet.getBoolean("o.active"),
-                resultSet.getInt("offers"),
-                resultSet.getTimestamp("o.created_at").toLocalDateTime()
-        );
-    }
-
-    /**
-     * Creates a new {@link Cladding} using the provided {@code ResultSet}.
-     *
-     * @param resultSet The {@code ResultSet} from which to create the instance of {@link Cladding}.
-     * @return The newly created instance of {@link Cladding}.
-     * @throws SQLException
-     */
-    protected Cladding createCladding(ResultSet resultSet) throws SQLException
-    {
-        return new CladdingRecord(
-                resultSet.getInt("o_cladding.id"),
-                resultSet.getString("o_cladding.name"),
-                resultSet.getString("o_cladding.description"),
-                resultSet.getBoolean("o_cladding.active")
-        );
-    }
-
-    /**
-     * Creates a new {@link Shed} from the provided {@code ResultSet}.
-     *
-     * @param resultSet The {@code ResultSet} from which to create the {@link Shed} implementation.
-     * @return The resulting instance of {@link Shed}.
-     * @throws SQLException
-     */
-    protected Shed createShed(ResultSet resultSet) throws SQLException
-    {
-        return new ShedRecord(
-                resultSet.getInt("sheds.id"),
-                resultSet.getInt("sheds.width"),
-                resultSet.getInt("sheds.depth"),
-                resultSet.getInt("sheds.cladding"),
-                createShedCladding(resultSet),
-                resultSet.getInt("sheds.flooring"),
-                createFlooring(resultSet)
-        );
-    }
-
-    /**
-     * Creates a new {@link Cladding} using the provided {@code ResultSet}.
-     *
-     * @param resultSet The {@code ResultSet} from which to create the instance of {@link Cladding}.
-     * @return The newly created instance of {@link Cladding}.
-     * @throws SQLException
-     */
-    protected Cladding createShedCladding(ResultSet resultSet) throws SQLException
-    {
-        return new CladdingRecord(
-                resultSet.getInt("s_cladding.id"),
-                resultSet.getString("s_cladding.name"),
-                resultSet.getString("s_cladding.description"),
-                resultSet.getBoolean("s_cladding.active")
-        );
     }
 }

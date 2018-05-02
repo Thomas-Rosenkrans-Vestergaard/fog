@@ -41,7 +41,7 @@ public class MysqlCustomerDAO extends AbstractMysqlDAO implements CustomerDAO
      *
      * @param constraints The constraints that modify the resulting list.
      * @return The resulting customers.
-     * @throws MysqlDataAccessException When an exception occurs while performing the operation.
+     * @throws MysqlDataAccessException When a data storage exception occurs while performing the operation.
      */
     @Override public List<Customer> get(Constraint<CustomerColumn>... constraints) throws MysqlDataAccessException
     {
@@ -51,7 +51,7 @@ public class MysqlCustomerDAO extends AbstractMysqlDAO implements CustomerDAO
             binder.bind(statement, constraints);
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next())
-                customers.add(createCustomer(resultSet));
+                customers.add(createCustomer("customers", resultSet));
 
             return customers;
         } catch (SQLException e) {
@@ -65,7 +65,7 @@ public class MysqlCustomerDAO extends AbstractMysqlDAO implements CustomerDAO
      * @param constraints The constraints that modify the resulting list.
      * @return The first customer matching the provided constraints. Returns {@code null} when no constraints matches
      * the provided constraints.
-     * @throws MysqlDataAccessException When an exception occurs while performing the operation.
+     * @throws MysqlDataAccessException When a data storage exception occurs while performing the operation.
      */
     @Override public Customer first(Constraint<CustomerColumn>... constraints) throws MysqlDataAccessException
     {
@@ -79,7 +79,7 @@ public class MysqlCustomerDAO extends AbstractMysqlDAO implements CustomerDAO
      *
      * @param blueprint The cladding blueprint that contains the information necessary to create the cladding.
      * @return The customer instance representing the newly created customer.
-     * @throws MysqlDataAccessException When an exception occurs while performing the operation.
+     * @throws MysqlDataAccessException When a data storage exception occurs while performing the operation.
      */
     @Override public Customer create(CustomerBlueprint blueprint) throws MysqlDataAccessException
     {
@@ -116,7 +116,7 @@ public class MysqlCustomerDAO extends AbstractMysqlDAO implements CustomerDAO
      *
      * @param updater The cladding updater that contains the information necessary to create the cladding.
      * @return {@link true} if the record was updated.
-     * @throws MysqlDataAccessException When an exception occurs while performing the operation.
+     * @throws MysqlDataAccessException When a data storage exception occurs while performing the operation.
      */
     @Override public boolean update(CustomerUpdater updater) throws MysqlDataAccessException
     {
@@ -149,7 +149,7 @@ public class MysqlCustomerDAO extends AbstractMysqlDAO implements CustomerDAO
      *
      * @param tokenId     The token identifying the customer to reset the password of.
      * @param newPassword The new password.
-     * @throws MysqlDataAccessException When an exception occurs while performing the operation.
+     * @throws MysqlDataAccessException When a data storage exception occurs while performing the operation.
      */
     @Override public void resetPassword(int tokenId, String newPassword) throws MysqlDataAccessException
     {
@@ -184,7 +184,7 @@ public class MysqlCustomerDAO extends AbstractMysqlDAO implements CustomerDAO
      * Confirms the membership confirmation challenge of the provided token.
      *
      * @param token The id of the token to confirm.
-     * @throws MysqlDataAccessException When an exception occurs while performing the operation.
+     * @throws MysqlDataAccessException When a data storage exception occurs while performing the operation.
      */
     @Override public void confirmMembership(int token) throws MysqlDataAccessException
     {
@@ -222,7 +222,7 @@ public class MysqlCustomerDAO extends AbstractMysqlDAO implements CustomerDAO
      * Rejects the membership confirmation challenge of the provided token. Deletes the account the token was issued for.
      *
      * @param token The id of the token to reject.
-     * @throws MysqlDataAccessException When an exception occurs while performing the operation.
+     * @throws MysqlDataAccessException When a data storage exception occurs while performing the operation.
      */
     @Override public void rejectMembership(int token) throws MysqlDataAccessException
     {

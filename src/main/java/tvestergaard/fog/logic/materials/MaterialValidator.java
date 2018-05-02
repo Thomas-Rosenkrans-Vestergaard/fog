@@ -13,13 +13,13 @@ public class MaterialValidator
      *
      * @param number      The number of the material to validate.
      * @param description The description of the material to validate.
-     * @param notes       The notes on the material to validate.
+     * @param price       The price of the material to validate.
+     * @param unit        The unit size of the material to validate.
      * @param width       The width of the material to validate.
      * @param height      The height of the material to validate.
-     * @param price       The price of the material to validate.
      * @return The errors (if any) resulting from the provided information.
      */
-    public Set<MaterialError> validate(String number, String description, String notes, int width, int height, int price)
+    public Set<MaterialError> validate(String number, String description, int price, int unit, int width, int height)
     {
         Set<MaterialError> errors = new HashSet<>();
 

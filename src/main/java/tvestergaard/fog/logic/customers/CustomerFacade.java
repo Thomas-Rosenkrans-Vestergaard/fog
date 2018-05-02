@@ -1,7 +1,6 @@
 package tvestergaard.fog.logic.customers;
 
 import com.mysql.cj.jdbc.MysqlDataSource;
-import org.mindrot.jbcrypt.BCrypt;
 import tvestergaard.fog.data.DataAccessException;
 import tvestergaard.fog.data.ProductionDataSource;
 import tvestergaard.fog.data.constraints.Constraint;
@@ -13,10 +12,6 @@ import tvestergaard.fog.logic.email.SimpleJavaMailer;
 
 import java.util.List;
 import java.util.Set;
-
-import static tvestergaard.fog.data.constraints.Constraint.eq;
-import static tvestergaard.fog.data.constraints.Constraint.where;
-import static tvestergaard.fog.data.customers.CustomerColumn.EMAIL;
 
 public class CustomerFacade
 {
@@ -30,8 +25,9 @@ public class CustomerFacade
     /**
      * The validator used the validate the information provided to the {@link CustomerFacade}.
      */
-    private final CustomerValidator validator;
-    private final PasswordResetter  passwordResetter;
+    private final CustomerValidator      validator;
+    private final PasswordResetter       passwordResetter;
+    private final CustomerAuthentication authentication;
 
     /**
      * Creates a new {@link CustomerFacade}.
@@ -45,6 +41,7 @@ public class CustomerFacade
         this.validator = new CustomerValidator(customerDAO);
         this.emailChallenger = new EmailChallenger(customerDAO, tokenDAO, new SimpleJavaMailer());
         this.passwordResetter = new PasswordResetter(customerDAO, tokenDAO, new SimpleJavaMailer(), new TokenGenerator());
+        this.authentication = new CustomerAuthentication(customerDAO, validator, emailChallenger);
     }
 
     /**
@@ -59,6 +56,7 @@ public class CustomerFacade
         this.validator = new CustomerValidator(customerDAO);
         this.emailChallenger = new EmailChallenger(customerDAO, tokenDAO, new SimpleJavaMailer());
         this.passwordResetter = new PasswordResetter(customerDAO, tokenDAO, new SimpleJavaMailer(), new TokenGenerator());
+        this.authentication = new CustomerAuthentication(customerDAO, validator, emailChallenger);
     }
 
     /**
@@ -89,68 +87,6 @@ public class CustomerFacade
     {
         try {
             return customerDAO.first(constraints);
-        } catch (DataAccessException e) {
-            throw new ApplicationException(e);
-        }
-    }
-
-    /**
-     * Inserts a new customer into the application.
-     *
-     * @param name     The name of the customer to create.
-     * @param address  The address of the customer to create.
-     * @param email    The email address of the customer to create.
-     * @param phone    The phone number of the customer to create.
-     * @param password The password of the customer to create.
-     * @param active   Whether or not the customer can be applied to orders.
-     * @return The customer instance representing the newly created customer.
-     * @throws CustomerValidatorException When the provided details are invalid.
-     * @throws ApplicationException       When an exception occurs while performing the operation.
-     */
-    public Customer register(String name,
-                             String address,
-                             String email,
-                             String phone,
-                             String password,
-                             boolean active) throws CustomerValidatorException
-    {
-        try {
-            Set<CustomerError> reasons = validator.validateRegister(name, address, email, phone, password);
-            if (!reasons.isEmpty())
-                throw new CustomerValidatorException(reasons);
-            CustomerBlueprint blueprint = CustomerBlueprint.from(name, address, email, phone, password, active);
-            blueprint.setPassword(hash(password));
-            Customer customer = customerDAO.create(blueprint);
-            emailChallenger.challenge(customer);
-            return customer;
-        } catch (DataAccessException e) {
-            throw new ApplicationException(e);
-        }
-    }
-
-    /**
-     * Attempts to authenticate a customer using the provided email and password.
-     *
-     * @param email    The email to authenticate with.
-     * @param password The password to authenticate with.
-     * @return The customer who was authenticated. {@code null} in case no customer with the provided credentials exist.
-     * @throws NoPasswordException       When the provided customer has no password.
-     * @throws InactiveCustomerException When the provided customer is marked inactive.
-     */
-    public Customer authenticate(String email, String password) throws NoPasswordException, InactiveCustomerException
-    {
-        try {
-            Customer customer = customerDAO.first(where(eq(EMAIL, email)));
-            if (customer == null)
-                return null;
-
-            if (customer.getPassword() == null)
-                throw new NoPasswordException();
-
-            if (!customer.isActive())
-                throw new InactiveCustomerException();
-
-            return BCrypt.checkpw(password, customer.getPassword()) ? customer : null;
         } catch (DataAccessException e) {
             throw new ApplicationException(e);
         }
@@ -192,18 +128,6 @@ public class CustomerFacade
         }
     }
 
-
-    /**
-     * Hashes the provided password using the b-crypt algorithm.
-     *
-     * @param password The password to hash.
-     * @return The resulting digest.
-     */
-    public static String hash(String password)
-    {
-        return BCrypt.hashpw(password, BCrypt.gensalt());
-    }
-
     /**
      * Updates the entity in the application to match the provided {@code customer}.
      *
@@ -232,6 +156,46 @@ public class CustomerFacade
             if (!reasons.isEmpty())
                 throw new CustomerValidatorException(reasons);
             return customerDAO.update(updater);
+        } catch (DataAccessException e) {
+            throw new ApplicationException(e);
+        }
+    }
+
+    /**
+     * Inserts a new customer into the application.
+     *
+     * @param name     The name of the customer to create.
+     * @param address  The address of the customer to create.
+     * @param email    The email address of the customer to create.
+     * @param phone    The phone number of the customer to create.
+     * @param password The password of the customer to create.
+     * @param active   Whether or not the customer can be applied to orders.
+     * @return The customer instance representing the newly created customer.
+     * @throws CustomerValidatorException When the provided details are invalid.
+     * @throws ApplicationException       When an exception occurs while performing the operation.
+     */
+    public Customer register(String name, String address, String email, String phone, String password, boolean active) throws CustomerValidatorException
+    {
+        try {
+            return authentication.register(name, address, email, phone, password, active);
+        } catch (DataAccessException e) {
+            throw new ApplicationException(e);
+        }
+    }
+
+    /**
+     * Attempts to authenticate a customer using the provided email and password.
+     *
+     * @param email    The email to authenticate with.
+     * @param password The password to authenticate with.
+     * @return The customer who was authenticated. {@code null} in case no customer with the provided credentials exist.
+     * @throws NoPasswordException       When the provided customer has no password.
+     * @throws InactiveCustomerException When the provided customer is marked inactive.
+     */
+    public Customer authenticate(String email, String password) throws NoPasswordException, InactiveCustomerException
+    {
+        try {
+            return authentication.authenticate(email, password);
         } catch (DataAccessException e) {
             throw new ApplicationException(e);
         }

@@ -13,7 +13,7 @@ public interface RoofingDAO
      *
      * @param constraints The constraints that modify the resulting list.
      * @return The complete list of the roofings in the data storage.
-     * @throws DataAccessException When an exception occurs while performing the operation.
+     * @throws DataAccessException When a data storage exception occurs while performing the operation.
      */
     List<Roofing> get(Constraint<RoofingColumn>... constraints) throws DataAccessException;
 
@@ -23,7 +23,7 @@ public interface RoofingDAO
      * @param constraints The constraints that modify the resulting list.
      * @return The first roofing matching the provided constraints. Returns {@code null} when no constraints matches the
      * provided constraints.
-     * @throws DataAccessException When an exception occurs while performing the operation.
+     * @throws DataAccessException When a data storage exception occurs while performing the operation.
      */
     Roofing first(Constraint<RoofingColumn>... constraints) throws DataAccessException;
 
@@ -32,7 +32,7 @@ public interface RoofingDAO
      *
      * @param blueprint The roofing blueprint that contains the information necessary to create the roofing.
      * @return The roofing instance representing the newly created roofing.
-     * @throws DataAccessException When an exception occurs while performing the operation.
+     * @throws DataAccessException When a data storage exception occurs while performing the operation.
      */
     Roofing create(RoofingBlueprint blueprint) throws DataAccessException;
 
@@ -41,7 +41,7 @@ public interface RoofingDAO
      *
      * @param updater The roofing updater that contains the information necessary to create the roofing.
      * @return {@link true} if the record was updated.
-     * @throws DataAccessException When an exception occurs while performing the operation.
+     * @throws DataAccessException When a data storage exception occurs while performing the operation.
      */
     boolean update(RoofingUpdater updater) throws DataAccessException;
 }

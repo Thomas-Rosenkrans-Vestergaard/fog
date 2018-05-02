@@ -13,7 +13,7 @@ public interface FlooringDAO
      *
      * @param constraints The constraints that modify the resulting list.
      * @return The resulting floorings.
-     * @throws DataAccessException When an exception occurs while performing the operation.
+     * @throws DataAccessException When a data storage exception occurs while performing the operation.
      */
     List<Flooring> get(Constraint<FlooringColumn>... constraints) throws DataAccessException;
 
@@ -23,7 +23,7 @@ public interface FlooringDAO
      * @param constraints The constraints that modify the resulting list.
      * @return The first flooring matching the provided constraints. Returns {@code null} when no constraints matches
      * the provided constraints.
-     * @throws DataAccessException When an exception occurs while performing the operation.
+     * @throws DataAccessException When a data storage exception occurs while performing the operation.
      */
     Flooring first(Constraint<FlooringColumn>... constraints) throws DataAccessException;
 
@@ -32,7 +32,7 @@ public interface FlooringDAO
      *
      * @param blueprint The flooring blueprint that contains the information necessary to create the flooring.
      * @return The flooring instance representing the newly created flooring.
-     * @throws DataAccessException When an exception occurs while performing the operation.
+     * @throws DataAccessException When a data storage exception occurs while performing the operation.
      */
     Flooring create(FlooringBlueprint blueprint) throws DataAccessException;
 
@@ -41,7 +41,7 @@ public interface FlooringDAO
      *
      * @param updater The flooring updater that contains the information necessary to create the flooring.
      * @return {@link true} if the record was updated.
-     * @throws DataAccessException When an exception occurs while performing the operation.
+     * @throws DataAccessException When a data storage exception occurs while performing the operation.
      */
     boolean update(FlooringUpdater updater) throws DataAccessException;
 }

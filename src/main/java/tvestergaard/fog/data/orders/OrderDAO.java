@@ -13,7 +13,7 @@ public interface OrderDAO
      *
      * @param constraints The constraints that modify the resulting list.
      * @return The resulting orders.
-     * @throws DataAccessException When an exception occurs while performing the operation.
+     * @throws DataAccessException When a data storage exception occurs while performing the operation.
      */
     List<Order> get(Constraint<OrderColumn>... constraints) throws DataAccessException;
 
@@ -24,7 +24,7 @@ public interface OrderDAO
      * @param constraints The constraints that modify the resulting list.
      * @return The first order matching the provided constraints. Returns {@code null} when no constraints matches the
      * provided constraints.
-     * @throws DataAccessException When an exception occurs while performing the operation.
+     * @throws DataAccessException When a data storage exception occurs while performing the operation.
      */
     Order first(Constraint<OrderColumn>... constraints) throws DataAccessException;
 
@@ -33,7 +33,7 @@ public interface OrderDAO
      *
      * @param blueprint The order blueprint that contains the information necessary to create the order.
      * @return The new order.
-     * @throws DataAccessException When an exception occurs during the operation.
+     * @throws DataAccessException When a data storage exception occurs during the operation.
      */
     Order create(OrderBlueprint blueprint) throws DataAccessException;
 
@@ -42,7 +42,7 @@ public interface OrderDAO
      *
      * @param updater The order updater that contains the information necessary to create the order.
      * @return {@link true} if the record was updated.
-     * @throws DataAccessException When an exception occurs while performing the operation.
+     * @throws DataAccessException When a data storage exception occurs while performing the operation.
      */
     boolean update(OrderUpdater updater) throws DataAccessException;
 
@@ -50,7 +50,7 @@ public interface OrderDAO
      * Returns the number of orders that are both active, and have not yet received any offers.
      *
      * @return The number of such orders.
-     * @throws DataAccessException When an exception occurs while performing the operation.
+     * @throws DataAccessException When a data storage exception occurs while performing the operation.
      */
     int getNumberOfNewOrders() throws DataAccessException;
 }

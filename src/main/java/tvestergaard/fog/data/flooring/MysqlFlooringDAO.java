@@ -43,18 +43,18 @@ public class MysqlFlooringDAO extends AbstractMysqlDAO implements FlooringDAO
      *
      * @param constraints The constraints that modify the resulting list.
      * @return The resulting floorings.
-     * @throws MysqlDataAccessException When an exception occurs while performing the operation.
+     * @throws MysqlDataAccessException When a data storage exception occurs while performing the operation.
      */
     @Override
     public List<Flooring> get(Constraint<FlooringColumn>... constraints) throws MysqlDataAccessException
     {
         final List<Flooring> floors = new ArrayList<>();
-        final String         SQL    = generator.generate("SELECT floorings.* FROM floorings", constraints);
+        final String         SQL    = generator.generate("SELECT * FROM floorings", constraints);
         try (java.sql.PreparedStatement statement = getConnection().prepareStatement(SQL)) {
             binder.bind(statement, constraints);
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next())
-                floors.add(createFlooring(resultSet));
+                floors.add(createFlooring("floorings", resultSet));
 
             return floors;
         } catch (SQLException e) {
@@ -68,7 +68,7 @@ public class MysqlFlooringDAO extends AbstractMysqlDAO implements FlooringDAO
      * @param constraints The constraints that modify the resulting list.
      * @return The first flooring matching the provided constraints. Returns {@code null} when no constraints matches
      * the provided constraints.
-     * @throws MysqlDataAccessException When an exception occurs while performing the operation.
+     * @throws MysqlDataAccessException When a data storage exception occurs while performing the operation.
      */
     @Override
     public Flooring first(Constraint<FlooringColumn>... constraints) throws MysqlDataAccessException
@@ -83,7 +83,7 @@ public class MysqlFlooringDAO extends AbstractMysqlDAO implements FlooringDAO
      *
      * @param blueprint The cladding blueprint that contains the information necessary to create the cladding.
      * @return The flooring instance representing the newly created flooring.
-     * @throws MysqlDataAccessException When an exception occurs while performing the operation.
+     * @throws MysqlDataAccessException When a data storage exception occurs while performing the operation.
      */
     @Override public Flooring create(FlooringBlueprint blueprint) throws MysqlDataAccessException
     {
@@ -120,7 +120,7 @@ public class MysqlFlooringDAO extends AbstractMysqlDAO implements FlooringDAO
      *
      * @param updater The cladding updater that contains the information necessary to create the cladding.
      * @return {@link true} if the record was updated.
-     * @throws DataAccessException When an exception occurs while performing the operation.
+     * @throws DataAccessException When a data storage exception occurs while performing the operation.
      */
     @Override public boolean update(FlooringUpdater updater) throws DataAccessException
     {

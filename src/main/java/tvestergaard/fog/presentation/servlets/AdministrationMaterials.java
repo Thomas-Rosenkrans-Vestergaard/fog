@@ -33,8 +33,8 @@ public class AdministrationMaterials extends HttpServlet
     public AdministrationMaterials()
     {
         dispatcher.get(null, new ShowTableCommand());
-        dispatcher.get("update", new ShowUpdateCommand());
-        dispatcher.post("update", new HandleUpdateCommand());
+//        dispatcher.get("update", new ShowUpdateCommand());
+//        dispatcher.post("update", new HandleUpdateCommand());
         dispatcher.get("create", new ShowCreateCommand());
         dispatcher.post("create", new HandleCreateCommand());
 
@@ -64,73 +64,6 @@ public class AdministrationMaterials extends HttpServlet
             request.setAttribute("title", "Materialee");
             request.setAttribute("materials", facade.get());
             request.getRequestDispatcher("/WEB-INF/administration/show_materials.jsp").forward(request, response);
-        }
-    }
-
-    class ShowUpdateCommand implements Command
-    {
-        @Override public void dispatch(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
-        {
-            Parameters    parameters    = new Parameters(request);
-            Notifications notifications = notifications(request);
-
-            if (!parameters.isInt("id")) {
-                notifications.error("No identifier provided.");
-                response.sendRedirect("materials");
-                return;
-            }
-
-            Material material = facade.first(where(eq(ID, parameters.getInt("id"))));
-            if (material == null) {
-                notifications.error("Unknown material.");
-                response.sendRedirect("materials");
-                return;
-            }
-
-            request.setAttribute("title", "Opdater materiale");
-            request.setAttribute("material", material);
-            request.getRequestDispatcher("/WEB-INF/administration/update_material.jsp").forward(request, response);
-        }
-    }
-
-    private class HandleUpdateCommand implements Command
-    {
-        @Override public void dispatch(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
-        {
-            Parameters    parameters    = new Parameters(request);
-            Notifications notifications = notifications(request);
-
-            if (!parameters.isInt("id") ||
-                    !parameters.isPresent("number") ||
-                    !parameters.isPresent("description") ||
-                    !parameters.isPresent("notes") ||
-                    !parameters.isInt("width") ||
-                    !parameters.isInt("height") ||
-                    !parameters.isInt("price")) {
-                notifications.error("Cannot format parameters.");
-                response.sendRedirect("materials");
-                return;
-            }
-
-            try {
-                facade.update(
-                        parameters.getInt("id"),
-                        parameters.value("number"),
-                        parameters.value("description"),
-                        parameters.value("notes"),
-                        parameters.getInt("width"),
-                        parameters.getInt("height"),
-                        parameters.getInt("price"));
-
-                notifications.success("Materialet blev opdateret.");
-                response.sendRedirect("?action=update&id=" + parameters.getInt("id"));
-
-            } catch (MaterialValidatorException e) {
-                for (MaterialError error : e.getErrors())
-                    notifications.error(errors.get(error));
-                response.sendRedirect("?action=update&id=" + parameters.getInt("id"));
-                return;
-            }
         }
     }
 
@@ -168,10 +101,10 @@ public class AdministrationMaterials extends HttpServlet
                 Material material = facade.create(
                         parameters.value("number"),
                         parameters.value("description"),
-                        parameters.value("notes"),
+                        parameters.getInt("price"),
+                        parameters.getInt("unit"),
                         parameters.getInt("width"),
-                        parameters.getInt("height"),
-                        parameters.getInt("price"));
+                        parameters.getInt("height"));
 
                 notifications.success("Materialeet blev oprettet.");
                 response.sendRedirect("?action=update&id=" + material.getId());

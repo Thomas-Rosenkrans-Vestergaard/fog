@@ -13,7 +13,7 @@ public interface CladdingDAO
      *
      * @param constraints The constraints that modify the resulting list.
      * @return The complete list of the claddings in the data storage.
-     * @throws DataAccessException When an exception occurs while performing the operation.
+     * @throws DataAccessException When a data storage exception occurs while performing the operation.
      */
     List<Cladding> get(Constraint<CladdingColumn>... constraints) throws DataAccessException;
 
@@ -23,7 +23,7 @@ public interface CladdingDAO
      * @param constraints The constraints that modify the resulting list.
      * @return The first cladding matching the provided constraints. Returns {@code null} when no constraints matches
      * the provided constraints.
-     * @throws DataAccessException When an exception occurs while performing the operation.
+     * @throws DataAccessException When a data storage exception occurs while performing the operation.
      */
     Cladding first(Constraint<CladdingColumn>... constraints) throws DataAccessException;
 
@@ -32,7 +32,7 @@ public interface CladdingDAO
      *
      * @param blueprint The cladding blueprint that contains the information necessary to create the cladding.
      * @return The cladding instance representing the newly created cladding.
-     * @throws DataAccessException When an exception occurs while performing the operation.
+     * @throws DataAccessException When a data storage exception occurs while performing the operation.
      */
     Cladding create(CladdingBlueprint blueprint) throws DataAccessException;
 
@@ -41,7 +41,7 @@ public interface CladdingDAO
      *
      * @param updater The cladding updater that contains the information necessary to create the cladding.
      * @return {@link true} if the record was updated.
-     * @throws DataAccessException When an exception occurs while performing the operation.
+     * @throws DataAccessException When a data storage exception occurs while performing the operation.
      */
     boolean update(CladdingUpdater updater) throws DataAccessException;
 }

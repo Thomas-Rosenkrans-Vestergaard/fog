@@ -42,20 +42,20 @@ public class MysqlMaterialDAO extends AbstractMysqlDAO implements MaterialDAO
      *
      * @param constraints The constraints that modify the resulting list.
      * @return The resulting materials.
-     * @throws MysqlDataAccessException When an exception occurs while performing the operation.
+     * @throws MysqlDataAccessException When a data storage exception occurs while performing the operation.
      */
     @Override
     public List<Material> get(Constraint<MaterialColumn>... constraints) throws MysqlDataAccessException
     {
-        final List<Material> floors = new ArrayList<>();
+        final List<Material> materials = new ArrayList<>();
         final String         SQL    = generator.generate("SELECT * FROM materials", constraints);
         try (PreparedStatement statement = getConnection().prepareStatement(SQL)) {
             binder.bind(statement, constraints);
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next())
-                floors.add(createMaterial(resultSet));
+                materials.add(createMaterial("materials", resultSet));
 
-            return floors;
+            return materials;
         } catch (SQLException e) {
             throw new MysqlDataAccessException(e);
         }
@@ -67,7 +67,7 @@ public class MysqlMaterialDAO extends AbstractMysqlDAO implements MaterialDAO
      * @param constraints The constraints that modify the resulting list.
      * @return The first material matching the provided constraints. Returns {@code null} when no constraints matches
      * the provided constraints.
-     * @throws MysqlDataAccessException When an exception occurs while performing the operation.
+     * @throws MysqlDataAccessException When a data storage exception occurs while performing the operation.
      */
     @Override
     public Material first(Constraint<MaterialColumn>... constraints) throws MysqlDataAccessException
@@ -82,21 +82,21 @@ public class MysqlMaterialDAO extends AbstractMysqlDAO implements MaterialDAO
      *
      * @param blueprint The material blueprint that contains the information necessary to create the material.
      * @return The material instance representing the newly created material.
-     * @throws MysqlDataAccessException When an exception occurs while performing the operation.
+     * @throws MysqlDataAccessException When a data storage exception occurs while performing the operation.
      */
     @Override public Material create(MaterialBlueprint blueprint) throws MysqlDataAccessException
     {
         try {
-            final String SQL = "INSERT INTO materials (`number`, description, notes, width, height, price) " +
+            final String SQL = "INSERT INTO materials (`number`, description, price, unit, width, height) " +
                     "VALUES (?, ?, ?, ?, ?, ?)";
             Connection connection = getConnection();
             try (PreparedStatement statement = connection.prepareStatement(SQL, Statement.RETURN_GENERATED_KEYS)) {
                 statement.setString(1, blueprint.getNumber());
                 statement.setString(2, blueprint.getDescription());
-                statement.setString(3, blueprint.getNotes());
-                statement.setInt(4, blueprint.getWidth());
-                statement.setInt(5, blueprint.getHeight());
-                statement.setInt(6, blueprint.getPrice());
+                statement.setInt(3, blueprint.getPrice());
+                statement.setInt(4, blueprint.getUnit());
+                statement.setInt(5, blueprint.getWidth());
+                statement.setInt(6, blueprint.getHeight());
                 int updated = statement.executeUpdate();
                 connection.commit();
                 if (updated == 0)
@@ -107,10 +107,10 @@ public class MysqlMaterialDAO extends AbstractMysqlDAO implements MaterialDAO
                         generated.getInt(1),
                         blueprint.getNumber(),
                         blueprint.getDescription(),
-                        blueprint.getNotes(),
+                        blueprint.getPrice(),
+                        blueprint.getUnit(),
                         blueprint.getWidth(),
-                        blueprint.getHeight(),
-                        blueprint.getPrice()
+                        blueprint.getHeight()
                 );
             } catch (SQLException e) {
                 connection.rollback();
@@ -131,14 +131,15 @@ public class MysqlMaterialDAO extends AbstractMysqlDAO implements MaterialDAO
     @Override public boolean update(MaterialUpdater updater) throws MysqlDataAccessException
     {
         try {
-            final String SQL        = "UPDATE materials SET description = ?, notes = ?, width = ?, height = ? WHERE id = ?";
+            final String SQL        = "UPDATE materials SET description = ?, price = ?, unit = ?, width = ?, height = ? WHERE id = ?";
             Connection   connection = getConnection();
             try (PreparedStatement statement = connection.prepareStatement(SQL)) {
                 statement.setString(1, updater.getDescription());
-                statement.setString(2, updater.getNotes());
-                statement.setInt(3, updater.getWidth());
-                statement.setInt(4, updater.getHeight());
-                statement.setInt(5, updater.getId());
+                statement.setInt(2, updater.getPrice());
+                statement.setInt(3, updater.getUnit());
+                statement.setInt(4, updater.getWidth());
+                statement.setInt(5, updater.getHeight());
+                statement.setInt(6, updater.getId());
                 int updated = statement.executeUpdate();
                 connection.commit();
                 return updated != 0;
@@ -149,18 +150,5 @@ public class MysqlMaterialDAO extends AbstractMysqlDAO implements MaterialDAO
         } catch (SQLException e) {
             throw new MysqlDataAccessException(e);
         }
-    }
-
-    private Material createMaterial(ResultSet resultSet) throws SQLException
-    {
-        return new MaterialRecord(
-                resultSet.getInt("materials.id"),
-                resultSet.getString("materials.number"),
-                resultSet.getString("materials.description"),
-                resultSet.getString("materials.notes"),
-                resultSet.getInt("materials.width"),
-                resultSet.getInt("materials.height"),
-                resultSet.getInt("materials.price")
-        );
     }
 }

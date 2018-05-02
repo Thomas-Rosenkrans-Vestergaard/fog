@@ -32,11 +32,11 @@ public class MysqlMaterialDAOTest
     @Before
     public void before() throws Exception
     {
-        material1 = dao.create(MaterialBlueprint.from("number1", "description1", "notes1", 1, 6, 11));
-        material2 = dao.create(MaterialBlueprint.from("number2", "description2", "notes2", 2, 7, 12));
-        material3 = dao.create(MaterialBlueprint.from("number3", "description3", "notes3", 3, 8, 13));
-        material4 = dao.create(MaterialBlueprint.from("number4", "description4", "notes4", 4, 9, 14));
-        material5 = dao.create(MaterialBlueprint.from("number5", "description5", "notes5", 5, 10, 15));
+        material1 = dao.create(MaterialBlueprint.from("number1", "description1", 1, 6, 11, 16));
+        material2 = dao.create(MaterialBlueprint.from("number2", "description2", 2, 7, 12, 17));
+        material3 = dao.create(MaterialBlueprint.from("number3", "description3", 3, 8, 13, 18));
+        material4 = dao.create(MaterialBlueprint.from("number4", "description4", 4, 9, 14, 19));
+        material5 = dao.create(MaterialBlueprint.from("number5", "description5", 5, 10, 15, 20));
     }
 
     @After
@@ -123,24 +123,25 @@ public class MysqlMaterialDAOTest
     {
         String   number      = randomString();
         String   description = randomString();
-        String   notes       = randomString();
+        int      price       = randomInt(0, 100000);
+        int      unit        = randomInt(0, 100000);
         int      width       = randomInt(0, 100000);
         int      height      = randomInt(0, 100000);
-        int      price       = randomInt(0, 100000);
-        Material actual      = dao.create(MaterialBlueprint.from(number, description, notes, width, height, price));
+        Material actual      = dao.create(MaterialBlueprint.from(number, description, price, unit, width, height));
         assertEquals(number, actual.getNumber());
         assertEquals(description, actual.getDescription());
-        assertEquals(notes, actual.getNotes());
+        assertEquals(price, actual.getPrice());
+        assertEquals(unit, actual.getUnit());
         assertEquals(width, actual.getWidth());
         assertEquals(height, actual.getHeight());
-        assertEquals(price, actual.getPrice());
     }
 
     @Test
     public void update() throws Exception
     {
         material1.setDescription(randomString());
-        material1.setNotes(randomString());
+        material1.setPrice(randomInt(0, 10000));
+        material1.setUnit(randomInt(0, 100000));
         material1.setWidth(randomInt(0, 100000));
         material1.setHeight(randomInt(0, 100000));
 

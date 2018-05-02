@@ -13,7 +13,7 @@ public interface EmployeeDAO
      *
      * @param constraints The constraints that modify the resulting list.
      * @return The resulting employees.
-     * @throws DataAccessException When an exception occurs while performing the operation.
+     * @throws DataAccessException When a data storage exception occurs while performing the operation.
      */
     List<Employee> get(Constraint<EmployeeColumn>... constraints) throws DataAccessException;
 
@@ -23,7 +23,7 @@ public interface EmployeeDAO
      * @param constraints The constraints that modify the resulting list.
      * @return The first employee matching the provided constraints. Returns {@code null} when no constraints matches
      * the provided constraints.
-     * @throws DataAccessException When an exception occurs while performing the operation.
+     * @throws DataAccessException When a data storage exception occurs while performing the operation.
      */
     Employee first(Constraint<EmployeeColumn>... constraints) throws DataAccessException;
 
@@ -32,7 +32,7 @@ public interface EmployeeDAO
      *
      * @param blueprint The cladding blueprint that contains the information necessary to create the cladding.
      * @return The employee instance representing the newly created employee.
-     * @throws DataAccessException When an exception occurs while performing the operation.
+     * @throws DataAccessException When a data storage exception occurs while performing the operation.
      */
     Employee create(EmployeeBlueprint blueprint) throws DataAccessException;
 
@@ -41,7 +41,7 @@ public interface EmployeeDAO
      *
      * @param updater The cladding updater that contains the information necessary to create the cladding.
      * @return {@link true} if the record was updated.
-     * @throws DataAccessException When an exception occurs while performing the operation.
+     * @throws DataAccessException When a data storage exception occurs while performing the operation.
      */
     boolean update(EmployeeUpdater updater) throws DataAccessException;
 }

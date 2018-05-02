@@ -6,7 +6,6 @@ import tvestergaard.fog.data.DataAccessException;
 import tvestergaard.fog.data.ProductionDataSource;
 import tvestergaard.fog.data.constraints.Constraint;
 import tvestergaard.fog.data.employees.*;
-import tvestergaard.fog.data.tokens.TokenDAO;
 import tvestergaard.fog.logic.ApplicationException;
 
 import java.util.HashSet;
@@ -27,9 +26,11 @@ public class EmployeeFacade
     private final EmployeeDAO employeeDAO;
 
     /**
-     * The validator responsible for validating inforamtion about employees.
+     * The validator responsible for validating information about employees.
      */
     private final EmployeeValidator validator;
+
+    private final EmployeeAuthentication authentication;
 
     /**
      * Creates a new {@link EmployeeFacade}.
@@ -37,10 +38,11 @@ public class EmployeeFacade
      * @param employeeDAO The {@link EmployeeDAO} used to access and make changes to the data storage used by the
      *                    application.
      */
-    public EmployeeFacade(EmployeeDAO employeeDAO, TokenDAO tokenDAO)
+    public EmployeeFacade(EmployeeDAO employeeDAO)
     {
         this.employeeDAO = employeeDAO;
         this.validator = new EmployeeValidator(employeeDAO);
+        this.authentication = new EmployeeAuthentication(employeeDAO, validator);
     }
 
     /**
@@ -52,6 +54,7 @@ public class EmployeeFacade
         MysqlDataSource source = ProductionDataSource.getSource();
         this.employeeDAO = new MysqlEmployeeDAO(source);
         this.validator = new EmployeeValidator(this.employeeDAO);
+        this.authentication = new EmployeeAuthentication(employeeDAO, validator);
     }
 
     /**
