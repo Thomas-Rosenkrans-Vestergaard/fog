@@ -22,7 +22,7 @@ import static tvestergaard.fog.presentation.PresentationFunctions.notifications;
 public class AccountServlet extends HttpServlet
 {
 
-    private final CustomerFacade             facade        = new CustomerFacade();
+    private final CustomerFacade             facade        = Facades.customerFacade;
     private final Map<CustomerError, String> errorMessages = new HashMap<>();
 
     public AccountServlet()

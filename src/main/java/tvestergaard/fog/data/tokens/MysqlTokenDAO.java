@@ -25,11 +25,6 @@ public class MysqlTokenDAO extends AbstractMysqlDAO implements TokenDAO
         super(source);
     }
 
-    public MysqlTokenDAO()
-    {
-        this(ProductionDataSource.getSource());
-    }
-
     /**
      * Inserts a new registration token into the data storage.
      *

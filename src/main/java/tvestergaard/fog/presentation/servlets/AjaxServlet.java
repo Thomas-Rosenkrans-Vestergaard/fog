@@ -1,7 +1,5 @@
 package tvestergaard.fog.presentation.servlets;
 
-import tvestergaard.fog.data.tokens.MysqlTokenDAO;
-import tvestergaard.fog.data.tokens.TokenDAO;
 import tvestergaard.fog.logic.orders.OrderFacade;
 
 import javax.servlet.ServletException;
@@ -17,8 +15,7 @@ public class AjaxServlet extends HttpServlet
 {
 
     private final CommandDispatcher dispatcher  = new CommandDispatcher();
-    private final OrderFacade       orderFacade = new OrderFacade();
-    private final TokenDAO          tokenDAO    = new MysqlTokenDAO();
+    private final OrderFacade       orderFacade = Facades.orderFacade;
 
     public AjaxServlet()
     {

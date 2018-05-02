@@ -33,14 +33,6 @@ public class RoofingFacade
     }
 
     /**
-     * Creates a new {@link RoofingDAO} using the {@link MysqlRoofingDAO} for the {@link ProductionDataSource}.
-     */
-    public RoofingFacade()
-    {
-        this(new MysqlRoofingDAO(ProductionDataSource.getSource()));
-    }
-
-    /**
      * Returns the roofings in the data storage. The results can be constrained using the provided constraints.
      *
      * @param constraints The constraints that modify the resulting list.

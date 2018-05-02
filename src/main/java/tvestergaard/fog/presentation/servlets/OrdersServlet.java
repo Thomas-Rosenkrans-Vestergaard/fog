@@ -23,7 +23,7 @@ import static tvestergaard.fog.presentation.PresentationFunctions.notifications;
 public class OrdersServlet extends HttpServlet
 {
 
-    private final OrderFacade orderFacade = new OrderFacade();
+    private final OrderFacade orderFacade = Facades.orderFacade;
 
     /**
      * Displays the /orders page, where customers can see their order history.

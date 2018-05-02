@@ -1,21 +1,16 @@
 package tvestergaard.fog.presentation.servlets;
 
-import tvestergaard.fog.data.DataAccessException;
-import tvestergaard.fog.data.ProductionDataSource;
 import tvestergaard.fog.data.cladding.CladdingColumn;
-import tvestergaard.fog.data.cladding.CladdingDAO;
-import tvestergaard.fog.data.cladding.MysqlCladdingDAO;
 import tvestergaard.fog.data.customers.Customer;
 import tvestergaard.fog.data.flooring.FlooringColumn;
-import tvestergaard.fog.data.flooring.FlooringDAO;
-import tvestergaard.fog.data.flooring.MysqlFlooringDAO;
 import tvestergaard.fog.data.orders.RafterChoice;
-import tvestergaard.fog.data.roofing.MysqlRoofingDAO;
 import tvestergaard.fog.data.roofing.RoofingColumn;
-import tvestergaard.fog.data.roofing.RoofingDAO;
+import tvestergaard.fog.logic.claddings.CladdingFacade;
 import tvestergaard.fog.logic.customers.CustomerFacade;
 import tvestergaard.fog.logic.customers.InactiveCustomerException;
+import tvestergaard.fog.logic.floorings.FlooringFacade;
 import tvestergaard.fog.logic.orders.*;
+import tvestergaard.fog.logic.roofings.RoofingFacade;
 import tvestergaard.fog.presentation.Authentication;
 import tvestergaard.fog.presentation.Notifications;
 import tvestergaard.fog.presentation.Parameters;
@@ -37,11 +32,11 @@ import static tvestergaard.fog.presentation.PresentationFunctions.notifications;
 public class DesignServlet extends HttpServlet
 {
 
-    private final CustomerFacade customerFacade = new CustomerFacade();
-    private final RoofingDAO     roofingsDAO    = new MysqlRoofingDAO(ProductionDataSource.getSource());
-    private final FlooringDAO    flooringsDAO   = new MysqlFlooringDAO(ProductionDataSource.getSource());
-    private final CladdingDAO    claddingsDAO   = new MysqlCladdingDAO(ProductionDataSource.getSource());
-    private final OrderFacade    orderFacade    = new OrderFacade();
+    private final CustomerFacade customerFacade  = Facades.customerFacade;
+    private final RoofingFacade  roofingsFacade  = Facades.roofingFacade;
+    private final FlooringFacade flooringsFacade = Facades.flooringFacade;
+    private final CladdingFacade claddingsFacade = Facades.claddingFacade;
+    private final OrderFacade    orderFacade     = Facades.orderFacade;
 
     /**
      * Displays the /design page, where customers can design their own garage.
@@ -56,17 +51,12 @@ public class DesignServlet extends HttpServlet
     {
         Authentication authentication = new Authentication(req);
 
-        try {
-            req.setAttribute("title", "Placér ordre");
-            req.setAttribute("roofings", roofingsDAO.get(where(eq(RoofingColumn.ACTIVE, true))));
-            req.setAttribute("floorings", flooringsDAO.get(where(eq(FlooringColumn.ACTIVE, true))));
-            req.setAttribute("claddings", claddingsDAO.get(where(eq(CladdingColumn.ACTIVE, true))));
-            req.setAttribute("customer", authentication.getCustomer());
-
-            req.getRequestDispatcher("/WEB-INF/design.jsp").forward(req, resp);
-        } catch (DataAccessException e) {
-            throw new ServletException(e);
-        }
+        req.setAttribute("title", "Placér ordre");
+        req.setAttribute("roofings", roofingsFacade.get(where(eq(RoofingColumn.ACTIVE, true))));
+        req.setAttribute("floorings", flooringsFacade.get(where(eq(FlooringColumn.ACTIVE, true))));
+        req.setAttribute("claddings", claddingsFacade.get(where(eq(CladdingColumn.ACTIVE, true))));
+        req.setAttribute("customer", authentication.getCustomer());
+        req.getRequestDispatcher("/WEB-INF/design.jsp").forward(req, resp);
     }
 
     /**

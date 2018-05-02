@@ -33,14 +33,6 @@ public class CladdingFacade
     }
 
     /**
-     * Creates a new {@link CladdingDAO} using the {@link MysqlCladdingDAO} for the {@link ProductionDataSource}.
-     */
-    public CladdingFacade()
-    {
-        this(new MysqlCladdingDAO(ProductionDataSource.getSource()));
-    }
-
-    /**
      * Returns the claddings in the data storage. The results can be constrained using the provided constraints.
      *
      * @param constraints The constraints that modify the resulting list.

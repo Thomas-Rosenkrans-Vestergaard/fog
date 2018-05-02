@@ -33,14 +33,6 @@ public class FlooringFacade
     }
 
     /**
-     * Creates a new {@link FlooringDAO} using the {@link MysqlFlooringDAO} for the {@link ProductionDataSource}.
-     */
-    public FlooringFacade()
-    {
-        this(new MysqlFlooringDAO(ProductionDataSource.getSource()));
-    }
-
-    /**
      * Returns the floorings in the data storage. The results can be constrained using the provided constraints.
      *
      * @param constraints The constraints that modify the resulting list.

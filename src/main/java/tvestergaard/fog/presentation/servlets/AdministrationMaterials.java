@@ -27,7 +27,7 @@ import static tvestergaard.fog.presentation.PresentationFunctions.notifications;
 public class AdministrationMaterials extends HttpServlet
 {
 
-    private final MaterialFacade             facade     = new MaterialFacade();
+    private final MaterialFacade             facade     = Facades.materialFacade;
     private final CommandDispatcher          dispatcher = new CommandDispatcher();
     private final Map<MaterialError, String> errors     = new HashMap<>();
 

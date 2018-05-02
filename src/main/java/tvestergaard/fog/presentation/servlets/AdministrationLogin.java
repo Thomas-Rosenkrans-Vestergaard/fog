@@ -3,7 +3,6 @@ package tvestergaard.fog.presentation.servlets;
 import tvestergaard.fog.data.employees.Employee;
 import tvestergaard.fog.logic.employees.EmployeeFacade;
 import tvestergaard.fog.logic.employees.InactiveEmployeeException;
-import tvestergaard.fog.logic.employees.IncorrectCredentialsException;
 import tvestergaard.fog.presentation.Notifications;
 import tvestergaard.fog.presentation.Parameters;
 
@@ -21,7 +20,7 @@ import static tvestergaard.fog.presentation.PresentationFunctions.notifications;
 public class AdministrationLogin extends HttpServlet
 {
 
-    private final EmployeeFacade facade = new EmployeeFacade();
+    private final EmployeeFacade facade = Facades.emplyeeFacade;
 
     /**
      * Shows a page where employees can authenticate themselves.

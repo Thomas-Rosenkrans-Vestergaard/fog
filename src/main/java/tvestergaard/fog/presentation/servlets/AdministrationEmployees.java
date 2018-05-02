@@ -28,7 +28,7 @@ import static tvestergaard.fog.presentation.PresentationFunctions.notifications;
 @WebServlet(urlPatterns = "/administration/employees")
 public class AdministrationEmployees extends HttpServlet
 {
-    private final EmployeeFacade             facade     = new EmployeeFacade();
+    private final EmployeeFacade             facade     = Facades.emplyeeFacade;
     private final CommandDispatcher          dispatcher = new CommandDispatcher();
     private final Map<EmployeeError, String> errors     = new HashMap<>();
 
@@ -79,7 +79,7 @@ public class AdministrationEmployees extends HttpServlet
      * @throws ServletException if the request for the GET could not be handled
      */
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException
+    public void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException
     {
         Authentication authentication = new Authentication(req);
         Notifications  notifications  = notifications(req);

@@ -33,14 +33,6 @@ public class MaterialFacade
     }
 
     /**
-     * Creates a new {@link MaterialDAO} using the {@link MysqlMaterialDAO} for the {@link ProductionDataSource}.
-     */
-    public MaterialFacade()
-    {
-        this(new MysqlMaterialDAO(ProductionDataSource.getSource()));
-    }
-
-    /**
      * Returns the materials in the data storage. The results can be constrained using the provided constraints.
      *
      * @param constraints The constraints that modify the resulting list.

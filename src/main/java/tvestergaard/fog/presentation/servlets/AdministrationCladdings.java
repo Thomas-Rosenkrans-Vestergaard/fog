@@ -27,7 +27,7 @@ import static tvestergaard.fog.presentation.PresentationFunctions.notifications;
 public class AdministrationCladdings extends HttpServlet
 {
 
-    private final CladdingFacade             facade     = new CladdingFacade();
+    private final CladdingFacade             facade     = Facades.claddingFacade;
     private final CommandDispatcher          dispatcher = new CommandDispatcher();
     private final Map<CladdingError, String> errors     = new HashMap<>();
 

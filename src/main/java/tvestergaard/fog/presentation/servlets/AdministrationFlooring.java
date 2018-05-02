@@ -27,7 +27,7 @@ import static tvestergaard.fog.presentation.PresentationFunctions.notifications;
 public class AdministrationFlooring extends HttpServlet
 {
 
-    private final FlooringFacade             facade     = new FlooringFacade();
+    private final FlooringFacade             facade     = Facades.flooringFacade;
     private final CommandDispatcher          dispatcher = new CommandDispatcher();
     private final Map<FlooringError, String> errors     = new HashMap<>();
 

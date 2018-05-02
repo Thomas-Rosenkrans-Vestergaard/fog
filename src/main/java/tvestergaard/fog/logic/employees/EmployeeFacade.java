@@ -1,9 +1,7 @@
 package tvestergaard.fog.logic.employees;
 
-import com.mysql.cj.jdbc.MysqlDataSource;
 import org.mindrot.jbcrypt.BCrypt;
 import tvestergaard.fog.data.DataAccessException;
-import tvestergaard.fog.data.ProductionDataSource;
 import tvestergaard.fog.data.constraints.Constraint;
 import tvestergaard.fog.data.employees.*;
 import tvestergaard.fog.logic.ApplicationException;
@@ -40,18 +38,6 @@ public class EmployeeFacade
     {
         this.employeeDAO = employeeDAO;
         this.validator = new EmployeeValidator(employeeDAO);
-        this.authentication = new EmployeeAuthentication(employeeDAO, validator);
-    }
-
-    /**
-     * Creates a new {@link EmployeeFacade} using a {@link MysqlEmployeeDAO} with the connection provided from {@link
-     * ProductionDataSource#getSource()}.
-     */
-    public EmployeeFacade()
-    {
-        MysqlDataSource source = ProductionDataSource.getSource();
-        this.employeeDAO = new MysqlEmployeeDAO(source);
-        this.validator = new EmployeeValidator(this.employeeDAO);
         this.authentication = new EmployeeAuthentication(employeeDAO, validator);
     }
 

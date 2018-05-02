@@ -1,18 +1,8 @@
 package tvestergaard.fog.logic.orders;
 
-import com.mysql.cj.jdbc.MysqlDataSource;
 import tvestergaard.fog.data.DataAccessException;
-import tvestergaard.fog.data.ProductionDataSource;
-import tvestergaard.fog.data.cladding.CladdingDAO;
-import tvestergaard.fog.data.cladding.MysqlCladdingDAO;
 import tvestergaard.fog.data.constraints.Constraint;
-import tvestergaard.fog.data.customers.CustomerDAO;
-import tvestergaard.fog.data.customers.MysqlCustomerDAO;
-import tvestergaard.fog.data.flooring.FlooringDAO;
-import tvestergaard.fog.data.flooring.MysqlFlooringDAO;
 import tvestergaard.fog.data.orders.*;
-import tvestergaard.fog.data.roofing.MysqlRoofingDAO;
-import tvestergaard.fog.data.roofing.RoofingDAO;
 import tvestergaard.fog.logic.ApplicationException;
 import tvestergaard.fog.logic.customers.InactiveCustomerException;
 
@@ -25,30 +15,10 @@ public class OrderFacade
     private final OrderDAO       dao;
     private final OrderValidator validator;
 
-    private final CustomerDAO customerDAO;
-    private final CladdingDAO claddingDAO;
-    private final RoofingDAO  roofingDAO;
-    private final FlooringDAO flooringDAO;
-
-    public OrderFacade(OrderDAO dao, OrderValidator validator, CustomerDAO customerDAO, CladdingDAO claddingDAO, RoofingDAO roofingDAO, FlooringDAO flooringDAO)
+    public OrderFacade(OrderDAO dao)
     {
         this.dao = dao;
-        this.validator = validator;
-        this.customerDAO = customerDAO;
-        this.claddingDAO = claddingDAO;
-        this.roofingDAO = roofingDAO;
-        this.flooringDAO = flooringDAO;
-    }
-
-    public OrderFacade()
-    {
-        MysqlDataSource source = ProductionDataSource.getSource();
-        this.dao = new MysqlOrderDAO(source);
         this.validator = new OrderValidator();
-        this.customerDAO = new MysqlCustomerDAO(source);
-        this.claddingDAO = new MysqlCladdingDAO(source);
-        this.roofingDAO = new MysqlRoofingDAO(source);
-        this.flooringDAO = new MysqlFlooringDAO(source);
     }
 
     /**

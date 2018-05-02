@@ -32,10 +32,10 @@ import static tvestergaard.fog.presentation.PresentationFunctions.notifications;
 public class AdministrationOrders extends HttpServlet
 {
 
-    private final OrderFacade             orderFacade    = new OrderFacade();
-    private final CladdingFacade          claddingFacade = new CladdingFacade();
-    private final FlooringFacade          flooringFacade = new FlooringFacade();
-    private final RoofingFacade           roofingFacade  = new RoofingFacade();
+    private final OrderFacade             orderFacade    = Facades.orderFacade;
+    private final CladdingFacade          claddingFacade = Facades.claddingFacade;
+    private final FlooringFacade          flooringFacade = Facades.flooringFacade;
+    private final RoofingFacade           roofingFacade  = Facades.roofingFacade;
     private final CommandDispatcher       dispatcher     = new CommandDispatcher();
     private final Map<OrderError, String> errors         = new HashMap<>();
 

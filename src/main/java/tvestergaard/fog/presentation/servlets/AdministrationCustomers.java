@@ -27,7 +27,7 @@ import static tvestergaard.fog.presentation.PresentationFunctions.notifications;
 public class AdministrationCustomers extends HttpServlet
 {
 
-    private final CustomerFacade             facade     = new CustomerFacade();
+    private final CustomerFacade             facade     = Facades.customerFacade;
     private final CommandDispatcher          dispatcher = new CommandDispatcher();
     private final Map<CustomerError, String> errors     = new HashMap<>();
 

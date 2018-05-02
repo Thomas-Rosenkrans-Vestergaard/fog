@@ -18,7 +18,7 @@ import static tvestergaard.fog.presentation.PresentationFunctions.notifications;
 public class ForgotPasswordServlet extends HttpServlet
 {
 
-    private final CustomerFacade customerFacade = new CustomerFacade();
+    private final CustomerFacade customerFacade = Facades.customerFacade;
 
     /**
      * Displays a page, where customers can request to reset their password.

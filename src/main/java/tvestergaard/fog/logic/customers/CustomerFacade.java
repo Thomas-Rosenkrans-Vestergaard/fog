@@ -1,11 +1,11 @@
 package tvestergaard.fog.logic.customers;
 
-import com.mysql.cj.jdbc.MysqlDataSource;
 import tvestergaard.fog.data.DataAccessException;
-import tvestergaard.fog.data.ProductionDataSource;
 import tvestergaard.fog.data.constraints.Constraint;
-import tvestergaard.fog.data.customers.*;
-import tvestergaard.fog.data.tokens.MysqlTokenDAO;
+import tvestergaard.fog.data.customers.Customer;
+import tvestergaard.fog.data.customers.CustomerColumn;
+import tvestergaard.fog.data.customers.CustomerDAO;
+import tvestergaard.fog.data.customers.CustomerUpdater;
 import tvestergaard.fog.data.tokens.TokenDAO;
 import tvestergaard.fog.logic.ApplicationException;
 import tvestergaard.fog.logic.email.SimpleJavaMailer;
@@ -38,21 +38,6 @@ public class CustomerFacade
     public CustomerFacade(CustomerDAO customerDAO, TokenDAO tokenDAO)
     {
         this.customerDAO = customerDAO;
-        this.validator = new CustomerValidator(customerDAO);
-        this.emailChallenger = new EmailChallenger(customerDAO, tokenDAO, new SimpleJavaMailer());
-        this.passwordResetter = new PasswordResetter(customerDAO, tokenDAO, new SimpleJavaMailer(), new TokenGenerator());
-        this.authentication = new CustomerAuthentication(customerDAO, validator, emailChallenger);
-    }
-
-    /**
-     * Creates a new {@link CustomerFacade} using a {@link MysqlCustomerDAO} with the connection provided from {@link
-     * ProductionDataSource#getSource()}.
-     */
-    public CustomerFacade()
-    {
-        MysqlDataSource source = ProductionDataSource.getSource();
-        this.customerDAO = new MysqlCustomerDAO(source);
-        TokenDAO tokenDAO = new MysqlTokenDAO(source);
         this.validator = new CustomerValidator(customerDAO);
         this.emailChallenger = new EmailChallenger(customerDAO, tokenDAO, new SimpleJavaMailer());
         this.passwordResetter = new PasswordResetter(customerDAO, tokenDAO, new SimpleJavaMailer(), new TokenGenerator());
