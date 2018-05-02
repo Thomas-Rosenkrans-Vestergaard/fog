@@ -60,15 +60,10 @@ public class RegistrationEmail implements ApplicationEmail
     private String generateHTML()
     {
         StringBuilder builder = new StringBuilder();
-        builder.append("<!DOCTYPE html>");
-        builder.append("<html>");
-        builder.append("<body>");
         builder.append("<h1>Velkommen til Fog Carporte.</h1>");
         builder.append("<p>For at fortsætte med din kundekonto, skal du først bekræfte din registration.</p>");
         builder.append(String.format("<p>Klik <a href='localhost/fog/account?action=confirm-membership&id=%d&token=%s'>her</a> for at bekræfte din registration.</p>", tokenId, token));
         builder.append(String.format("<p>Hvis du ikke ønsker at tilmelde dig, kan du istedet klikke <a href='localhost/fog/account?action=reject-membership&id=%d&token=%s'>her</a></p>", tokenId, token));
-        builder.append("</body>");
-        builder.append("</html>");
 
         return builder.toString();
     }

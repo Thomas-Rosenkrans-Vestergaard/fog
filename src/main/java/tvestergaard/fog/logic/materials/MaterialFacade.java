@@ -113,7 +113,7 @@ public class MaterialFacade
      * @throws ApplicationException       When an exception occurs while performing the operation.
      * @throws MaterialValidatorException When the provided information is considered invalid.
      */
-    public boolean update(int id, String number, String description, String notes, int price, int unit, int width, int height)
+    public boolean update(int id, String number, String description, int price, int unit, int width, int height)
             throws MaterialValidatorException
     {
         try {

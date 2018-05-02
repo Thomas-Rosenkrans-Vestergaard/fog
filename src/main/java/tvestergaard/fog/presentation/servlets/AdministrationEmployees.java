@@ -6,6 +6,7 @@ import tvestergaard.fog.logic.employees.EmployeeError;
 import tvestergaard.fog.logic.employees.EmployeeFacade;
 import tvestergaard.fog.logic.employees.EmployeeValidatorException;
 import tvestergaard.fog.logic.employees.UnknownEmployeeException;
+import tvestergaard.fog.presentation.Authentication;
 import tvestergaard.fog.presentation.Notifications;
 import tvestergaard.fog.presentation.Parameters;
 
@@ -58,6 +59,14 @@ public class AdministrationEmployees extends HttpServlet
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException
     {
+        Authentication authentication = new Authentication(req);
+        Notifications  notifications  = notifications(req);
+        if (!authentication.isEmployee()) {
+            notifications.error("Du skal være logged ind som en medarbejder for at tilgå denne side.");
+            resp.sendRedirect("login");
+            return;
+        }
+
         dispatcher.dispatch(req, resp);
     }
 
@@ -72,6 +81,14 @@ public class AdministrationEmployees extends HttpServlet
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException
     {
+        Authentication authentication = new Authentication(req);
+        Notifications  notifications  = notifications(req);
+        if (!authentication.isEmployee()) {
+            notifications.error("Du skal være logged ind som en medarbejder for at tilgå denne side.");
+            resp.sendRedirect("login");
+            return;
+        }
+
         dispatcher.dispatch(req, resp);
     }
 
@@ -124,10 +141,10 @@ public class AdministrationEmployees extends HttpServlet
             Notifications notifications = notifications(request);
 
             if (!parameters.isInt("id") ||
-                !parameters.isPresent("name") ||
-                !parameters.isPresent("username") ||
-                !parameters.isIntArray("roles") ||
-                !parameters.isBoolean("active")) {
+                    !parameters.isPresent("name") ||
+                    !parameters.isPresent("username") ||
+                    !parameters.isEnums("roles", Role.class) ||
+                    !parameters.isBoolean("active")) {
                 notifications.error("Cannot format parameters.");
                 response.sendRedirect("employees");
                 return;
@@ -135,11 +152,11 @@ public class AdministrationEmployees extends HttpServlet
 
             try {
                 facade.update(parameters.getInt("id"),
-                              parameters.value("name"),
-                              parameters.value("username"),
-                              parameters.getIntArray("roles"),
-                              parameters.value("password"),
-                              parameters.getBoolean("active"));
+                        parameters.value("name"),
+                        parameters.value("username"),
+                        parameters.getEnums("roles", Role.class),
+                        parameters.value("password"),
+                        parameters.getBoolean("active"));
 
                 notifications.success("Medarbejderen blev opdateret.");
                 response.sendRedirect("?action=update&id=" + parameters.getInt("id"));
@@ -178,21 +195,21 @@ public class AdministrationEmployees extends HttpServlet
             Notifications notifications = notifications(request);
 
             if (!parameters.isPresent("name") ||
-                !parameters.isPresent("username") ||
-                !parameters.isPresent("password") ||
-                !parameters.isIntArray("roles") ||
-                !parameters.isBoolean("active")) {
+                    !parameters.isPresent("username") ||
+                    !parameters.isPresent("password") ||
+                    !parameters.isEnums("roles", Role.class) ||
+                    !parameters.isBoolean("active")) {
                 notifications.error("Cannot format parameters.");
                 response.sendRedirect("employees");
                 return;
             }
 
             try {
-                Employee employee = facade.create(parameters.value("name"),
-                                                  parameters.value("username"),
-                                                  parameters.value("password"),
-                                                  parameters.getIntArray("roles"),
-                                                  parameters.getBoolean("active"));
+                Employee employee = facade.register(parameters.value("name"),
+                        parameters.value("username"),
+                        parameters.value("password"),
+                        parameters.getEnums("roles", Role.class),
+                        parameters.getBoolean("active"));
 
                 notifications.success("Medarbejderen blev oprettet.");
                 response.sendRedirect("?action=update&id=" + employee.getId());

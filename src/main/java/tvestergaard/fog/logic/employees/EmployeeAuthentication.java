@@ -60,7 +60,7 @@ public class EmployeeAuthentication
      * @throws DataAccessException       When a data storage exception occurs.
      * @throws InactiveEmployeeException When the provided employee is marked inactive.
      */
-    public Employee authenticate(String username, String password) throws DataAccessException, IncorrectCredentialsException, InactiveEmployeeException
+    public Employee authenticate(String username, String password) throws DataAccessException, InactiveEmployeeException
     {
         Employee employee = employeeDAO.first(where(eq(USERNAME, username)));
         if (employee == null)
@@ -70,7 +70,7 @@ public class EmployeeAuthentication
             throw new InactiveEmployeeException();
 
         if (!BCrypt.checkpw(password, employee.getPassword()))
-            throw new IncorrectCredentialsException();
+            return null;
 
         return employee;
     }

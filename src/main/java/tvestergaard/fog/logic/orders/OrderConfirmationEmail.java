@@ -31,21 +31,16 @@ public class OrderConfirmationEmail implements ApplicationEmail
     @Override public Email build()
     {
         return new EmailBuilder().to(order.getCustomer().getName(), order.getCustomer().getEmail())
-                .from("Fog carporte", "fog.carporte@gmail.com")
-                .subject("Vi har modtaget din ordre.")
-                .textHTML(generateHTML())
-                .build();
+                                 .from("Fog carporte", "fog.carporte@gmail.com")
+                                 .subject("Vi har modtaget din ordre.")
+                                 .textHTML(generateHTML())
+                                 .build();
     }
 
     private String generateHTML()
     {
         StringBuilder builder = new StringBuilder();
-        builder.append("<!DOCTYPE html>");
-        builder.append("<html>");
-        builder.append("<body>");
         builder.append("<h1>Vi har modtaget din ordre.</h1>");
-        builder.append("</body>");
-        builder.append("</html>");
 
         return builder.toString();
     }

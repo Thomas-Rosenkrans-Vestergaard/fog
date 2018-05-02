@@ -29,7 +29,7 @@
             <div class="input-field col s12">
                 <select multiple name="roles">
                     <c:forEach items="${roles}" var="role">
-                        <option value="${role.getId()}"><c:out value="${role.name()}"/></option>
+                        <option value="${role.name()}"><c:out value="${role.name()}"/></option>
                     </c:forEach>
                 </select>
                 <label>Roller</label>

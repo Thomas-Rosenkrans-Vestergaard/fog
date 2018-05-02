@@ -8,14 +8,12 @@ import tvestergaard.fog.data.constraints.Constraint;
 import tvestergaard.fog.data.employees.*;
 import tvestergaard.fog.logic.ApplicationException;
 
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 import static tvestergaard.fog.data.constraints.Constraint.eq;
 import static tvestergaard.fog.data.constraints.Constraint.where;
 import static tvestergaard.fog.data.employees.EmployeeColumn.ID;
-import static tvestergaard.fog.data.employees.EmployeeColumn.USERNAME;
 
 public class EmployeeFacade
 {
@@ -96,23 +94,16 @@ public class EmployeeFacade
      * @param name     The name of the employee to create.
      * @param username The username of the employee to create.
      * @param password The password of the employee to create.
-     * @param roles    The roles the employee has.
+     * @param roles    The roles to assign to the employee.
      * @param active   Whether or not the employee can be applied to orders.
      * @return The employee instance representing the newly created employee.
+     * @throws DataAccessException        When a data storage exception occurs.
      * @throws EmployeeValidatorException When the provided details are invalid.
-     * @throws ApplicationException       When an exception occurs while performing the operation.
      */
-    public Employee create(String name, String username, String password, int[] roles, boolean active)
-            throws EmployeeValidatorException
+    public Employee register(String name, String username, String password, Set<Role> roles, boolean active) throws EmployeeValidatorException
     {
         try {
-            Set<EmployeeError> reasons = validator.validateRegister(name, username, password);
-            if (!reasons.isEmpty())
-                throw new EmployeeValidatorException(reasons);
-            EmployeeBlueprint blueprint = EmployeeBlueprint.from(name, username, password, createRoleSet(roles), active);
-            blueprint.setPassword(hash(password));
-            Employee employee = employeeDAO.create(blueprint);
-            return employee;
+            return authentication.register(name, username, password, roles, active);
         } catch (DataAccessException e) {
             throw new ApplicationException(e);
         }
@@ -123,16 +114,14 @@ public class EmployeeFacade
      *
      * @param username The email to authenticate with.
      * @param password The password to authenticate with.
-     * @return The employee who was authenticated. {@code null} in case no employee with the provided credentials exist..
+     * @return The employee who was authenticated. {@code null} in case no employee with the provided credentials exist.
+     * @throws DataAccessException       When a data storage exception occurs.
+     * @throws InactiveEmployeeException When the provided employee is marked inactive.
      */
-    public Employee authenticate(String username, String password)
+    public Employee authenticate(String username, String password) throws InactiveEmployeeException
     {
         try {
-            Employee employee = employeeDAO.first(where(eq(USERNAME, username)));
-            if (employee == null)
-                return null;
-
-            return BCrypt.checkpw(password, employee.getPassword()) ? employee : null;
+            return authentication.authenticate(username, password);
         } catch (DataAccessException e) {
             throw new ApplicationException(e);
         }
@@ -166,7 +155,7 @@ public class EmployeeFacade
             int id,
             String name,
             String username,
-            int[] roles,
+            Set<Role> roles,
             String password,
             boolean active) throws UnknownEmployeeException, EmployeeValidatorException
     {
@@ -178,22 +167,12 @@ public class EmployeeFacade
             Employee employee = employeeDAO.first(where(eq(ID, id)));
             if (employee == null)
                 throw new UnknownEmployeeException();
-            EmployeeUpdater updater = EmployeeUpdater.from(id, name, username, employee.getPassword(), createRoleSet(roles), active);
+            EmployeeUpdater updater = EmployeeUpdater.from(id, name, username, employee.getPassword(), roles, active);
             if (password != null)
                 updater.setPassword(hash(password));
             return employeeDAO.update(updater);
         } catch (DataAccessException e) {
             throw new ApplicationException(e);
         }
-    }
-
-    private Set<Role> createRoleSet(int[] roles)
-    {
-        Set<Role> result = new HashSet<>();
-        for (int role : roles) {
-            result.add(Role.from(role));
-        }
-
-        return result;
     }
 }

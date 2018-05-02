@@ -26,7 +26,7 @@
             <div class="input-field col s12">
                 <select multiple name="roles">
                     <c:forEach items="${roles}" var="role">
-                        <option value="${role.getId()}" ${employee.is(role) ? 'selected' : ''}><c:out
+                        <option value="${role.name()}" ${employee.is(role) ? 'selected' : ''}><c:out
                                 value="${role.name()}"/></option>
                     </c:forEach>
                 </select>

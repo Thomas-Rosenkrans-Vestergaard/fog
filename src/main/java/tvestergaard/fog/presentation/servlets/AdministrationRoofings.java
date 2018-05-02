@@ -4,6 +4,7 @@ import tvestergaard.fog.data.roofing.Roofing;
 import tvestergaard.fog.logic.roofings.RoofingError;
 import tvestergaard.fog.logic.roofings.RoofingFacade;
 import tvestergaard.fog.logic.roofings.RoofingValidatorException;
+import tvestergaard.fog.presentation.Authentication;
 import tvestergaard.fog.presentation.Notifications;
 import tvestergaard.fog.presentation.Parameters;
 
@@ -59,6 +60,14 @@ public class AdministrationRoofings extends HttpServlet
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException
     {
+        Authentication authentication = new Authentication(req);
+        Notifications  notifications  = notifications(req);
+        if (!authentication.isEmployee()) {
+            notifications.error("Du skal være logged ind som en medarbejder for at tilgå denne side.");
+            resp.sendRedirect("login");
+            return;
+        }
+
         dispatcher.dispatch(req, resp);
     }
 
@@ -73,6 +82,14 @@ public class AdministrationRoofings extends HttpServlet
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException
     {
+        Authentication authentication = new Authentication(req);
+        Notifications  notifications  = notifications(req);
+        if (!authentication.isEmployee()) {
+            notifications.error("Du skal være logged ind som en medarbejder for at tilgå denne side.");
+            resp.sendRedirect("login");
+            return;
+        }
+
         dispatcher.dispatch(req, resp);
     }
 

@@ -29,7 +29,7 @@ public class ProfileServlet extends HttpServlet
         Authentication authentication = new Authentication(req);
         Notifications  notifications  = notifications(req);
 
-        if (!authentication.isAuthenticated()) {
+        if (!authentication.isCustomer()) {
             notifications.error("Du skal være logget ind for at tilgå denne side.");
             resp.sendRedirect("account");
             return;

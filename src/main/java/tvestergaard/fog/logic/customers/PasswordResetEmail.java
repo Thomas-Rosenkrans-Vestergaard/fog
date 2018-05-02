@@ -42,13 +42,8 @@ public class PasswordResetEmail implements ApplicationEmail
     private String generateHTML()
     {
         StringBuilder builder = new StringBuilder();
-        builder.append("<!DOCTYPE html>");
-        builder.append("<html>");
-        builder.append("<body>");
         builder.append("<h1>Glemt adgangskode.</h1>");
         builder.append(String.format("/fog/reset-password?tokenId=%d&tokenSecret=%s", tokenId, tokenSecret));
-        builder.append("</body>");
-        builder.append("</html>");
 
         return builder.toString();
     }

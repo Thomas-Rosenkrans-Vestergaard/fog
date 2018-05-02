@@ -5,6 +5,8 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.EnumSet;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Class for validating types and converting the values of parameters in the provided {@code HttpServletRequest}.
@@ -407,49 +409,56 @@ public class Parameters
     }
 
     /**
-     * Checks that the value of the provided parameter can safely be extracted to an array of ints using the {@link
-     * Parameters#getIntArray(String)} method.
+     * Checks that the value of the provided parameter can safely be extracted to an array of enums using the {@link
+     * Parameters#getEnums(String, Class)} method.
      *
      * @param parameter The name of the parameter to test the format of.
-     * @return {@code true} if the value of the provided parameter can safely be extracted to an array of ints using
-     * the {@link Parameters#getIntArray(String)} method.
+     * @return {@code true} if the value of the provided parameter can safely be extracted to an array of enums using
+     * the {@link Parameters#getEnums(String, Class)} method.
      */
-    public boolean isIntArray(String parameter)
+    public <T extends Enum<T>> boolean isEnums(String parameter, Class<T> enumeration)
     {
         String[] parameterValues = provider.getParameterValues(parameter);
 
         if (parameter == null)
             return false;
 
-        for (String parameterValue : parameterValues) {
-            try {
-                Integer.parseInt(parameterValue);
-            } catch (Exception e) {
+        EnumSet<T> enumSet = EnumSet.allOf(enumeration);
+        for (String parameterValue : parameterValues)
+            if (!isEnum(parameterValue, enumSet))
                 return false;
-            }
-        }
 
         return true;
     }
 
+    public <T extends Enum<T>> boolean isEnum(String value, EnumSet<T> enumSet)
+    {
+        for (T enumElement : enumSet) {
+            if (enumElement.name().equals(value)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
 
     /**
-     * Extracts the time value of the value of the provided parameter to an array of ints.
+     * Extracts the time value of the value of the provided parameter to an array of enums.
      * <p>
-     * This method will not throw an exception when the {@link Parameters#isIntArray(String)} method returns true for the
-     * same parameter name.
+     * This method will not throw an exception when the {@link Parameters#isEnums(String, Class)} method returns true
+     * for the same parameter name.
      *
      * @param parameter The name of the parameter to extract the time value from.
-     * @return The resulting array of ints from the provided parameter.
+     * @return The resulting array of enums from the provided parameter.
      * @throws ParametersConversionException When an error occurs while extracting the time value.
      */
-    public int[] getIntArray(String parameter) throws ParametersConversionException
+    public <T extends Enum<T>> Set<T> getEnums(String parameter, Class<T> enumeration) throws ParametersConversionException
     {
         try {
             String[] parameterValues = provider.getParameterValues(parameter);
-            int[]    result          = new int[parameterValues.length];
+            Set<T>   result          = new HashSet<>();
             for (int x = 0; x < parameterValues.length; x++) {
-                result[x] = Integer.parseInt(parameterValues[x]);
+                result.add(Enum.valueOf(enumeration, parameterValues[x]));
             }
             return result;
         } catch (Exception e) {

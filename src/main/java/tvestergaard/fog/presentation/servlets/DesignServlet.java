@@ -103,7 +103,7 @@ public class DesignServlet extends HttpServlet
             return;
         }
 
-        if (!authentication.isAuthenticated()) {
+        if (!authentication.isCustomer()) {
             if (!parameters.isPresent("customer-name") ||
                     !parameters.isPresent("customer-address") ||
                     !parameters.isPresent("customer-email") ||
@@ -116,7 +116,7 @@ public class DesignServlet extends HttpServlet
 
         try {
 
-            Customer customer = authentication.isAuthenticated() ? authentication.getCustomer() :
+            Customer customer = authentication.isCustomer() ? authentication.getCustomer() :
                                 customerFacade.authenticate(parameters.value("customer-email"), parameters.value("customer.password"));
 
             if (customer == null) {

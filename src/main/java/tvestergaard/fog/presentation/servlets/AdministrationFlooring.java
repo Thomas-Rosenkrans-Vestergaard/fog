@@ -4,6 +4,7 @@ import tvestergaard.fog.data.flooring.Flooring;
 import tvestergaard.fog.logic.floorings.FlooringError;
 import tvestergaard.fog.logic.floorings.FlooringFacade;
 import tvestergaard.fog.logic.floorings.FlooringValidatorException;
+import tvestergaard.fog.presentation.Authentication;
 import tvestergaard.fog.presentation.Notifications;
 import tvestergaard.fog.presentation.Parameters;
 
@@ -54,6 +55,14 @@ public class AdministrationFlooring extends HttpServlet
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException
     {
+        Authentication authentication = new Authentication(req);
+        Notifications  notifications  = notifications(req);
+        if (!authentication.isEmployee()) {
+            notifications.error("Du skal være logged ind som en medarbejder for at tilgå denne side.");
+            resp.sendRedirect("login");
+            return;
+        }
+
         dispatcher.dispatch(req, resp);
     }
 
@@ -68,6 +77,14 @@ public class AdministrationFlooring extends HttpServlet
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException
     {
+        Authentication authentication = new Authentication(req);
+        Notifications  notifications  = notifications(req);
+        if (!authentication.isEmployee()) {
+            notifications.error("Du skal være logged ind som en medarbejder for at tilgå denne side.");
+            resp.sendRedirect("login");
+            return;
+        }
+
         dispatcher.dispatch(req, resp);
     }
 
