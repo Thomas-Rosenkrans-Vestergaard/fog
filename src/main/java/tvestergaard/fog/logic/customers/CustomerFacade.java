@@ -189,10 +189,9 @@ public class CustomerFacade
      * @param email    The email to authenticate with.
      * @param password The password to authenticate with.
      * @return The customer who was authenticated. {@code null} in case no customer with the provided credentials exist.
-     * @throws NoPasswordException       When the provided customer has no password.
      * @throws InactiveCustomerException When the provided customer is marked inactive.
      */
-    public Customer authenticate(String email, String password) throws NoPasswordException, InactiveCustomerException
+    public Customer authenticate(String email, String password) throws InactiveCustomerException
     {
         try {
             return authentication.authenticate(email, password);

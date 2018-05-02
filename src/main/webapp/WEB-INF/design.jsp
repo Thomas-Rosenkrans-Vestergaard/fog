@@ -26,7 +26,7 @@
         </div>
         <div class="row">
             <div class="input-field col s12">
-                <select name="claddingId" required>
+                <select name="cladding" required>
                     <c:forEach items="${claddings}" var="claddingId">
                         <option value="${claddingId.getId()}"><c:out value="${claddingId.getName()}"/></option>
                     </c:forEach>
@@ -181,52 +181,25 @@
                 <label>Beklædning</label>
             </div>
         </div>
-        <div class="row">
-            <div class="col s12">
-                <h5>Kundeoplysninger</h5>
+        <c:if test="${customer == null}">
+            <div class="row">
+                <div class="col s12">
+                    <h5>Kundeoplysninger</h5>
+                </div>
             </div>
-        </div>
-        <div class="row">
-            <div class="input-field col s12">
-                <input name="customer-name" id="customer-name" type="text" minlength="5" data-length="255"
-                       class="validate" required>
-                <label for="customer-name">Navn</label>
+            <div class="row">
+                <div class="col s12 input-field">
+                    <input type="email" name="customer-email" id="customer-email" data-length="255" class="validate" required>
+                    <label for="customer-email">Email</label>
+                </div>
             </div>
-        </div>
-        <div class="row">
-            <div class="input-field col s12">
-                <input name="customer-address" id="customer-address" type="text" minlength="10"
-                       data-length="255"
-                       class="validate" required>
-                <label for="customer-address">Address</label>
+            <div class="row">
+                <div class="col s12 input-field">
+                    <input type="password" name="customer-password" id="customer-password" class="validate" required>
+                    <label for="customer-password">Adgangskode</label>
+                </div>
             </div>
-        </div>
-        <div class="row">
-            <div class="input-field col s12">
-                <input name="customer-email" id="customer-email" type="email" data-length="255" class="validate"
-                       required>
-                <label for="customer-email">Email</label>
-            </div>
-        </div>
-        <div class="row">
-            <div class="input-field col s12">
-                <input name="customer-phone" id="customer-phone" type="tel" data-length="30" class="validate"
-                       required>
-                <label for="customer-phone">Telefon</label>
-            </div>
-        </div>
-        <div class="row">
-            <p>
-                <input name="contact-method" type="radio" id="contact-method-telephone" value="PHONE" required/>
-                <label for="contact-method-telephone">Telefon</label>
-            </p>
-            <p>
-                <input name="contact-method" type="radio" id="contact-method-email" value="EMAIL"
-                       checked="checked"
-                       required/>
-                <label for="contact-method-email">Email</label>
-            </p>
-        </div>
+        </c:if>
         <div class="row">
             <div class="col s12">
                 <button class="btn-large waves-effect waves-light" type="submit" name="action">Bestil

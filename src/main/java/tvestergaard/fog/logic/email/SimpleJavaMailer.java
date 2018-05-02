@@ -1,5 +1,6 @@
 package tvestergaard.fog.logic.email;
 
+import org.simplejavamail.email.Email;
 import org.simplejavamail.mailer.Mailer;
 import org.simplejavamail.mailer.config.TransportStrategy;
 
@@ -27,10 +28,12 @@ public class SimpleJavaMailer implements ApplicationMailer
     /**
      * Sends the provided application email.
      *
-     * @param email The email to send.
+     * @param applicationEmail The email to send.
      */
-    @Override public void send(ApplicationEmail email)
+    @Override public void send(ApplicationEmail applicationEmail)
     {
-        mailer.sendMail(email.build());
+        Email email = applicationEmail.build();
+
+        mailer.sendMail(email);
     }
 }

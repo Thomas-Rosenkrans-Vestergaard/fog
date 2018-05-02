@@ -117,6 +117,7 @@ public class AccountServlet extends HttpServlet
         try {
             facade.confirm(parameters.getInt("id"), parameters.value("token"));
             notifications.success("Din kundekonto blev bekræftet.");
+            resp.sendRedirect("account");
             return;
         } catch (IncorrectTokenException e) {
             notifications.error("The token was incorrect.");
@@ -136,13 +137,14 @@ public class AccountServlet extends HttpServlet
     {
         if (!parameters.isInt("id") || !parameters.isPresent("token")) {
             notifications.error("Bad challenge token.");
-            resp.sendRedirect("");
+            resp.sendRedirect("account");
             return;
         }
 
         try {
             facade.reject(parameters.getInt("id"), parameters.value("token"));
             notifications.success("Din kundekonto blev deaktiveret.");
+            resp.sendRedirect("account");
             return;
         } catch (IncorrectTokenException e) {
             notifications.error("The token was incorrect.");
@@ -177,10 +179,7 @@ public class AccountServlet extends HttpServlet
             notifications.success("Du er nu logget ind.");
             resp.sendRedirect("profile");
 
-        } catch (NoPasswordException e) {
-            notifications.error("Denne konto har intet password.");
-            resp.sendRedirect("forgot-password");
-        } catch (InactiveCustomerException e){
+        } catch (InactiveCustomerException e) {
             notifications.error("Denne konto er inaktiv.");
             resp.sendRedirect("account");
         }
@@ -215,6 +214,7 @@ public class AccountServlet extends HttpServlet
             HttpSession session = req.getSession();
             session.setAttribute("customer", customer);
             notifications.success("Kundekontoen blev oprettet.");
+            notifications.info("En bekræftelsesmail er blevet sendt til din mailadresse. Før du kan benytte din emailadresse, skal du først bekræfte denne email.");
             resp.sendRedirect("profile");
 
         } catch (CustomerValidatorException e) {

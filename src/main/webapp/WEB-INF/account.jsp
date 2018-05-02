@@ -13,7 +13,17 @@
     </div>
 </div>
 <div class="row">
-    <div class="col s12 l6 no-padding">
+    <a href="forgot-password" class="waves-effect waves-light btn-large">Glemt password</a>
+</div>
+<div class="row">
+    <form method="POST">
+        <button class="waves-effect waves-light btn-large" type="submit" name="action"
+                value="resend-confirmation-email">Gensend bekræftelsesmail
+        </button>
+    </form>
+</div>
+<div class="row">
+    <div class="col s12 no-padding">
         <div class="row">
             <div class="col 12">
                 <h2 class="account-form-headers">Opret konto</h2>
@@ -64,13 +74,14 @@
             </div>
         </form>
     </div>
-    <div class="col s12 l6 no-padding">
+</div>
+<div class="row">
+    <div class="col s12">
         <div class="row">
             <div class="col 12">
                 <h2 class="account-form-headers">Log ind</h2>
                 <p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.
-                    Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante.
-                    <a href="forgot-password">Glemt password</a>.</p>
+                    Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante.</p>
             </div>
         </div>
         <form method="post">

@@ -99,3 +99,15 @@ hr {
 .account-form-headers {
     font-size: 2rem;
 }
+
+.toast.ERROR {
+    background: red;
+}
+
+.toast.WARNING {
+    background: orange;
+}
+
+.toast.SUCCESS {
+    background: #4BB543;
+}

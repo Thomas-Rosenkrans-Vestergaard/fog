@@ -14,6 +14,7 @@ import tvestergaard.fog.data.orders.*;
 import tvestergaard.fog.data.roofing.MysqlRoofingDAO;
 import tvestergaard.fog.data.roofing.RoofingDAO;
 import tvestergaard.fog.logic.ApplicationException;
+import tvestergaard.fog.logic.customers.InactiveCustomerException;
 
 import java.util.List;
 import java.util.Set;
@@ -108,7 +109,7 @@ public class OrderFacade
             int roofing,
             int slope,
             RafterChoice rafters,
-            ShedSpecification shed) throws OrderValidatorException
+            ShedSpecification shed) throws OrderValidatorException, InactiveCustomerException, UnconfirmedCustomerException
     {
         try {
 

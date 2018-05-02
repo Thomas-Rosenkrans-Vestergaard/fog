@@ -23,6 +23,7 @@
     <li><a class="${"design".equals(navigation)}" href="design">Design</a></li>
     <li><a class="${"account".equals(navigation)}" href="account">Kundekonto</a></li>
     <li><a class="${"profile".equals(navigation)}" href="profile">Profil</a></li>
+    <li><a class="${"orders".equals(navigation)}" href="orders">Mine ordre</a></li>
     <li><a class="${"forgot-password".equals(navigation)}" href="forgot-password">Glemt adgangskode</a></li>
 </ul>
 <div id="menu-button">
