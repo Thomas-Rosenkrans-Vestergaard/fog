@@ -47,16 +47,14 @@ public class MysqlEmployeeDAO extends AbstractMysqlDAO implements EmployeeDAO
     @Override public List<Employee> get(Constraint<EmployeeColumn>... constraints) throws MysqlDataAccessException
     {
         final List<Employee> employees = new ArrayList<>();
-        final String         SQL       = generator.generate("SELECT * FROM employees", constraints);
+        final String SQL = generator.generate(
+                "SELECT * , (SELECT GROUP_CONCAT(roles.role SEPARATOR ',') FROM roles WHERE employee = employees.id) " +
+                        "as `employees.roles` FROM employees", constraints);
         try (PreparedStatement statement = getConnection().prepareStatement(SQL)) {
-            PreparedStatement rolesStatement = getConnection().prepareStatement("SELECT * FROM roles WHERE employee = ?");
             binder.bind(statement, constraints);
             ResultSet resultSet = statement.executeQuery();
-            while (resultSet.next()) {
-                rolesStatement.setInt(1, resultSet.getInt("id"));
-                ResultSet roles = rolesStatement.executeQuery();
-                employees.add(createEmployee("employees", resultSet, "roles", roles));
-            }
+            while (resultSet.next())
+                employees.add(createEmployee("employees", resultSet));
 
             return employees;
         } catch (SQLException e) {

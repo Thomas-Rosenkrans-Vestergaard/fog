@@ -48,7 +48,9 @@ public class MysqlOfferDAO extends AbstractMysqlDAO implements OfferDAO
     {
         final List<Offer> offers = new ArrayList<>();
         final String SQL = generator.generate(
-                "SELECT *, (SELECT count(*) FROM offers WHERE `order` = o.id) AS `o.offers` FROM offers " +
+                "SELECT *, (SELECT count(*) FROM offers WHERE `order` = o.id) AS `o.offers`, " +
+                        "(SELECT GROUP_CONCAT(roles.role SEPARATOR ',') FROM roles WHERE employee = employees.id) as `employees.roles` " +
+                        "FROM offers " +
                         "INNER JOIN orders o ON offers.order = o.id " +
                         "INNER JOIN customers ON o.customer = customers.id " +
                         "INNER JOIN claddings o_cladding ON o.cladding = o_cladding.id " +
@@ -57,15 +59,11 @@ public class MysqlOfferDAO extends AbstractMysqlDAO implements OfferDAO
                         "LEFT  JOIN claddings s_cladding ON sheds.cladding = s_cladding.id " +
                         "LEFT  JOIN floorings ON sheds.flooring = floorings.id " +
                         "INNER JOIN employees ON offers.employee = employees.id", constraints);
-        try (PreparedStatement statement = getConnection().prepareStatement(SQL);
-             PreparedStatement rolesStatement = getConnection().prepareStatement("SELECT * FROM roles WHERE employee = ?")) {
+        try (PreparedStatement statement = getConnection().prepareStatement(SQL)) {
             binder.bind(statement, constraints);
             ResultSet resultSet = statement.executeQuery();
-            while (resultSet.next()) {
-                rolesStatement.setInt(1, resultSet.getInt("employees.id"));
-                ResultSet roles = rolesStatement.executeQuery();
-                offers.add(createOffer(resultSet, "offers", "o", "customers", "o_cladding", "roofings", "sheds", "s_cladding", "floorings", "employees", roles));
-            }
+            while (resultSet.next())
+                offers.add(createOffer(resultSet, "offers", "o", "customers", "o_cladding", "roofings", "sheds", "s_cladding", "floorings", "employees"));
 
             return offers;
         } catch (SQLException e) {

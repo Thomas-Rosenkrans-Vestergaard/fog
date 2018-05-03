@@ -8,7 +8,6 @@ import tvestergaard.fog.data.offers.OfferColumn;
 import tvestergaard.fog.data.offers.OfferDAO;
 import tvestergaard.fog.logic.ApplicationException;
 import tvestergaard.fog.logic.email.ApplicationMailer;
-import tvestergaard.fog.logic.email.SimpleJavaMailer;
 
 import java.util.List;
 import java.util.Set;
@@ -16,13 +15,31 @@ import java.util.Set;
 public class OfferFacade
 {
 
+    /**
+     * The offer dao used to access the data storage in the application.
+     */
     private final OfferDAO offerDAO;
-    private final OfferValidator    validator = new OfferValidator();
-    private final ApplicationMailer mailer    = new SimpleJavaMailer();
 
-    public OfferFacade(OfferDAO offerDAO)
+    /**
+     * The object responsible for sending offer notification emails to customers.
+     */
+    private final ApplicationMailer mailer;
+
+    /**
+     * The object that validates offers when creating new offers.
+     */
+    private final OfferValidator validator = new OfferValidator();
+
+    /**
+     * Creates a new {@link OfferFacade}.
+     *
+     * @param offerDAO The offer dao used to access the data storage in the application.
+     * @param mailer   The object responsible for sending offer notification emails to customers.
+     */
+    public OfferFacade(OfferDAO offerDAO, ApplicationMailer mailer)
     {
         this.offerDAO = offerDAO;
+        this.mailer = mailer;
     }
 
     /**

@@ -1,8 +1,11 @@
 package tvestergaard.fog.data;
 
 import com.mysql.cj.jdbc.MysqlDataSource;
+import tvestergaard.fog.data.bom.Bom;
 import tvestergaard.fog.data.cladding.Cladding;
 import tvestergaard.fog.data.cladding.CladdingRecord;
+import tvestergaard.fog.data.contracts.Contract;
+import tvestergaard.fog.data.contracts.ContractRecord;
 import tvestergaard.fog.data.customers.Customer;
 import tvestergaard.fog.data.customers.CustomerRecord;
 import tvestergaard.fog.data.employees.Employee;
@@ -170,7 +173,7 @@ public abstract class AbstractMysqlDAO
      * @return The newly created {@link Employee} instance.
      * @throws SQLException
      */
-    protected Employee createEmployee(String table, ResultSet employees, String rolesTable, ResultSet roles) throws SQLException
+    protected Employee createEmployee(String table, ResultSet employees) throws SQLException
     {
         return new EmployeeRecord(
                 employees.getInt(table + ".id"),
@@ -178,17 +181,17 @@ public abstract class AbstractMysqlDAO
                 employees.getString(table + ".username"),
                 employees.getString(table + ".password"),
                 employees.getBoolean(table + ".active"),
-                createRoleSet(rolesTable, roles),
+                createRoleSet(employees, table + ".roles"),
                 employees.getTimestamp(table + ".created_at").toLocalDateTime()
         );
     }
 
-    private Set<Role> createRoleSet(String table, ResultSet resultSet) throws SQLException
+    private Set<Role> createRoleSet(ResultSet resultSet, String column) throws SQLException
     {
-        Set<Role> roles = new HashSet<>();
-        while (resultSet.next()) {
-            roles.add(Role.valueOf(resultSet.getString(table + ".role")));
-        }
+        String[]  strings = resultSet.getString(column).split(",");
+        Set<Role> roles   = new HashSet<>();
+        for (String string : strings)
+            roles.add(Role.valueOf(string));
 
         return roles;
     }
@@ -251,11 +254,10 @@ public abstract class AbstractMysqlDAO
                                 String shedTable,
                                 String shedCladdingTable,
                                 String shedFlooringsTable,
-                                String employeeTable,
-                                ResultSet roles) throws SQLException
+                                String employeeTable) throws SQLException
     {
         Order    order    = createOrder(resultSet, orderTable, customerTable, orderCladdingTable, orderRoofingTable, shedTable, shedCladdingTable, shedFlooringsTable);
-        Employee employee = createEmployee(employeeTable, resultSet, "roles", roles);
+        Employee employee = createEmployee(employeeTable, resultSet);
 
         return new OfferRecord(
                 resultSet.getInt(table + ".id"),
@@ -265,5 +267,27 @@ public abstract class AbstractMysqlDAO
                 employee.getId(),
                 resultSet.getInt(table + ".price"),
                 resultSet.getTimestamp(table + ".created_at").toLocalDateTime());
+    }
+
+    protected Contract createContract(ResultSet resultSet,
+                                      String table,
+                                      String contractEmployeeTable,
+                                      String offerTable,
+                                      String orderTable,
+                                      String customerTable,
+                                      String orderCladdingTable,
+                                      String orderRoofingTable,
+                                      String shedTable,
+                                      String shedCladdingTable,
+                                      String shedFlooringsTable,
+                                      String offerEmployeeTable) throws SQLException
+    {
+        Offer offer = createOffer(
+                resultSet, offerTable, orderTable, customerTable, orderCladdingTable, orderRoofingTable, shedTable,
+                shedCladdingTable, shedFlooringsTable, offerEmployeeTable);
+        Employee employee = createEmployee(contractEmployeeTable, resultSet);
+        Bom      bom      = null;
+
+        return new ContractRecord(resultSet.getInt(table + ".id"), offer.getId(), offer, employee.getId(), employee, null, null, resultSet.getTimestamp(table + ".created_at").toLocalDateTime());
     }
 }

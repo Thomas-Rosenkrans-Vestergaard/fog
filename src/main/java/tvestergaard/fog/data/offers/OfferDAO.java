@@ -22,7 +22,7 @@ public interface OfferDAO
      *
      * @param order The id of the order to return the related offers of.
      * @return The offers related to the order with the provided id.
-     * @throws DataAccessException  When a data storage exception occurs while performing the operation.
+     * @throws DataAccessException When a data storage exception occurs while performing the operation.
      */
     List get(int order) throws DataAccessException;
 
