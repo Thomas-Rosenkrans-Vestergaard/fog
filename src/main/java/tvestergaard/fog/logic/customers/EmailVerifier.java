@@ -3,7 +3,7 @@ package tvestergaard.fog.logic.customers;
 import tvestergaard.fog.data.DataAccessException;
 import tvestergaard.fog.data.customers.Customer;
 import tvestergaard.fog.data.customers.CustomerDAO;
-import tvestergaard.fog.data.tokens.Use;
+import tvestergaard.fog.data.tokens.TokenUse;
 import tvestergaard.fog.logic.email.ApplicationMailer;
 import tvestergaard.fog.logic.tokens.*;
 
@@ -12,7 +12,7 @@ import java.security.SecureRandom;
 /**
  * Challenges new customers to verify their email address.
  */
-public class EmailChallenger
+public class EmailVerifier
 {
 
     /**
@@ -34,7 +34,7 @@ public class EmailChallenger
      */
     private final int EXPIRATION_TIME_HOURS = 24;
 
-    public EmailChallenger(CustomerDAO customerDAO, TokenIssuer tokenIssuer, TokenAuthenticator tokenAuthenticator, ApplicationMailer mailer)
+    public EmailVerifier(CustomerDAO customerDAO, TokenIssuer tokenIssuer, TokenAuthenticator tokenAuthenticator, ApplicationMailer mailer)
     {
         this.customerDAO = customerDAO;
         this.tokenIssuer = tokenIssuer;
@@ -51,7 +51,7 @@ public class EmailChallenger
      */
     public void challenge(Customer customer) throws DataAccessException
     {
-        TokenSecret       secret = tokenIssuer.issue(customer, Use.EMAIL_CHALLENGE);
+        TokenSecret       secret = tokenIssuer.issue(customer, TokenUse.EMAIL_VERIFICATION);
         RegistrationEmail email  = new RegistrationEmail(customer, secret);
         mailer.send(email);
     }
@@ -68,7 +68,7 @@ public class EmailChallenger
      */
     public void reject(int id, String token) throws DataAccessException, IncorrectTokenException, ExpiredTokenException
     {
-        if (!tokenAuthenticator.authenticate(new TokenSecret(id, token), Use.EMAIL_CHALLENGE)) {
+        if (!tokenAuthenticator.authenticate(new TokenSecret(id, token), TokenUse.EMAIL_VERIFICATION)) {
             throw new IncorrectTokenException();
         }
 
@@ -87,7 +87,7 @@ public class EmailChallenger
      */
     public void confirm(int id, String token) throws DataAccessException, IncorrectTokenException, ExpiredTokenException
     {
-        if (!tokenAuthenticator.authenticate(new TokenSecret(id, token), Use.EMAIL_CHALLENGE)) {
+        if (!tokenAuthenticator.authenticate(new TokenSecret(id, token), TokenUse.EMAIL_VERIFICATION)) {
             throw new IncorrectTokenException();
         }
 

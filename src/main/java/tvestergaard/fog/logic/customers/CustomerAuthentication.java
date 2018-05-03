@@ -17,9 +17,9 @@ public class CustomerAuthentication
 
     private final CustomerDAO       customerDAO;
     private final CustomerValidator validator;
-    private final EmailChallenger   emailChallenger;
+    private final EmailVerifier     emailChallenger;
 
-    public CustomerAuthentication(CustomerDAO customerDAO, CustomerValidator validator, EmailChallenger emailChallenger)
+    public CustomerAuthentication(CustomerDAO customerDAO, CustomerValidator validator, EmailVerifier emailChallenger)
     {
         this.customerDAO = customerDAO;
         this.validator = validator;

@@ -11,7 +11,7 @@ import tvestergaard.fog.logic.tokens.*;
 import static tvestergaard.fog.data.constraints.Constraint.eq;
 import static tvestergaard.fog.data.constraints.Constraint.where;
 import static tvestergaard.fog.data.customers.CustomerColumn.EMAIL;
-import static tvestergaard.fog.data.tokens.Use.PASSWORD_RESET;
+import static tvestergaard.fog.data.tokens.TokenUse.PASSWORD_RESET;
 
 /**
  * Sends an email to the provided customer, so that the customer can reset their password.

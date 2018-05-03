@@ -28,7 +28,7 @@ CREATE TABLE `bom` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -54,21 +54,6 @@ CREATE TABLE `bom_materials` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Table structure for table `cladding_attributes`
---
-
-DROP TABLE IF EXISTS `cladding_attributes`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `cladding_attributes` (
-  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) COLLATE utf8_bin NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `id_UNIQUE` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
 -- Table structure for table `claddings`
 --
 
@@ -82,28 +67,31 @@ CREATE TABLE `claddings` (
   `active` bit(1) NOT NULL DEFAULT b'1',
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Table structure for table `claddings_materials`
+-- Table structure for table `contracts`
 --
 
-DROP TABLE IF EXISTS `claddings_materials`;
+DROP TABLE IF EXISTS `contracts`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `claddings_materials` (
+CREATE TABLE `contracts` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `usage` int(11) unsigned NOT NULL,
-  `cladding` int(11) unsigned NOT NULL,
-  `material` int(11) unsigned NOT NULL,
+  `offer` int(11) unsigned NOT NULL,
+  `employee` int(11) unsigned NOT NULL,
+  `bom` int(11) unsigned NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`),
-  KEY `cladding` (`cladding`),
-  KEY `material` (`material`),
-  CONSTRAINT `claddings_materials_ibfk_1` FOREIGN KEY (`cladding`) REFERENCES `claddings` (`id`),
-  CONSTRAINT `claddings_materials_ibfk_2` FOREIGN KEY (`material`) REFERENCES `materials` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+  UNIQUE KEY `offer_UNIQUE` (`offer`),
+  KEY `fk_contracts_bom_idx` (`bom`),
+  KEY `fk_contracts_employees_idx` (`employee`),
+  CONSTRAINT `contracts_ibfk_1` FOREIGN KEY (`offer`) REFERENCES `offers` (`id`),
+  CONSTRAINT `fk_contracts_bom` FOREIGN KEY (`bom`) REFERENCES `bom` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_contracts_employees` FOREIGN KEY (`employee`) REFERENCES `employees` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -119,13 +107,13 @@ CREATE TABLE `customers` (
   `address` varchar(255) NOT NULL,
   `email` varchar(255) NOT NULL,
   `phone` varchar(30) NOT NULL,
-  `password` varchar(255) DEFAULT NULL,
+  `password` varchar(255) NOT NULL,
   `active` bit(1) NOT NULL DEFAULT b'1',
   `confirmed` bit(1) NOT NULL DEFAULT b'0',
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -144,22 +132,7 @@ CREATE TABLE `employees` (
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `flooring_attributes`
---
-
-DROP TABLE IF EXISTS `flooring_attributes`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `flooring_attributes` (
-  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) COLLATE utf8_bin NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `id_UNIQUE` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -177,27 +150,6 @@ CREATE TABLE `floorings` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `floorings_materials`
---
-
-DROP TABLE IF EXISTS `floorings_materials`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `floorings_materials` (
-  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `usage` int(11) unsigned NOT NULL,
-  `flooring` int(11) unsigned NOT NULL,
-  `material` int(11) unsigned NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `id_UNIQUE` (`id`),
-  KEY `flooring` (`flooring`),
-  KEY `material` (`material`),
-  CONSTRAINT `floorings_materials_ibfk_1` FOREIGN KEY (`flooring`) REFERENCES `floorings` (`id`),
-  CONSTRAINT `floorings_materials_ibfk_2` FOREIGN KEY (`material`) REFERENCES `materials` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -235,7 +187,7 @@ CREATE TABLE `offers` (
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -263,7 +215,7 @@ CREATE TABLE `orders` (
   KEY `cladding` (`roofing`),
   CONSTRAINT `orders_ibfk_1` FOREIGN KEY (`customer`) REFERENCES `customers` (`id`),
   CONSTRAINT `orders_ibfk_2` FOREIGN KEY (`roofing`) REFERENCES `roofings` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -279,22 +231,7 @@ CREATE TABLE `roles` (
   `role` enum('HEAD_OF_CENTER','HEAD_OF_MATERIALS','SALESMAN') NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `roofing_attributes`
---
-
-DROP TABLE IF EXISTS `roofing_attributes`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `roofing_attributes` (
-  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) COLLATE utf8_bin NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `id_UNIQUE` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -311,30 +248,10 @@ CREATE TABLE `roofings` (
   `minimum_slope` tinyint(3) unsigned NOT NULL,
   `maximum_slope` tinyint(3) unsigned NOT NULL,
   `active` bit(1) NOT NULL DEFAULT b'1',
+  `type` enum('TILE') NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `roofings_materials`
---
-
-DROP TABLE IF EXISTS `roofings_materials`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `roofings_materials` (
-  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `usage` int(11) unsigned NOT NULL,
-  `roofing` int(11) unsigned NOT NULL,
-  `material` int(11) unsigned NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `id_UNIQUE` (`id`),
-  KEY `roofing` (`roofing`),
-  KEY `material` (`material`),
-  CONSTRAINT `roofings_materials_ibfk_1` FOREIGN KEY (`roofing`) REFERENCES `roofings` (`id`),
-  CONSTRAINT `roofings_materials_ibfk_2` FOREIGN KEY (`material`) REFERENCES `materials` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -374,7 +291,7 @@ CREATE TABLE `tokens` (
   `customer` int(11) unsigned NOT NULL,
   `hash` varchar(60) COLLATE utf8_bin NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `use` enum('EMAIL_CHALLANGE','PASSWORD_RESET') COLLATE utf8_bin DEFAULT NULL,
+  `use` enum('EMAIL_VERIFICATION','PASSWORD_RESET') COLLATE utf8_bin DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`),
   KEY `fk_tokens_customers_idx` (`customer`),
@@ -391,4 +308,4 @@ CREATE TABLE `tokens` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-05-02 11:49:22
+-- Dump completed on 2018-05-03 16:01:46

@@ -33,7 +33,7 @@ public class MysqlTokenDAO extends AbstractMysqlDAO implements TokenDAO
      * @return An instance representing the newly inserted token.
      * @throws MysqlDataAccessException When a data storage exception occurs while performing the operation.
      */
-    @Override public Token create(int customer, String token, Use use) throws MysqlDataAccessException
+    @Override public Token create(int customer, String token, TokenUse use) throws MysqlDataAccessException
     {
         final String SQL = "INSERT INTO tokens (`customer`, `hash`, `use`) VALUES (?, ?, ?);";
         try {
@@ -62,7 +62,7 @@ public class MysqlTokenDAO extends AbstractMysqlDAO implements TokenDAO
      * provided id exists.
      * @throws MysqlDataAccessException When a data storage exception occurs while performing the operation.
      */
-    @Override public Token get(int id, Use use) throws MysqlDataAccessException
+    @Override public Token get(int id, TokenUse use) throws MysqlDataAccessException
     {
         String SQL = "SELECT * FROM tokens INNER JOIN customers ON customer = customers.id WHERE tokens.id = ? AND `use` = ?";
         try (PreparedStatement statement = getConnection().prepareStatement(SQL)) {
@@ -90,7 +90,7 @@ public class MysqlTokenDAO extends AbstractMysqlDAO implements TokenDAO
                 resultSet.getInt("id"),
                 createCustomer("customers", resultSet),
                 resultSet.getString("hash"),
-                Use.valueOf(resultSet.getString("use")),
+                TokenUse.valueOf(resultSet.getString("use")),
                 resultSet.getTimestamp("created_at").toLocalDateTime()
         );
     }

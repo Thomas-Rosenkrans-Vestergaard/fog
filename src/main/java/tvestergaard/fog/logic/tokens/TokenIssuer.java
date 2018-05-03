@@ -5,7 +5,7 @@ import tvestergaard.fog.data.DataAccessException;
 import tvestergaard.fog.data.customers.Customer;
 import tvestergaard.fog.data.tokens.Token;
 import tvestergaard.fog.data.tokens.TokenDAO;
-import tvestergaard.fog.data.tokens.Use;
+import tvestergaard.fog.data.tokens.TokenUse;
 
 /**
  * Issues a single use token for some customer for some provided use.
@@ -43,7 +43,7 @@ public class TokenIssuer
      * @return TokenSecret representing the newly created token.
      * @throws DataAccessException When a data storage exception occurs during the operation.
      */
-    public TokenSecret issue(Customer customer, Use use) throws DataAccessException
+    public TokenSecret issue(Customer customer, TokenUse use) throws DataAccessException
     {
         String secret = tokenGenerator.generate();
         Token  token  = tokenDAO.create(customer.getId(), hash(secret), use);

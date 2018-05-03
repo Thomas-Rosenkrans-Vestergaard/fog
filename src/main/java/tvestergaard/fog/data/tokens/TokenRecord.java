@@ -25,7 +25,7 @@ public class TokenRecord implements Token
     /**
      * The use of the token.
      */
-    private final Use use;
+    private final TokenUse use;
 
     /**
      * The moment in time when the token was created.
@@ -41,7 +41,7 @@ public class TokenRecord implements Token
      * @param use       The use of the token.
      * @param createdAt The moment in time when the token was created.
      */
-    public TokenRecord(int id, Customer customer, String hash, Use use, LocalDateTime createdAt)
+    public TokenRecord(int id, Customer customer, String hash, TokenUse use, LocalDateTime createdAt)
     {
         this.id = id;
         this.customer = customer;
@@ -85,7 +85,7 @@ public class TokenRecord implements Token
      *
      * @return The use of the token.
      */
-    @Override public Use getUse()
+    @Override public TokenUse getUse()
     {
         return use;
     }

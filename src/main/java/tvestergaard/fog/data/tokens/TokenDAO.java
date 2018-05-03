@@ -14,7 +14,7 @@ public interface TokenDAO
      * @return An instance representing the newly inserted token.
      * @throws DataAccessException When a data storage exception occurs while performing the operation.
      */
-    Token create(int customer, String token, Use use) throws DataAccessException;
+    Token create(int customer, String token, TokenUse use) throws DataAccessException;
 
     /**
      * Returns the registration token with the provided id.
@@ -25,5 +25,5 @@ public interface TokenDAO
      * provided id exists.
      * @throws DataAccessException When a data storage exception occurs while performing the operation.
      */
-    Token get(int id, Use use) throws DataAccessException;
+    Token get(int id, TokenUse use) throws DataAccessException;
 }

@@ -4,7 +4,7 @@ import org.mindrot.jbcrypt.BCrypt;
 import tvestergaard.fog.data.DataAccessException;
 import tvestergaard.fog.data.tokens.Token;
 import tvestergaard.fog.data.tokens.TokenDAO;
-import tvestergaard.fog.data.tokens.Use;
+import tvestergaard.fog.data.tokens.TokenUse;
 
 import java.time.LocalDateTime;
 
@@ -42,7 +42,7 @@ public class TokenAuthenticator
      * @throws ExpiredTokenException When the provided token was valid, but has since expired.
      * @throws DataAccessException   When a data storage exception occurs while performing the operation.
      */
-    public boolean authenticate(TokenSecret secret, Use use) throws ExpiredTokenException, DataAccessException
+    public boolean authenticate(TokenSecret secret, TokenUse use) throws ExpiredTokenException, DataAccessException
     {
         Token tokenDB = tokenDAO.get(secret.id, use);
         if (tokenDB == null)

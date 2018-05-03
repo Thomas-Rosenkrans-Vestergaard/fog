@@ -33,7 +33,7 @@ public interface Token
      *
      * @return The use of the token.
      */
-    Use getUse();
+    TokenUse getUse();
 
     /**
      * Returns the moment in time when the token was created.

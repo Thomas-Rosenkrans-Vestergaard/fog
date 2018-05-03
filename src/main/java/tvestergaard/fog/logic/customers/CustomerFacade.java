@@ -21,8 +21,8 @@ public class CustomerFacade
     /**
      * The {@link CustomerDAO} used to access and make changes to the data storage used by the application.
      */
-    private final CustomerDAO     customerDAO;
-    private final EmailChallenger emailChallenger;
+    private final CustomerDAO   customerDAO;
+    private final EmailVerifier emailChallenger;
 
     /**
      * The validator used the validate the information provided to the {@link CustomerFacade}.
@@ -47,7 +47,7 @@ public class CustomerFacade
         TokenIssuer        tokenIssuer        = new TokenIssuer(tokenDAO, tokenGenerator);
         TokenAuthenticator tokenAuthenticator = new TokenAuthenticator(tokenDAO, 24);
 
-        this.emailChallenger = new EmailChallenger(customerDAO, tokenIssuer, tokenAuthenticator, mailer);
+        this.emailChallenger = new EmailVerifier(customerDAO, tokenIssuer, tokenAuthenticator, mailer);
         this.passwordResetter = new PasswordResetter(customerDAO, tokenIssuer, tokenAuthenticator, mailer);
         this.authentication = new CustomerAuthentication(customerDAO, validator, emailChallenger);
     }

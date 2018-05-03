@@ -1,7 +1,7 @@
 package tvestergaard.fog.data.tokens;
 
-public enum Use
+public enum TokenUse
 {
-    EMAIL_CHALLENGE,
+    EMAIL_VERIFICATION,
     PASSWORD_RESET
 }
