@@ -22,6 +22,8 @@ import tvestergaard.fog.data.tokens.MysqlTokenDAO;
 import tvestergaard.fog.data.tokens.TokenDAO;
 import tvestergaard.fog.logic.claddings.CladdingFacade;
 import tvestergaard.fog.logic.customers.CustomerFacade;
+import tvestergaard.fog.logic.email.ApplicationMailer;
+import tvestergaard.fog.logic.email.SimpleJavaMailer;
 import tvestergaard.fog.logic.employees.EmployeeFacade;
 import tvestergaard.fog.logic.floorings.FlooringFacade;
 import tvestergaard.fog.logic.materials.MaterialFacade;
@@ -31,6 +33,8 @@ import tvestergaard.fog.logic.roofings.RoofingFacade;
 
 public class Facades
 {
+
+    private static final ApplicationMailer mailer = new SimpleJavaMailer();
 
     private static final MysqlDataSource source      = ProductionDataSource.getSource();
     private static final CladdingDAO     claddingDAO = new MysqlCladdingDAO(source);
@@ -50,5 +54,5 @@ public class Facades
     public static final MaterialFacade materialFacade = new MaterialFacade(materialDAO);
     public static final OrderFacade    orderFacade    = new OrderFacade(orderDAO);
     public static final RoofingFacade  roofingFacade  = new RoofingFacade(roofingDAO);
-    public static final OfferFacade    offerFacade    = new OfferFacade(offerDAO);
+    public static final OfferFacade    offerFacade    = new OfferFacade(offerDAO, mailer);
 }
