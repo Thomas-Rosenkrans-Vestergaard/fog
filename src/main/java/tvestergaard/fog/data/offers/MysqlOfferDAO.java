@@ -11,8 +11,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import static tvestergaard.fog.data.constraints.Constraint.eq;
-import static tvestergaard.fog.data.constraints.Constraint.where;
+import static tvestergaard.fog.data.constraints.Constraint.*;
 import static tvestergaard.fog.data.offers.OfferColumn.ORDER;
 
 public class MysqlOfferDAO extends AbstractMysqlDAO implements OfferDAO
@@ -96,7 +95,9 @@ public class MysqlOfferDAO extends AbstractMysqlDAO implements OfferDAO
      */
     @Override public Offer first(Constraint<OfferColumn>... constraints) throws MysqlDataAccessException
     {
-        return null;
+        List<Offer> offers = get(append(constraints, limit(1)));
+
+        return offers.isEmpty() ? null : offers.get(0);
     }
 
     /**

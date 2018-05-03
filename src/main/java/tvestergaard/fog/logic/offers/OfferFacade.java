@@ -7,6 +7,8 @@ import tvestergaard.fog.data.offers.OfferBlueprint;
 import tvestergaard.fog.data.offers.OfferColumn;
 import tvestergaard.fog.data.offers.OfferDAO;
 import tvestergaard.fog.logic.ApplicationException;
+import tvestergaard.fog.logic.email.ApplicationMailer;
+import tvestergaard.fog.logic.email.SimpleJavaMailer;
 
 import java.util.List;
 import java.util.Set;
@@ -15,7 +17,8 @@ public class OfferFacade
 {
 
     private final OfferDAO offerDAO;
-    private final OfferValidator validator = new OfferValidator();
+    private final OfferValidator    validator = new OfferValidator();
+    private final ApplicationMailer mailer    = new SimpleJavaMailer();
 
     public OfferFacade(OfferDAO offerDAO)
     {
@@ -71,7 +74,10 @@ public class OfferFacade
             throw new OfferValidatorException(errors);
 
         try {
-            return offerDAO.create(OfferBlueprint.from(order, employee, price));
+            Offer      offer = offerDAO.create(OfferBlueprint.from(order, employee, price));
+            OfferEmail email = new OfferEmail(offer);
+            mailer.send(email);
+            return offer;
         } catch (DataAccessException e) {
             throw new ApplicationException(e);
         }

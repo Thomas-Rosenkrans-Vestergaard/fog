@@ -259,7 +259,8 @@ public abstract class AbstractMysqlDAO
 
         return new OfferRecord(
                 resultSet.getInt(table + ".id"),
-                order, order.getId(),
+                order,
+                order.getId(),
                 employee,
                 employee.getId(),
                 resultSet.getInt(table + ".price"),
