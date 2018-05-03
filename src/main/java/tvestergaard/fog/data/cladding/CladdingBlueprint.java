@@ -1,5 +1,8 @@
 package tvestergaard.fog.data.cladding;
 
+/**
+ * Contains the information necessary to create a new cladding.
+ */
 public interface CladdingBlueprint
 {
 
