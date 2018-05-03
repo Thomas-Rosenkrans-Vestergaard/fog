@@ -7,6 +7,7 @@ import java.util.Objects;
 
 public class TokenRecord implements Token
 {
+
     /**
      * The unique identifier of the registration token.
      */

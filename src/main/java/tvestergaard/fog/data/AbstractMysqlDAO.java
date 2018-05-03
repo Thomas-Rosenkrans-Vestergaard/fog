@@ -169,7 +169,6 @@ public abstract class AbstractMysqlDAO
      * Creates a new {@link Employee} instance from the provided {@code ResultSet}.
      *
      * @param employees
-     * @param roles     The {@code ResultSet} from which to create the {@link Employee} instance.
      * @return The newly created {@link Employee} instance.
      * @throws SQLException
      */
@@ -188,12 +187,16 @@ public abstract class AbstractMysqlDAO
 
     private Set<Role> createRoleSet(ResultSet resultSet, String column) throws SQLException
     {
-        String[]  strings = resultSet.getString(column).split(",");
-        Set<Role> roles   = new HashSet<>();
-        for (String string : strings)
-            roles.add(Role.valueOf(string));
+        String roles = resultSet.getString(column);
+        if (roles == null)
+            return new HashSet<>();
 
-        return roles;
+        String[]  strings = roles.split(",");
+        Set<Role> result   = new HashSet<>();
+        for (String string : strings)
+            result.add(Role.valueOf(string));
+
+        return result;
     }
 
     protected Material createMaterial(String table, ResultSet resultSet) throws SQLException
