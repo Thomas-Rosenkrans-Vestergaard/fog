@@ -1,6 +1,7 @@
 package tvestergaard.fog.presentation.servlets;
 
 import tvestergaard.fog.logic.customers.CustomerFacade;
+import tvestergaard.fog.logic.customers.InactiveCustomerException;
 import tvestergaard.fog.logic.customers.UnknownEmailException;
 import tvestergaard.fog.presentation.Notifications;
 import tvestergaard.fog.presentation.Parameters;
@@ -61,6 +62,9 @@ public class ForgotPasswordServlet extends HttpServlet
             resp.sendRedirect("forgot-password");
         } catch (UnknownEmailException e) {
             notifications.error("Den angivede maøiladresse er ikke registreret i systemet.");
+            resp.sendRedirect("forgot-password");
+        } catch (InactiveCustomerException e) {
+            notifications.error("Kunden med den angivede mailadresse er ikke aktiv, og kan derfor ikke anmode om et nyt password.");
             resp.sendRedirect("forgot-password");
         }
     }

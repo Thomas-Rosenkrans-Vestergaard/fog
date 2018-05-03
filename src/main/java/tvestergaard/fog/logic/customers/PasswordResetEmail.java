@@ -4,19 +4,31 @@ import org.simplejavamail.email.Email;
 import org.simplejavamail.email.EmailBuilder;
 import tvestergaard.fog.data.customers.Customer;
 import tvestergaard.fog.logic.email.ApplicationEmail;
+import tvestergaard.fog.logic.tokens.TokenSecret;
 
 public class PasswordResetEmail implements ApplicationEmail
 {
 
+    /**
+     * The customer to send the password-reset email to.
+     */
     private final Customer customer;
-    private final int      tokenId;
-    private final String   tokenSecret;
 
-    public PasswordResetEmail(Customer customer, int tokenId, String tokenSecret)
+    /**
+     * The token to send within the password-reset email.
+     */
+    private final TokenSecret token;
+
+    /**
+     * Creates a new {@link PasswordResetEmail}.
+     *
+     * @param customer The customer to send the password-reset email to.
+     * @param token    The token to send within the password-reset email.
+     */
+    public PasswordResetEmail(Customer customer, TokenSecret token)
     {
         this.customer = customer;
-        this.tokenId = tokenId;
-        this.tokenSecret = tokenSecret;
+        this.token = token;
     }
 
     /**
@@ -43,7 +55,7 @@ public class PasswordResetEmail implements ApplicationEmail
     {
         StringBuilder builder = new StringBuilder();
         builder.append("<h1>Glemt adgangskode.</h1>");
-        builder.append(String.format("/fog/reset-password?tokenId=%d&tokenSecret=%s", tokenId, tokenSecret));
+        builder.append(String.format("/fog/reset-password?tokenId=%d&tokenSecret=%s", token.id, token.secret));
 
         return builder.toString();
     }

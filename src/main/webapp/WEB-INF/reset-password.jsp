@@ -21,8 +21,8 @@
     <div class="col s12 no-padding">
         <form method="post">
             <div class="row">
-                <input type="hidden" name="tokenId" value="${tokenId}">
-                <input type="hidden" name="tokenSecret" value="${tokenSecret}">
+                <input type="hidden" name="tokenId" value="${id}">
+                <input type="hidden" name="tokenSecret" value="${token}">
                 <div class="input-field col s12 l10">
                     <input type="password" name="password" id="password" required>
                     <label for="password">Nye adgangskode</label>

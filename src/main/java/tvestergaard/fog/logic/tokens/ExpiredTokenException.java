@@ -1,4 +1,4 @@
-package tvestergaard.fog.logic.customers;
+package tvestergaard.fog.logic.tokens;
 
 public class ExpiredTokenException extends Exception
 {

@@ -8,7 +8,9 @@ import tvestergaard.fog.data.customers.CustomerDAO;
 import tvestergaard.fog.data.customers.CustomerUpdater;
 import tvestergaard.fog.data.tokens.TokenDAO;
 import tvestergaard.fog.logic.ApplicationException;
+import tvestergaard.fog.logic.email.ApplicationMailer;
 import tvestergaard.fog.logic.email.SimpleJavaMailer;
+import tvestergaard.fog.logic.tokens.*;
 
 import java.util.List;
 import java.util.Set;
@@ -39,8 +41,14 @@ public class CustomerFacade
     {
         this.customerDAO = customerDAO;
         this.validator = new CustomerValidator(customerDAO);
-        this.emailChallenger = new EmailChallenger(customerDAO, tokenDAO, new SimpleJavaMailer());
-        this.passwordResetter = new PasswordResetter(customerDAO, tokenDAO, new SimpleJavaMailer(), new TokenGenerator());
+
+        ApplicationMailer  mailer             = new SimpleJavaMailer();
+        TokenGenerator     tokenGenerator     = new TokenGenerator();
+        TokenIssuer        tokenIssuer        = new TokenIssuer(tokenDAO, tokenGenerator);
+        TokenAuthenticator tokenAuthenticator = new TokenAuthenticator(tokenDAO, 24);
+
+        this.emailChallenger = new EmailChallenger(customerDAO, tokenIssuer, tokenAuthenticator, mailer);
+        this.passwordResetter = new PasswordResetter(customerDAO, tokenIssuer, tokenAuthenticator, mailer);
         this.authentication = new CustomerAuthentication(customerDAO, validator, emailChallenger);
     }
 
@@ -189,10 +197,12 @@ public class CustomerFacade
      * Sends an email to the provided email address containing a link where the customer can reset their password.
      *
      * @param email The email address to send the password reset link to.
-     * @throws ApplicationException  When a generic exception occurs.
-     * @throws UnknownEmailException When the provided email is not registered with the application.
+     * @throws ApplicationException      When a generic exception occurs.
+     * @throws UnknownEmailException     When the provided email is not registered with the application.
+     * @throws InactiveCustomerException When the customer with the provided email is inactive, and can therefor not
+     *                                   reset their password.
      */
-    public void sendPasswordReset(String email) throws UnknownEmailException
+    public void sendPasswordReset(String email) throws UnknownEmailException, InactiveCustomerException
     {
         try {
             passwordResetter.send(email);
@@ -214,7 +224,7 @@ public class CustomerFacade
     public void resetPassword(int tokenId, String tokenSecret, String newPassword) throws IncorrectTokenException, ExpiredTokenException
     {
         try {
-            passwordResetter.reset(tokenId, tokenSecret, newPassword);
+            passwordResetter.reset(new TokenSecret(tokenId, tokenSecret), newPassword);
         } catch (DataAccessException e) {
             throw new ApplicationException(e);
         }

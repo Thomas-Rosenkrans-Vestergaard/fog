@@ -46,7 +46,7 @@ public class MysqlTokenDAO extends AbstractMysqlDAO implements TokenDAO
                 connection.commit();
                 ResultSet generated = statement.getGeneratedKeys();
                 generated.first();
-                return get(generated.getInt(1));
+                return get(generated.getInt(1), use);
             }
         } catch (SQLException e) {
             throw new MysqlDataAccessException(e);
@@ -56,16 +56,18 @@ public class MysqlTokenDAO extends AbstractMysqlDAO implements TokenDAO
     /**
      * Returns the registration token with the provided id.
      *
-     * @param id The id of the registration token to return.
+     * @param id  The id of the registration token to return.
+     * @param use The use of the registration token to return.
      * @return The registration token with the provided id. Returns {@code null} in case no registration token with the
      * provided id exists.
      * @throws MysqlDataAccessException When a data storage exception occurs while performing the operation.
      */
-    @Override public Token get(int id) throws MysqlDataAccessException
+    @Override public Token get(int id, Use use) throws MysqlDataAccessException
     {
-        final String SQL = "SELECT * FROM tokens INNER JOIN customers ON customer = customers.id WHERE tokens.id = ?";
+        String SQL = "SELECT * FROM tokens INNER JOIN customers ON customer = customers.id WHERE tokens.id = ? AND `use` = ?";
         try (PreparedStatement statement = getConnection().prepareStatement(SQL)) {
             statement.setInt(1, id);
+            statement.setString(2, use.name());
             ResultSet resultSet = statement.executeQuery();
             if (!resultSet.first())
                 return null;

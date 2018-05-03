@@ -4,6 +4,7 @@ import org.simplejavamail.email.Email;
 import org.simplejavamail.email.EmailBuilder;
 import tvestergaard.fog.data.customers.Customer;
 import tvestergaard.fog.logic.email.ApplicationEmail;
+import tvestergaard.fog.logic.tokens.TokenSecret;
 
 public class RegistrationEmail implements ApplicationEmail
 {
@@ -14,27 +15,20 @@ public class RegistrationEmail implements ApplicationEmail
     private final Customer customer;
 
     /**
-     * The registration token id.
+     * The secret component of the token.
      */
-    private final int tokenId;
-
-    /**
-     * The registration token.
-     */
-    private final String token;
+    private final TokenSecret secret;
 
     /**
      * Creates a new {@link RegistrationEmail}.
      *
      * @param customer The customer to send the registration confirmation email to.
-     * @param tokenId  The registration token id.
-     * @param token    The registration token.
+     * @param secret   The token secret to send in the email.
      */
-    public RegistrationEmail(Customer customer, int tokenId, String token)
+    public RegistrationEmail(Customer customer, TokenSecret secret)
     {
         this.customer = customer;
-        this.tokenId = tokenId;
-        this.token = token;
+        this.secret = secret;
     }
 
     /**
@@ -62,8 +56,8 @@ public class RegistrationEmail implements ApplicationEmail
         StringBuilder builder = new StringBuilder();
         builder.append("<h1>Velkommen til Fog Carporte.</h1>");
         builder.append("<p>For at fortsætte med din kundekonto, skal du først bekræfte din registration.</p>");
-        builder.append(String.format("<p>Klik <a href='localhost/fog/account?action=confirm-membership&id=%d&token=%s'>her</a> for at bekræfte din registration.</p>", tokenId, token));
-        builder.append(String.format("<p>Hvis du ikke ønsker at tilmelde dig, kan du istedet klikke <a href='localhost/fog/account?action=reject-membership&id=%d&token=%s'>her</a></p>", tokenId, token));
+        builder.append(String.format("<p>Klik <a href='localhost/fog/account?action=confirm-membership&id=%d&token=%s'>her</a> for at bekræfte din registration.</p>", secret.id, secret.secret));
+        builder.append(String.format("<p>Hvis du ikke ønsker at tilmelde dig, kan du istedet klikke <a href='localhost/fog/account?action=reject-membership&id=%d&token=%s'>her</a></p>", secret.id, secret.secret));
 
         return builder.toString();
     }

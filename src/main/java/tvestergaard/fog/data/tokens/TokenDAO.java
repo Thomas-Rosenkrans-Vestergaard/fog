@@ -19,10 +19,11 @@ public interface TokenDAO
     /**
      * Returns the registration token with the provided id.
      *
-     * @param id The id of the registration token to return.
+     * @param id  The id of the registration token to return.
+     * @param use The use of the registration token to return.
      * @return The registration token with the provided id. Returns {@code null} in case no registration token with the
      * provided id exists.
      * @throws DataAccessException When a data storage exception occurs while performing the operation.
      */
-    Token get(int id) throws DataAccessException;
+    Token get(int id, Use use) throws DataAccessException;
 }

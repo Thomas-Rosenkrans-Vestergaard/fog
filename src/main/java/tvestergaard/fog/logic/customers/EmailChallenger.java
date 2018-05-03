@@ -1,16 +1,13 @@
 package tvestergaard.fog.logic.customers;
 
-import org.mindrot.jbcrypt.BCrypt;
 import tvestergaard.fog.data.DataAccessException;
 import tvestergaard.fog.data.customers.Customer;
 import tvestergaard.fog.data.customers.CustomerDAO;
-import tvestergaard.fog.data.tokens.Token;
-import tvestergaard.fog.data.tokens.TokenDAO;
 import tvestergaard.fog.data.tokens.Use;
 import tvestergaard.fog.logic.email.ApplicationMailer;
+import tvestergaard.fog.logic.tokens.*;
 
 import java.security.SecureRandom;
-import java.time.LocalDateTime;
 
 /**
  * Challenges new customers to verify their email address.
@@ -28,21 +25,20 @@ public class EmailChallenger
      */
     private final CustomerDAO customerDAO;
 
-    /**
-     * The DAO used to update the customer in data storage.
-     */
-    private final TokenDAO          tokenDAO;
-    private final ApplicationMailer mailer;
+    private final TokenIssuer        tokenIssuer;
+    private final TokenAuthenticator tokenAuthenticator;
+    private final ApplicationMailer  mailer;
 
     /**
      * The number of hours the token can be used from when it was first issued.
      */
     private final int EXPIRATION_TIME_HOURS = 24;
 
-    public EmailChallenger(CustomerDAO customerDAO, TokenDAO tokenDAO, ApplicationMailer mailer)
+    public EmailChallenger(CustomerDAO customerDAO, TokenIssuer tokenIssuer, TokenAuthenticator tokenAuthenticator, ApplicationMailer mailer)
     {
         this.customerDAO = customerDAO;
-        this.tokenDAO = tokenDAO;
+        this.tokenIssuer = tokenIssuer;
+        this.tokenAuthenticator = tokenAuthenticator;
         this.mailer = mailer;
     }
 
@@ -55,16 +51,11 @@ public class EmailChallenger
      */
     public void challenge(Customer customer) throws DataAccessException
     {
-        String            token   = new TokenGenerator().generate();
-        Token             tokenDB = tokenDAO.create(customer.getId(), hash(token), Use.EMAIL_CHALLENGE);
-        RegistrationEmail email   = new RegistrationEmail(customer, tokenDB.getId(), token);
+        TokenSecret       secret = tokenIssuer.issue(customer, Use.EMAIL_CHALLENGE);
+        RegistrationEmail email  = new RegistrationEmail(customer, secret);
         mailer.send(email);
     }
 
-    private String hash(String token)
-    {
-        return BCrypt.hashpw(token, BCrypt.gensalt());
-    }
 
     /**
      * Rejects the membership matching the provided token details.
@@ -77,16 +68,7 @@ public class EmailChallenger
      */
     public void reject(int id, String token) throws DataAccessException, IncorrectTokenException, ExpiredTokenException
     {
-        Token tokenDB = tokenDAO.get(id);
-        if (tokenDB == null)
-            throw new IncorrectTokenException();
-
-        LocalDateTime expiration = LocalDateTime.from(tokenDB.getCreatedAt().plusHours(EXPIRATION_TIME_HOURS));
-        if (LocalDateTime.now().isAfter(expiration)) {
-            throw new ExpiredTokenException();
-        }
-
-        if (!BCrypt.checkpw(token, tokenDB.getHash())) {
+        if (!tokenAuthenticator.authenticate(new TokenSecret(id, token), Use.EMAIL_CHALLENGE)) {
             throw new IncorrectTokenException();
         }
 
@@ -105,16 +87,7 @@ public class EmailChallenger
      */
     public void confirm(int id, String token) throws DataAccessException, IncorrectTokenException, ExpiredTokenException
     {
-        Token tokenDB = tokenDAO.get(id);
-        if (tokenDB == null)
-            throw new IncorrectTokenException();
-
-        LocalDateTime expiration = LocalDateTime.from(tokenDB.getCreatedAt().plusHours(EXPIRATION_TIME_HOURS));
-        if (LocalDateTime.now().isAfter(expiration)) {
-            throw new ExpiredTokenException();
-        }
-
-        if (!BCrypt.checkpw(token, tokenDB.getHash())) {
+        if (!tokenAuthenticator.authenticate(new TokenSecret(id, token), Use.EMAIL_CHALLENGE)) {
             throw new IncorrectTokenException();
         }
 

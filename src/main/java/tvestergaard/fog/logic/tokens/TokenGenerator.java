@@ -1,4 +1,4 @@
-package tvestergaard.fog.logic.customers;
+package tvestergaard.fog.logic.tokens;
 
 import java.security.SecureRandom;
 import java.util.Base64;

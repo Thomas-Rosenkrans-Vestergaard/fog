@@ -1,8 +1,8 @@
 package tvestergaard.fog.presentation.servlets;
 
 import tvestergaard.fog.logic.customers.CustomerFacade;
-import tvestergaard.fog.logic.customers.ExpiredTokenException;
-import tvestergaard.fog.logic.customers.IncorrectTokenException;
+import tvestergaard.fog.logic.tokens.ExpiredTokenException;
+import tvestergaard.fog.logic.tokens.IncorrectTokenException;
 import tvestergaard.fog.presentation.Notifications;
 import tvestergaard.fog.presentation.Parameters;
 
