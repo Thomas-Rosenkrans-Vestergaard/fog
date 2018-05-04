@@ -30,17 +30,21 @@ public class MysqlRoofingDAOTest
     @Before
     public void createData() throws Exception
     {
-        roofing1 = dao.create(RoofingBlueprint.from("name1", "description1", 1, 1, true));
-        roofing2 = dao.create(RoofingBlueprint.from("name2", "description2", 2, 2, false));
-        roofing3 = dao.create(RoofingBlueprint.from("name3", "description3", 3, 3, true));
-        roofing4 = dao.create(RoofingBlueprint.from("name4", "description4", 4, 4, false));
-        roofing5 = dao.create(RoofingBlueprint.from("name5", "description5", 5, 5, true));
+        roofing1 = dao.create(RoofingBlueprint.from("name1", "description1", true, RoofingType.TILED));
+        roofing2 = dao.create(RoofingBlueprint.from("name2", "description2", false, RoofingType.TILED));
+        roofing3 = dao.create(RoofingBlueprint.from("name3", "description3", true, RoofingType.TILED));
+        roofing4 = dao.create(RoofingBlueprint.from("name4", "description4", false, RoofingType.TILED));
+        roofing5 = dao.create(RoofingBlueprint.from("name5", "description5", true, RoofingType.TILED));
     }
 
     @After
     public void after() throws Exception
     {
         Connection connection = TestDataSource.getSource().getConnection();
+        connection.createStatement().executeUpdate("DELETE FROM roofing_component_attribute_values");
+        connection.createStatement().executeUpdate("DELETE FROM roofing_component_attribute_definitions");
+        connection.createStatement().executeUpdate("DELETE FROM roofing_component_values");
+        connection.createStatement().executeUpdate("DELETE FROM roofing_component_definitions");
         connection.createStatement().executeUpdate("DELETE FROM roofings");
     }
 
@@ -121,18 +125,15 @@ public class MysqlRoofingDAOTest
     @Test
     public void create() throws Exception
     {
-        String           name         = "some_random_name";
-        String           description  = "some_random_description";
-        int              minimumSlope = 34;
-        int              maximumSlope = 77;
-        boolean          active       = false;
-        RoofingBlueprint blueprint    = RoofingBlueprint.from(name, description, minimumSlope, maximumSlope, active);
-        Roofing          actual       = dao.create(blueprint);
+        String           name        = "some_random_name";
+        String           description = "some_random_description";
+        boolean          active      = false;
+        RoofingBlueprint blueprint   = RoofingBlueprint.from(name, description, active, RoofingType.TILED);
+        Roofing          actual      = dao.create(blueprint);
         assertEquals(name, actual.getName());
         assertEquals(description, actual.getDescription());
-        assertEquals(minimumSlope, actual.getMinimumSlope());
-        assertEquals(maximumSlope, actual.getMaximumSlope());
         assertEquals(active, actual.isActive());
+        assertEquals(RoofingType.TILED, actual.getType());
     }
 
     @Test
@@ -140,8 +141,6 @@ public class MysqlRoofingDAOTest
     {
         roofing1.setName(randomString());
         roofing1.setDescription(randomString());
-        roofing1.setMinimumSlope(45);
-        roofing1.setMaximumSlope(90);
         roofing1.setActive(true);
 
         assertTrue(dao.update(roofing1));

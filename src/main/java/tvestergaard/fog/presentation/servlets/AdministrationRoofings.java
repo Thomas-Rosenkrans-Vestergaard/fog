@@ -1,6 +1,7 @@
 package tvestergaard.fog.presentation.servlets;
 
 import tvestergaard.fog.data.roofing.Roofing;
+import tvestergaard.fog.data.roofing.RoofingType;
 import tvestergaard.fog.logic.roofings.RoofingError;
 import tvestergaard.fog.logic.roofings.RoofingFacade;
 import tvestergaard.fog.logic.roofings.RoofingValidatorException;
@@ -42,11 +43,6 @@ public class AdministrationRoofings extends HttpServlet
         errors.put(EMPTY_NAME, "Det givne navn må ikke være tom.");
         errors.put(NAME_LONGER_THAN_255, "Det givne navn er for langt.");
         errors.put(EMPTY_DESCRIPTION, "Den givne beskrivelse må ikke være tom.");
-        errors.put(MINIMUM_SLOPE_LESS_THAN_1, "Mindste hældning må ikke være mindre end 1.");
-        errors.put(MINIMUM_SLOPE_GREATER_THAN_89, "Mindste hældning må ikke være større end 89.");
-        errors.put(MAXIMUM_SLOPE_LESS_THAN_1, "Største hældning må ikke være mindre end 1.");
-        errors.put(MAXIMUM_SLOPE_GREATER_THAN_89, "Største hældning må ikke være større end 89.");
-        errors.put(MINIMUM_GREATER_THAN_MAXIMUM, "Mindste hældning større end mindte hældning.");
     }
 
     /**
@@ -141,8 +137,7 @@ public class AdministrationRoofings extends HttpServlet
             if (!parameters.isInt("id") ||
                     !parameters.isPresent("name") ||
                     !parameters.isPresent("description") ||
-                    !parameters.isInt("minimum-slope") ||
-                    !parameters.isInt("maximum-slope") ||
+                    !parameters.isEnum("type", RoofingType.class) ||
                     !parameters.isBoolean("active")) {
                 notifications.error("Cannot format parameters.");
                 response.sendRedirect("roofings");
@@ -154,8 +149,7 @@ public class AdministrationRoofings extends HttpServlet
                         parameters.getInt("id"),
                         parameters.value("name"),
                         parameters.value("description"),
-                        parameters.getInt("minimum-slope"),
-                        parameters.getInt("maximum-slope"),
+                        parameters.getEnum("type", RoofingType.class),
                         parameters.getBoolean("active"));
 
                 notifications.success("Taget blev opdateret.");
@@ -189,10 +183,10 @@ public class AdministrationRoofings extends HttpServlet
             Parameters    parameters    = new Parameters(request);
             Notifications notifications = notifications(request);
 
-            if (!parameters.isPresent("name") ||
+            if (!parameters.isInt("id") ||
+                    !parameters.isPresent("name") ||
                     !parameters.isPresent("description") ||
-                    !parameters.isInt("minimum-slope") ||
-                    !parameters.isInt("maximum-slope") ||
+                    !parameters.isEnum("type", RoofingType.class) ||
                     !parameters.isBoolean("active")) {
                 notifications.error("Cannot format parameters.");
                 response.sendRedirect("roofings");
@@ -203,8 +197,7 @@ public class AdministrationRoofings extends HttpServlet
                 Roofing roofing = facade.create(
                         parameters.value("name"),
                         parameters.value("description"),
-                        parameters.getInt("minimum-slope"),
-                        parameters.getInt("maximum-slope"),
+                        parameters.getEnum("type", RoofingType.class),
                         parameters.getBoolean("active"));
 
                 notifications.success("Taget blev oprettet.");

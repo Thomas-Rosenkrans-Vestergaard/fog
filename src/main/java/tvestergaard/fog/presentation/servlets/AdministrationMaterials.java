@@ -43,8 +43,7 @@ public class AdministrationMaterials extends HttpServlet
         errors.put(NUMBER_LONGER_THAN_12, "Materialet er længere end 12.");
         errors.put(DESCRIPTION_EMPTY, "Beskrivelsen må ikke være tom.");
         errors.put(DESCRIPTION_LONGER_THAN_255, "Beskrivelsen må ikke være længere end 255.");
-        errors.put(HEIGHT_LESS_THAN_1, "Højden er mindre end 1.");
-        errors.put(WIDTH_LESS_THAN_1, "Bredde er mindre end 1.");
+        errors.put(UNIT_LESS_THAN_1, "Enheden er mindre end 1.");
     }
 
     @Override protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException
@@ -119,9 +118,7 @@ public class AdministrationMaterials extends HttpServlet
                         parameters.value("number"),
                         parameters.value("description"),
                         parameters.getInt("price"),
-                        parameters.getInt("unit"),
-                        parameters.getInt("width"),
-                        parameters.getInt("height"));
+                        parameters.getInt("unit"));
 
                 notifications.success("Materialeet blev oprettet.");
                 response.sendRedirect("?action=update&id=" + material.getId());
@@ -185,9 +182,7 @@ public class AdministrationMaterials extends HttpServlet
                         parameters.value("number"),
                         parameters.value("description"),
                         parameters.getInt("price"),
-                        parameters.getInt("unit"),
-                        parameters.getInt("width"),
-                        parameters.getInt("height"));
+                        parameters.getInt("unit"));
 
                 notifications.success("Materialet blev opdateret.");
                 response.sendRedirect("?action=update&id=" + parameters.getInt("id"));

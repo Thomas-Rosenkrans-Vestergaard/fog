@@ -9,8 +9,7 @@ public enum MaterialColumn implements MysqlColumn
     NUMBER,
     DESCRIPTION,
     NOTES,
-    HEIGHT,
-    WIDTH,
+    UNIT,
     CREATED_AT;
 
 

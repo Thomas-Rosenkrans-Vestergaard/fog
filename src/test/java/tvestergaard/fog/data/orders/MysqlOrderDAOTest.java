@@ -16,6 +16,7 @@ import tvestergaard.fog.data.flooring.MysqlFlooringDAO;
 import tvestergaard.fog.data.roofing.MysqlRoofingDAO;
 import tvestergaard.fog.data.roofing.Roofing;
 import tvestergaard.fog.data.roofing.RoofingBlueprint;
+import tvestergaard.fog.data.roofing.RoofingType;
 
 import java.sql.Connection;
 
@@ -53,8 +54,8 @@ public class MysqlOrderDAOTest
         cladding1 = claddingDAO.create(CladdingBlueprint.from("name1", "description1", true));
         cladding2 = claddingDAO.create(CladdingBlueprint.from("name2", "description2", false));
 
-        roofing1 = roofingDAO.create(RoofingBlueprint.from("name1", "description1", 1, 2, true));
-        roofing2 = roofingDAO.create(RoofingBlueprint.from("name2", "description2", 10, 6, false));
+        roofing1 = roofingDAO.create(RoofingBlueprint.from("name1", "description1", true, RoofingType.TILED));
+        roofing2 = roofingDAO.create(RoofingBlueprint.from("name2", "description2", false, RoofingType.TILED));
 
         Flooring flooring = flooringDAO.create(FlooringBlueprint.from("name1", "description1", true));
         shed1 = new ShedRecord(0, 1, 2, cladding1.getId(), cladding1, flooring.getId(), flooring);

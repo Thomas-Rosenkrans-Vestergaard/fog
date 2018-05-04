@@ -10,13 +10,11 @@ public interface MaterialBlueprint
      * @param description The material description to specify in the blueprint.
      * @param price       The price of the material.
      * @param unit        The unit size of the material.
-     * @param width       The width of the material to specify in the blueprint.
-     * @param height      The height of the material to specify in the blueprint.
      * @return The resulting blueprint.
      */
-    static MaterialBlueprint from(String number, String description, int price, int unit, int width, int height)
+    static MaterialBlueprint from(String number, String description, int price, int unit)
     {
-        return new MaterialRecord(-1, number, description, price, unit, width, height);
+        return new MaterialRecord(-1, number, description, price, unit);
     }
 
     /**
@@ -67,32 +65,4 @@ public interface MaterialBlueprint
      * @param unit The new unit size of the material.
      */
     void setUnit(int unit);
-
-    /**
-     * Returns the width of the material.
-     *
-     * @return The width of the material.
-     */
-    int getWidth();
-
-    /**
-     * Sets the width of the material.
-     *
-     * @param width The new width.
-     */
-    void setWidth(int width);
-
-    /**
-     * Returns the height of the material.
-     *
-     * @return The height of the material.
-     */
-    int getHeight();
-
-    /**
-     * Sets the height of the material.
-     *
-     * @param height The new height.
-     */
-    void setHeight(int height);
 }

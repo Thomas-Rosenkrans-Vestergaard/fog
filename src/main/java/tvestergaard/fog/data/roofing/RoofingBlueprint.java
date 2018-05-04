@@ -6,16 +6,15 @@ public interface RoofingBlueprint
     /**
      * Returns a new roofing blueprint from the provided information.
      *
-     * @param name                The name of the roofing to specify in the blueprint.
-     * @param description         The description of the roofing to specify in the blueprint.
-     * @param minSlope            The minimum slope of the roofing to specify in the blueprint.
-     * @param maxSlope            The maximum slope of the roofing to specify in the blueprint.
-     * @param active              Whether or not the roofing to specify in the blueprint can be applied to orders.
+     * @param name        The name of the roofing to specify in the blueprint.
+     * @param description The description of the roofing to specify in the blueprint.
+     * @param active      Whether or not the roofing to specify in the blueprint can be applied to orders.
+     * @param type        The type of roofing.
      * @return The newly created roofing blueprint.
      */
-    static RoofingBlueprint from(String name, String description, int minSlope, int maxSlope, boolean active)
+    static RoofingBlueprint from(String name, String description, boolean active, RoofingType type)
     {
-        return new RoofingRecord(-1, name, description, minSlope, maxSlope, active);
+        return new RoofingRecord(-1, name, description, active, type);
     }
 
     /**
@@ -47,34 +46,6 @@ public interface RoofingBlueprint
     void setDescription(String description);
 
     /**
-     * Returns the minimum slope the roofing must have.
-     *
-     * @return The minimum slope the roofing must have. Returns an integer between 0 and 90 (exclusive).
-     */
-    int getMinimumSlope();
-
-    /**
-     * Sets the minimum slope the roofing must have.
-     *
-     * @param minimumSlope The new minimum slope. Range between 0 and 90 (exclusive).
-     */
-    void setMinimumSlope(int minimumSlope);
-
-    /**
-     * Returns the maximum slope the roofing can have.
-     *
-     * @return The maximum slope the roofing must have. Returns an integer between 0 and 90 (exclusive).
-     */
-    int getMaximumSlope();
-
-    /**
-     * Sets the maximum slope the roofing can have.
-     *
-     * @param maximumSlope The new maximum slope. Range between 0 and 90 (exclusive).
-     */
-    void setMaximumSlope(int maximumSlope);
-
-    /**
      * Returns {@code true} if the roofing can currently be applied to new orders.
      *
      * @return {@link true} if the roofing can currently be applied to new orders.
@@ -87,4 +58,18 @@ public interface RoofingBlueprint
      * @param active The new active status.
      */
     void setActive(boolean active);
+
+    /**
+     * Returns the type of the roofing.
+     *
+     * @return The type of the roofing.
+     */
+    RoofingType getType();
+
+    /**
+     * Sets the type of the roofing.
+     *
+     * @param type The new roofing type.
+     */
+    void setType(RoofingType type);
 }
