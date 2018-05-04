@@ -20,12 +20,14 @@
             <img id="side-logo" src="resources/logo.jpg">
         </div>
     </li>
-    <li><a class="${"design".equals(navigation)}" href="design">Design</a></li>
-    <li><a class="${"account".equals(navigation)}" href="account">Kundekonto</a></li>
-    <li><a class="${"profile".equals(navigation)}" href="profile">Profil</a></li>
-    <li><a class="${"orders".equals(navigation)}" href="orders">Mine ordre</a></li>
-    <li><a class="${"offers".equals(navigation)}" href="offers">Mine tilbud</a></li>
+    <li><a class="${"design".equals(navigation) ? 'active' : ''}" href="design">Design</a></li>
+    <li><a class="${"account".equals(navigation) ? 'active' : ''}" href="account">Kundekonto</a></li>
+    <li><a class="${"profile".equals(navigation) ? 'active' : '' }" href="profile">Profil</a></li>
+    <li><a class="${"orders".equals(navigation) ? 'active' : ''}" href="orders">Mine ordre</a></li>
+    <li><a class="${"offers".equals(navigation) ? 'active' : '' }" href="offers">Mine tilbud</a></li>
     <li><a class="${"forgot-password".equals(navigation)}" href="forgot-password">Glemt adgangskode</a></li>
+    <li><a href="logout">Log ud</a></li>
+
 </ul>
 <div id="menu-button">
     <a href="#" data-activates="slide-out" id="navigation-trigger"><i class="material-icons large">menu</i></a>
