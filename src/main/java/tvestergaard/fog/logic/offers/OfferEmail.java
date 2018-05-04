@@ -9,8 +9,16 @@ import tvestergaard.fog.logic.email.ApplicationEmail;
 public class OfferEmail implements ApplicationEmail
 {
 
+    /**
+     * The offer to send in the email.
+     */
     private final Offer offer;
 
+    /**
+     * Creates a new {@link OfferEmail}.
+     *
+     * @param offer The offer to send in the email.
+     */
     public OfferEmail(Offer offer)
     {
         this.offer = offer;
