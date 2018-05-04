@@ -4,7 +4,7 @@ USE `fog`;
 --
 -- Host: 127.0.0.1    Database: fog
 -- ------------------------------------------------------
--- Server version	5.6.37
+-- Server version	5.7.20-log
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -16,22 +16,6 @@ USE `fog`;
 /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
-
---
--- Table structure for table `attribute_values`
---
-
-DROP TABLE IF EXISTS `attribute_values`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `attribute_values` (
-  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `data_type` enum('STRING','INT','FLOAT') NOT NULL,
-  `value` varchar(255) NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `id_UNIQUE` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Table structure for table `bom`
@@ -128,26 +112,6 @@ CREATE TABLE `employees` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Table structure for table `employees_roles`
---
-
-DROP TABLE IF EXISTS `employees_roles`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `employees_roles` (
-  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `employee` int(11) unsigned NOT NULL,
-  `role` int(11) unsigned NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `id_UNIQUE` (`id`),
-  KEY `employee` (`employee`),
-  KEY `role` (`role`),
-  CONSTRAINT `employees_roles_ibfk_1` FOREIGN KEY (`employee`) REFERENCES `employees` (`id`),
-  CONSTRAINT `employees_roles_ibfk_2` FOREIGN KEY (`role`) REFERENCES `roles` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
 -- Table structure for table `floorings`
 --
 
@@ -177,10 +141,9 @@ CREATE TABLE `materials` (
   `description` varchar(255) NOT NULL,
   `price` int(11) unsigned NOT NULL,
   `unit` int(11) unsigned NOT NULL,
-  `width` int(11) unsigned NOT NULL,
-  `height` int(11) unsigned NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `id_UNIQUE` (`id`)
+  UNIQUE KEY `id_UNIQUE` (`id`),
+  UNIQUE KEY `number_UNIQUE` (`number`)
 ) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -272,19 +235,76 @@ CREATE TABLE `roles` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Table structure for table `roofing_components`
+-- Table structure for table `roofing_component_attribute_definitions`
 --
 
-DROP TABLE IF EXISTS `roofing_components`;
+DROP TABLE IF EXISTS `roofing_component_attribute_definitions`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `roofing_components` (
+CREATE TABLE `roofing_component_attribute_definitions` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `type` enum('TILE') NOT NULL,
-  `name` varchar(255) NOT NULL,
+  `component` int(11) unsigned NOT NULL,
+  `name` varchar(20) NOT NULL,
+  `data_type` enum('STRING','INT') NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`),
+  KEY `roofing_component_attribute_definitions_ibfk_1_idx` (`component`),
+  CONSTRAINT `roofing_component_attribute_definitions_ibfk_1` FOREIGN KEY (`component`) REFERENCES `attribute_definition` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `roofing_component_attribute_values`
+--
+
+DROP TABLE IF EXISTS `roofing_component_attribute_values`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `roofing_component_attribute_values` (
+  `attribute` int(11) unsigned NOT NULL,
+  `value` varchar(30) NOT NULL,
+  PRIMARY KEY (`attribute`),
+  CONSTRAINT `roofing_component_attribute_values_ibfk_1` FOREIGN KEY (`attribute`) REFERENCES `roofing_components_attributes` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `roofing_component_definitions`
+--
+
+DROP TABLE IF EXISTS `roofing_component_definitions`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `roofing_component_definitions` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `type` enum('TILED') NOT NULL,
+  `identifier` varchar(20) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `roofing_component_values`
+--
+
+DROP TABLE IF EXISTS `roofing_component_values`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `roofing_component_values` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `roofing` int(11) unsigned NOT NULL,
+  `component` int(11) unsigned NOT NULL,
+  `material` int(11) unsigned NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`),
+  KEY `roofing` (`roofing`),
+  KEY `component` (`component`),
+  KEY `material` (`material`),
+  CONSTRAINT `roofing_component_values_ibfk_1` FOREIGN KEY (`roofing`) REFERENCES `roofings` (`id`),
+  CONSTRAINT `roofing_component_values_ibfk_2` FOREIGN KEY (`component`) REFERENCES `roofing_component_definitions` (`id`),
+  CONSTRAINT `roofing_component_values_ibfk_3` FOREIGN KEY (`material`) REFERENCES `materials` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -298,36 +318,11 @@ CREATE TABLE `roofings` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(255) NOT NULL,
   `description` text NOT NULL,
-  `minimum_slope` tinyint(3) unsigned NOT NULL,
-  `maximum_slope` tinyint(3) unsigned NOT NULL,
   `active` bit(1) NOT NULL DEFAULT b'1',
-  `type` enum('TILE') NOT NULL,
+  `type` enum('TILED') NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `roofings_to_components`
---
-
-DROP TABLE IF EXISTS `roofings_to_components`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `roofings_to_components` (
-  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `roofing` int(11) unsigned NOT NULL,
-  `component` int(11) unsigned NOT NULL,
-  `material` int(11) unsigned NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `id_UNIQUE` (`id`),
-  KEY `roofing` (`roofing`),
-  KEY `component` (`component`),
-  KEY `material` (`material`),
-  CONSTRAINT `roofings_to_components_ibfk_1` FOREIGN KEY (`roofing`) REFERENCES `roofings` (`id`),
-  CONSTRAINT `roofings_to_components_ibfk_2` FOREIGN KEY (`component`) REFERENCES `roofing_components` (`id`),
-  CONSTRAINT `roofings_to_components_ibfk_3` FOREIGN KEY (`material`) REFERENCES `materials` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -384,4 +379,4 @@ CREATE TABLE `tokens` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-05-04 12:32:06
+-- Dump completed on 2018-05-04 22:55:07

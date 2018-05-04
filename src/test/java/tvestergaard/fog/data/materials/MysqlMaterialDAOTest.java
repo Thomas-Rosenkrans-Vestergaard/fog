@@ -6,6 +6,7 @@ import org.junit.Before;
 import org.junit.Test;
 import tvestergaard.fog.data.TestDataSource;
 
+import java.sql.Connection;
 import java.util.List;
 
 import static junit.framework.TestCase.assertNull;
@@ -32,17 +33,22 @@ public class MysqlMaterialDAOTest
     @Before
     public void before() throws Exception
     {
-        material1 = dao.create(MaterialBlueprint.from("number1", "description1", 1, 6, 11, 16));
-        material2 = dao.create(MaterialBlueprint.from("number2", "description2", 2, 7, 12, 17));
-        material3 = dao.create(MaterialBlueprint.from("number3", "description3", 3, 8, 13, 18));
-        material4 = dao.create(MaterialBlueprint.from("number4", "description4", 4, 9, 14, 19));
-        material5 = dao.create(MaterialBlueprint.from("number5", "description5", 5, 10, 15, 20));
+        material1 = dao.create(MaterialBlueprint.from("number1", "description1", 1, 6));
+        material2 = dao.create(MaterialBlueprint.from("number2", "description2", 2, 7));
+        material3 = dao.create(MaterialBlueprint.from("number3", "description3", 3, 8));
+        material4 = dao.create(MaterialBlueprint.from("number4", "description4", 4, 9));
+        material5 = dao.create(MaterialBlueprint.from("number5", "description5", 5, 10));
     }
 
     @After
     public void after() throws Exception
     {
-        TestDataSource.getSource().getConnection().createStatement().executeUpdate("DELETE FROM materials");
+        Connection connection = TestDataSource.getSource().getConnection();
+        connection.createStatement().executeUpdate("DELETE FROM roofing_component_attribute_values");
+        connection.createStatement().executeUpdate("DELETE FROM roofing_component_attribute_definitions");
+        connection.createStatement().executeUpdate("DELETE FROM roofing_component_values");
+        connection.createStatement().executeUpdate("DELETE FROM roofing_component_definitions");
+        connection.createStatement().executeUpdate("DELETE FROM materials");
     }
 
     @Test
@@ -125,15 +131,11 @@ public class MysqlMaterialDAOTest
         String   description = randomString();
         int      price       = randomInt(0, 100000);
         int      unit        = randomInt(0, 100000);
-        int      width       = randomInt(0, 100000);
-        int      height      = randomInt(0, 100000);
-        Material actual      = dao.create(MaterialBlueprint.from(number, description, price, unit, width, height));
+        Material actual      = dao.create(MaterialBlueprint.from(number, description, price, unit));
         assertEquals(number, actual.getNumber());
         assertEquals(description, actual.getDescription());
         assertEquals(price, actual.getPrice());
         assertEquals(unit, actual.getUnit());
-        assertEquals(width, actual.getWidth());
-        assertEquals(height, actual.getHeight());
     }
 
     @Test
@@ -142,8 +144,6 @@ public class MysqlMaterialDAOTest
         material1.setDescription(randomString());
         material1.setPrice(randomInt(0, 10000));
         material1.setUnit(randomInt(0, 100000));
-        material1.setWidth(randomInt(0, 100000));
-        material1.setHeight(randomInt(0, 100000));
 
         assertTrue(dao.update(material1));
 

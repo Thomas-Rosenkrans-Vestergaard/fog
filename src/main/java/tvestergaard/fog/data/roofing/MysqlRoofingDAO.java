@@ -1,8 +1,7 @@
 package tvestergaard.fog.data.roofing;
 
 import com.mysql.cj.jdbc.MysqlDataSource;
-import tvestergaard.fog.data.AbstractMysqlDAO;
-import tvestergaard.fog.data.MysqlDataAccessException;
+import tvestergaard.fog.data.*;
 import tvestergaard.fog.data.constraints.Constraint;
 import tvestergaard.fog.data.constraints.StatementBinder;
 import tvestergaard.fog.data.constraints.StatementGenerator;
@@ -87,15 +86,14 @@ public class MysqlRoofingDAO extends AbstractMysqlDAO implements RoofingDAO
     @Override public Roofing create(RoofingBlueprint blueprint) throws MysqlDataAccessException
     {
         try {
-            final String SQL = "INSERT INTO roofings (`name`, description, minimum_slope, maximum_slope, active) " +
-                    "VALUES (?, ?, ?, ?, ?)";
+            final String SQL = "INSERT INTO roofings (`name`, description, active, `type`) " +
+                    "VALUES (?, ?, ?, ?)";
             Connection connection = getConnection();
             try (PreparedStatement statement = connection.prepareStatement(SQL, Statement.RETURN_GENERATED_KEYS)) {
                 statement.setString(1, blueprint.getName());
                 statement.setString(2, blueprint.getDescription());
-                statement.setInt(3, blueprint.getMinimumSlope());
-                statement.setInt(4, blueprint.getMaximumSlope());
-                statement.setBoolean(5, blueprint.isActive());
+                statement.setBoolean(3, blueprint.isActive());
+                statement.setString(4, blueprint.getType().name());
                 int updated = statement.executeUpdate();
                 connection.commit();
                 if (updated == 0)
@@ -103,8 +101,7 @@ public class MysqlRoofingDAO extends AbstractMysqlDAO implements RoofingDAO
                 ResultSet generated = statement.getGeneratedKeys();
                 generated.first();
                 return new RoofingRecord(generated.getInt(1), blueprint.getName(), blueprint.getDescription(),
-                        blueprint.getMinimumSlope(), blueprint.getMaximumSlope(),
-                        blueprint.isActive());
+                        blueprint.isActive(), blueprint.getType());
             } catch (SQLException e) {
                 connection.rollback();
                 throw e;
@@ -124,16 +121,14 @@ public class MysqlRoofingDAO extends AbstractMysqlDAO implements RoofingDAO
     @Override public boolean update(RoofingUpdater updater) throws MysqlDataAccessException
     {
         try {
-            final String SQL = "UPDATE roofings SET name = ?, description = ?, minimum_slope = ?, maximum_slope = ?," +
-                    " active = ? WHERE id = ?";
-            Connection connection = getConnection();
+            final String SQL        = "UPDATE roofings SET name = ?, description = ?, active = ?, `type` = ? WHERE id = ?";
+            Connection   connection = getConnection();
             try (PreparedStatement statement = connection.prepareStatement(SQL)) {
                 statement.setString(1, updater.getName());
                 statement.setString(2, updater.getDescription());
-                statement.setInt(3, updater.getMinimumSlope());
-                statement.setInt(4, updater.getMaximumSlope());
-                statement.setBoolean(5, updater.isActive());
-                statement.setInt(6, updater.getId());
+                statement.setBoolean(3, updater.isActive());
+                statement.setString(4, updater.getType().name());
+                statement.setInt(5, updater.getId());
                 int updated = statement.executeUpdate();
                 connection.commit();
                 return updated != 0;
@@ -141,6 +136,47 @@ public class MysqlRoofingDAO extends AbstractMysqlDAO implements RoofingDAO
                 connection.rollback();
                 throw e;
             }
+        } catch (SQLException e) {
+            throw new MysqlDataAccessException(e);
+        }
+    }
+
+    /**
+     * Returns the components for the roofing with the provided id.
+     *
+     * @param roofing The id of the roofing to return the components of.
+     * @return The components for the roofing with the provided id.
+     * @throws MysqlDataAccessException When a data storage exception occurs while performing the operation.
+     */
+    @Override public Components getComponentsFor(int roofing) throws MysqlDataAccessException
+    {
+        ComponentsRecord components = new ComponentsRecord();
+
+        String SQL = "SELECT * FROM roofing_component_definitions rcd " +
+                "INNER JOIN roofing_component_values rcv ON rcv.component = rcd.id " +
+                "INNER JOIN materials ON rcv.material = materials.id " +
+                "WHERE rcv.roofing = ?";
+        try (PreparedStatement statement = getConnection().prepareStatement(SQL)) {
+            statement.setInt(1, roofing);
+            ResultSet componentsResultSet = statement.executeQuery();
+            String attrSQL = "SELECT * FROM roofing_component_attribute_values av " +
+                    "INNER JOIN roofing_component_attribute_definitions ad ON av.attribute = ad.id " +
+                    "WHERE (SELECT roofing FROM roofing_component_values WHERE id = ad.component) = ? AND component = ?";
+            try (PreparedStatement attrStatement = getConnection().prepareStatement(attrSQL)) {
+                attrStatement.setInt(1, roofing);
+                while (componentsResultSet.next()) {
+                    ComponentRecord component = new ComponentRecord(createMaterial("materials", componentsResultSet));
+                    components.put(componentsResultSet.getString("identifier"), component);
+                    attrStatement.setInt(2, componentsResultSet.getInt("rcv.component"));
+                    ResultSet attributesResultSet = attrStatement.executeQuery();
+                    while (attributesResultSet.next()) {
+                        component.put(attributesResultSet.getString("name"), attributesResultSet.getString("value"));
+                    }
+                }
+            }
+
+            return components;
+
         } catch (SQLException e) {
             throw new MysqlDataAccessException(e);
         }

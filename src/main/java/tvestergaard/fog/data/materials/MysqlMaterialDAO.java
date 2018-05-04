@@ -48,7 +48,7 @@ public class MysqlMaterialDAO extends AbstractMysqlDAO implements MaterialDAO
     public List<Material> get(Constraint<MaterialColumn>... constraints) throws MysqlDataAccessException
     {
         final List<Material> materials = new ArrayList<>();
-        final String         SQL    = generator.generate("SELECT * FROM materials", constraints);
+        final String         SQL       = generator.generate("SELECT * FROM materials", constraints);
         try (PreparedStatement statement = getConnection().prepareStatement(SQL)) {
             binder.bind(statement, constraints);
             ResultSet resultSet = statement.executeQuery();
@@ -87,16 +87,14 @@ public class MysqlMaterialDAO extends AbstractMysqlDAO implements MaterialDAO
     @Override public Material create(MaterialBlueprint blueprint) throws MysqlDataAccessException
     {
         try {
-            final String SQL = "INSERT INTO materials (`number`, description, price, unit, width, height) " +
-                    "VALUES (?, ?, ?, ?, ?, ?)";
+            final String SQL = "INSERT INTO materials (`number`, description, price, unit) " +
+                    "VALUES (?, ?, ?, ?)";
             Connection connection = getConnection();
             try (PreparedStatement statement = connection.prepareStatement(SQL, Statement.RETURN_GENERATED_KEYS)) {
                 statement.setString(1, blueprint.getNumber());
                 statement.setString(2, blueprint.getDescription());
                 statement.setInt(3, blueprint.getPrice());
                 statement.setInt(4, blueprint.getUnit());
-                statement.setInt(5, blueprint.getWidth());
-                statement.setInt(6, blueprint.getHeight());
                 int updated = statement.executeUpdate();
                 connection.commit();
                 if (updated == 0)
@@ -108,9 +106,7 @@ public class MysqlMaterialDAO extends AbstractMysqlDAO implements MaterialDAO
                         blueprint.getNumber(),
                         blueprint.getDescription(),
                         blueprint.getPrice(),
-                        blueprint.getUnit(),
-                        blueprint.getWidth(),
-                        blueprint.getHeight()
+                        blueprint.getUnit()
                 );
             } catch (SQLException e) {
                 connection.rollback();
@@ -131,15 +127,13 @@ public class MysqlMaterialDAO extends AbstractMysqlDAO implements MaterialDAO
     @Override public boolean update(MaterialUpdater updater) throws MysqlDataAccessException
     {
         try {
-            final String SQL        = "UPDATE materials SET description = ?, price = ?, unit = ?, width = ?, height = ? WHERE id = ?";
+            final String SQL        = "UPDATE materials SET description = ?, price = ?, unit = ? WHERE id = ?";
             Connection   connection = getConnection();
             try (PreparedStatement statement = connection.prepareStatement(SQL)) {
                 statement.setString(1, updater.getDescription());
                 statement.setInt(2, updater.getPrice());
                 statement.setInt(3, updater.getUnit());
-                statement.setInt(4, updater.getWidth());
-                statement.setInt(5, updater.getHeight());
-                statement.setInt(6, updater.getId());
+                statement.setInt(4, updater.getId());
                 int updated = statement.executeUpdate();
                 connection.commit();
                 return updated != 0;

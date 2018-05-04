@@ -31,16 +31,6 @@ public class MaterialRecord implements Material
     private int unit;
 
     /**
-     * The height of the material.
-     */
-    private int width;
-
-    /**
-     * The width of the material.
-     */
-    private int height;
-
-    /**
      * Creates a new {@link MaterialRecord}.
      *
      * @param id          The id of the material to update.
@@ -48,18 +38,14 @@ public class MaterialRecord implements Material
      * @param description The material description to specify in the updater.
      * @param price       The price of the material.
      * @param unit        The type of unit the material is in.
-     * @param width       The width of the material to specify in the updater.
-     * @param height      The height of the material to specify in the updater.
      */
-    public MaterialRecord(int id, String number, String description, int price, int unit, int width, int height)
+    public MaterialRecord(int id, String number, String description, int price, int unit)
     {
         this.id = id;
         this.number = number;
         this.description = description;
         this.price = price;
         this.unit = unit;
-        this.width = width;
-        this.height = height;
     }
 
     /**
@@ -142,46 +128,6 @@ public class MaterialRecord implements Material
         this.unit = unit;
     }
 
-    /**
-     * Returns the width of the material.
-     *
-     * @return The width of the material.
-     */
-    @Override public int getWidth()
-    {
-        return width;
-    }
-
-    /**
-     * Sets the width of the material.
-     *
-     * @param width The new width.
-     */
-    @Override public void setWidth(int width)
-    {
-        this.width = width;
-    }
-
-    /**
-     * Returns the height of the material.
-     *
-     * @return The height of the material.
-     */
-    @Override public int getHeight()
-    {
-        return height;
-    }
-
-    /**
-     * Sets the height of the material.
-     *
-     * @param height The new height.
-     */
-    @Override public void setHeight(int height)
-    {
-        this.height = height;
-    }
-
     @Override public boolean equals(Object o)
     {
         if (this == o) return true;
@@ -190,8 +136,6 @@ public class MaterialRecord implements Material
         return getId() == that.getId() &&
                 getPrice() == that.getPrice() &&
                 getUnit() == that.getUnit() &&
-                getWidth() == that.getWidth() &&
-                getHeight() == that.getHeight() &&
                 Objects.equals(getNumber(), that.getNumber()) &&
                 Objects.equals(getDescription(), that.getDescription());
     }

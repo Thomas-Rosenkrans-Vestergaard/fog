@@ -21,38 +21,31 @@ public class RoofingRecord implements Roofing
     private String description;
 
     /**
-     * The minimum slope the roofing must have.
-     */
-    private int minimumSlope;
-
-    /**
-     * The maximum slope the roofing must have.
-     */
-    private int maximumSlope;
-
-    /**
      * Whether or not the roofing can currently be applied to new orders.
      */
     private boolean active;
 
     /**
+     * The type of roofing.
+     */
+    private RoofingType type;
+
+    /**
      * Creates a new {@link RoofingRecord}.
      *
-     * @param id           The unique identifier of the roofing.
-     * @param name         The name of the roofing.
-     * @param description  The description of the roofing.
-     * @param minimumSlope The minimum slope the roofing must have.
-     * @param maximumSlope The maximum slope the roofing must have.
-     * @param active       Whether or not the roofing can currently be applied to new orders.
+     * @param id          The unique identifier of the roofing.
+     * @param name        The name of the roofing.
+     * @param description The description of the roofing.
+     * @param active      Whether or not the roofing can currently be applied to new orders.
+     * @param type        The type of roofing.
      */
-    public RoofingRecord(int id, String name, String description, int minimumSlope, int maximumSlope, boolean active)
+    public RoofingRecord(int id, String name, String description, boolean active, RoofingType type)
     {
         this.id = id;
         this.name = name;
         this.description = description;
-        this.minimumSlope = minimumSlope;
-        this.maximumSlope = maximumSlope;
         this.active = active;
+        this.type = type;
     }
 
     /**
@@ -107,43 +100,23 @@ public class RoofingRecord implements Roofing
     }
 
     /**
-     * Returns the minimum slope the roofing must have.
+     * Returns the type of the roofing.
      *
-     * @return The minimum slope the roofing must have. Returns an integer between 0 and 90 (exclusive).
+     * @return The type of the roofing.
      */
-    @Override public int getMinimumSlope()
+    @Override public RoofingType getType()
     {
-        return minimumSlope;
+        return type;
     }
 
     /**
-     * Sets the minimum slope the roofing must have.
+     * Sets the type of the roofing.
      *
-     * @param minimumSlope The new minimum slope. Range between 0 and 90 (exclusive).
+     * @param type The new roofing type.
      */
-    @Override public void setMinimumSlope(int minimumSlope)
+    @Override public void setType(RoofingType type)
     {
-        this.minimumSlope = minimumSlope;
-    }
-
-    /**
-     * Returns the maximum slope the roofing must have.
-     *
-     * @return The maximum slope the roofing must have. Returns an integer between 0 and 90 (exclusive).
-     */
-    @Override public int getMaximumSlope()
-    {
-        return maximumSlope;
-    }
-
-    /**
-     * Sets the maximum slope the roofing can have.
-     *
-     * @param maximumSlope The new maximum slope. Range between 0 and 90 (exclusive).
-     */
-    @Override public void setMaximumSlope(int maximumSlope)
-    {
-        this.maximumSlope = maximumSlope;
+        this.type = type;
     }
 
     /**
@@ -173,8 +146,6 @@ public class RoofingRecord implements Roofing
         if (!(o instanceof Roofing)) return false;
         Roofing that = (Roofing) o;
         return id == that.getId() &&
-                minimumSlope == that.getMinimumSlope() &&
-                maximumSlope == that.getMaximumSlope() &&
                 active == that.isActive() &&
                 Objects.equals(name, that.getName()) &&
                 Objects.equals(description, that.getDescription());
