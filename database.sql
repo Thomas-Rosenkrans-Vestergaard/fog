@@ -18,6 +18,22 @@ USE `fog`;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
+-- Table structure for table `attribute_values`
+--
+
+DROP TABLE IF EXISTS `attribute_values`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `attribute_values` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `data_type` enum('STRING','INT','FLOAT') NOT NULL,
+  `value` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Table structure for table `bom`
 --
 
@@ -89,7 +105,7 @@ CREATE TABLE `customers` (
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -256,6 +272,22 @@ CREATE TABLE `roles` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Table structure for table `roofing_components`
+--
+
+DROP TABLE IF EXISTS `roofing_components`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `roofing_components` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `type` enum('TILE') NOT NULL,
+  `name` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Table structure for table `roofings`
 --
 
@@ -273,6 +305,29 @@ CREATE TABLE `roofings` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `roofings_to_components`
+--
+
+DROP TABLE IF EXISTS `roofings_to_components`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `roofings_to_components` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `roofing` int(11) unsigned NOT NULL,
+  `component` int(11) unsigned NOT NULL,
+  `material` int(11) unsigned NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`),
+  KEY `roofing` (`roofing`),
+  KEY `component` (`component`),
+  KEY `material` (`material`),
+  CONSTRAINT `roofings_to_components_ibfk_1` FOREIGN KEY (`roofing`) REFERENCES `roofings` (`id`),
+  CONSTRAINT `roofings_to_components_ibfk_2` FOREIGN KEY (`component`) REFERENCES `roofing_components` (`id`),
+  CONSTRAINT `roofings_to_components_ibfk_3` FOREIGN KEY (`material`) REFERENCES `materials` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -317,7 +372,7 @@ CREATE TABLE `tokens` (
   UNIQUE KEY `id_UNIQUE` (`id`),
   KEY `fk_tokens_customers_idx` (`customer`),
   CONSTRAINT `fk_tokens_customers` FOREIGN KEY (`customer`) REFERENCES `customers` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 /*!40101 SET character_set_client = @saved_cs_client */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -329,4 +384,4 @@ CREATE TABLE `tokens` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-05-04  9:40:34
+-- Dump completed on 2018-05-04 12:32:06

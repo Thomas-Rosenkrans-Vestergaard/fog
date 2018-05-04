@@ -137,7 +137,6 @@ public class OrderFacade
             if (!reasons.isEmpty())
                 throw new OrderValidatorException(reasons);
 
-
             return dao.update(OrderUpdater.from(id, -1, cladding, width, length, height, roofing, slope, rafters, ShedBlueprint.from(shed.getWidth(), shed.getDepth(), shed.getCladdingId(), shed.getFlooringId())));
         } catch (DataAccessException e) {
             throw new ApplicationException(e);
