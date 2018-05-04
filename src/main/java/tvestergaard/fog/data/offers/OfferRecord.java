@@ -14,9 +14,10 @@ public class OfferRecord implements Offer
     private final Employee      employee;
     private final int           employeeId;
     private final int           price;
+    private       OfferStatus   status;
     private final LocalDateTime createdAt;
 
-    public OfferRecord(int id, Order order, int orderId, Employee employee, int employeeId, int price, LocalDateTime createdAt)
+    public OfferRecord(int id, Order order, int orderId, Employee employee, int employeeId, int price, OfferStatus status, LocalDateTime createdAt)
     {
         this.id = id;
         this.order = order;
@@ -85,6 +86,16 @@ public class OfferRecord implements Offer
     @Override public Employee getEmployee()
     {
         return employee;
+    }
+
+    /**
+     * Returns the current status of the offer.
+     *
+     * @return The current status of the offer.
+     */
+    @Override public OfferStatus getStatus()
+    {
+        return status;
     }
 
     /**

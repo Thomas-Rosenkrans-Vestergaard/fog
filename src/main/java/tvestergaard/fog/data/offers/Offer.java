@@ -30,6 +30,13 @@ public interface Offer extends OfferBlueprint
     Employee getEmployee();
 
     /**
+     * Returns the current status of the offer.
+     *
+     * @return The current status of the offer.
+     */
+    OfferStatus getStatus();
+
+    /**
      * Returns the moment in time when the offer was created.
      *
      * @return The moment in time when the offer was created.

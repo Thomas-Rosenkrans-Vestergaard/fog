@@ -53,6 +53,6 @@ public class TokenAuthenticator
             throw new ExpiredTokenException();
         }
 
-        return !BCrypt.checkpw(secret.secret, tokenDB.getHash());
+        return BCrypt.checkpw(secret.secret, tokenDB.getHash());
     }
 }

@@ -1,8 +1,8 @@
-package tvestergaard.fog.data.contracts;
+package tvestergaard.fog.data.purchases;
 
 import tvestergaard.fog.data.constraints.MysqlColumn;
 
-public enum ContractColumn implements MysqlColumn
+public enum PurchaseColumn implements MysqlColumn
 {
     ID,
     OFFER,

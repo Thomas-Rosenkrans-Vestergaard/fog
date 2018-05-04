@@ -1,8 +1,13 @@
 package tvestergaard.fog.presentation.servlets;
 
+import tvestergaard.fog.logic.customers.InactiveCustomerException;
+import tvestergaard.fog.logic.employees.InactiveEmployeeException;
+import tvestergaard.fog.logic.employees.InsufficientPermissionsException;
+import tvestergaard.fog.logic.employees.UnknownEmployeeException;
 import tvestergaard.fog.logic.offers.OfferError;
 import tvestergaard.fog.logic.offers.OfferFacade;
 import tvestergaard.fog.logic.offers.OfferValidatorException;
+import tvestergaard.fog.logic.orders.UnknownOrderException;
 import tvestergaard.fog.presentation.Authentication;
 import tvestergaard.fog.presentation.Notifications;
 import tvestergaard.fog.presentation.Parameters;
@@ -38,7 +43,8 @@ public class AdministrationOffers extends HttpServlet
         errors.put(OfferError.NEGATIVE_PRICE, "Prisen må ikke være negativ.");
     }
 
-    @Override protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException
     {
         Authentication authentication = new Authentication(req);
         Notifications  notifications  = notifications(req);
@@ -51,7 +57,8 @@ public class AdministrationOffers extends HttpServlet
         dispatcher.dispatch(req, resp);
     }
 
-    @Override protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException
     {
         Authentication authentication = new Authentication(req);
         Notifications  notifications  = notifications(req);
@@ -66,7 +73,8 @@ public class AdministrationOffers extends HttpServlet
 
     private class ShowTableCommand implements Command
     {
-        @Override public void dispatch(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
+        @Override
+        public void dispatch(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
         {
             request.setAttribute("title", "Tilbud");
             request.setAttribute("offers", offerFacade.get());
@@ -76,7 +84,8 @@ public class AdministrationOffers extends HttpServlet
 
     private class ShowCreateCommand implements Command
     {
-        @Override public void dispatch(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
+        @Override
+        public void dispatch(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
         {
             Parameters    parameters    = new Parameters(request);
             Notifications notifications = notifications(request);
@@ -95,7 +104,8 @@ public class AdministrationOffers extends HttpServlet
     private class HandleCreateCommand implements Command
     {
 
-        @Override public void dispatch(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
+        @Override
+        public void dispatch(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
         {
             Authentication authentication = new Authentication(request);
             Notifications  notifications  = notifications(request);
@@ -117,7 +127,20 @@ public class AdministrationOffers extends HttpServlet
                     notifications.error(errors.get(error));
 
                 response.sendRedirect("?action=create");
+                return;
+            } catch (UnknownOrderException e) {
+                notifications.error("Ukendt order.");
+            } catch (InactiveCustomerException e) {
+                notifications.error("Inaktiv kunde.");
+            } catch (UnknownEmployeeException e){
+                notifications.error("Ukendt kunde");
+            } catch (InactiveEmployeeException e){
+                notifications.error("Ukendt medarbejder.");
+            } catch (InsufficientPermissionsException e){
+                notifications.error("Medarbejderen er ikke en salgsperson.");
             }
+
+            response.sendRedirect("?action=create");
         }
     }
 }

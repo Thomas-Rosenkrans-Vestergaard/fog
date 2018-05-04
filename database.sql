@@ -1,10 +1,10 @@
-CREATE DATABASE  IF NOT EXISTS `fog` /*!40100 DEFAULT CHARACTER SET utf8 COLLATE utf8_bin */;
+CREATE DATABASE  IF NOT EXISTS `fog` /*!40100 DEFAULT CHARACTER SET utf8 */;
 USE `fog`;
 -- MySQL dump 10.13  Distrib 5.7.17, for Win64 (x86_64)
 --
 -- Host: 127.0.0.1    Database: fog
 -- ------------------------------------------------------
--- Server version	5.7.20-log
+-- Server version	5.6.37
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -71,30 +71,6 @@ CREATE TABLE `claddings` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Table structure for table `contracts`
---
-
-DROP TABLE IF EXISTS `contracts`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `contracts` (
-  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `offer` int(11) unsigned NOT NULL,
-  `employee` int(11) unsigned NOT NULL,
-  `bom` int(11) unsigned NOT NULL,
-  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `id_UNIQUE` (`id`),
-  UNIQUE KEY `offer_UNIQUE` (`offer`),
-  KEY `fk_contracts_bom_idx` (`bom`),
-  KEY `fk_contracts_employees_idx` (`employee`),
-  CONSTRAINT `contracts_ibfk_1` FOREIGN KEY (`offer`) REFERENCES `offers` (`id`),
-  CONSTRAINT `fk_contracts_bom` FOREIGN KEY (`bom`) REFERENCES `bom` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `fk_contracts_employees` FOREIGN KEY (`employee`) REFERENCES `employees` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
 -- Table structure for table `customers`
 --
 
@@ -133,6 +109,26 @@ CREATE TABLE `employees` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `employees_roles`
+--
+
+DROP TABLE IF EXISTS `employees_roles`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `employees_roles` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `employee` int(11) unsigned NOT NULL,
+  `role` int(11) unsigned NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`),
+  KEY `employee` (`employee`),
+  KEY `role` (`role`),
+  CONSTRAINT `employees_roles_ibfk_1` FOREIGN KEY (`employee`) REFERENCES `employees` (`id`),
+  CONSTRAINT `employees_roles_ibfk_2` FOREIGN KEY (`role`) REFERENCES `roles` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -184,6 +180,7 @@ CREATE TABLE `offers` (
   `order` int(11) unsigned NOT NULL,
   `employee` int(11) unsigned NOT NULL,
   `price` int(11) unsigned NOT NULL,
+  `status` enum('ACCEPTED','REJECTED') DEFAULT NULL,
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`)
@@ -216,6 +213,30 @@ CREATE TABLE `orders` (
   CONSTRAINT `orders_ibfk_1` FOREIGN KEY (`customer`) REFERENCES `customers` (`id`),
   CONSTRAINT `orders_ibfk_2` FOREIGN KEY (`roofing`) REFERENCES `roofings` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `purchases`
+--
+
+DROP TABLE IF EXISTS `purchases`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `purchases` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `offer` int(11) unsigned NOT NULL,
+  `employee` int(11) unsigned NOT NULL,
+  `bom` int(11) unsigned NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`),
+  UNIQUE KEY `offer_UNIQUE` (`offer`),
+  KEY `fk_contracts_bom_idx` (`bom`),
+  KEY `fk_contracts_employees_idx` (`employee`),
+  CONSTRAINT `fk_contracts_bom` FOREIGN KEY (`bom`) REFERENCES `bom` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_contracts_employees` FOREIGN KEY (`employee`) REFERENCES `employees` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `purchases_ibfk_1` FOREIGN KEY (`offer`) REFERENCES `offers` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -308,4 +329,4 @@ CREATE TABLE `tokens` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-05-03 16:01:46
+-- Dump completed on 2018-05-04  9:40:34

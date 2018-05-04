@@ -16,6 +16,8 @@ import tvestergaard.fog.data.offers.MysqlOfferDAO;
 import tvestergaard.fog.data.offers.OfferDAO;
 import tvestergaard.fog.data.orders.MysqlOrderDAO;
 import tvestergaard.fog.data.orders.OrderDAO;
+import tvestergaard.fog.data.purchases.MysqlPurchaseDAO;
+import tvestergaard.fog.data.purchases.PurchaseDAO;
 import tvestergaard.fog.data.roofing.MysqlRoofingDAO;
 import tvestergaard.fog.data.roofing.RoofingDAO;
 import tvestergaard.fog.data.tokens.MysqlTokenDAO;
@@ -29,7 +31,10 @@ import tvestergaard.fog.logic.floorings.FlooringFacade;
 import tvestergaard.fog.logic.materials.MaterialFacade;
 import tvestergaard.fog.logic.offers.OfferFacade;
 import tvestergaard.fog.logic.orders.OrderFacade;
+import tvestergaard.fog.logic.purchases.PurchaseFacade;
 import tvestergaard.fog.logic.roofings.RoofingFacade;
+import tvestergaard.fog.logic.tokens.TokenGenerator;
+import tvestergaard.fog.logic.tokens.TokenIssuer;
 
 public class Facades
 {
@@ -46,6 +51,10 @@ public class Facades
     private static final OrderDAO        orderDAO    = new MysqlOrderDAO(source);
     private static final RoofingDAO      roofingDAO  = new MysqlRoofingDAO(source);
     private static final OfferDAO        offerDAO    = new MysqlOfferDAO(source);
+    private static final PurchaseDAO     purchaseDAO = new MysqlPurchaseDAO(source);
+
+
+    private static final TokenIssuer tokenIssuer = new TokenIssuer(tokenDAO, new TokenGenerator());
 
     public static final CladdingFacade claddingFacade = new CladdingFacade(claddingDAO);
     public static final CustomerFacade customerFacade = new CustomerFacade(customerDAO, tokenDAO);
@@ -54,5 +63,6 @@ public class Facades
     public static final MaterialFacade materialFacade = new MaterialFacade(materialDAO);
     public static final OrderFacade    orderFacade    = new OrderFacade(orderDAO);
     public static final RoofingFacade  roofingFacade  = new RoofingFacade(roofingDAO);
-    public static final OfferFacade    offerFacade    = new OfferFacade(offerDAO, mailer);
+    public static final OfferFacade    offerFacade    = new OfferFacade(offerDAO, orderDAO, employeeDAO, mailer, tokenIssuer);
+    public static final PurchaseFacade purchaseFacade = new PurchaseFacade(purchaseDAO, offerDAO, employeeDAO);
 }

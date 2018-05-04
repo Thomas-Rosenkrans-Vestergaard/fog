@@ -5,6 +5,7 @@ import org.simplejavamail.email.EmailBuilder;
 import tvestergaard.fog.data.customers.Customer;
 import tvestergaard.fog.data.offers.Offer;
 import tvestergaard.fog.logic.email.ApplicationEmail;
+import tvestergaard.fog.logic.tokens.TokenSecret;
 
 public class OfferEmail implements ApplicationEmail
 {
@@ -15,15 +16,21 @@ public class OfferEmail implements ApplicationEmail
     private final Offer offer;
 
     /**
+     * The secret token to include in the email as links.
+     */
+    private final TokenSecret tokenSecret;
+
+    /**
      * Creates a new {@link OfferEmail}.
      *
-     * @param offer The offer to send in the email.
+     * @param offer       The offer to send in the email.
+     * @param tokenSecret The secret token to include in the email as links.
      */
-    public OfferEmail(Offer offer)
+    public OfferEmail(Offer offer, TokenSecret tokenSecret)
     {
         this.offer = offer;
+        this.tokenSecret = tokenSecret;
     }
-
 
     /**
      * Builds the Email instance that can be sent using the SimpleJavaMail library.

@@ -13,7 +13,7 @@ public interface OfferBlueprint
      */
     static OfferBlueprint from(int order, int employee, int price)
     {
-        return new OfferRecord(-1, null, order, null, employee, price, null);
+        return new OfferRecord(-1, null, order, null, employee, price, null, null);
     }
 
     /**

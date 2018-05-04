@@ -9,6 +9,7 @@ public enum OfferColumn implements MysqlColumn
     ORDER,
     EMPLOYEE,
     PRICE,
+    STATUS,
     CREATED_AT;
 
 

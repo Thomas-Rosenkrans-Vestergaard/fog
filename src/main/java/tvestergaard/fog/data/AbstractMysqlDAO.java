@@ -4,8 +4,6 @@ import com.mysql.cj.jdbc.MysqlDataSource;
 import tvestergaard.fog.data.bom.Bom;
 import tvestergaard.fog.data.cladding.Cladding;
 import tvestergaard.fog.data.cladding.CladdingRecord;
-import tvestergaard.fog.data.contracts.Contract;
-import tvestergaard.fog.data.contracts.ContractRecord;
 import tvestergaard.fog.data.customers.Customer;
 import tvestergaard.fog.data.customers.CustomerRecord;
 import tvestergaard.fog.data.employees.Employee;
@@ -17,7 +15,10 @@ import tvestergaard.fog.data.materials.Material;
 import tvestergaard.fog.data.materials.MaterialRecord;
 import tvestergaard.fog.data.offers.Offer;
 import tvestergaard.fog.data.offers.OfferRecord;
+import tvestergaard.fog.data.offers.OfferStatus;
 import tvestergaard.fog.data.orders.*;
+import tvestergaard.fog.data.purchases.Purchase;
+import tvestergaard.fog.data.purchases.PurchaseRecord;
 import tvestergaard.fog.data.roofing.Roofing;
 import tvestergaard.fog.data.roofing.RoofingRecord;
 
@@ -192,7 +193,7 @@ public abstract class AbstractMysqlDAO
             return new HashSet<>();
 
         String[]  strings = roles.split(",");
-        Set<Role> result   = new HashSet<>();
+        Set<Role> result  = new HashSet<>();
         for (String string : strings)
             result.add(Role.valueOf(string));
 
@@ -220,13 +221,13 @@ public abstract class AbstractMysqlDAO
      * @throws SQLException
      */
     protected Order createOrder(ResultSet resultSet,
-                                String table,
-                                String customerTable,
-                                String claddingTable,
-                                String roofingTable,
-                                String shedTable,
-                                String shedCladdingTable,
-                                String shedFlooringTable) throws SQLException
+            String table,
+            String customerTable,
+            String claddingTable,
+            String roofingTable,
+            String shedTable,
+            String shedCladdingTable,
+            String shedFlooringTable) throws SQLException
     {
         return new OrderRecord(
                 resultSet.getInt(table + ".id"),
@@ -249,15 +250,15 @@ public abstract class AbstractMysqlDAO
     }
 
     protected Offer createOffer(ResultSet resultSet,
-                                String table,
-                                String orderTable,
-                                String customerTable,
-                                String orderCladdingTable,
-                                String orderRoofingTable,
-                                String shedTable,
-                                String shedCladdingTable,
-                                String shedFlooringsTable,
-                                String employeeTable) throws SQLException
+            String table,
+            String orderTable,
+            String customerTable,
+            String orderCladdingTable,
+            String orderRoofingTable,
+            String shedTable,
+            String shedCladdingTable,
+            String shedFlooringsTable,
+            String employeeTable) throws SQLException
     {
         Order    order    = createOrder(resultSet, orderTable, customerTable, orderCladdingTable, orderRoofingTable, shedTable, shedCladdingTable, shedFlooringsTable);
         Employee employee = createEmployee(employeeTable, resultSet);
@@ -269,28 +270,29 @@ public abstract class AbstractMysqlDAO
                 employee,
                 employee.getId(),
                 resultSet.getInt(table + ".price"),
+                OfferStatus.valueOf(resultSet.getString(table + ".status")),
                 resultSet.getTimestamp(table + ".created_at").toLocalDateTime());
     }
 
-    protected Contract createContract(ResultSet resultSet,
-                                      String table,
-                                      String contractEmployeeTable,
-                                      String offerTable,
-                                      String orderTable,
-                                      String customerTable,
-                                      String orderCladdingTable,
-                                      String orderRoofingTable,
-                                      String shedTable,
-                                      String shedCladdingTable,
-                                      String shedFlooringsTable,
-                                      String offerEmployeeTable) throws SQLException
+    protected Purchase createPurchase(ResultSet resultSet,
+            String table,
+            String purchaseEmployeeTable,
+            String offerTable,
+            String orderTable,
+            String customerTable,
+            String orderCladdingTable,
+            String orderRoofingTable,
+            String shedTable,
+            String shedCladdingTable,
+            String shedFlooringsTable,
+            String offerEmployeeTable) throws SQLException
     {
         Offer offer = createOffer(
                 resultSet, offerTable, orderTable, customerTable, orderCladdingTable, orderRoofingTable, shedTable,
                 shedCladdingTable, shedFlooringsTable, offerEmployeeTable);
-        Employee employee = createEmployee(contractEmployeeTable, resultSet);
+        Employee employee = createEmployee(purchaseEmployeeTable, resultSet);
         Bom      bom      = null;
 
-        return new ContractRecord(resultSet.getInt(table + ".id"), offer.getId(), offer, employee.getId(), employee, null, null, resultSet.getTimestamp(table + ".created_at").toLocalDateTime());
+        return new PurchaseRecord(resultSet.getInt(table + ".id"), offer.getId(), offer, employee.getId(), employee, null, null, resultSet.getTimestamp(table + ".created_at").toLocalDateTime());
     }
 }

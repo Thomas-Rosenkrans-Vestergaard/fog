@@ -2,15 +2,32 @@ package tvestergaard.fog.logic.offers;
 
 import tvestergaard.fog.data.DataAccessException;
 import tvestergaard.fog.data.constraints.Constraint;
+import tvestergaard.fog.data.employees.Employee;
+import tvestergaard.fog.data.employees.EmployeeColumn;
+import tvestergaard.fog.data.employees.EmployeeDAO;
+import tvestergaard.fog.data.employees.Role;
 import tvestergaard.fog.data.offers.Offer;
 import tvestergaard.fog.data.offers.OfferBlueprint;
 import tvestergaard.fog.data.offers.OfferColumn;
 import tvestergaard.fog.data.offers.OfferDAO;
+import tvestergaard.fog.data.orders.Order;
+import tvestergaard.fog.data.orders.OrderDAO;
+import tvestergaard.fog.data.tokens.TokenUse;
 import tvestergaard.fog.logic.ApplicationException;
+import tvestergaard.fog.logic.customers.InactiveCustomerException;
 import tvestergaard.fog.logic.email.ApplicationMailer;
+import tvestergaard.fog.logic.employees.InactiveEmployeeException;
+import tvestergaard.fog.logic.employees.InsufficientPermissionsException;
+import tvestergaard.fog.logic.employees.UnknownEmployeeException;
+import tvestergaard.fog.logic.orders.UnknownOrderException;
+import tvestergaard.fog.logic.tokens.TokenIssuer;
 
 import java.util.List;
 import java.util.Set;
+
+import static tvestergaard.fog.data.constraints.Constraint.eq;
+import static tvestergaard.fog.data.constraints.Constraint.where;
+import static tvestergaard.fog.data.orders.OrderColumn.ID;
 
 public class OfferFacade
 {
@@ -19,6 +36,16 @@ public class OfferFacade
      * The offer dao used to access the data storage in the application.
      */
     private final OfferDAO offerDAO;
+
+    /**
+     * The order dao used to validate the customers to issue offers to.
+     */
+    private final OrderDAO orderDAO;
+
+    /**
+     * The employee dao used to validate the employees issuing offers.
+     */
+    private final EmployeeDAO employeeDAO;
 
     /**
      * The object responsible for sending offer notification emails to customers.
@@ -31,15 +58,31 @@ public class OfferFacade
     private final OfferValidator validator = new OfferValidator();
 
     /**
+     * The object responsible for creating one-time tokens for the offer email sent to customers.
+     */
+    private final TokenIssuer tokenIssuer;
+
+    /**
      * Creates a new {@link OfferFacade}.
      *
-     * @param offerDAO The offer dao used to access the data storage in the application.
-     * @param mailer   The object responsible for sending offer notification emails to customers.
+     * @param offerDAO    The offer dao used to access the data storage in the application.
+     * @param orderDAO    The order dao used to validate the customers to issue offers to.
+     * @param employeeDAO The employee dao used to validate the employees issuing offers.
+     * @param mailer      The object responsible for sending offer notification emails to customers.
+     * @param tokenIssuer The object responsible for creating one-time tokens for the offer email sent to customers.
      */
-    public OfferFacade(OfferDAO offerDAO, ApplicationMailer mailer)
+    public OfferFacade(
+            OfferDAO offerDAO,
+            OrderDAO orderDAO,
+            EmployeeDAO employeeDAO,
+            ApplicationMailer mailer,
+            TokenIssuer tokenIssuer)
     {
         this.offerDAO = offerDAO;
+        this.orderDAO = orderDAO;
+        this.employeeDAO = employeeDAO;
         this.mailer = mailer;
+        this.tokenIssuer = tokenIssuer;
     }
 
     /**
@@ -78,23 +121,71 @@ public class OfferFacade
     /**
      * Inserts a new offer into the data storage.
      *
-     * @param order    The id of the order the offer is issued for.
-     * @param employee The id of the employee placing the offer.
-     * @param price    The total cost of the offer.
+     * @param orderId    The id of the order the offer is issued for.
+     * @param employeeId The id of the employee placing the offer.
+     * @param price      The total cost of the offer.
      * @return The offer instance representing the newly created offer.
-     * @throws ApplicationException When a data storage exception occurs while performing the operation.
+     * @throws ApplicationException             When a data storage exception occurs while performing the operation.
+     * @throws OfferValidatorException          When the provided information is somehow invalid.
+     * @throws UnknownOrderException            When the provided order id is unknown to the application.
+     * @throws InactiveCustomerException        When the provided customer is inactive, and can therefor not receive new
+     *                                          offers.
+     * @throws UnknownEmployeeException         When the provided employee id is unknown to the application.
+     * @throws InactiveEmployeeException        When the provided employee is inactive, and can therefor not create new
+     *                                          offers.
+     * @throws InsufficientPermissionsException When the provided employee does not have the permissions required to
+     *                                          create new offers.
      */
-    public Offer create(int order, int employee, int price) throws OfferValidatorException
+    public Offer create(int orderId, int employeeId, int price) throws
+            OfferValidatorException,
+            UnknownOrderException,
+            InactiveCustomerException,
+            UnknownEmployeeException,
+            InactiveEmployeeException,
+            InsufficientPermissionsException
     {
         Set<OfferError> errors = validator.validate(price);
         if (!errors.isEmpty())
             throw new OfferValidatorException(errors);
 
         try {
-            Offer      offer = offerDAO.create(OfferBlueprint.from(order, employee, price));
-            OfferEmail email = new OfferEmail(offer);
+
+            Order order = orderDAO.first(where(eq(ID, orderId)));
+            if (order == null)
+                throw new UnknownOrderException();
+            if (!order.getCustomer().isActive())
+                throw new InactiveCustomerException();
+
+            Employee employee = employeeDAO.first(where(eq(EmployeeColumn.ID, employeeId)));
+            if (employee == null)
+                throw new UnknownEmployeeException();
+            if (!employee.isActive())
+                throw new InactiveEmployeeException();
+            if (!employee.is(Role.SALESMAN))
+                throw new InsufficientPermissionsException(Role.SALESMAN);
+
+            Offer      offer = offerDAO.create(OfferBlueprint.from(orderId, employeeId, price));
+            OfferEmail email = new OfferEmail(offer, tokenIssuer.issue(order.getCustomer(), TokenUse.OFFER_EMAIL));
             mailer.send(email);
             return offer;
+        } catch (DataAccessException e) {
+            throw new ApplicationException(e);
+        }
+    }
+
+    /**
+     * Rejects the offer with the provided id.
+     * <p>
+     * To accept an offer, use the {@link tvestergaard.fog.logic.purchases.PurchaseFacade#create(int, int)} method,
+     * that will mark the provided offer accepted.
+     *
+     * @param offerId The id of the offer to mark reject.
+     * @throws ApplicationException When a data storage exception occurs while performing the operation.
+     */
+    public void reject(int offerId)
+    {
+        try {
+            offerDAO.reject(offerId);
         } catch (DataAccessException e) {
             throw new ApplicationException(e);
         }

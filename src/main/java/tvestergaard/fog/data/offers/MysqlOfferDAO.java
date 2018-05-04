@@ -6,6 +6,8 @@ import tvestergaard.fog.data.MysqlDataAccessException;
 import tvestergaard.fog.data.constraints.Constraint;
 import tvestergaard.fog.data.constraints.StatementBinder;
 import tvestergaard.fog.data.constraints.StatementGenerator;
+import tvestergaard.fog.data.purchases.PurchaseBlueprint;
+import tvestergaard.fog.data.purchases.PurchaseDAO;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -49,16 +51,16 @@ public class MysqlOfferDAO extends AbstractMysqlDAO implements OfferDAO
         final List<Offer> offers = new ArrayList<>();
         final String SQL = generator.generate(
                 "SELECT *, (SELECT count(*) FROM offers WHERE `order` = o.id) AS `o.offers`, " +
-                        "(SELECT GROUP_CONCAT(roles.role SEPARATOR ',') FROM roles WHERE employee = employees.id) as `employees.roles` " +
-                        "FROM offers " +
-                        "INNER JOIN orders o ON offers.order = o.id " +
-                        "INNER JOIN customers ON o.customer = customers.id " +
-                        "INNER JOIN claddings o_cladding ON o.cladding = o_cladding.id " +
-                        "INNER JOIN roofings ON o.roofing = roofings.id " +
-                        "LEFT  JOIN sheds ON o.id = sheds.order " +
-                        "LEFT  JOIN claddings s_cladding ON sheds.cladding = s_cladding.id " +
-                        "LEFT  JOIN floorings ON sheds.flooring = floorings.id " +
-                        "INNER JOIN employees ON offers.employee = employees.id", constraints);
+                "(SELECT GROUP_CONCAT(roles.role SEPARATOR ',') FROM roles WHERE employee = employees.id) as `employees.roles` " +
+                "FROM offers " +
+                "INNER JOIN orders o ON offers.order = o.id " +
+                "INNER JOIN customers ON o.customer = customers.id " +
+                "INNER JOIN claddings o_cladding ON o.cladding = o_cladding.id " +
+                "INNER JOIN roofings ON o.roofing = roofings.id " +
+                "LEFT  JOIN sheds ON o.id = sheds.order " +
+                "LEFT  JOIN claddings s_cladding ON sheds.cladding = s_cladding.id " +
+                "LEFT  JOIN floorings ON sheds.flooring = floorings.id " +
+                "INNER JOIN employees ON offers.employee = employees.id", constraints);
         try (PreparedStatement statement = getConnection().prepareStatement(SQL)) {
             binder.bind(statement, constraints);
             ResultSet resultSet = statement.executeQuery();
@@ -125,6 +127,36 @@ public class MysqlOfferDAO extends AbstractMysqlDAO implements OfferDAO
                 connection.rollback();
                 throw e;
             }
+        } catch (SQLException e) {
+            throw new MysqlDataAccessException(e);
+        }
+    }
+
+    /**
+     * Rejects the offer with the provided id.
+     * <p>
+     * To accept an offer, use the {@link PurchaseDAO#create(PurchaseBlueprint)} method,
+     * that will mark the provided offer accepted.
+     *
+     * @param offerId The id of the offer to mark reject.
+     * @throws MysqlDataAccessException When a data storage exception occurs while performing the operation.
+     */
+    @Override public void reject(int offerId) throws MysqlDataAccessException
+    {
+        String SQL = "UPDATE offers SET status = ? WHERE id = ?";
+
+        try {
+            Connection connection = getConnection();
+            try (PreparedStatement statement = connection.prepareStatement(SQL)) {
+                statement.setString(1, OfferStatus.REJECTED.name());
+                statement.setInt(2, offerId);
+                statement.executeUpdate();
+                connection.commit();
+            } catch (SQLException e) {
+                connection.rollback();
+                throw e;
+            }
+
         } catch (SQLException e) {
             throw new MysqlDataAccessException(e);
         }

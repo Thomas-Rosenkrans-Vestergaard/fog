@@ -1,4 +1,4 @@
-package tvestergaard.fog.data.contracts;
+package tvestergaard.fog.data.purchases;
 
 import com.mysql.cj.jdbc.MysqlDataSource;
 import tvestergaard.fog.data.AbstractMysqlDAO;
@@ -17,45 +17,45 @@ import java.util.List;
 import static java.sql.Statement.RETURN_GENERATED_KEYS;
 import static tvestergaard.fog.data.constraints.Constraint.*;
 
-public class MysqlContractDAO extends AbstractMysqlDAO implements ContractDAO
+public class MysqlPurchaseDAO extends AbstractMysqlDAO implements PurchaseDAO
 {
 
     /**
      * The generator used to generate SQL for the constraints provided to this DAO.
      */
-    private final StatementGenerator<ContractColumn> generator = new StatementGenerator();
+    private final StatementGenerator<PurchaseColumn> generator = new StatementGenerator();
 
     /**
      * The binder used to bind prepared variables for the constraints provided to this DAO.
      */
-    private final StatementBinder<ContractColumn> binder = new StatementBinder();
+    private final StatementBinder<PurchaseColumn> binder = new StatementBinder();
 
     /**
-     * Creates a new {@link MysqlContractDAO}.
+     * Creates a new {@link MysqlPurchaseDAO}.
      *
-     * @param source The {@link MysqlDataSource} that provides the connection used by the {@link MysqlContractDAO}.
+     * @param source The {@link MysqlDataSource} that provides the connection used by the {@link MysqlPurchaseDAO}.
      */
-    public MysqlContractDAO(MysqlDataSource source)
+    public MysqlPurchaseDAO(MysqlDataSource source)
     {
         super(source);
     }
 
     /**
-     * Returns the contracts in the data storage. The results can be constrained using the provided constraints.
+     * Returns the purchases in the data storage. The results can be constrained using the provided constraints.
      *
      * @param constraints The constraints that modify the resulting list.
-     * @return The resulting contracts.
+     * @return The resulting purchases.
      * @throws MysqlDataAccessException When a data storage exception occurs while performing the operation.
      */
-    @Override public List<Contract> get(Constraint<ContractColumn>... constraints) throws MysqlDataAccessException
+    @Override public List<Purchase> get(Constraint<PurchaseColumn>... constraints) throws MysqlDataAccessException
     {
-        final List<Contract> contracts = new ArrayList<>();
+        final List<Purchase> purchases = new ArrayList<>();
         final String SQL = generator.generate("SELECT *, (SELECT count(*) FROM offers WHERE `order` = o.id) AS `o.offers`, " +
                 "(SELECT GROUP_CONCAT(roles.role SEPARATOR ',') FROM roles WHERE employee = o_emp.id) as `o_emp.roles`, " +
                 "(SELECT GROUP_CONCAT(roles.role SEPARATOR ',') FROM roles WHERE employee = c_emp.id) as `c_emp.roles` " +
-                "FROM contracts " +
-                "INNER JOIN employees c_emp ON contracts.employee = c_emp.id " +
-                "INNER JOIN offers ON contracts.offer = offers.id " +
+                "FROM purchases " +
+                "INNER JOIN employees c_emp ON purchases.employee = c_emp.id " +
+                "INNER JOIN offers ON purchases.offer = offers.id " +
                 "INNER JOIN orders o ON offers.order = o.id " +
                 "INNER JOIN customers ON o.customer = customers.id " +
                 "INNER JOIN claddings o_cladding ON o.cladding = o_cladding.id " +
@@ -68,37 +68,37 @@ public class MysqlContractDAO extends AbstractMysqlDAO implements ContractDAO
             binder.bind(statement, constraints);
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next())
-                contracts.add(createContract(resultSet, "contracts", "c_emp", "offers", "o", "customers", "o_cladding", "roofings", "sheds", "s_cladding", "floorings", "o_emp"));
+                purchases.add(createPurchase(resultSet, "purchases", "c_emp", "offers", "o", "customers", "o_cladding", "roofings", "sheds", "s_cladding", "floorings", "o_emp"));
 
-            return contracts;
+            return purchases;
         } catch (SQLException e) {
             throw new MysqlDataAccessException(e);
         }
     }
 
     /**
-     * Returns the first contract matching the provided constraints.
+     * Returns the first purchase matching the provided constraints.
      *
      * @param constraints The constraints that modify the resulting list.
-     * @return The first contract matching the provided constraints. Returns {@code null} when no constraints matches
+     * @return The first purchase matching the provided constraints. Returns {@code null} when no constraints matches
      * the provided constraints.
      * @throws MysqlDataAccessException When a data storage exception occurs while performing the operation.
      */
-    @Override public Contract first(Constraint<ContractColumn>... constraints) throws MysqlDataAccessException
+    @Override public Purchase first(Constraint<PurchaseColumn>... constraints) throws MysqlDataAccessException
     {
-        List<Contract> contracts = get(append(constraints, limit(1)));
+        List<Purchase> purchases = get(append(constraints, limit(1)));
 
-        return contracts.isEmpty() ? null : contracts.get(0);
+        return purchases.isEmpty() ? null : purchases.get(0);
     }
 
     /**
-     * Inserts a new contract into the data storage.
+     * Inserts a new purchase into the data storage.
      *
-     * @param blueprint The contract blueprint that contains the information necessary to create the contract.
-     * @return The contract instance representing the newly created contract.
+     * @param blueprint The purchase blueprint that contains the information necessary to create the purchase.
+     * @return The purchase instance representing the newly created purchase.
      * @throws MysqlDataAccessException When a data storage exception occurs while performing the operation.
      */
-    @Override public Contract create(ContractBlueprint blueprint) throws MysqlDataAccessException
+    @Override public Purchase create(PurchaseBlueprint blueprint) throws MysqlDataAccessException
     {
 
         try {
@@ -110,15 +110,15 @@ public class MysqlContractDAO extends AbstractMysqlDAO implements ContractDAO
                 bomStatement.executeUpdate();
                 int bomId = resultSet.getInt(1);
 
-                final String contractSQL = "INSERT INTO contracts (offer, employee, bom) VALUES (?, ?, ?)";
-                try (PreparedStatement statement = connection.prepareStatement(contractSQL, RETURN_GENERATED_KEYS)) {
+                final String purchaseSQL = "INSERT INTO purchases (offer, employee, bom) VALUES (?, ?, ?)";
+                try (PreparedStatement statement = connection.prepareStatement(purchaseSQL, RETURN_GENERATED_KEYS)) {
                     statement.setInt(1, blueprint.getOfferId());
                     statement.setInt(2, blueprint.getEmployeeId());
                     statement.setInt(3, bomId);
                     statement.executeUpdate();
                     ResultSet generated = statement.getGeneratedKeys();
 
-                    return first(where(eq(ContractColumn.ID, generated.getInt(1))));
+                    return first(where(eq(PurchaseColumn.ID, generated.getInt(1))));
                 }
             }
 

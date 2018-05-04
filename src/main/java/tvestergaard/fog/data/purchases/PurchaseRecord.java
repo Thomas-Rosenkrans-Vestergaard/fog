@@ -1,4 +1,4 @@
-package tvestergaard.fog.data.contracts;
+package tvestergaard.fog.data.purchases;
 
 import tvestergaard.fog.data.bom.Bom;
 import tvestergaard.fog.data.bom.BomBlueprint;
@@ -8,11 +8,11 @@ import tvestergaard.fog.data.offers.Offer;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
-public class ContractRecord implements Contract
+public class PurchaseRecord implements Purchase
 {
 
     /**
-     * The unique identifier of the contract.
+     * The unique identifier of the purchase.
      */
     private final int id;
 
@@ -27,42 +27,42 @@ public class ContractRecord implements Contract
     private final Offer offer;
 
     /**
-     * The id of the employee who created the contract.
+     * The id of the employee who created the purchase.
      */
     private final int employeeId;
 
     /**
-     * The employee who created the contract.
+     * The employee who created the purchase.
      */
     private final Employee employee;
 
     /**
-     * The blueprint specifying bill of materials described by the contract.
+     * The blueprint specifying bill of materials described by the purchase.
      */
     private final BomBlueprint bomBlueprint;
 
     /**
-     * The bill of materials described by the contract.
+     * The bill of materials described by the purchase.
      */
     private final Bom bom;
 
     /**
-     * The moment in time when the contract was created.
+     * The moment in time when the purchase was created.
      */
     private final LocalDateTime createdAt;
 
     /**
-     * Creates a new {@link ContractRecord}.
+     * Creates a new {@link PurchaseRecord}.
      *
-     * @param id         The unique identifier of the contract.
+     * @param id         The unique identifier of the purchase.
      * @param offerId    The id of the offer that was accepted.
      * @param offer      The offer that was accepted.
-     * @param employeeId The id of the employee who created the contract.
-     * @param employee   The employee who created the contract.
-     * @param bom        The bill of materials described by the contract.
-     * @param createdAt  The moment in time when the contract was created.
+     * @param employeeId The id of the employee who created the purchase.
+     * @param employee   The employee who created the purchase.
+     * @param bom        The bill of materials described by the purchase.
+     * @param createdAt  The moment in time when the purchase was created.
      */
-    public ContractRecord(int id, int offerId, Offer offer, int employeeId, Employee employee, BomBlueprint bomBlueprint, Bom bom, LocalDateTime createdAt)
+    public PurchaseRecord(int id, int offerId, Offer offer, int employeeId, Employee employee, BomBlueprint bomBlueprint, Bom bom, LocalDateTime createdAt)
     {
         this.id = id;
         this.offerId = offerId;
@@ -75,9 +75,9 @@ public class ContractRecord implements Contract
     }
 
     /**
-     * Returns the unique identifier of the contract.
+     * Returns the unique identifier of the purchase.
      *
-     * @return The unique identifier of the contract.
+     * @return The unique identifier of the purchase.
      */
     @Override public int getId()
     {
@@ -105,9 +105,9 @@ public class ContractRecord implements Contract
     }
 
     /**
-     * Returns the id of the employee who created the contract.
+     * Returns the id of the employee who created the purchase.
      *
-     * @return The id of the employee who created the contract.
+     * @return The id of the employee who created the purchase.
      */
     @Override public int getEmployeeId()
     {
@@ -115,9 +115,9 @@ public class ContractRecord implements Contract
     }
 
     /**
-     * Returns the employee who created the contract.
+     * Returns the employee who created the purchase.
      *
-     * @return The employee who created the contract.
+     * @return The employee who created the purchase.
      */
     @Override public Employee getEmployee()
     {
@@ -125,9 +125,9 @@ public class ContractRecord implements Contract
     }
 
     /**
-     * Returns the bill of materials described by the contract.
+     * Returns the bill of materials described by the purchase.
      *
-     * @return The bill of materials described by the contract.
+     * @return The bill of materials described by the purchase.
      */
     @Override public Bom getBOM()
     {
@@ -135,9 +135,9 @@ public class ContractRecord implements Contract
     }
 
     /**
-     * Returns a blueprint of the the bill of materials within the contract.
+     * Returns a blueprint of the the bill of materials within the purchase.
      *
-     * @return a blueprint of the The bill of materials within the contract.
+     * @return a blueprint of the The bill of materials within the purchase.
      */
     @Override public BomBlueprint getBomBlueprint()
     {
@@ -145,9 +145,9 @@ public class ContractRecord implements Contract
     }
 
     /**
-     * Returns the moment in time when the contract was created.
+     * Returns the moment in time when the purchase was created.
      *
-     * @return The moment in time when the contract was created.
+     * @return The moment in time when the purchase was created.
      */
     @Override public LocalDateTime getCreatedAt()
     {
@@ -157,8 +157,8 @@ public class ContractRecord implements Contract
     @Override public boolean equals(Object o)
     {
         if (this == o) return true;
-        if (!(o instanceof Contract)) return false;
-        Contract that = (Contract) o;
+        if (!(o instanceof Purchase)) return false;
+        Purchase that = (Purchase) o;
         return getId() == that.getId() &&
                 getOfferId() == that.getOfferId() &&
                 getEmployeeId() == that.getEmployeeId() &&

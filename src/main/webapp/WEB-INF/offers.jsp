@@ -32,6 +32,8 @@
             <th>Oprettet</th>
             <th>Medarbejder</th>
             <th>Tilbud pris</th>
+            <th>Acceptér</th>
+            <th>Afvis</th>
             </thead>
             <tbody>
             <c:forEach items="${offers}" var="offer">
@@ -49,6 +51,9 @@
                     <td>${f:formatDatetime(order.getCreatedAt())}</td>
                     <td><c:out value="${employee.getName()}"/></td>
                     <td>${f:formatPrice(offer.getPrice())}</td>
+                    <td><a href="?action=accept&offer=${offer.getId()}">Acceptér</a></td>
+                    <td><a href="?action=reject&offer=${offer.getId()}">Afvis</a></td>
+                    <td></td>
                 </tr>
             </c:forEach>
             </tbody>

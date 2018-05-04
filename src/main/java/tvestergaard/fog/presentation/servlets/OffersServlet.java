@@ -1,7 +1,11 @@
 package tvestergaard.fog.presentation.servlets;
 
 import tvestergaard.fog.data.customers.Customer;
+import tvestergaard.fog.data.offers.Offer;
+import tvestergaard.fog.logic.customers.InactiveCustomerException;
+import tvestergaard.fog.logic.employees.InsufficientPermissionsException;
 import tvestergaard.fog.logic.offers.OfferFacade;
+import tvestergaard.fog.logic.purchases.PurchaseFacade;
 import tvestergaard.fog.presentation.Authentication;
 import tvestergaard.fog.presentation.Notifications;
 import tvestergaard.fog.presentation.Parameters;
@@ -15,6 +19,7 @@ import java.io.IOException;
 
 import static tvestergaard.fog.data.constraints.Constraint.eq;
 import static tvestergaard.fog.data.constraints.Constraint.where;
+import static tvestergaard.fog.data.offers.OfferColumn.ID;
 import static tvestergaard.fog.data.orders.OrderColumn.CUSTOMER;
 import static tvestergaard.fog.presentation.PresentationFunctions.notifications;
 
@@ -22,7 +27,8 @@ import static tvestergaard.fog.presentation.PresentationFunctions.notifications;
 public class OffersServlet extends HttpServlet
 {
 
-    private final OfferFacade offerFacade = Facades.offerFacade;
+    private final OfferFacade    offerFacade    = Facades.offerFacade;
+    private final PurchaseFacade purchaseFacade = Facades.purchaseFacade;
 
     /**
      * Displays the /offers page, where customers can see their offer history.
@@ -32,7 +38,8 @@ public class OffersServlet extends HttpServlet
      * @throws IOException      if an input or output error is detected when the servlet handles the GET request
      * @throws ServletException if the request for the GET could not be handled
      */
-    @Override protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException
     {
         Authentication authentication = new Authentication(req);
         Notifications  notifications  = notifications(req);
@@ -52,12 +59,14 @@ public class OffersServlet extends HttpServlet
         req.getRequestDispatcher("/WEB-INF/offers.jsp").forward(req, resp);
     }
 
-    @Override protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException
     {
         String action = req.getParameter("action");
 
-        Parameters    parameters    = new Parameters(req);
-        Notifications notifications = notifications(req);
+        Parameters     parameters     = new Parameters(req);
+        Notifications  notifications  = notifications(req);
+        Authentication authentication = new Authentication(req);
 
         if (!parameters.isInt("offer")) {
             notifications.error("Missing offer id.");
@@ -65,16 +74,35 @@ public class OffersServlet extends HttpServlet
             return;
         }
 
-        int order = parameters.getInt("offer");
-
-        if ("accept".equals(action)) {
-
+        int   offerId = parameters.getInt("offer");
+        Offer offer   = offerFacade.first(where(eq(ID, offerId)));
+        if (offer.getOrder().getCustomer().getId() != authentication.getCustomer().getId()) {
+            notifications.error("Du ejer ikke det tilbud.");
+            resp.sendRedirect("offers");
+            return;
         }
 
-        if ("reject".equals(action)) {
+        try {
+
+            if ("accept".equals(action)) {
+                purchaseFacade.create(offer.getId(), offer.getEmployeeId());
+                resp.sendRedirect("purchases");
+                return;
+            }
+
+            if ("reject".equals(action)) {
+                offerFacade.reject(offerId);
+                notifications.success("Tilbudet blev afvist.");
+                resp.sendRedirect("offers");
+                return;
+            }
+
+            throw new UnsupportedOperationException();
+        } catch (InactiveCustomerException e) {
+            notifications.error("Du er markeret inaktiv.");
+            resp.sendRedirect("account");
+        } catch (InsufficientPermissionsException e) {
 
         }
-
-        throw new UnsupportedOperationException();
     }
 }
