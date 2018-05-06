@@ -21,14 +21,26 @@ public class CustomerFacade
     /**
      * The {@link CustomerDAO} used to access and make changes to the data storage used by the application.
      */
-    private final CustomerDAO   customerDAO;
+    private final CustomerDAO customerDAO;
+
+    /**
+     * The object responsible for verifying email addresses.
+     */
     private final EmailVerifier emailChallenger;
 
     /**
      * The validator used the validate the information provided to the {@link CustomerFacade}.
      */
-    private final CustomerValidator      validator;
-    private final PasswordResetter       passwordResetter;
+    private final CustomerValidator validator;
+
+    /**
+     * The object responsible for resetting passwords in the application.
+     */
+    private final PasswordResetter passwordResetter;
+
+    /**
+     * The object responsible for authentication customers.
+     */
     private final CustomerAuthentication authentication;
 
     /**
@@ -80,24 +92,6 @@ public class CustomerFacade
     {
         try {
             return customerDAO.first(constraints);
-        } catch (DataAccessException e) {
-            throw new ApplicationException(e);
-        }
-    }
-
-    /**
-     * Rejects the membership matching the provided token details.
-     *
-     * @param id    The id of the token.
-     * @param token The secret token.
-     * @throws ApplicationException
-     * @throws IncorrectTokenException
-     * @throws ExpiredTokenException
-     */
-    public void reject(int id, String token) throws IncorrectTokenException, ExpiredTokenException
-    {
-        try {
-            emailChallenger.reject(id, token);
         } catch (DataAccessException e) {
             throw new ApplicationException(e);
         }
@@ -167,7 +161,8 @@ public class CustomerFacade
      * @throws CustomerValidatorException When the provided details are invalid.
      * @throws ApplicationException       When an exception occurs while performing the operation.
      */
-    public Customer register(String name, String address, String email, String phone, String password, boolean active) throws CustomerValidatorException
+    public Customer register(String name, String address, String email, String phone, String password, boolean active)
+            throws CustomerValidatorException
     {
         try {
             return authentication.register(name, address, email, phone, password, active);

@@ -61,19 +61,19 @@ public class ResetPasswordServlet extends HttpServlet
 
         if (!parameters.isInt("tokenId") || !parameters.isPresent("tokenSecret") || !parameters.isPresent("password")) {
             notifications.error("Incomplete form post.");
-            resp.sendRedirect(req.getQueryString());
+            resp.sendRedirect("registration");
         }
 
         try {
             customerFacade.resetPassword(parameters.getInt("tokenId"), parameters.value("tokenSecret"), parameters.value("password"));
             notifications.success("Din adgangskode er nu ændret.");
-            resp.sendRedirect("account");
+            resp.sendRedirect("authenticate");
         } catch (IncorrectTokenException e) {
             notifications.error("Ukorrekt token.");
-            resp.sendRedirect(req.getQueryString());
+            resp.sendRedirect("registration");
         } catch (ExpiredTokenException e) {
             notifications.error("Token udløbet.");
-            resp.sendRedirect(req.getQueryString());
+            resp.sendRedirect("registration");
         }
     }
 }

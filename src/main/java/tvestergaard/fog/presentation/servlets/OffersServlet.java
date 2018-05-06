@@ -42,13 +42,8 @@ public class OffersServlet extends HttpServlet
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException
     {
         Authentication authentication = new Authentication(req);
-        Notifications  notifications  = notifications(req);
-
-        if (!authentication.isCustomer()) {
-            notifications.error("Du skal være logget ind for at tilgå denne side.");
-            resp.sendRedirect("account");
+        if (authentication.redirect(resp, "offers"))
             return;
-        }
 
         Customer customer = authentication.getCustomer();
 
@@ -100,7 +95,7 @@ public class OffersServlet extends HttpServlet
             throw new UnsupportedOperationException();
         } catch (InactiveCustomerException e) {
             notifications.error("Du er markeret inaktiv.");
-            resp.sendRedirect("account");
+            resp.sendRedirect("order");
         } catch (InsufficientPermissionsException e) {
 
         }

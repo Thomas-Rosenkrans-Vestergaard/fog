@@ -1,9 +1,15 @@
 package tvestergaard.fog.presentation;
 
+import tvestergaard.fog.logic.customers.CustomerError;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
+import java.util.Map;
+
+import static tvestergaard.fog.logic.customers.CustomerError.*;
 
 public class PresentationFunctions
 {
@@ -63,5 +69,26 @@ public class PresentationFunctions
             return Integer.toString(dkk);
 
         return dkk + "." + (cents < 9 ? "0" + cents : cents) + " kr.";
+    }
+
+    private static Map<CustomerError, String> customerErrors;
+
+    public static String getError(CustomerError error)
+    {
+        if (customerErrors == null) {
+            customerErrors = new HashMap<>();
+            customerErrors.put(NAME_EMPTY, "Det sendte navn må ikke være tomt.");
+            customerErrors.put(NAME_LONGER_THAN_255, "Det sendte navn er for langt.");
+            customerErrors.put(ADDRESS_EMPTY, "Den sendte adresse må ikke være tom.");
+            customerErrors.put(ADDRESS_LONGER_THAN_255, "Den sendte adresse er for lang.");
+            customerErrors.put(EMAIL_INVALID, "Den sendte email er ikke formateret korrekt.");
+            customerErrors.put(EMAIL_TAKEN, "Den sendte email er allerede i bruge  på siden.");
+            customerErrors.put(EMAIL_LONGER_THAN_255, "Den sendte email er for lang.");
+            customerErrors.put(PHONE_EMPTY, "Det sendte telefonnummer må ikke være tomt.");
+            customerErrors.put(PHONE_LONGER_THAN_30, "Det sendte telefonnummer er for langt.");
+            customerErrors.put(PASSWORD_SHORTER_THAN_4, "Det sendte password er for kort.");
+        }
+
+        return customerErrors.get(error);
     }
 }

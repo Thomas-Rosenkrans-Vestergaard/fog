@@ -61,12 +61,4 @@ public interface CustomerDAO
      * @throws DataAccessException When a data storage exception occurs while performing the operation.
      */
     void confirmMembership(int token) throws DataAccessException;
-
-    /**
-     * Rejects the membership confirmation challenge of the provided token.
-     *
-     * @param token The id of the token to reject.
-     * @throws DataAccessException When a data storage exception occurs while performing the operation.
-     */
-    void rejectMembership(int token) throws DataAccessException;
 }

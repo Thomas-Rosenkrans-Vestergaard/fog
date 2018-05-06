@@ -1,8 +1,8 @@
 package tvestergaard.fog.presentation.servlets;
 
-import tvestergaard.fog.data.employees.Employee;
-import tvestergaard.fog.logic.employees.EmployeeFacade;
-import tvestergaard.fog.logic.employees.InactiveEmployeeException;
+import tvestergaard.fog.data.customers.Customer;
+import tvestergaard.fog.logic.customers.CustomerFacade;
+import tvestergaard.fog.logic.customers.InactiveCustomerException;
 import tvestergaard.fog.presentation.Notifications;
 import tvestergaard.fog.presentation.Parameters;
 
@@ -13,17 +13,18 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.net.URLDecoder;
 
 import static tvestergaard.fog.presentation.PresentationFunctions.notifications;
 
-@WebServlet(urlPatterns = "/administration/login")
-public class AdministrationLogin extends HttpServlet
+@WebServlet(urlPatterns = "/authenticate")
+public class AuthenticationServlet extends HttpServlet
 {
 
-    private final EmployeeFacade facade = Facades.employeeFacade;
+    private final CustomerFacade customerFacade = Facades.customerFacade;
 
     /**
-     * Shows a page where employees can authenticate themselves.
+     * Displays the /authenticate page, where customers can see their order history.
      *
      * @param req  an {@link HttpServletRequest} object that contains the request the client has made of the servlet
      * @param resp an {@link HttpServletResponse} object that contains the response the servlet sends to the client
@@ -32,11 +33,12 @@ public class AdministrationLogin extends HttpServlet
      */
     @Override protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException
     {
-        req.getRequestDispatcher("/WEB-INF/administration/login.jsp").forward(req, resp);
+        req.setAttribute("title", "Log ind");
+        req.getRequestDispatcher("/WEB-INF/authenticate.jsp").forward(req, resp);
     }
 
     /**
-     * Handles the information sent by the login form on the /administration/login page.
+     * Processes the information sent by the customer on the /authenticate page.
      *
      * @param req  an {@link HttpServletRequest} object that contains the request the client has made of the servlet
      * @param resp an {@link HttpServletResponse} object that contains the response the servlet sends to the client
@@ -48,26 +50,31 @@ public class AdministrationLogin extends HttpServlet
         Parameters    parameters    = new Parameters(req);
         Notifications notifications = notifications(req);
 
-        if (!parameters.isPresent("username") || !parameters.isPresent("password")) {
-            resp.sendRedirect("login");
+        if (!parameters.isPresent("email") || !parameters.isPresent("password")) {
+            notifications.error("Incomplete form post.");
+            resp.sendRedirect("authenticate");
             return;
         }
 
         try {
-            Employee employee = facade.authenticate(parameters.value("username"), parameters.value("password"));
-            if (employee == null) {
-                notifications.error("Forkert brugernavn eller adgangskode.");
-                resp.sendRedirect("login");
+            Customer customer = customerFacade.authenticate(parameters.value("email"), parameters.value("password"));
+
+            if (customer == null) {
+                notifications.error("Ukorrekte akkreditiver.");
+                resp.sendRedirect("authenticate");
                 return;
             }
 
-            HttpSession session = req.getSession();
-            session.setAttribute("employee", employee);
-            resp.sendRedirect("index");
+            String from = req.getParameter("from");
 
-        } catch (InactiveEmployeeException e) {
-            notifications.error("Inaktiv medarbejder.");
-            resp.sendRedirect("index");
+            HttpSession session = req.getSession();
+            session.setAttribute("customer", customer);
+            notifications.success("Du er nu logget ind.");
+            resp.sendRedirect(from == null ? "profile" : URLDecoder.decode(from, "UTF-8"));
+
+        } catch (InactiveCustomerException e) {
+            notifications.error("Denne konto er inaktiv.");
+            resp.sendRedirect("authenticate");
         }
     }
 }

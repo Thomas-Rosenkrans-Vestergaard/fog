@@ -1,4 +1,4 @@
-package tvestergaard.fog.presentation.servlets;
+package tvestergaard.fog.presentation.servlets.administration;
 
 import tvestergaard.fog.data.cladding.Cladding;
 import tvestergaard.fog.logic.claddings.CladdingError;
@@ -7,6 +7,9 @@ import tvestergaard.fog.logic.claddings.CladdingValidatorException;
 import tvestergaard.fog.presentation.Authentication;
 import tvestergaard.fog.presentation.Notifications;
 import tvestergaard.fog.presentation.Parameters;
+import tvestergaard.fog.presentation.servlets.Command;
+import tvestergaard.fog.presentation.servlets.CommandDispatcher;
+import tvestergaard.fog.presentation.servlets.Facades;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;

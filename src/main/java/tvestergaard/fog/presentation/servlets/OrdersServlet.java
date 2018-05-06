@@ -3,7 +3,6 @@ package tvestergaard.fog.presentation.servlets;
 import tvestergaard.fog.data.customers.Customer;
 import tvestergaard.fog.logic.orders.OrderFacade;
 import tvestergaard.fog.presentation.Authentication;
-import tvestergaard.fog.presentation.Notifications;
 
 import javax.servlet.ServletException;
 import javax.servlet.ServletOutputStream;
@@ -17,7 +16,6 @@ import java.io.IOException;
 import static tvestergaard.fog.data.constraints.Constraint.eq;
 import static tvestergaard.fog.data.constraints.Constraint.where;
 import static tvestergaard.fog.data.orders.OrderColumn.CUSTOMER;
-import static tvestergaard.fog.presentation.PresentationFunctions.notifications;
 
 @WebServlet(urlPatterns = "/orders")
 public class OrdersServlet extends HttpServlet
@@ -36,13 +34,8 @@ public class OrdersServlet extends HttpServlet
     @Override protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException
     {
         Authentication authentication = new Authentication(req);
-        Notifications  notifications  = notifications(req);
-
-        if (!authentication.isCustomer()) {
-            notifications.error("Du skal være logget ind for at tilgå denne side.");
-            resp.sendRedirect("account");
+        if (authentication.redirect(resp, "orders"))
             return;
-        }
 
         Customer customer = authentication.getCustomer();
 

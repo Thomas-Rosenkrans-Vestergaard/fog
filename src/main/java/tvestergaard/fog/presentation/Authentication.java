@@ -4,15 +4,22 @@ import tvestergaard.fog.data.customers.Customer;
 import tvestergaard.fog.data.employees.Employee;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.io.IOException;
+import java.net.URLEncoder;
+
+import static tvestergaard.fog.presentation.PresentationFunctions.notifications;
 
 public class Authentication
 {
 
-    private final HttpSession session;
+    private final HttpServletRequest request;
+    private final HttpSession        session;
 
     public Authentication(HttpServletRequest request)
     {
+        this.request = request;
         this.session = request.getSession();
     }
 
@@ -24,6 +31,26 @@ public class Authentication
     public Customer getCustomer()
     {
         return (Customer) session.getAttribute("customer");
+    }
+
+    /**
+     * Redirects to the login page if the customer is not authenticated.
+     *
+     * @param response
+     * @param from
+     * @return {@code true} if the customer was redirected.
+     * @throws IOException
+     */
+    public boolean redirect(HttpServletResponse response, String from) throws IOException
+    {
+        if (!isCustomer()) {
+            Notifications notifications = notifications(request);
+            notifications.warning("Du skal authentificeres før, du kan tilgå denne side.");
+            response.sendRedirect("authenticate?from=" + URLEncoder.encode(from, "UTF-8"));
+            return true;
+        }
+
+        return false;
     }
 
     public boolean isEmployee()

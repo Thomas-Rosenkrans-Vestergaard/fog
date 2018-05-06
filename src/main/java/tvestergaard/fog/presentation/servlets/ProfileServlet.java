@@ -1,7 +1,6 @@
 package tvestergaard.fog.presentation.servlets;
 
 import tvestergaard.fog.presentation.Authentication;
-import tvestergaard.fog.presentation.Notifications;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -9,8 +8,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-
-import static tvestergaard.fog.presentation.PresentationFunctions.notifications;
 
 @WebServlet(urlPatterns = "/profile")
 public class ProfileServlet extends HttpServlet
@@ -27,13 +24,8 @@ public class ProfileServlet extends HttpServlet
     @Override protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException
     {
         Authentication authentication = new Authentication(req);
-        Notifications  notifications  = notifications(req);
-
-        if (!authentication.isCustomer()) {
-            notifications.error("Du skal være logget ind for at tilgå denne side.");
-            resp.sendRedirect("account");
+        if (authentication.redirect(resp, "profile"))
             return;
-        }
 
         req.setAttribute("title", "Profil");
         req.setAttribute("navigation", "profile");

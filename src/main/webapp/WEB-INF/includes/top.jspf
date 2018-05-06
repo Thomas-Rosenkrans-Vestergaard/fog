@@ -20,12 +20,13 @@
             <img id="side-logo" src="resources/logo.jpg">
         </div>
     </li>
-    <li><a class="${"design".equals(navigation) ? 'active' : ''}" href="design">Design</a></li>
-    <li><a class="${"account".equals(navigation) ? 'active' : ''}" href="account">Kundekonto</a></li>
-    <li><a class="${"profile".equals(navigation) ? 'active' : '' }" href="profile">Profil</a></li>
-    <li><a class="${"orders".equals(navigation) ? 'active' : ''}" href="orders">Mine ordre</a></li>
-    <li><a class="${"offers".equals(navigation) ? 'active' : '' }" href="offers">Mine tilbud</a></li>
-    <li><a class="${"forgot-password".equals(navigation)}" href="forgot-password">Glemt adgangskode</a></li>
+    <li class="${"design".equals(navigation) ? 'active' : ''}"><a href="design">Design</a></li>
+    <li class="${"account".equals(navigation) ? 'active' : ''}"><a href="registration">Registrer</a></li>
+    <li class="${"account".equals(navigation) ? 'active' : ''}"><a href="authenticate">Autentificer</a></li>
+    <li class="${"profile".equals(navigation) ? 'active' : '' }"><a href="profile">Profil</a></li>
+    <li class="${"orders".equals(navigation) ? 'active' : ''}"><a href="orders">Mine ordre</a></li>
+    <li class="${"offers".equals(navigation) ? 'active' : '' }"><a href="offers">Mine tilbud</a></li>
+    <li class="${"forgot-password".equals(navigation)}"><a href="forgot-password">Glemt adgangskode</a></li>
     <li><a href="logout">Log ud</a></li>
 
 </ul>

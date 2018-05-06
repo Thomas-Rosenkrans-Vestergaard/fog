@@ -56,26 +56,6 @@ public class EmailVerifier
         mailer.send(email);
     }
 
-
-    /**
-     * Rejects the membership matching the provided token details.
-     *
-     * @param id    The id of the token.
-     * @param token The secret token.
-     * @throws DataAccessException
-     * @throws IncorrectTokenException
-     * @throws ExpiredTokenException
-     */
-    public void reject(int id, String token) throws DataAccessException, IncorrectTokenException, ExpiredTokenException
-    {
-        if (!tokenAuthenticator.authenticate(new TokenSecret(id, token), TokenUse.EMAIL_VERIFICATION)) {
-            throw new IncorrectTokenException();
-        }
-
-        customerDAO.rejectMembership(id);
-    }
-
-
     /**
      * Verifies the email address issued the provided token.
      *
