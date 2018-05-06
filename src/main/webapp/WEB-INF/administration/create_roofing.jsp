@@ -33,14 +33,21 @@
         </div>
         <div class="row">
             <div class="col s12">
-                <select name="type" id="type" required>
-                    <c:forEach items="${types}" var="type">
-                        <option value="${type.name()}">${type.name()}</option>
-                    </c:forEach>
-                    <label for="type">Tagtype</label>
-                </select>
+                <h3>Components</h3>
             </div>
         </div>
+        <c:forEach items="${components}" var="component">
+            <div class="row">
+                <div class="col s12 input-field">
+                    <select name="component_${component.getIdentifier()}" id="component_${component.getIdentifier()}">
+                        <c:forEach items="${materials.get(component.getId())}" var="material">
+                            <option value="${material.getId()}">${material.getDescription()}</option>
+                        </c:forEach>
+                    </select>
+                    <label for="component_${component.getIdentifier()}">${component.getIdentifier()}</label>
+                </div>
+            </div>
+        </c:forEach>
         <div class="row">
             <div class="col s12">
                 <button class="btn-large waves-effect waves-light" type="submit" name="action">

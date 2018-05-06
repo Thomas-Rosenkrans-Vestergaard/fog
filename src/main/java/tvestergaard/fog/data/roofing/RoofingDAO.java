@@ -1,9 +1,12 @@
 package tvestergaard.fog.data.roofing;
 
+import com.google.common.collect.Multimap;
 import tvestergaard.fog.data.DataAccessException;
 import tvestergaard.fog.data.constraints.Constraint;
+import tvestergaard.fog.data.materials.SimpleMaterial;
 
 import java.util.List;
+import java.util.Set;
 
 public interface RoofingDAO
 {
@@ -46,11 +49,30 @@ public interface RoofingDAO
     boolean update(RoofingUpdater updater) throws DataAccessException;
 
     /**
-     * Returns the components for the roofing with the provided id.
+     * Returns the components definitions for the provided roofing type.
      *
-     * @param roofing The id of the roofing to return the components of.
+     * @param roofingType The id of the roofing to return the components of.
      * @return The components for the roofing with the provided id.
      * @throws DataAccessException When a data storage exception occurs while performing the operation.
      */
-    RoofingComponents getComponentsFor(int roofing) throws DataAccessException;
+    Set<RoofingComponentDefinition> getComponentsFor(RoofingType roofingType) throws DataAccessException;
+
+    /**
+     * Returns the components active for the roofing with the provided id.
+     *
+     * @param roofing The id of the roofing to return the active components of.
+     * @return The list of the components active for the roofing with the provided id.
+     * @throws DataAccessException When a data storage exception occurs while performing the operation.
+     */
+    List<RoofingComponentValue> getComponentsFor(int roofing) throws DataAccessException;
+
+    /**
+     * Returns the material choices for the provided components.
+     *
+     * @param components The component(s) to return the values of.
+     * @return Contains the material choices for the provided components. The material choices for some component id
+     * is mapped to the component id.
+     * @throws DataAccessException When a data storage exception occurs while performing the operation.
+     */
+    Multimap<Integer, SimpleMaterial> getMaterialChoicesForComponents(int... components) throws DataAccessException;
 }

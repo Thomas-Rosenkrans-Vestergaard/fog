@@ -51,19 +51,19 @@ VALUES (1, 'Sorte teglsten',
         'Integer imperdiet lectus quis justo. In laoreet, magna id viverra tincidunt, sem odio bibendum justo, vel imperdiet sapien wisi sed libero.',
         b'1', 'TILED');
 
-INSERT INTO roofing_component_definitions (id, roofing_type, identifier, category) VALUES
-  (1, 'TILED', 'ROOF_TILE', 5),
-  (2, 'TILED', 'ROOF_RIDGE_TILE', 6),
-  (3, 'TILED', 'ROOF_RIDGE_LATH_HOLDER', 7),
-  (4, 'TILED', 'ROOF_RIDGE_TILE_BRACKET', 8),
-  (5, 'TILED', 'ROOF_TILE_BINDER_AND_HOOKS', 9);
+INSERT INTO roofing_component_definitions (id, roofing_type, identifier, category, notes) VALUES
+  (1, 'TILED', 'ROOF_TILE', 5, 'Monteres på taglægter 6 rækker af 24 sten på hver side af taget'),
+  (2, 'TILED', 'ROOF_RIDGE_TILE', 6, 'Monteres på toplægte med medfølgende beslag se tagstens vejledning'),
+  (3, 'TILED', 'ROOF_RIDGE_LATH_HOLDER', 7, 'Monteres på toppen af spæret (til toplægte)'),
+  (4, 'TILED', 'ROOF_RIDGE_TILE_BRACKET', 8, 'Til	montering af rygsten'),
+  (5, 'TILED', 'ROOF_TILE_BINDER_AND_HOOKS', 9, 'Til	montering af tagsten, alle ydersten + hver anden fastgøres');
 
-INSERT INTO roofing_component_values (id, roofing, component, material, notes) VALUES
-  (1, 1, 1, 1, 'Monteres på taglægter 6 rækker af 24 sten på hver side af taget'),
-  (2, 1, 2, 2, 'Monteres på toplægte med medfølgende beslag se tagstens vejledning'),
-  (3, 1, 3, 3, 'Monteres på toppen af spæret (til toplægte)'),
-  (4, 1, 4, 4, 'Til	montering af rygsten'),
-  (5, 1, 5, 5, 'Til	montering af tagsten, alle ydersten + hver anden fastgøres');
+INSERT INTO roofing_component_values (id, roofing, component, material) VALUES
+  (1, 1, 1, 1),
+  (2, 1, 2, 2),
+  (3, 1, 3, 3),
+  (4, 1, 4, 4),
+  (5, 1, 5, 5);
 
 INSERT INTO `customers` (id, `name`, `address`, email, phone, password, active, confirmed) VALUES
   (1, 'Thomas Rosenkrans Vestergaard', 'Møllevangen 23', 'tvestergaard@hotmail.com', '26508830',

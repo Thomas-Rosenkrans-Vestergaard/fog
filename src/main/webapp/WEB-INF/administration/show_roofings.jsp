@@ -7,9 +7,22 @@
 </div>
 <div class="row">
     <div class="col s12">
-        <a href="?action=create" class="waves-effect waves-light btn-large">
-            <i class="material-icons right">add</i>OPRET
-        </a>
+        <form method="get">
+            <input type="hidden" name="action" value="create">
+            <div class="row">
+                <div class="col s6">
+                    <select name="type" id="type">
+                        <c:forEach items="${types}" var="type">
+                            <option value="${type.name()}"><c:out value="${type.name()}"/></option>
+                        </c:forEach>
+                    </select>
+                    <label for="type">Tagtype at oprette.</label>
+                </div>
+                <div class="col s6">
+                    <input type="submit" name="submit" value="OPRET" class="btn-large waves-effect waves-light">
+                </div>
+            </div>
+        </form>
     </div>
 </div>
 <div class="row">
@@ -36,4 +49,7 @@
         </table>
     </div>
 </div>
+<script>
+    $('select').material_select();
+</script>
 <%@ include file="bot.jspf" %>

@@ -1,7 +1,9 @@
 package tvestergaard.fog.logic.roofings;
 
+import com.google.common.collect.Multimap;
 import tvestergaard.fog.data.DataAccessException;
 import tvestergaard.fog.data.constraints.Constraint;
+import tvestergaard.fog.data.materials.SimpleMaterial;
 import tvestergaard.fog.data.roofing.*;
 import tvestergaard.fog.logic.ApplicationException;
 
@@ -110,6 +112,39 @@ public class RoofingFacade
                 throw new RoofingValidatorException(errors);
             RoofingUpdater updater = RoofingUpdater.from(id, name, description, active, type);
             return dao.update(updater);
+        } catch (DataAccessException e) {
+            throw new ApplicationException(e);
+        }
+    }
+
+    /**
+     * Returns the components definitions for the provided roofing type.
+     *
+     * @param roofingType The id of the roofing to return the components of.
+     * @return The components for the roofing with the provided id.
+     * @throws ApplicationException When a data storage exception occurs while performing the operation.
+     */
+    public Set<RoofingComponentDefinition> getComponentsFor(RoofingType roofingType)
+    {
+        try {
+            return dao.getComponentsFor(roofingType);
+        } catch (DataAccessException e) {
+            throw new ApplicationException(e);
+        }
+    }
+
+    /**
+     * Returns the material choices for the provided components.
+     *
+     * @param components The component(s) to return the values of.
+     * @return Contains the material choices for the provided components. The material choices for some component id
+     * is mapped to the component id.
+     * @throws ApplicationException When a data storage exception occurs while performing the operation.
+     */
+    public Multimap<Integer, SimpleMaterial> getMaterialChoicesForComponents(int... components)
+    {
+        try {
+            return dao.getMaterialChoicesForComponents(components);
         } catch (DataAccessException e) {
             throw new ApplicationException(e);
         }

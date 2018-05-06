@@ -1,6 +1,7 @@
 package tvestergaard.fog.presentation.servlets.administration;
 
 import tvestergaard.fog.data.roofing.Roofing;
+import tvestergaard.fog.data.roofing.RoofingComponentDefinition;
 import tvestergaard.fog.data.roofing.RoofingType;
 import tvestergaard.fog.logic.roofings.RoofingError;
 import tvestergaard.fog.logic.roofings.RoofingFacade;
@@ -21,6 +22,7 @@ import java.io.IOException;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 import static tvestergaard.fog.data.constraints.Constraint.eq;
 import static tvestergaard.fog.data.constraints.Constraint.where;
@@ -101,6 +103,7 @@ public class AdministrationRoofings extends HttpServlet
             notifications(request);
             request.setAttribute("title", "Tage");
             request.setAttribute("roofings", facade.get());
+            request.setAttribute("types", EnumSet.allOf(RoofingType.class));
             request.getRequestDispatcher("/WEB-INF/administration/show_roofings.jsp").forward(request, response);
         }
     }
@@ -174,9 +177,25 @@ public class AdministrationRoofings extends HttpServlet
 
         @Override public void dispatch(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
         {
-            notifications(request);
+            Parameters    parameters    = new Parameters(request);
+            Notifications notifications = notifications(request);
+
+            if (!parameters.isEnum("type", RoofingType.class)) {
+                notifications.error("No roofing type provided.");
+                response.sendRedirect("roofings");
+                return;
+            }
+
+            Set<RoofingComponentDefinition> definitions = facade.getComponentsFor(parameters.getEnum("type", RoofingType.class));
+            int[]                           ids         = new int[definitions.size()];
+            int                             index       = 0;
+            for (RoofingComponentDefinition definition : definitions)
+                ids[index++] = definition.getId();
+
             request.setAttribute("title", "Opret tag");
             request.setAttribute("types", EnumSet.allOf(RoofingType.class));
+            request.setAttribute("components", facade.getComponentsFor(parameters.getEnum("type", RoofingType.class)));
+            request.setAttribute("materials", facade.getMaterialChoicesForComponents(ids).asMap());
             request.getRequestDispatcher("/WEB-INF/administration/create_roofing.jsp").forward(request, response);
         }
     }

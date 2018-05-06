@@ -12,23 +12,21 @@ import tvestergaard.fog.data.employees.Role;
 import tvestergaard.fog.data.flooring.Flooring;
 import tvestergaard.fog.data.flooring.FlooringRecord;
 import tvestergaard.fog.data.materials.*;
-import tvestergaard.fog.data.materials.Category;
-import tvestergaard.fog.data.materials.CategoryRecord;
 import tvestergaard.fog.data.offers.Offer;
 import tvestergaard.fog.data.offers.OfferRecord;
 import tvestergaard.fog.data.offers.OfferStatus;
 import tvestergaard.fog.data.orders.*;
 import tvestergaard.fog.data.purchases.Purchase;
 import tvestergaard.fog.data.purchases.PurchaseRecord;
-import tvestergaard.fog.data.roofing.Roofing;
-import tvestergaard.fog.data.roofing.RoofingRecord;
-import tvestergaard.fog.data.roofing.RoofingType;
+import tvestergaard.fog.data.roofing.*;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import static tvestergaard.fog.data.materials.DataType.STRING;
@@ -204,6 +202,20 @@ public abstract class AbstractMysqlDAO
         return result;
     }
 
+    protected SimpleMaterial createSimpleMaterial(String table, String categoryTable, ResultSet resultSet) throws SQLException
+    {
+        return new MaterialRecord(
+                resultSet.getInt(table + ".id"),
+                resultSet.getString(table + ".number"),
+                resultSet.getString(table + ".description"),
+                resultSet.getInt(table + ".price"),
+                resultSet.getInt(table + ".unit"),
+                resultSet.getInt(categoryTable + ".id"),
+                createCategory(categoryTable, resultSet),
+                new HashSet<>()
+        );
+    }
+
     protected Material createMaterial(String table, String categoryTable, ResultSet resultSet, String attributesDefinition, String attributeValues, ResultSet attributes) throws SQLException
     {
         return new MaterialRecord(
@@ -282,6 +294,33 @@ public abstract class AbstractMysqlDAO
         throw new IllegalStateException("Unknown data type " + dataType.name());
     }
 
+    protected RoofingComponentDefinition createRoofingDefinition(String componentDefinitionTable, ResultSet components, String categoriesTable, String materialsTable, ResultSet materials) throws SQLException
+    {
+        List<Material> materialList = new ArrayList<>();
+        while (materials.next())
+            materialList.add(new MaterialRecord(
+                    materials.getInt(materialsTable + ".id"),
+                    materials.getString(materialsTable + ".number"),
+                    materials.getString(materialsTable + ".description"),
+                    materials.getInt(materialsTable + ".price"),
+                    materials.getInt(materialsTable + ".unit"),
+                    materials.getInt(categoriesTable + ".id"),
+                    createCategory(categoriesTable, materials),
+                    new HashSet<>()
+            ));
+
+        return new DefaultRoofingComponentDefinition(
+                components.getInt(componentDefinitionTable + ".id"),
+                RoofingType.valueOf(components.getString(componentDefinitionTable + ".roofing_type")),
+                components.getString(componentDefinitionTable + ".identifier"),
+                createCategory(categoriesTable, components)
+        );
+    }
+
+    protected RoofingComponentValue createRoofingComponent(ResultSet resultSet, String rcv, String rcd, String materials, String categories)
+    {
+        throw new UnsupportedOperationException();
+    }
 
     /**
      * Creates a new {@link Order} instance from the provided {@code ResultSet}.

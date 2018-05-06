@@ -1,15 +1,21 @@
 package tvestergaard.fog.data.roofing;
 
+import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.Multimap;
 import com.mysql.cj.jdbc.MysqlDataSource;
 import tvestergaard.fog.data.AbstractMysqlDAO;
+import tvestergaard.fog.data.DataAccessException;
 import tvestergaard.fog.data.MysqlDataAccessException;
 import tvestergaard.fog.data.constraints.Constraint;
 import tvestergaard.fog.data.constraints.StatementBinder;
 import tvestergaard.fog.data.constraints.StatementGenerator;
+import tvestergaard.fog.data.materials.SimpleMaterial;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import static tvestergaard.fog.data.constraints.Constraint.append;
 import static tvestergaard.fog.data.constraints.Constraint.limit;
@@ -143,40 +149,107 @@ public class MysqlRoofingDAO extends AbstractMysqlDAO implements RoofingDAO
     }
 
     /**
-     * Returns the components for the roofing with the provided id.
+     * Returns the components definitions for the provided roofing type.
      *
-     * @param roofing The id of the roofing to return the components of.
+     * @param roofingType The id of the roofing to return the components of.
      * @return The components for the roofing with the provided id.
+     * @throws DataAccessException When a data storage exception occurs while performing the operation.
+     */
+    @Override public Set<RoofingComponentDefinition> getComponentsFor(RoofingType roofingType) throws DataAccessException
+    {
+        Set<RoofingComponentDefinition> definitions = new HashSet<>();
+
+        String SQL = "SELECT * FROM roofing_component_definitions rcd " +
+                "INNER JOIN categories ON rcd.category = categories.id WHERE rcd.roofing_type = ?";
+        try (PreparedStatement statement = getConnection().prepareStatement(SQL)) {
+            statement.setString(1, roofingType.name());
+            ResultSet componentResults = statement.executeQuery();
+            String materialSQL = "SELECT * FROM materials " +
+                    "INNER JOIN categories ON materials.category = categories.id WHERE materials.category = ?";
+            try (PreparedStatement materialsStatement = getConnection().prepareStatement(materialSQL)) {
+                while (componentResults.next()) {
+                    materialsStatement.setInt(1, componentResults.getInt("rcd.category"));
+                    ResultSet materials = materialsStatement.executeQuery();
+                    definitions.add(createRoofingDefinition("rcd", componentResults, "categories", "materials", materials));
+                }
+            }
+
+            return definitions;
+        } catch (SQLException e) {
+            throw new MysqlDataAccessException(e);
+        }
+    }
+
+    /**
+     * Returns the components active for the roofing with the provided id.
+     *
+     * @param roofing The id of the roofing to return the active components of.
+     * @return The list of the components active for the roofing with the provided id.
      * @throws MysqlDataAccessException When a data storage exception occurs while performing the operation.
      */
-    @Override public RoofingComponents getComponentsFor(int roofing) throws MysqlDataAccessException
+    @Override public List<RoofingComponentValue> getComponentsFor(int roofing) throws MysqlDataAccessException
     {
-//        MutableRoofingComponents components = new MutableRoofingComponents();
-//
-//        String SQL = "SELECT * FROM roofing_component_definitions rcd " +
-//                "INNER JOIN roofing_component_values rcv ON rcv.component = rcd.id " +
-//                "INNER JOIN materials ON rcv.material = materials.id " +
-//                "WHERE rcv.roofing = ?";
-//        try (PreparedStatement statement = getConnection().prepareStatement(SQL)) {
-//            statement.setInt(1, roofing);
-//            ResultSet componentsResultSet = statement.executeQuery();
-//            String attributeSQL = "SELECT * FROM attribute_definitions ad " +
-//                    "INNER JOIN attribute_values av ON ad.id = av.attribute " +
-//                    "WHERE av.material = ?";
-//            try (PreparedStatement attributeStatement = getConnection().prepareStatement(attributeSQL)) {
-//                while (componentsResultSet.next()) {
-//                    attributeStatement.setInt(1, componentsResultSet.getInt("materials.id"));
-//                    ResultSet attributes = attributeStatement.executeQuery();
-//                    components.pu(componentsResultSet.getString("identifier"), createMaterial("materials", componentsResultSet, "attribute_definitions", "attribute_values", attributes));
-//                }
-//            }
-//
-//            return components;
-//
-//        } catch (SQLException e) {
-//            throw new MysqlDataAccessException(e);
-//        }
+        List<RoofingComponentValue> components = new ArrayList<>();
 
-        return null;
+        String SQL = "SELECT * FROM roofing_component_values rcv " +
+                "INNER JOIN roofing_component_definitions rcd ON rcv.component = rcd.id " +
+                "INNER JOIN materials ON rcv.material = materials.id " +
+                "INNER JOIN categories ON materials.category = categories.id " +
+                "WHERE rcv.roofing = ?";
+        try (PreparedStatement statement = getConnection().prepareStatement(SQL)) {
+            statement.setInt(1, roofing);
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next())
+                components.add(createRoofingComponent(resultSet, "rcv", "rcd", "materials", "categories"));
+
+            return components;
+
+        } catch (SQLException e) {
+            throw new MysqlDataAccessException(e);
+        }
+    }
+
+    /**
+     * Returns the material choices for the provided components.
+     *
+     * @param components The component(s) to return the values of.
+     * @return Contains the material choices for the provided components. The material choices for some component id
+     * is mapped to the component id.
+     * @throws DataAccessException When a data storage exception occurs while performing the operation.
+     */
+    @Override public Multimap<Integer, SimpleMaterial> getMaterialChoicesForComponents(int... components) throws DataAccessException
+    {
+        Multimap<Integer, SimpleMaterial> results = ArrayListMultimap.create();
+
+        String SQL = "SELECT * FROM roofing_component_values rcv " +
+                "INNER JOIN materials ON rcv.material = materials.id " +
+                "INNER JOIN categories ON materials.category = categories.id " +
+                "WHERE rcv.component IN (" + createIn(components.length) + ")";
+        try (PreparedStatement statement = getConnection().prepareStatement(SQL)) {
+            for (int i = 0; i < components.length; i++)
+                statement.setInt(i + 1, components[i]);
+
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next())
+                results.put(
+                        resultSet.getInt("rcv.component"),
+                        createSimpleMaterial("materials", "categories", resultSet));
+
+            return results;
+
+        } catch (SQLException e) {
+            throw new MysqlDataAccessException(e);
+        }
+    }
+
+    private String createIn(int size)
+    {
+        StringBuilder builder = new StringBuilder();
+        for (int x = 0; x < size; x++) {
+            if (x != 0) builder.append(',');
+            builder.append('?');
+        }
+
+        return builder.toString();
     }
 }

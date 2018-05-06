@@ -1,8 +1,5 @@
 package tvestergaard.fog.logic.construction;
 
-import tvestergaard.fog.data.ComponentCollection;
-import tvestergaard.fog.data.orders.Order;
-
 public interface SkeletonConstructor
 {
 
@@ -13,5 +10,5 @@ public interface SkeletonConstructor
      * @param order      The order being constructed.
      * @param components The components to use while constructing the roof.
      */
-    void construct(MaterialsBill bill, ComponentCollection components, Order order);
+//    void construct(MaterialsBill bill, ComponentCollection components, Order order);
 }
