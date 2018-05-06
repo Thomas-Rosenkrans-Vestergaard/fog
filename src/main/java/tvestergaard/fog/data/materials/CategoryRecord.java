@@ -1,24 +1,47 @@
-package tvestergaard.fog.data.materials.categories;
+package tvestergaard.fog.data.materials;
 
 import java.util.Objects;
 
 public class CategoryRecord implements Category
 {
 
-    private final int    id;
+    /**
+     * The id of the category.
+     */
+    private final int id;
+
+    /**
+     * The name of the category.
+     */
     private final String name;
 
+    /**
+     * Creates a new {@link CategoryRecord}.
+     *
+     * @param id   The id of the category.
+     * @param name The name of the category.
+     */
     public CategoryRecord(int id, String name)
     {
         this.id = id;
         this.name = name;
     }
 
+    /**
+     * Returns the id of the category.
+     *
+     * @return The id of the category.
+     */
     public int getId()
     {
         return this.id;
     }
 
+    /**
+     * Returns the name of the category.
+     *
+     * @return The name of the category.
+     */
     public String getName()
     {
         return this.name;

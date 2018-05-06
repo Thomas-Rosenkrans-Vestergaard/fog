@@ -2,7 +2,6 @@ package tvestergaard.fog.data.materials;
 
 import tvestergaard.fog.data.DataAccessException;
 import tvestergaard.fog.data.constraints.Constraint;
-import tvestergaard.fog.data.materials.categories.Category;
 
 import java.util.List;
 import java.util.Set;

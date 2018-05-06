@@ -1,7 +1,5 @@
 package tvestergaard.fog.data.materials;
 
-import tvestergaard.fog.data.materials.categories.Category;
-
 public interface Material extends MaterialUpdater
 {
 

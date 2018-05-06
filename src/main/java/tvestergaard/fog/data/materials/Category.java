@@ -1,4 +1,4 @@
-package tvestergaard.fog.data.materials.categories;
+package tvestergaard.fog.data.materials;
 
 public interface Category
 {

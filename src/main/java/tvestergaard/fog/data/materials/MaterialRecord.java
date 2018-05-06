@@ -1,7 +1,5 @@
 package tvestergaard.fog.data.materials;
 
-import tvestergaard.fog.data.materials.categories.Category;
-
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Objects;
