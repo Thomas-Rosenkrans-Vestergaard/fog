@@ -1,6 +1,5 @@
 package tvestergaard.fog.data.roofing;
 
-import tvestergaard.fog.data.Components;
 import tvestergaard.fog.data.DataAccessException;
 import tvestergaard.fog.data.constraints.Constraint;
 
@@ -53,5 +52,5 @@ public interface RoofingDAO
      * @return The components for the roofing with the provided id.
      * @throws DataAccessException When a data storage exception occurs while performing the operation.
      */
-    Components getComponentsFor(int roofing) throws DataAccessException;
+    RoofingComponents getComponentsFor(int roofing) throws DataAccessException;
 }

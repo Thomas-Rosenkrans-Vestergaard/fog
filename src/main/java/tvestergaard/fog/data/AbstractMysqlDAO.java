@@ -11,8 +11,9 @@ import tvestergaard.fog.data.employees.EmployeeRecord;
 import tvestergaard.fog.data.employees.Role;
 import tvestergaard.fog.data.flooring.Flooring;
 import tvestergaard.fog.data.flooring.FlooringRecord;
-import tvestergaard.fog.data.materials.Material;
-import tvestergaard.fog.data.materials.MaterialRecord;
+import tvestergaard.fog.data.materials.*;
+import tvestergaard.fog.data.materials.categories.Category;
+import tvestergaard.fog.data.materials.categories.CategoryRecord;
 import tvestergaard.fog.data.offers.Offer;
 import tvestergaard.fog.data.offers.OfferRecord;
 import tvestergaard.fog.data.offers.OfferStatus;
@@ -24,10 +25,13 @@ import tvestergaard.fog.data.roofing.RoofingRecord;
 import tvestergaard.fog.data.roofing.RoofingType;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashSet;
 import java.util.Set;
+
+import static tvestergaard.fog.data.materials.DataType.STRING;
 
 public abstract class AbstractMysqlDAO
 {
@@ -200,16 +204,84 @@ public abstract class AbstractMysqlDAO
         return result;
     }
 
-    protected Material createMaterial(String table, ResultSet resultSet) throws SQLException
+    protected Material createMaterial(String table, String categoryTable, ResultSet resultSet, String attributesDefinition, String attributeValues, ResultSet attributes) throws SQLException
     {
         return new MaterialRecord(
                 resultSet.getInt(table + ".id"),
                 resultSet.getString(table + ".number"),
                 resultSet.getString(table + ".description"),
                 resultSet.getInt(table + ".price"),
-                resultSet.getInt(table + ".unit")
+                resultSet.getInt(table + ".unit"),
+                resultSet.getInt(categoryTable + ".id"),
+                createCategory(categoryTable, resultSet),
+                createAttributeSet(attributesDefinition, attributeValues, attributes)
         );
     }
+
+    protected Category createCategory(String categoryTable, ResultSet resultSet) throws SQLException
+    {
+        return new CategoryRecord(
+                resultSet.getInt(categoryTable + ".id"),
+                resultSet.getString(categoryTable + ".name")
+        );
+    }
+
+    protected Set<AttributeValue> createAttributeSet(String attributesDefinition, String attributeValues, ResultSet attributes) throws SQLException
+    {
+        Set<AttributeValue> result = new HashSet<>();
+        while (attributes.next()) {
+            result.add(createAttributeValue(attributesDefinition, attributeValues, attributes));
+        }
+
+        return result;
+    }
+
+    protected AttributeDefinition createAttributeDefinition(String definitionTable, ResultSet resultSet) throws SQLException
+    {
+        return new DefaultAttributeDefinition(
+                resultSet.getInt(definitionTable + ".id"),
+                resultSet.getString(definitionTable + ".name"),
+                DataType.valueOf(resultSet.getString(definitionTable + ".data_type"))
+        );
+    }
+
+    protected AttributeValue createAttributeValue(String definitionTable, String valueTable, ResultSet attributes) throws SQLException
+    {
+        AttributeDefinition definition = createAttributeDefinition(definitionTable, attributes);
+
+        return new DefaultAttributeValue(
+                definition,
+                getAttributeValue(valueTable, attributes, definition.getDataType())
+        );
+    }
+
+    private Object getAttributeValue(String valueTable, ResultSet attributes, DataType dataType) throws SQLException
+    {
+        if (dataType == DataType.INT)
+            return attributes.getInt(valueTable + ".value");
+        if (dataType == STRING)
+            return attributes.getString(valueTable + ".value");
+
+        throw new IllegalStateException("Unknown data type " + dataType.name());
+    }
+
+    protected void setAttributeValue(PreparedStatement attributeStatement, int parameter, AttributeValue attribute) throws SQLException
+    {
+        DataType dataType = attribute.getDefinition().getDataType();
+
+        if (dataType == DataType.INT) {
+            attributeStatement.setInt(parameter, attribute.getInt());
+            return;
+        }
+
+        if (dataType == DataType.STRING) {
+            attributeStatement.setString(parameter, attribute.getString());
+            return;
+        }
+
+        throw new IllegalStateException("Unknown data type " + dataType.name());
+    }
+
 
     /**
      * Creates a new {@link Order} instance from the provided {@code ResultSet}.

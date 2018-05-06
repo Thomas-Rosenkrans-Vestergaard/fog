@@ -13,6 +13,11 @@ public class ComponentRecord implements Component
     private final Material material;
 
     /**
+     * The notes provided the customers about the component.
+     */
+    private final String notes;
+
+    /**
      * The attributes assigned to the component.
      */
     private HashMap<String, String> attributes = new HashMap<>();
@@ -21,10 +26,12 @@ public class ComponentRecord implements Component
      * Creates a new {@link ComponentRecord}.
      *
      * @param material The material used in the component.
+     * @param notes    The notes provided the customers about the component.
      */
-    public ComponentRecord(Material material)
+    public ComponentRecord(Material material, String notes)
     {
         this.material = material;
+        this.notes = notes;
     }
 
     /**
@@ -35,6 +42,16 @@ public class ComponentRecord implements Component
     @Override public Material getMaterial()
     {
         return material;
+    }
+
+    /**
+     * Returns the notes provided the customers about the component.
+     *
+     * @return The notes provided the customers about the component.
+     */
+    @Override public String getNotes()
+    {
+        return notes;
     }
 
     /**

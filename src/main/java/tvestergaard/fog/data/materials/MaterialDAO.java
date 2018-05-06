@@ -2,8 +2,10 @@ package tvestergaard.fog.data.materials;
 
 import tvestergaard.fog.data.DataAccessException;
 import tvestergaard.fog.data.constraints.Constraint;
+import tvestergaard.fog.data.materials.categories.Category;
 
 import java.util.List;
+import java.util.Set;
 
 public interface MaterialDAO
 {
@@ -41,7 +43,24 @@ public interface MaterialDAO
      *
      * @param updater The material updater that contains the information necessary to create the material.
      * @return {@link true} if the record was updated.
-     * @throws DataAccessException When an exception occurs while performing the operation.
+     * @throws DataAccessException When a data storage exception occurs while performing the operation.
      */
     boolean update(MaterialUpdater updater) throws DataAccessException;
+
+    /**
+     * Returns a list of the attributes required for the provided category id.
+     *
+     * @param category The category id to return the required attributes for.
+     * @return The list of the attributes required for the provided category id.
+     * @throws DataAccessException When a data storage exception occurs while performing the operation.
+     */
+    Set<AttributeDefinition> getAttributesFor(int category) throws DataAccessException;
+
+    /**
+     * Returns the complete list of the categories in the application.
+     *
+     * @return The complete list of the categories in the application.
+     * @throws DataAccessException When a data storage exception occurs while performing the operation.
+     */
+    List<Category> getCategories() throws DataAccessException;
 }

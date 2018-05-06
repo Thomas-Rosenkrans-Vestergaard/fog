@@ -8,6 +8,7 @@
 <div class="row">
     <div class="col s12">
         <form method="post">
+            <input type="hidden" name="category" value="${category}">
             <div class="row">
                 <div class="col s12 input-field">
                     <input type="text" name="number" id="number" data-length="12" class="validate" required>
@@ -22,31 +23,33 @@
                 </div>
             </div>
             <div class="row">
-                <div class="row">
-                    <div class="input-field col s12">
-                        <textarea id="notes" name="notes" class="materialize-textarea"></textarea>
-                        <label for="notes">Noter</label>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col s12 input-field">
-                    <input type="number" name="width" id="width" min="1" class="validate" required>
-                    <label for="width">Bredde</label>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col s12 input-field">
-                    <input type="number" name="height" id="height" min="1" class="validate" required>
-                    <label for="height">Højde</label>
-                </div>
-            </div>
-            <div class="row">
                 <div class="col s12 input-field">
                     <input type="number" name="price" id="price" min="0" class="validate" required>
                     <label for="price">Pris</label>
                 </div>
             </div>
+            <div class="row">
+                <div class="col s12 input-field">
+                    <input type="number" name="unit" id="unit" min="0" class="validate" required>
+                    <label for="unit">Enhed</label>
+                </div>
+            </div>
+            <c:if test="${not attributes.isEmpty()}">
+                <div class="row">
+                    <div class="col s12">
+                        <h2>Attributter</h2>
+                    </div>
+                </div>
+                <c:forEach items="${attributes}" var="attribute">
+                    <div class="row">
+                        <div class="col s12 input-field">
+                            <input type="text" name="attribute_${attribute.getName()}"
+                                   id="attribute_${attribute.getName()}" required>
+                            <label for="attribute_${attribute.getName()}">${attribute.getName()}</label>
+                        </div>
+                    </div>
+                </c:forEach>
+            </c:if>
             <div class="row">
                 <div class="col s12">
                     <button class="btn-large waves-effect waves-light" type="submit" name="action">

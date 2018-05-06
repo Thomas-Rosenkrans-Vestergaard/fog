@@ -32,4 +32,9 @@ public class Helpers
     {
         return random.nextInt((max - min) + 1) + min;
     }
+
+    public static float randomFloat()
+    {
+        return random.nextFloat();
+    }
 }

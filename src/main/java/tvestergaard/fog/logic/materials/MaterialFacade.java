@@ -1,9 +1,9 @@
 package tvestergaard.fog.logic.materials;
 
 import tvestergaard.fog.data.DataAccessException;
-import tvestergaard.fog.data.ProductionDataSource;
 import tvestergaard.fog.data.constraints.Constraint;
 import tvestergaard.fog.data.materials.*;
+import tvestergaard.fog.data.materials.categories.Category;
 import tvestergaard.fog.logic.ApplicationException;
 
 import java.util.List;
@@ -72,18 +72,20 @@ public class MaterialFacade
      * @param description The material description to create.
      * @param price       The price of the material to create.
      * @param unit        The unit size of the material to create.
+     * @param category    The category of the material to create.
+     * @param attributes  The attributes of the material to create.
      * @return The material instance representing the newly created material.
      * @throws ApplicationException       When an exception occurs while performing the operation.
      * @throws MaterialValidatorException When the provided information is considered invalid.
      */
-    public Material create(String number, String description, int price, int unit)
+    public Material create(String number, String description, int price, int unit, int category, Set<AttributeValue> attributes)
             throws MaterialValidatorException
     {
         try {
             Set<MaterialError> reasons = validator.validate(number, description, price, unit);
             if (!reasons.isEmpty())
                 throw new MaterialValidatorException(reasons);
-            return dao.create(MaterialBlueprint.from(number, description, price, unit));
+            return dao.create(MaterialBlueprint.from(number, description, price, unit, category, attributes));
         } catch (DataAccessException e) {
             throw new ApplicationException(e);
         }
@@ -97,18 +99,51 @@ public class MaterialFacade
      * @param description The material description to update to.
      * @param price       The price of the material to update to.
      * @param unit        The unit size of the material to update to.
+     * @param categoryId    The category of the material to update to.
+     * @param attributes  The attributes of the material to update to.
      * @return {@link true} if the record was updated.
      * @throws ApplicationException       When an exception occurs while performing the operation.
      * @throws MaterialValidatorException When the provided information is considered invalid.
      */
-    public boolean update(int id, String number, String description, int price, int unit)
+    public boolean update(int id, String number, String description, int price, int unit, int categoryId, Set<AttributeValue> attributes)
             throws MaterialValidatorException
     {
         try {
             Set<MaterialError> reasons = validator.validate(number, description, price, unit);
             if (!reasons.isEmpty())
                 throw new MaterialValidatorException(reasons);
-            return dao.update(MaterialUpdater.from(id, number, description, price, unit));
+            return dao.update(MaterialUpdater.from(id, number, description, price, unit, categoryId, attributes));
+        } catch (DataAccessException e) {
+            throw new ApplicationException(e);
+        }
+    }
+
+    /**
+     * Returns a list of the attributes required for the provided category id.
+     *
+     * @param category The category id to return the required attributes for.
+     * @return The list of the attributes required for the provided category id.
+     * @throws ApplicationException When an exception occurs while performing the operation.
+     */
+    public Set<AttributeDefinition> getAttributesFor(int category)
+    {
+        try {
+            return dao.getAttributesFor(category);
+        } catch (DataAccessException e) {
+            throw new ApplicationException(e);
+        }
+    }
+
+    /**
+     * Returns the complete list of the categories in the application.
+     *
+     * @return The complete list of the categories in the application.
+     * @throws ApplicationException When a data storage exception occurs while performing the operation.
+     */
+    public List<Category> getCategories()
+    {
+        try {
+            return dao.getCategories();
         } catch (DataAccessException e) {
             throw new ApplicationException(e);
         }

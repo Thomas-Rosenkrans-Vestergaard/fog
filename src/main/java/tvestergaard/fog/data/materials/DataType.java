@@ -1,7 +1,7 @@
 package tvestergaard.fog.data.materials;
 
-public enum Unit
+public enum DataType
 {
-    SINGLE,
-    PACKAGE
+    STRING,
+    INT
 }

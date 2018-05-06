@@ -2,7 +2,7 @@ package tvestergaard.fog.data;
 
 import java.util.HashMap;
 
-public class ComponentsRecord implements Components
+public class ComponentCollectionRecord implements ComponentCollection
 {
 
     /**

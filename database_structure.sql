@@ -18,6 +18,43 @@ USE `fog`;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
+-- Table structure for table `attribute_definitions`
+--
+
+DROP TABLE IF EXISTS `attribute_definitions`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `attribute_definitions` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `category` int(11) unsigned NOT NULL,
+  `data_type` enum('STRING','INT','FLOAT') NOT NULL,
+  `name` varchar(30) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`),
+  KEY `fk_category_fk_idx` (`category`),
+  CONSTRAINT `fk_category_fk` FOREIGN KEY (`category`) REFERENCES `categories` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `attribute_values`
+--
+
+DROP TABLE IF EXISTS `attribute_values`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `attribute_values` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `attribute` int(11) NOT NULL,
+  `material` int(11) unsigned NOT NULL,
+  `value` varchar(30) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `fk_material_idx` (`material`),
+  CONSTRAINT `fk_material` FOREIGN KEY (`material`) REFERENCES `materials` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Table structure for table `bom`
 --
 
@@ -51,6 +88,21 @@ CREATE TABLE `bom_materials` (
   CONSTRAINT `bom_materials_ibfk_1` FOREIGN KEY (`bom`) REFERENCES `bom` (`id`),
   CONSTRAINT `bom_materials_ibfk_2` FOREIGN KEY (`material`) REFERENCES `materials` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `categories`
+--
+
+DROP TABLE IF EXISTS `categories`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `categories` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(45) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -108,7 +160,7 @@ CREATE TABLE `employees` (
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -141,10 +193,12 @@ CREATE TABLE `materials` (
   `description` varchar(255) NOT NULL,
   `price` int(11) unsigned NOT NULL,
   `unit` int(11) unsigned NOT NULL,
+  `category` int(11) unsigned NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`),
-  UNIQUE KEY `number_UNIQUE` (`number`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
+  UNIQUE KEY `number_UNIQUE` (`number`),
+  KEY `fk_category_idx` (`category`)
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -235,40 +289,6 @@ CREATE TABLE `roles` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Table structure for table `roofing_component_attribute_definitions`
---
-
-DROP TABLE IF EXISTS `roofing_component_attribute_definitions`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `roofing_component_attribute_definitions` (
-  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `component` int(11) unsigned NOT NULL,
-  `name` varchar(20) NOT NULL,
-  `data_type` enum('STRING','INT') NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `id_UNIQUE` (`id`),
-  KEY `roofing_component_attribute_definitions_ibfk_1_idx` (`component`),
-  CONSTRAINT `roofing_component_attribute_definitions_ibfk_1` FOREIGN KEY (`component`) REFERENCES `attribute_definition` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `roofing_component_attribute_values`
---
-
-DROP TABLE IF EXISTS `roofing_component_attribute_values`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `roofing_component_attribute_values` (
-  `attribute` int(11) unsigned NOT NULL,
-  `value` varchar(30) NOT NULL,
-  PRIMARY KEY (`attribute`),
-  CONSTRAINT `roofing_component_attribute_values_ibfk_1` FOREIGN KEY (`attribute`) REFERENCES `roofing_components_attributes` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
 -- Table structure for table `roofing_component_definitions`
 --
 
@@ -277,10 +297,14 @@ DROP TABLE IF EXISTS `roofing_component_definitions`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `roofing_component_definitions` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `type` enum('TILED') NOT NULL,
-  `identifier` varchar(20) NOT NULL,
+  `roofing_type` enum('TILED') NOT NULL,
+  `identifier` varchar(45) NOT NULL,
+  `category` int(11) unsigned NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `id_UNIQUE` (`id`)
+  UNIQUE KEY `id_UNIQUE` (`id`),
+  KEY `fk_category_idx` (`roofing_type`),
+  KEY `fk_category_idx1` (`category`),
+  CONSTRAINT `fk_category` FOREIGN KEY (`category`) REFERENCES `categories` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -296,6 +320,7 @@ CREATE TABLE `roofing_component_values` (
   `roofing` int(11) unsigned NOT NULL,
   `component` int(11) unsigned NOT NULL,
   `material` int(11) unsigned NOT NULL,
+  `notes` varchar(255) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`),
   KEY `roofing` (`roofing`),
@@ -379,4 +404,4 @@ CREATE TABLE `tokens` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-05-04 22:55:07
+-- Dump completed on 2018-05-06 15:04:12

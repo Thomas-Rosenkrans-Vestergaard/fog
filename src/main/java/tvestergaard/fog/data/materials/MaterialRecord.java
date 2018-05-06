@@ -1,6 +1,11 @@
 package tvestergaard.fog.data.materials;
 
+import tvestergaard.fog.data.materials.categories.Category;
+
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 public class MaterialRecord implements Material
 {
@@ -30,6 +35,15 @@ public class MaterialRecord implements Material
      */
     private int unit;
 
+    private final int categoryId;
+
+    /**
+     * The category the material belongs to.
+     */
+    private final Category category;
+
+    private final HashMap<String, AttributeValue> attributes = new HashMap<>();
+
     /**
      * Creates a new {@link MaterialRecord}.
      *
@@ -38,14 +52,20 @@ public class MaterialRecord implements Material
      * @param description The material description to specify in the updater.
      * @param price       The price of the material.
      * @param unit        The type of unit the material is in.
+     * @param category    The category the material belongs to.
+     * @param attributes  The attribute to add to the material.
      */
-    public MaterialRecord(int id, String number, String description, int price, int unit)
+    public MaterialRecord(int id, String number, String description, int price, int unit, int categoryId, Category category, Set<AttributeValue> attributes)
     {
         this.id = id;
         this.number = number;
         this.description = description;
         this.price = price;
         this.unit = unit;
+        this.categoryId = categoryId;
+        this.category = category;
+        for (AttributeValue attribute : attributes)
+            this.attributes.put(attribute.getDefinition().getName(), attribute);
     }
 
     /**
@@ -128,20 +148,74 @@ public class MaterialRecord implements Material
         this.unit = unit;
     }
 
+    /**
+     * Returns the if of the category the material belongs to.
+     *
+     * @return The if of the category the material belongs to.
+     */
+    @Override public int getCategoryId()
+    {
+        return categoryId;
+    }
+
+    /**
+     * Returns the category the material belongs to.
+     *
+     * @return The category the material belongs to.
+     */
+    @Override public Category getCategory()
+    {
+        return category;
+    }
+
+    /**
+     * Returns a complete list of the attributes describing the material.
+     *
+     * @return The complete list.
+     */
+    @Override public Set<AttributeValue> getAttributes()
+    {
+        return new HashSet<>(attributes.values());
+    }
+
+    /**
+     * Returns the attribute with the provided name.
+     *
+     * @param name The name of the attribute to return.
+     * @return The attribute with the provided name. Returns null if an attribute with the provided name does not exist.
+     */
+    @Override public AttributeValue getAttribute(String name)
+    {
+        return attributes.get(name);
+    }
+
     @Override public boolean equals(Object o)
     {
         if (this == o) return true;
-        if (!(o instanceof MaterialRecord)) return false;
-        MaterialRecord that = (MaterialRecord) o;
+        if (!(o instanceof Material)) return false;
+        Material that = (Material) o;
         return getId() == that.getId() &&
                 getPrice() == that.getPrice() &&
                 getUnit() == that.getUnit() &&
                 Objects.equals(getNumber(), that.getNumber()) &&
-                Objects.equals(getDescription(), that.getDescription());
+                Objects.equals(getDescription(), that.getDescription()) &&
+                getCategory() == that.getCategory();
     }
 
     @Override public int hashCode()
     {
-        return Objects.hash(getId());
+        return Objects.hash(getId(), getNumber(), getDescription(), getPrice(), getUnit(), getCategory());
+    }
+
+    @Override public String toString()
+    {
+        return "MaterialRecord{" +
+                "id=" + id +
+                ", number='" + number + '\'' +
+                ", description='" + description + '\'' +
+                ", price=" + price +
+                ", unit=" + unit +
+                ", category=" + category +
+                '}';
     }
 }

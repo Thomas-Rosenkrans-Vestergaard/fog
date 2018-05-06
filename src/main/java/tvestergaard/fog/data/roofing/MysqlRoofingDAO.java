@@ -1,7 +1,8 @@
 package tvestergaard.fog.data.roofing;
 
 import com.mysql.cj.jdbc.MysqlDataSource;
-import tvestergaard.fog.data.*;
+import tvestergaard.fog.data.AbstractMysqlDAO;
+import tvestergaard.fog.data.MysqlDataAccessException;
 import tvestergaard.fog.data.constraints.Constraint;
 import tvestergaard.fog.data.constraints.StatementBinder;
 import tvestergaard.fog.data.constraints.StatementGenerator;
@@ -148,37 +149,34 @@ public class MysqlRoofingDAO extends AbstractMysqlDAO implements RoofingDAO
      * @return The components for the roofing with the provided id.
      * @throws MysqlDataAccessException When a data storage exception occurs while performing the operation.
      */
-    @Override public Components getComponentsFor(int roofing) throws MysqlDataAccessException
+    @Override public RoofingComponents getComponentsFor(int roofing) throws MysqlDataAccessException
     {
-        ComponentsRecord components = new ComponentsRecord();
+//        MutableRoofingComponents components = new MutableRoofingComponents();
+//
+//        String SQL = "SELECT * FROM roofing_component_definitions rcd " +
+//                "INNER JOIN roofing_component_values rcv ON rcv.component = rcd.id " +
+//                "INNER JOIN materials ON rcv.material = materials.id " +
+//                "WHERE rcv.roofing = ?";
+//        try (PreparedStatement statement = getConnection().prepareStatement(SQL)) {
+//            statement.setInt(1, roofing);
+//            ResultSet componentsResultSet = statement.executeQuery();
+//            String attributeSQL = "SELECT * FROM attribute_definitions ad " +
+//                    "INNER JOIN attribute_values av ON ad.id = av.attribute " +
+//                    "WHERE av.material = ?";
+//            try (PreparedStatement attributeStatement = getConnection().prepareStatement(attributeSQL)) {
+//                while (componentsResultSet.next()) {
+//                    attributeStatement.setInt(1, componentsResultSet.getInt("materials.id"));
+//                    ResultSet attributes = attributeStatement.executeQuery();
+//                    components.pu(componentsResultSet.getString("identifier"), createMaterial("materials", componentsResultSet, "attribute_definitions", "attribute_values", attributes));
+//                }
+//            }
+//
+//            return components;
+//
+//        } catch (SQLException e) {
+//            throw new MysqlDataAccessException(e);
+//        }
 
-        String SQL = "SELECT * FROM roofing_component_definitions rcd " +
-                "INNER JOIN roofing_component_values rcv ON rcv.component = rcd.id " +
-                "INNER JOIN materials ON rcv.material = materials.id " +
-                "WHERE rcv.roofing = ?";
-        try (PreparedStatement statement = getConnection().prepareStatement(SQL)) {
-            statement.setInt(1, roofing);
-            ResultSet componentsResultSet = statement.executeQuery();
-            String attrSQL = "SELECT * FROM roofing_component_attribute_values av " +
-                    "INNER JOIN roofing_component_attribute_definitions ad ON av.attribute = ad.id " +
-                    "WHERE (SELECT roofing FROM roofing_component_values WHERE id = ad.component) = ? AND component = ?";
-            try (PreparedStatement attrStatement = getConnection().prepareStatement(attrSQL)) {
-                attrStatement.setInt(1, roofing);
-                while (componentsResultSet.next()) {
-                    ComponentRecord component = new ComponentRecord(createMaterial("materials", componentsResultSet));
-                    components.put(componentsResultSet.getString("identifier"), component);
-                    attrStatement.setInt(2, componentsResultSet.getInt("rcv.component"));
-                    ResultSet attributesResultSet = attrStatement.executeQuery();
-                    while (attributesResultSet.next()) {
-                        component.put(attributesResultSet.getString("name"), attributesResultSet.getString("value"));
-                    }
-                }
-            }
-
-            return components;
-
-        } catch (SQLException e) {
-            throw new MysqlDataAccessException(e);
-        }
+        return null;
     }
 }

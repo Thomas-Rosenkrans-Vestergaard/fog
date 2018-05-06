@@ -1,6 +1,6 @@
 package tvestergaard.fog.presentation.servlets;
 
-import tvestergaard.fog.data.materials.Material;
+import tvestergaard.fog.data.materials.*;
 import tvestergaard.fog.logic.materials.MaterialError;
 import tvestergaard.fog.logic.materials.MaterialFacade;
 import tvestergaard.fog.logic.materials.MaterialValidatorException;
@@ -15,7 +15,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 import static tvestergaard.fog.data.constraints.Constraint.eq;
 import static tvestergaard.fog.data.constraints.Constraint.where;
@@ -79,6 +81,7 @@ public class AdministrationMaterials extends HttpServlet
             notifications(request);
             request.setAttribute("title", "Materialee");
             request.setAttribute("materials", facade.get());
+            request.setAttribute("categories", facade.getCategories());
             request.getRequestDispatcher("/WEB-INF/administration/show_materials.jsp").forward(request, response);
         }
     }
@@ -88,8 +91,18 @@ public class AdministrationMaterials extends HttpServlet
 
         @Override public void dispatch(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
         {
-            notifications(request);
+            Parameters    parameters    = new Parameters(request);
+            Notifications notifications = notifications(request);
+
+            if (!parameters.isInt("category")) {
+                notifications.error("No category provided.");
+                response.sendRedirect("materials");
+                return;
+            }
+
             request.setAttribute("title", "Opret materiale");
+            request.setAttribute("category", parameters.getInt("category"));
+            request.setAttribute("attributes", facade.getAttributesFor(parameters.getInt("category")));
             request.getRequestDispatcher("/WEB-INF/administration/create_material.jsp").forward(request, response);
         }
     }
@@ -106,11 +119,26 @@ public class AdministrationMaterials extends HttpServlet
                     !parameters.isPresent("description") ||
                     !parameters.isPresent("price") ||
                     !parameters.isInt("unit") ||
-                    !parameters.isInt("width") ||
-                    !parameters.isInt("width")) {
+                    !parameters.isInt("category")) {
                 notifications.error("Cannot format parameters.");
                 response.sendRedirect("materials");
                 return;
+            }
+
+            Set<AttributeDefinition> attributeDefinitions = facade.getAttributesFor(parameters.getInt("category"));
+            Set<AttributeValue>      attributes           = new HashSet<>();
+            for (AttributeDefinition definition : attributeDefinitions) {
+                DataType dataType      = definition.getDataType();
+                String   attributeName = "attribute_" + definition.getName();
+                if (dataType == DataType.INT) {
+                    if (!parameters.isInt(attributeName))
+                        notifications.error("Bad format for attribute " + definition.getName());
+                    attributes.add(new DefaultAttributeValue(definition, parameters.getInt(attributeName)));
+                } else {
+                    if (!parameters.isPresent(attributeName))
+                        notifications.error("Bad format for attribute " + definition.getName());
+                    attributes.add(new DefaultAttributeValue(definition, parameters.value(attributeName)));
+                }
             }
 
             try {
@@ -118,7 +146,9 @@ public class AdministrationMaterials extends HttpServlet
                         parameters.value("number"),
                         parameters.value("description"),
                         parameters.getInt("price"),
-                        parameters.getInt("unit"));
+                        parameters.getInt("unit"),
+                        parameters.getInt("category"),
+                        attributes);
 
                 notifications.success("Materialeet blev oprettet.");
                 response.sendRedirect("?action=update&id=" + material.getId());
@@ -164,16 +194,30 @@ public class AdministrationMaterials extends HttpServlet
             Parameters    parameters    = new Parameters(request);
             Notifications notifications = notifications(request);
 
-            if (!parameters.isInt("id") ||
-                    !parameters.isPresent("number") ||
+            if (!parameters.isPresent("number") ||
                     !parameters.isPresent("description") ||
-                    !parameters.isInt("price") ||
+                    !parameters.isPresent("price") ||
                     !parameters.isInt("unit") ||
-                    !parameters.isInt("width") ||
-                    !parameters.isInt("width")) {
+                    !parameters.isInt("category")) {
                 notifications.error("Cannot format parameters.");
                 response.sendRedirect("materials");
                 return;
+            }
+
+            Set<AttributeDefinition> attributeDefinitions = facade.getAttributesFor(parameters.getInt("category"));
+            Set<AttributeValue>      attributes           = new HashSet<>();
+            for (AttributeDefinition definition : attributeDefinitions) {
+                DataType dataType      = definition.getDataType();
+                String   attributeName = "attribute_" + definition.getName();
+                if (dataType == DataType.INT) {
+                    if (!parameters.isInt(attributeName))
+                        notifications.error("Bad format for attribute " + definition.getName());
+                    attributes.add(new DefaultAttributeValue(definition, parameters.getInt(attributeName)));
+                } else {
+                    if (!parameters.isPresent(attributeName))
+                        notifications.error("Bad format for attribute " + definition.getName());
+                    attributes.add(new DefaultAttributeValue(definition, parameters.value(attributeName)));
+                }
             }
 
             try {
@@ -182,16 +226,17 @@ public class AdministrationMaterials extends HttpServlet
                         parameters.value("number"),
                         parameters.value("description"),
                         parameters.getInt("price"),
-                        parameters.getInt("unit"));
+                        parameters.getInt("unit"),
+                        parameters.getInt("category"),
+                        attributes);
 
-                notifications.success("Materialet blev opdateret.");
+                notifications.success("Materialeet blev opdateret.");
                 response.sendRedirect("?action=update&id=" + parameters.getInt("id"));
 
             } catch (MaterialValidatorException e) {
                 for (MaterialError error : e.getErrors())
                     notifications.error(errors.get(error));
                 response.sendRedirect("?action=update&id=" + parameters.getInt("id"));
-                return;
             }
         }
     }

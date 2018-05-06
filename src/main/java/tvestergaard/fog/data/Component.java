@@ -13,6 +13,13 @@ public interface Component
     Material getMaterial();
 
     /**
+     * Returns the notes provided the customers about the component.
+     *
+     * @return The notes provided the customers about the component.
+     */
+    String getNotes();
+
+    /**
      * Returns the string value of the provided attribute name.
      *
      * @param attribute The name of the attribute to return the value of.

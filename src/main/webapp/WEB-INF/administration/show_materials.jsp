@@ -7,31 +7,45 @@
 </div>
 <div class="row">
     <div class="col s12">
-        <a class="btn-floating btn-large waves-effect waves-light red" href="?action=create">
-            <i class="material-icons">add</i>
-        </a>
+        <form method="get">
+            <input type="hidden" name="action" value="create">
+            <div class="row">
+                <div class="col s6">
+                    <select name="category" id="category">
+                        <c:forEach items="${categories}" var="category">
+                            <option value="${category.getId()}"><c:out value="${category.getName()}"/></option>
+                        </c:forEach>
+                    </select>
+                    <label for="category">Materiale at oprette.</label>
+                </div>
+                <div class="col s6">
+                    <input type="submit" name="submit" value="OPRET" class="btn-large waves-effect waves-light">
+                </div>
+            </div>
+        </form>
     </div>
 </div>
+<script>
+    $('select').material_select();
+</script>
 <div class="row">
     <div class="col s12">
         <table class="highlight">
             <thead>
             <th>Nummer</th>
             <th>Beskrivelse</th>
-            <th>Noter</th>
-            <th>Bredde</th>
-            <th>Højde</th>
             <th>Pris</th>
+            <th>Enhed</th>
+            <th>Kategori</th>
             </thead>
             <tbody>
             <c:forEach items="${materials}" var="material">
                 <tr onclick="location.href = '?action=update&id=${material.getId()}'">
                     <td><c:out value="${material.getNumber()}"/></td>
                     <td><c:out value="${material.getDescription()}"/></td>
-                    <td><c:out value="${material.getNotes()}"/></td>
-                    <td><c:out value="${material.getHeight()}"/></td>
-                    <td><c:out value="${material.getWidth()}"/></td>
-                    <td><c:out value="${f:formatPrice(material.getPrice())}"/></td>
+                    <td><c:out value="${material.getPrice()}"/></td>
+                    <td><c:out value="${material.getUnit()}"/></td>
+                    <td><c:out value="${material.getCategory().getName()}"/></td>
                 </tr>
             </c:forEach>
             </tbody>

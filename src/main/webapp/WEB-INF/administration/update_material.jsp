@@ -8,6 +8,7 @@
 <div class="row">
     <div class="col s12">
         <form method="post">
+            <input type="hidden" name="category" value="${material.getCategoryId()}">
             <div class="row">
                 <div class="col s12 input-field">
                     <input type="text" name="number" id="number" data-length="12" class="validate"
@@ -17,31 +18,9 @@
             </div>
             <div class="row">
                 <div class="input-field col s12">
-                <textarea id="description" name="description" data-length="255"
-                          class="materialize-textarea validate" required>${material.getDescription()}</textarea>
+                <textarea id="description" name="description" data-length="255" class="materialize-textarea validate"
+                          required>${material.getDescription()}</textarea>
                     <label for="description">Beskrivelse</label>
-                </div>
-            </div>
-            <div class="row">
-                <div class="row">
-                    <div class="input-field col s12">
-                        <textarea id="notes" name="notes" class="materialize-textarea">${material.getNotes()}</textarea>
-                        <label for="notes">Noter</label>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col s12 input-field">
-                    <input type="number" name="width" id="width" min="1" class="validate" value="${material.getWidth()}"
-                           required>
-                    <label for="width">Bredde</label>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col s12 input-field">
-                    <input type="number" name="height" id="height" min="1" class="validate"
-                           value="${material.getHeight()}" required>
-                    <label for="height">Højde</label>
                 </div>
             </div>
             <div class="row">
@@ -52,6 +31,31 @@
                 </div>
             </div>
             <div class="row">
+                <div class="col s12 input-field">
+                    <input type="number" name="unit" id="unit" min="0" class="validate"
+                           value="${material.getUnit()}" required>
+                    <label for="unit">Enhed</label>
+                </div>
+            </div>
+            <c:if test="${not attributes.isEmpty()}">
+                <div class="row">
+                    <div class="col s12">
+                        <h2>Attributter</h2>
+                    </div>
+                </div>
+                <c:forEach items="${material.getAttributes()}" var="attribute">
+                    <div class="row">
+                        <div class="col s12 input-field">
+                            <c:set var="definition" value="${attribute.getDefinition()}"/>
+                            <input type="text" name="attribute_${definition.getName()}"
+                                   id="attribute_${definition.getName()}" value="${attribute.getValue()}"
+                                   required>
+                            <label for="attribute_${definition.getName()}">${definition.getName()}</label>
+                        </div>
+                    </div>
+                </c:forEach>
+            </c:if>
+            <div class="row">
                 <div class="col s12">
                     <button class="btn-large waves-effect waves-light" type="submit" name="action">
                         Opret<i class="material-icons right">send</i>
@@ -61,6 +65,7 @@
             <script>
                 $(document).ready(function () {
                     $('input#name').characterCounter();
+                    $('select').material_select();
                 });
             </script>
         </form>
