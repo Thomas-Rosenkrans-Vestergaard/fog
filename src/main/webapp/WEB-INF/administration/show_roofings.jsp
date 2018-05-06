@@ -19,9 +19,8 @@
             <th>ID</th>
             <th>Navn</th>
             <th>Beskrivelse</th>
-            <th>Minimum hældning</th>
-            <th>Maximum hældning</th>
             <th>Aktiv</th>
+            <th>Tagtype</th>
             </thead>
             <tbody>
             <c:forEach items="${roofings}" var="roofing">
@@ -29,9 +28,8 @@
                     <td>${roofing.getId()}</td>
                     <td><c:out value="${roofing.getName()}"/></td>
                     <td><c:out value="${roofing.getDescription()}"/></td>
-                    <td><c:out value="${roofing.getMinimumSlope()}"/></td>
-                    <td><c:out value="${roofing.getMaximumSlope()}"/></td>
                     <td><c:out value="${f:formatBoolean(roofing.isActive())}"/></td>
+                    <td><c:out value="${roofing.getType()}"/></td>
                 </tr>
             </c:forEach>
             </tbody>

@@ -22,20 +22,6 @@
                 <label for="description">Beskrivelse</label>
             </div>
         </div>
-        <div class="row">
-            <div class="input-field col s12">
-                <input type="number" step="1" name="minimum-slope" min="1" max="89" id="minimum-slope"
-                       value="${roofing.getMinimumSlope()}">
-                <label for="minimum-slope">Mindste hældning</label>
-            </div>
-        </div>
-        <div class="row">
-            <div class="input-field col s12">
-                <input type="number" step="1" name="maximum-slope" min="1" max="89" id="maximum-slope"
-                       value="${roofing.getMaximumSlope()}">
-                <label for="maximum-slope">Største hældning</label>
-            </div>
-        </div>
         <div class="class row">
             <div class="col s12">
                 <p>
@@ -52,6 +38,17 @@
         </div>
         <div class="row">
             <div class="col s12">
+                <select name="type" id="type" required>
+                    <c:forEach items="${types}" var="type">
+                        <option ${type == roofing.getType() ? 'selected' : ''}
+                                value="${type.name()}">${type.name()}</option>
+                    </c:forEach>
+                    <label for="type">Tagtype</label>
+                </select>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col s12">
                 <button class="btn-large waves-effect waves-light" type="submit" name="action">
                     Opdater<i class="material-icons right">send</i>
                 </button>
@@ -60,6 +57,7 @@
         <script>
             $(document).ready(function () {
                 $('input#name').characterCounter();
+                $('select').material_select();
             });
         </script>
     </form>

@@ -18,6 +18,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -126,6 +127,7 @@ public class AdministrationRoofings extends HttpServlet
 
             request.setAttribute("title", "Opdater tag");
             request.setAttribute("roofing", roofing);
+            request.setAttribute("types", EnumSet.allOf(RoofingType.class));
             request.getRequestDispatcher("/WEB-INF/administration/update_roofing.jsp").forward(request, response);
         }
     }
@@ -174,6 +176,7 @@ public class AdministrationRoofings extends HttpServlet
         {
             notifications(request);
             request.setAttribute("title", "Opret tag");
+            request.setAttribute("types", EnumSet.allOf(RoofingType.class));
             request.getRequestDispatcher("/WEB-INF/administration/create_roofing.jsp").forward(request, response);
         }
     }

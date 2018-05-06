@@ -7,21 +7,6 @@
 </div>
 <div class="row">
     <div class="col s12">
-        <a href="orders">Mine ordre</a>
-    </div>
-</div>
-<div class="row">
-    <div class="col s12">
-        <a href="orders">Mine tilbud</a>
-    </div>
-</div>
-<div class="row">
-    <div class="col s12">
-        <a href="orders">Mine køb</a>
-    </div>
-</div>
-<div class="row">
-    <div class="col s12">
         <p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum
             tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas
             semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo. Quisque sit amet est et sapien
