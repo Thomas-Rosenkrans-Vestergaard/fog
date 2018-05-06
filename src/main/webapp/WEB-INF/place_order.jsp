@@ -25,6 +25,14 @@
             </div>
         </div>
         <div class="row">
+            <div class="col s12">
+                <p>Nibh purus, eu eget amet sed semper, nisl pede donec pede, fusce libero blandit augue est. Ipsum
+                    enim, et elit congue erat nisl. Metus sit adipiscing vitae libero, augue tincidunt sed lorem
+                    praesent in, non sed, lacus dignissim vulputate vel erat vestibulum iaculis. Blandit metus, platea
+                    mauris. Hymenaeos libero. Ultrices eu metus arcu congue.</p>
+            </div>
+        </div>
+        <div class="row">
             <div class="input-field col s12">
                 <select name="cladding" required>
                     <c:forEach items="${claddings}" var="claddingId">
@@ -103,6 +111,14 @@
             </div>
         </div>
         <div class="row">
+            <div class="col s12">
+                <p>Nibh purus, eu eget amet sed semper, nisl pede donec pede, fusce libero blandit augue est. Ipsum
+                    enim, et elit congue erat nisl. Metus sit adipiscing vitae libero, augue tincidunt sed lorem
+                    praesent in, non sed, lacus dignissim vulputate vel erat vestibulum iaculis. Blandit metus, platea
+                    mauris. Hymenaeos libero. Ultrices eu metus arcu congue.</p>
+            </div>
+        </div>
+        <div class="row">
             <div class="input-field col s12">
                 <select name="roofing" required>
                     <c:forEach items="${roofings}" var="roofing">
@@ -125,18 +141,33 @@
             </div>
         </div>
         <div class="row">
-            <p>
+            <div class="col s12">
+                <p>Nibh purus, eu eget amet sed semper, nisl pede donec pede, fusce libero blandit augue est. Ipsum
+                    enim, et elit congue erat nisl. Metus sit adipiscing vitae libero, augue tincidunt sed lorem
+                    praesent in, non sed, lacus dignissim vulputate vel erat vestibulum iaculis.</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col s12">
                 <input name="rafters" type="radio" id="rafters-premade" value="PREBUILT" checked="checked" required/>
-                <label for="rafters-premade">Færdiglavet spær</label>
-            </p>
-            <p>
+                <label for="rafters-premade">Færdiglavet</label>
+            </div>
+            <div class="col s12">
                 <input name="rafters" type="radio" id="rafters-self" value="BUILD_SELF" required/>
-                <label for="rafters-self">Byg selv spær</label>
-            </p>
+                <label for="rafters-self">Byg selv</label>
+            </div>
         </div>
         <div class="row">
             <div class="col s12">
                 <h5>Redskabsskur</h5>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col s12">
+                <p>Nibh purus, eu eget amet sed semper, nisl pede donec pede, fusce libero blandit augue est. Ipsum
+                    enim, et elit congue erat nisl. Metus sit adipiscing vitae libero, augue tincidunt sed lorem
+                    praesent in, non sed, lacus dignissim vulputate vel erat vestibulum iaculis. Blandit metus, platea
+                    mauris. Hymenaeos libero. Ultrices eu metus arcu congue.</p>
             </div>
         </div>
         <div class="row">
@@ -188,8 +219,16 @@
                 </div>
             </div>
             <div class="row">
+                <div class="col s12">
+                    <p>Nibh purus, eu eget amet sed semper, nisl pede donec pede, fusce libero blandit augue est. Ipsum
+                        enim, et elit congue erat nisl. Metus sit adipiscing vitae libero, augue tincidunt sed lorem
+                        praesent in, non sed, lacus dignissim vulputate vel erat vestibulum iaculis.</p>
+                </div>
+            </div>
+            <div class="row">
                 <div class="col s12 input-field">
-                    <input type="email" name="customer-email" id="customer-email" data-length="255" class="validate" required>
+                    <input type="email" name="customer-email" id="customer-email" data-length="255" class="validate"
+                           required>
                     <label for="customer-email">Email</label>
                 </div>
             </div>
