@@ -111,3 +111,11 @@ hr {
 .toast.SUCCESS {
     background: #4BB543;
 }
+
+#slide-out li.active {
+    background: #014785;
+}
+
+#slide-out li.active a {
+    color: white;
+}

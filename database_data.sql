@@ -7,6 +7,9 @@ DELETE FROM roofing_component_definitions;
 DELETE FROM categories;
 DELETE FROM materials;
 DELETE FROM roofings;
+DELETE FROM customers;
+DELETE FROM roles;
+DELETE FROM employees;
 
 INSERT INTO `categories` VALUES
   (1, 'PLANK'),
@@ -61,5 +64,16 @@ INSERT INTO roofing_component_values (id, roofing, component, material, notes) V
   (3, 1, 3, 3, 'Monteres på toppen af spæret (til toplægte)'),
   (4, 1, 4, 4, 'Til	montering af rygsten'),
   (5, 1, 5, 5, 'Til	montering af tagsten, alle ydersten + hver anden fastgøres');
+
+INSERT INTO `customers` (id, `name`, `address`, email, phone, password, active, confirmed) VALUES
+  (1, 'Thomas Rosenkrans Vestergaard', 'Møllevangen 23', 'tvestergaard@hotmail.com', '26508830',
+   '$2a$10$9bIJX1ISI1flRxxkl.yb.u9u7M2ujahmwGwOMb8eD/sP3IvKJvtkm', b'1', b'1');
+INSERT INTO `employees` (id, name, username, password, active) VALUES
+  (1, 'Administrator', 'admin', '$2a$10$9bIJX1ISI1flRxxkl.yb.u9u7M2ujahmwGwOMb8eD/sP3IvKJvtkm', b'1');
+
+INSERT INTO roles (employee, role) VALUES
+  (1, 'HEAD_OF_CENTER'),
+  (1, 'HEAD_OF_MATERIALS'),
+  (1, 'SALESMAN');
 
 SET SQL_SAFE_UPDATES = 1;

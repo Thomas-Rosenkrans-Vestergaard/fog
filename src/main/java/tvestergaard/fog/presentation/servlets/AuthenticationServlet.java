@@ -34,6 +34,7 @@ public class AuthenticationServlet extends HttpServlet
     @Override protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException
     {
         req.setAttribute("title", "Log ind");
+        req.setAttribute("navigation", "authenticate");
         req.getRequestDispatcher("/WEB-INF/authenticate.jsp").forward(req, resp);
     }
 

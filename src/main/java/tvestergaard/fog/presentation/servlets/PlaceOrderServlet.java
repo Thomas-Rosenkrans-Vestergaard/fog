@@ -28,8 +28,8 @@ import static tvestergaard.fog.data.constraints.Constraint.eq;
 import static tvestergaard.fog.data.constraints.Constraint.where;
 import static tvestergaard.fog.presentation.PresentationFunctions.notifications;
 
-@WebServlet(urlPatterns = {"/design", ""})
-public class DesignServlet extends HttpServlet
+@WebServlet(urlPatterns = {"/place-order", ""})
+public class PlaceOrderServlet extends HttpServlet
 {
 
     private final CustomerFacade customerFacade  = Facades.customerFacade;
@@ -52,11 +52,12 @@ public class DesignServlet extends HttpServlet
         Authentication authentication = new Authentication(req);
 
         req.setAttribute("title", "Placér ordre");
+        req.setAttribute("navigation", "place-order");
         req.setAttribute("roofings", roofingsFacade.get(where(eq(RoofingColumn.ACTIVE, true))));
         req.setAttribute("floorings", flooringsFacade.get(where(eq(FlooringColumn.ACTIVE, true))));
         req.setAttribute("claddings", claddingsFacade.get(where(eq(CladdingColumn.ACTIVE, true))));
         req.setAttribute("customer", authentication.getCustomer());
-        req.getRequestDispatcher("/WEB-INF/design.jsp").forward(req, resp);
+        req.getRequestDispatcher("/WEB-INF/place_order.jsp").forward(req, resp);
     }
 
     /**
