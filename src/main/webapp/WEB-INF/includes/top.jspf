@@ -36,6 +36,7 @@
     <li class="${"profile".equals(navigation) ? 'active' : '' }"><a href="profile">Profil</a></li>
     <li class="${"orders".equals(navigation) ? 'active' : ''}"><a href="orders">Mine ordre</a></li>
     <li class="${"offers".equals(navigation) ? 'active' : '' }"><a href="offers">Mine tilbud</a></li>
+    <li class="${"purchases".equals(navigation) ? 'active' : '' }"><a href="purchases">Mine køb</a></li>
     <li><a href="logout">Log ud</a></li>
     <% } %>
 </ul>

@@ -2,22 +2,7 @@
 <%@ include file="includes/top.jspf" %>
 <div class="row">
     <div class="col s12">
-        <h2>Profil</h2>
-    </div>
-</div>
-<div class="row">
-    <div class="col s12">
-        <a href="orders">Mine ordre</a>
-    </div>
-</div>
-<div class="row">
-    <div class="col s12">
-        <a href="orders">Mine tilbud</a>
-    </div>
-</div>
-<div class="row">
-    <div class="col s12">
-        <a href="orders">Mine køb</a>
+        <h2>Mine køb</h2>
     </div>
 </div>
 <div class="row">
@@ -34,31 +19,17 @@
 </div>
 <div class="row">
     <div class="col s12">
-        <table class="striped">
-            <tr>
-                <th>Navn</th>
-                <td><c:out value="${customer.getName()}"/></td>
-            </tr>
-            <tr>
-                <th>Adresse</th>
-                <td><c:out value="${customer.getAddress()}"/></td>
-            </tr>
-            <tr>
-                <th>Email</th>
-                <td><c:out value="${customer.getEmail()}"/></td>
-            </tr>
-            <tr>
-                <th>Telefon</th>
-                <td><c:out value="${customer.getPhone()}"/></td>
-            </tr>
-            <tr>
-                <th>Aktiv</th>
-                <td>${f:formatBoolean(customer.isActive())}</td>
-            </tr>
-            <tr>
-                <th>Bekræftet</th>
-                <td>${f:formatBoolean(customer.isConfirmed())}</td>
-            </tr>
+        <table class="highlight">
+            <thead>
+
+            </thead>
+            <tbody>
+            <c:forEach items="${orders}" var="order">
+                <tr>
+
+                </tr>
+            </c:forEach>
+            </tbody>
         </table>
     </div>
 </div>

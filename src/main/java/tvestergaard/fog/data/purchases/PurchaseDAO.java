@@ -2,8 +2,6 @@ package tvestergaard.fog.data.purchases;
 
 import tvestergaard.fog.data.DataAccessException;
 import tvestergaard.fog.data.constraints.Constraint;
-import tvestergaard.fog.data.purchases.Purchase;
-import tvestergaard.fog.data.purchases.PurchaseColumn;
 
 import java.util.List;
 
