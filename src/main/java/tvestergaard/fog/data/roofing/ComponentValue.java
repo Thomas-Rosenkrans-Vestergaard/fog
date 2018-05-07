@@ -1,8 +1,8 @@
 package tvestergaard.fog.data.roofing;
 
-import tvestergaard.fog.data.materials.Material;
+import tvestergaard.fog.data.materials.SimpleMaterial;
 
-public interface RoofingComponentValue
+public interface ComponentValue extends ComponentValueReference
 {
 
     /**
@@ -10,17 +10,12 @@ public interface RoofingComponentValue
      *
      * @return The component definition the value is assigned to.
      */
-    RoofingComponentDefinition getDefinition();
+    ComponentDefinition getDefinition();
 
     /**
      * Returns the material assigned to the component definition.
+     *
      * @return The material assigned to the component definition.
      */
-    Material getMaterial();
-
-    /**
-     * Returns the notes on the component
-     * @return
-     */
-    String getNotes();
+    SimpleMaterial getMaterial();
 }

@@ -2,19 +2,19 @@ package tvestergaard.fog.data.roofing;
 
 import tvestergaard.fog.data.materials.Category;
 
-public class DefaultRoofingComponentDefinition implements RoofingComponentDefinition
+public class ComponentDefinitionRecord implements ComponentDefinition
 {
 
-    private final int         id;
-    private final RoofingType roofingType;
-    private final String      identifier;
-    private final Category    category;
+    private final int      id;
+    private final String   identifier;
+    private final String   notes;
+    private final Category category;
 
-    public DefaultRoofingComponentDefinition(int id, RoofingType roofingType, String identifier, Category category)
+    public ComponentDefinitionRecord(int id, String identifier, String notes, Category category)
     {
         this.id = id;
-        this.roofingType = roofingType;
         this.identifier = identifier;
+        this.notes = notes;
         this.category = category;
     }
 
@@ -29,16 +29,6 @@ public class DefaultRoofingComponentDefinition implements RoofingComponentDefini
     }
 
     /**
-     * Returns the roofing type the component is defined for.
-     *
-     * @return The roofing type the component is defined for.
-     */
-    @Override public RoofingType getRoofingType()
-    {
-        return roofingType;
-    }
-
-    /**
      * Returns the identifier of the roofing component.
      *
      * @return The identifier of the roofing component.
@@ -46,6 +36,11 @@ public class DefaultRoofingComponentDefinition implements RoofingComponentDefini
     @Override public String getIdentifier()
     {
         return identifier;
+    }
+
+    @Override public String getNotes()
+    {
+        return notes;
     }
 
     /**

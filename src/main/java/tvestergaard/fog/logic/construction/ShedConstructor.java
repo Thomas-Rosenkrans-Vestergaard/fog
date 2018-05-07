@@ -1,10 +1,10 @@
 package tvestergaard.fog.logic.construction;
 
-import tvestergaard.fog.data.roofing.RoofingComponentDefinition;
+import tvestergaard.fog.data.roofing.ComponentDefinition;
 
 public interface ShedConstructor
 {
 
-    RoofingComponentDefinition getDefinition();
+    ComponentDefinition getDefinition();
 
 }

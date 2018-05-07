@@ -1,8 +1,6 @@
 package tvestergaard.fog.presentation.servlets.administration;
 
-import tvestergaard.fog.data.roofing.Roofing;
-import tvestergaard.fog.data.roofing.RoofingComponentDefinition;
-import tvestergaard.fog.data.roofing.RoofingType;
+import tvestergaard.fog.data.roofing.*;
 import tvestergaard.fog.logic.roofings.RoofingError;
 import tvestergaard.fog.logic.roofings.RoofingFacade;
 import tvestergaard.fog.logic.roofings.RoofingValidatorException;
@@ -19,10 +17,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.EnumSet;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 import static tvestergaard.fog.data.constraints.Constraint.eq;
 import static tvestergaard.fog.data.constraints.Constraint.where;
@@ -128,9 +123,16 @@ public class AdministrationRoofings extends HttpServlet
                 return;
             }
 
+            List<ComponentValue> components = facade.getComponentsFor(parameters.getInt("id"));
+            int[]                ids        = new int[components.size()];
+            int                  index      = 0;
+            for (ComponentValue component : components)
+                ids[index++] = component.getDefinitionId();
+
             request.setAttribute("title", "Opdater tag");
             request.setAttribute("roofing", roofing);
-            request.setAttribute("types", EnumSet.allOf(RoofingType.class));
+            request.setAttribute("components", components);
+            request.setAttribute("materials", facade.getMaterialChoicesForComponents(ids).asMap());
             request.getRequestDispatcher("/WEB-INF/administration/update_roofing.jsp").forward(request, response);
         }
     }
@@ -152,13 +154,26 @@ public class AdministrationRoofings extends HttpServlet
                 return;
             }
 
+            List<ComponentValueReference> values     = new ArrayList<>();
+            List<ComponentDefinition>     components = facade.getComponentsFor(parameters.getEnum("type", RoofingType.class));
+            for (ComponentDefinition definition : components) {
+                String parameterName = "component_" + definition.getIdentifier();
+                if (!parameters.isInt(parameterName)) {
+                    notifications.error("Missing component " + definition.getIdentifier());
+                    response.sendRedirect("roofings");
+                    return;
+                }
+
+                values.add(ComponentValueReference.from(definition.getId(), parameters.getInt(parameterName)));
+            }
+
             try {
                 facade.update(
                         parameters.getInt("id"),
                         parameters.value("name"),
                         parameters.value("description"),
-                        parameters.getEnum("type", RoofingType.class),
-                        parameters.getBoolean("active"));
+                        parameters.getBoolean("active"),
+                        values);
 
                 notifications.success("Taget blev opdateret.");
                 response.sendRedirect("?action=update&id=" + parameters.getInt("id"));
@@ -186,15 +201,15 @@ public class AdministrationRoofings extends HttpServlet
                 return;
             }
 
-            Set<RoofingComponentDefinition> definitions = facade.getComponentsFor(parameters.getEnum("type", RoofingType.class));
-            int[]                           ids         = new int[definitions.size()];
-            int                             index       = 0;
-            for (RoofingComponentDefinition definition : definitions)
+            List<ComponentDefinition> definitions = facade.getComponentsFor(parameters.getEnum("type", RoofingType.class));
+            int[]                     ids         = new int[definitions.size()];
+            int                       index       = 0;
+            for (ComponentDefinition definition : definitions)
                 ids[index++] = definition.getId();
 
             request.setAttribute("title", "Opret tag");
-            request.setAttribute("types", EnumSet.allOf(RoofingType.class));
-            request.setAttribute("components", facade.getComponentsFor(parameters.getEnum("type", RoofingType.class)));
+            request.setAttribute("type", request.getParameter("type"));
+            request.setAttribute("components", definitions);
             request.setAttribute("materials", facade.getMaterialChoicesForComponents(ids).asMap());
             request.getRequestDispatcher("/WEB-INF/administration/create_roofing.jsp").forward(request, response);
         }
@@ -208,8 +223,7 @@ public class AdministrationRoofings extends HttpServlet
             Parameters    parameters    = new Parameters(request);
             Notifications notifications = notifications(request);
 
-            if (!parameters.isInt("id") ||
-                    !parameters.isPresent("name") ||
+            if (!parameters.isPresent("name") ||
                     !parameters.isPresent("description") ||
                     !parameters.isEnum("type", RoofingType.class) ||
                     !parameters.isBoolean("active")) {
@@ -218,12 +232,26 @@ public class AdministrationRoofings extends HttpServlet
                 return;
             }
 
+            List<ComponentValueReference> values     = new ArrayList<>();
+            List<ComponentDefinition>     components = facade.getComponentsFor(parameters.getEnum("type", RoofingType.class));
+            for (ComponentDefinition definition : components) {
+                String parameterName = "component_" + definition.getIdentifier();
+                if (!parameters.isInt(parameterName)) {
+                    notifications.error("Missing component " + definition.getIdentifier());
+                    response.sendRedirect("roofings");
+                    return;
+                }
+
+                values.add(ComponentValueReference.from(definition.getId(), parameters.getInt(parameterName)));
+            }
+
             try {
                 Roofing roofing = facade.create(
                         parameters.value("name"),
                         parameters.value("description"),
                         parameters.getEnum("type", RoofingType.class),
-                        parameters.getBoolean("active"));
+                        parameters.getBoolean("active"),
+                        values);
 
                 notifications.success("Taget blev oprettet.");
                 response.sendRedirect("?action=update&id=" + roofing.getId());

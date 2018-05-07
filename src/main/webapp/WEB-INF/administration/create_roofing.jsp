@@ -32,6 +32,12 @@
             </div>
         </div>
         <div class="row">
+            <div class="col s12 input-field">
+                <input type="text" name="type" id="type" value="${type}" readonly>
+                <label for="type">Tagtype</label>
+            </div>
+        </div>
+        <div class="row">
             <div class="col s12">
                 <h3>Components</h3>
             </div>

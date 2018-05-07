@@ -11,14 +11,16 @@ import tvestergaard.fog.data.constraints.StatementBinder;
 import tvestergaard.fog.data.constraints.StatementGenerator;
 import tvestergaard.fog.data.materials.SimpleMaterial;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
-import static tvestergaard.fog.data.constraints.Constraint.append;
-import static tvestergaard.fog.data.constraints.Constraint.limit;
+import static java.sql.Statement.RETURN_GENERATED_KEYS;
+import static tvestergaard.fog.data.constraints.Constraint.*;
+import static tvestergaard.fog.data.roofing.RoofingColumn.ID;
 
 public class MysqlRoofingDAO extends AbstractMysqlDAO implements RoofingDAO
 {
@@ -86,29 +88,51 @@ public class MysqlRoofingDAO extends AbstractMysqlDAO implements RoofingDAO
     /**
      * Inserts a new roofing into the data storage.
      *
-     * @param blueprint The roofing blueprint that contains the information necessary to create the roofing.
+     * @param blueprint  The roofing blueprint that contains the information necessary to create the roofing.
+     * @param components The components to add to the newly created roofing.
      * @return The roofing instance representing the newly created roofing.
      * @throws MysqlDataAccessException When a data storage exception occurs while performing the operation.
      */
-    @Override public Roofing create(RoofingBlueprint blueprint) throws MysqlDataAccessException
+    @Override public Roofing create(RoofingBlueprint blueprint, List<ComponentValueReference> components) throws MysqlDataAccessException
     {
         try {
-            final String SQL = "INSERT INTO roofings (`name`, description, active, `type`) " +
-                    "VALUES (?, ?, ?, ?)";
-            Connection connection = getConnection();
-            try (PreparedStatement statement = connection.prepareStatement(SQL, Statement.RETURN_GENERATED_KEYS)) {
+            final String SQL        = "INSERT INTO roofings (`name`, description, active, `type`) VALUES (?, ?, ?, ?)";
+            Connection   connection = getConnection();
+            try (PreparedStatement statement = connection.prepareStatement(SQL, RETURN_GENERATED_KEYS)) {
                 statement.setString(1, blueprint.getName());
                 statement.setString(2, blueprint.getDescription());
                 statement.setBoolean(3, blueprint.isActive());
                 statement.setString(4, blueprint.getType().name());
-                int updated = statement.executeUpdate();
-                connection.commit();
-                if (updated == 0)
-                    return null;
+
+                statement.executeUpdate();
                 ResultSet generated = statement.getGeneratedKeys();
                 generated.first();
-                return new RoofingRecord(generated.getInt(1), blueprint.getName(), blueprint.getDescription(),
-                        blueprint.isActive(), blueprint.getType());
+                int roofingId = generated.getInt(1);
+
+                List<Integer> insertedComponents = new ArrayList<>();
+                String        componentSQL       = "INSERT INTO component_values (definition, material) VALUES (?, ?)";
+                try (PreparedStatement componentStatement = connection.prepareStatement(componentSQL, RETURN_GENERATED_KEYS)) {
+                    for (ComponentValueReference component : components) {
+                        componentStatement.setInt(1, component.getDefinitionId());
+                        componentStatement.setInt(2, component.getMaterialId());
+                        componentStatement.executeUpdate();
+                        ResultSet resultSet = componentStatement.getGeneratedKeys();
+                        resultSet.first();
+                        insertedComponents.add(resultSet.getInt(1));
+                    }
+                }
+
+                String roofingComponentSQL = "INSERT INTO roofing_component_values (roofing, component) VALUES (?, ?)";
+                try (PreparedStatement roofingComponentStatement = connection.prepareStatement(roofingComponentSQL)) {
+                    roofingComponentStatement.setInt(1, roofingId);
+                    for (int insertedComponent : insertedComponents) {
+                        roofingComponentStatement.setInt(2, insertedComponent);
+                        roofingComponentStatement.executeUpdate();
+                    }
+                }
+
+                connection.commit();
+                return first(where(eq(ID, generated.getInt(1))));
             } catch (SQLException e) {
                 connection.rollback();
                 throw e;
@@ -121,24 +145,40 @@ public class MysqlRoofingDAO extends AbstractMysqlDAO implements RoofingDAO
     /**
      * Updates the entity in the data storage to match the provided {@code roofing}.
      *
-     * @param updater The roofing updater that contains the information necessary to create the roofing.
+     * @param updater    The roofing updater that contains the information necessary to create the roofing.
+     * @param components The components in the updated roofing.
      * @return {@link true} if the record was updated.
      * @throws MysqlDataAccessException When a data storage exception occurs while performing the operation.
      */
-    @Override public boolean update(RoofingUpdater updater) throws MysqlDataAccessException
+    @Override public boolean update(RoofingUpdater updater, List<ComponentValueReference> components) throws MysqlDataAccessException
     {
         try {
-            final String SQL        = "UPDATE roofings SET name = ?, description = ?, active = ?, `type` = ? WHERE id = ?";
+            final String SQL        = "UPDATE roofings SET name = ?, description = ?, active = ? WHERE id = ?";
             Connection   connection = getConnection();
             try (PreparedStatement statement = connection.prepareStatement(SQL)) {
                 statement.setString(1, updater.getName());
                 statement.setString(2, updater.getDescription());
                 statement.setBoolean(3, updater.isActive());
-                statement.setString(4, updater.getType().name());
-                statement.setInt(5, updater.getId());
+                statement.setInt(4, updater.getId());
+
                 int updated = statement.executeUpdate();
+
+                String componentSQL = "UPDATE component_values cv SET material = ? " +
+                        "WHERE definition = ? " +
+                        "AND id IN (SELECT component FROM roofing_component_values rcv WHERE roofing = ?)";
+                try (PreparedStatement componentStatement = connection.prepareStatement(componentSQL)) {
+                    componentStatement.setInt(3, updater.getId());
+                    for (ComponentValueReference component : components) {
+                        componentStatement.setInt(1, component.getMaterialId());
+                        componentStatement.setInt(2, component.getDefinitionId());
+                        updated += componentStatement.executeUpdate();
+                    }
+                }
+
                 connection.commit();
+
                 return updated != 0;
+
             } catch (SQLException e) {
                 connection.rollback();
                 throw e;
@@ -155,24 +195,19 @@ public class MysqlRoofingDAO extends AbstractMysqlDAO implements RoofingDAO
      * @return The components for the roofing with the provided id.
      * @throws DataAccessException When a data storage exception occurs while performing the operation.
      */
-    @Override public Set<RoofingComponentDefinition> getComponentsFor(RoofingType roofingType) throws DataAccessException
+    @Override public List<ComponentDefinition> getComponentsFor(RoofingType roofingType) throws DataAccessException
     {
-        Set<RoofingComponentDefinition> definitions = new HashSet<>();
+        List<ComponentDefinition> definitions = new ArrayList<>();
 
         String SQL = "SELECT * FROM roofing_component_definitions rcd " +
-                "INNER JOIN categories ON rcd.category = categories.id WHERE rcd.roofing_type = ?";
+                "INNER JOIN component_definitions cd ON rcd.definition = cd.id " +
+                "INNER JOIN categories ON cd.category = categories.id " +
+                "WHERE rcd.roofing_type = ?";
         try (PreparedStatement statement = getConnection().prepareStatement(SQL)) {
             statement.setString(1, roofingType.name());
             ResultSet componentResults = statement.executeQuery();
-            String materialSQL = "SELECT * FROM materials " +
-                    "INNER JOIN categories ON materials.category = categories.id WHERE materials.category = ?";
-            try (PreparedStatement materialsStatement = getConnection().prepareStatement(materialSQL)) {
-                while (componentResults.next()) {
-                    materialsStatement.setInt(1, componentResults.getInt("rcd.category"));
-                    ResultSet materials = materialsStatement.executeQuery();
-                    definitions.add(createRoofingDefinition("rcd", componentResults, "categories", "materials", materials));
-                }
-            }
+            while (componentResults.next())
+                definitions.add(createComponentDefinition("cd", componentResults, "categories"));
 
             return definitions;
         } catch (SQLException e) {
@@ -187,20 +222,21 @@ public class MysqlRoofingDAO extends AbstractMysqlDAO implements RoofingDAO
      * @return The list of the components active for the roofing with the provided id.
      * @throws MysqlDataAccessException When a data storage exception occurs while performing the operation.
      */
-    @Override public List<RoofingComponentValue> getComponentsFor(int roofing) throws MysqlDataAccessException
+    @Override public List<ComponentValue> getComponentsFor(int roofing) throws MysqlDataAccessException
     {
-        List<RoofingComponentValue> components = new ArrayList<>();
+        List<ComponentValue> components = new ArrayList<>();
 
         String SQL = "SELECT * FROM roofing_component_values rcv " +
-                "INNER JOIN roofing_component_definitions rcd ON rcv.component = rcd.id " +
-                "INNER JOIN materials ON rcv.material = materials.id " +
+                "INNER JOIN component_values cv ON rcv.component = cv.id " +
+                "INNER JOIN component_definitions cd ON cv.definition = cd.id " +
+                "INNER JOIN materials ON cv.material = materials.id " +
                 "INNER JOIN categories ON materials.category = categories.id " +
                 "WHERE rcv.roofing = ?";
         try (PreparedStatement statement = getConnection().prepareStatement(SQL)) {
             statement.setInt(1, roofing);
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next())
-                components.add(createRoofingComponent(resultSet, "rcv", "rcd", "materials", "categories"));
+                components.add(createComponentValue("cv", "cd", "materials", "categories", resultSet));
 
             return components;
 
@@ -221,19 +257,18 @@ public class MysqlRoofingDAO extends AbstractMysqlDAO implements RoofingDAO
     {
         Multimap<Integer, SimpleMaterial> results = ArrayListMultimap.create();
 
-        String SQL = "SELECT * FROM roofing_component_values rcv " +
-                "INNER JOIN materials ON rcv.material = materials.id " +
+        String SQL = "SELECT * FROM materials " +
                 "INNER JOIN categories ON materials.category = categories.id " +
-                "WHERE rcv.component IN (" + createIn(components.length) + ")";
+                "INNER JOIN component_definitions cd ON cd.category = categories.id " +
+                "WHERE cd.id IN (" + createIn(components.length) + ") " +
+                "GROUP BY materials.id";
         try (PreparedStatement statement = getConnection().prepareStatement(SQL)) {
             for (int i = 0; i < components.length; i++)
                 statement.setInt(i + 1, components[i]);
 
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next())
-                results.put(
-                        resultSet.getInt("rcv.component"),
-                        createSimpleMaterial("materials", "categories", resultSet));
+                results.put(resultSet.getInt("cd.id"), createSimpleMaterial("materials", "categories", resultSet));
 
             return results;
 

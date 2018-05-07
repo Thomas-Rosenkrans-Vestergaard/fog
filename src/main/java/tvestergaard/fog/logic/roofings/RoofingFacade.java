@@ -73,11 +73,12 @@ public class RoofingFacade
      * @param description The description of the roofing to create.
      * @param type        The type of roofing.
      * @param active      Whether or not the roofing can be applied to orders.
+     * @param components  The component values.
      * @return The roofing instance representing the newly created roofing.
      * @throws ApplicationException      When an exception occurs while performing the operation.
      * @throws RoofingValidatorException When the provided roofing information is considered invalid.
      */
-    public Roofing create(String name, String description, RoofingType type, boolean active)
+    public Roofing create(String name, String description, RoofingType type, boolean active, List<ComponentValueReference> components)
             throws RoofingValidatorException
     {
         try {
@@ -85,7 +86,7 @@ public class RoofingFacade
             if (!errors.isEmpty())
                 throw new RoofingValidatorException(errors);
             RoofingBlueprint blueprint = RoofingBlueprint.from(name, description, active, type);
-            return dao.create(blueprint);
+            return dao.create(blueprint, components);
         } catch (DataAccessException e) {
             throw new ApplicationException(e);
         }
@@ -97,21 +98,21 @@ public class RoofingFacade
      * @param id          The id of the roofing to update.
      * @param name        The new name.
      * @param description The new description.
-     * @param type        The type of roofing to create.
      * @param active      Whether or not the roofing can be applied to orders.
+     * @param components  The new components.
      * @return {@link true} if the record was updated.
      * @throws ApplicationException      When an exception occurs while performing the operation.
      * @throws RoofingValidatorException When the provided roofing information is considered invalid.
      */
-    public boolean update(int id, String name, String description, RoofingType type, boolean active)
+    public boolean update(int id, String name, String description, boolean active, List<ComponentValueReference> components)
             throws RoofingValidatorException
     {
         try {
             Set<RoofingError> errors = validator.validate(name, description);
             if (!errors.isEmpty())
                 throw new RoofingValidatorException(errors);
-            RoofingUpdater updater = RoofingUpdater.from(id, name, description, active, type);
-            return dao.update(updater);
+            RoofingUpdater updater = RoofingUpdater.from(id, name, description, active);
+            return dao.update(updater, components);
         } catch (DataAccessException e) {
             throw new ApplicationException(e);
         }
@@ -124,10 +125,26 @@ public class RoofingFacade
      * @return The components for the roofing with the provided id.
      * @throws ApplicationException When a data storage exception occurs while performing the operation.
      */
-    public Set<RoofingComponentDefinition> getComponentsFor(RoofingType roofingType)
+    public List<ComponentDefinition> getComponentsFor(RoofingType roofingType)
     {
         try {
             return dao.getComponentsFor(roofingType);
+        } catch (DataAccessException e) {
+            throw new ApplicationException(e);
+        }
+    }
+
+    /**
+     * Returns the components active for the roofing with the provided id.
+     *
+     * @param roofing The id of the roofing to return the active components of.
+     * @return The list of the components active for the roofing with the provided id.
+     * @throws ApplicationException When a data storage exception occurs while performing the operation.
+     */
+    public List<ComponentValue> getComponentsFor(int roofing)
+    {
+        try {
+            return dao.getComponentsFor(roofing);
         } catch (DataAccessException e) {
             throw new ApplicationException(e);
         }

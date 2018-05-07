@@ -6,7 +6,6 @@ import tvestergaard.fog.data.constraints.Constraint;
 import tvestergaard.fog.data.materials.SimpleMaterial;
 
 import java.util.List;
-import java.util.Set;
 
 public interface RoofingDAO
 {
@@ -33,20 +32,22 @@ public interface RoofingDAO
     /**
      * Inserts a new roofing into the data storage.
      *
-     * @param blueprint The roofing blueprint that contains the information necessary to create the roofing.
+     * @param blueprint  The roofing blueprint that contains the information necessary to create the roofing.
+     * @param components
      * @return The roofing instance representing the newly created roofing.
      * @throws DataAccessException When a data storage exception occurs while performing the operation.
      */
-    Roofing create(RoofingBlueprint blueprint) throws DataAccessException;
+    Roofing create(RoofingBlueprint blueprint, List<ComponentValueReference> components) throws DataAccessException;
 
     /**
      * Updates the entity in the data storage to match the provided {@code roofing}.
      *
-     * @param updater The roofing updater that contains the information necessary to create the roofing.
+     * @param updater    The roofing updater that contains the information necessary to create the roofing.
+     * @param components The components in the updated roofing.
      * @return {@link true} if the record was updated.
      * @throws DataAccessException When a data storage exception occurs while performing the operation.
      */
-    boolean update(RoofingUpdater updater) throws DataAccessException;
+    boolean update(RoofingUpdater updater, List<ComponentValueReference> components) throws DataAccessException;
 
     /**
      * Returns the components definitions for the provided roofing type.
@@ -55,7 +56,7 @@ public interface RoofingDAO
      * @return The components for the roofing with the provided id.
      * @throws DataAccessException When a data storage exception occurs while performing the operation.
      */
-    Set<RoofingComponentDefinition> getComponentsFor(RoofingType roofingType) throws DataAccessException;
+    List<ComponentDefinition> getComponentsFor(RoofingType roofingType) throws DataAccessException;
 
     /**
      * Returns the components active for the roofing with the provided id.
@@ -64,7 +65,7 @@ public interface RoofingDAO
      * @return The list of the components active for the roofing with the provided id.
      * @throws DataAccessException When a data storage exception occurs while performing the operation.
      */
-    List<RoofingComponentValue> getComponentsFor(int roofing) throws DataAccessException;
+    List<ComponentValue> getComponentsFor(int roofing) throws DataAccessException;
 
     /**
      * Returns the material choices for the provided components.

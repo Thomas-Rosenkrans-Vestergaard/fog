@@ -24,9 +24,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import static tvestergaard.fog.data.materials.DataType.STRING;
@@ -294,32 +292,32 @@ public abstract class AbstractMysqlDAO
         throw new IllegalStateException("Unknown data type " + dataType.name());
     }
 
-    protected RoofingComponentDefinition createRoofingDefinition(String componentDefinitionTable, ResultSet components, String categoriesTable, String materialsTable, ResultSet materials) throws SQLException
+    protected ComponentDefinition createComponentDefinition(
+            String componentDefinitionTable, ResultSet components, String categoriesTable) throws SQLException
     {
-        List<Material> materialList = new ArrayList<>();
-        while (materials.next())
-            materialList.add(new MaterialRecord(
-                    materials.getInt(materialsTable + ".id"),
-                    materials.getString(materialsTable + ".number"),
-                    materials.getString(materialsTable + ".description"),
-                    materials.getInt(materialsTable + ".price"),
-                    materials.getInt(materialsTable + ".unit"),
-                    materials.getInt(categoriesTable + ".id"),
-                    createCategory(categoriesTable, materials),
-                    new HashSet<>()
-            ));
-
-        return new DefaultRoofingComponentDefinition(
+        return new ComponentDefinitionRecord(
                 components.getInt(componentDefinitionTable + ".id"),
-                RoofingType.valueOf(components.getString(componentDefinitionTable + ".roofing_type")),
                 components.getString(componentDefinitionTable + ".identifier"),
+                components.getString(componentDefinitionTable + ".notes"),
                 createCategory(categoriesTable, components)
         );
     }
 
-    protected RoofingComponentValue createRoofingComponent(ResultSet resultSet, String rcv, String rcd, String materials, String categories)
+    protected ComponentValue createComponentValue(String componentValueTable,
+                                                  String componentDefinitionTable,
+                                                  String materialsTable,
+                                                  String categoriesTable,
+                                                  ResultSet resultSet) throws SQLException
     {
-        throw new UnsupportedOperationException();
+        ComponentDefinition definition = createComponentDefinition(componentDefinitionTable, resultSet, categoriesTable);
+        SimpleMaterial      material   = createSimpleMaterial(materialsTable, categoriesTable, resultSet);
+
+        return new ComponentValueRecord(
+                definition.getId(),
+                definition,
+                material.getId(),
+                material
+        );
     }
 
     /**

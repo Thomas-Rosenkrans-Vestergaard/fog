@@ -9,24 +9,29 @@
     <form method="post" class="col s12">
         <div class="row">
             <div class="col s12 input-field">
-                <input type="text" name="name" id="name" data-length="255" class="validate" required>
+                <input type="text" name="name" id="name" data-length="255" class="validate" value="${roofing.getName()}"
+                       required>
                 <label for="name">Navn</label>
             </div>
         </div>
         <div class="row">
             <div class="input-field col s12">
-                <textarea id="description" name="description" class="materialize-textarea validate" required></textarea>
+                <textarea id="description" name="description" class="materialize-textarea validate"
+                          required>${roofing.getDescription()}</textarea>
                 <label for="description">Beskrivelse</label>
             </div>
         </div>
+        <input type="hidden" name="type" value="${roofing.getType().name()}">
         <div class="class row">
             <div class="col s12">
                 <p>
-                    <input name="active" type="radio" id="active-true" value="true"/>
+                    <input name="active" type="radio" id="active-true" value="true"
+                    ${roofing.isActive() ? 'checked' : ''}/>
                     <label for="active-true">Aktiv</label>
                 </p>
                 <p>
-                    <input name="active" type="radio" id="active-false" value="false"/>
+                    <input name="active" type="radio" id="active-false" value="false"
+                    ${roofing.isActive() ? '' : 'checked'} />
                     <label for="active-false">Inaktiv</label>
                 </p>
             </div>
@@ -39,12 +44,14 @@
         <c:forEach items="${components}" var="component">
             <div class="row">
                 <div class="col s12 input-field">
-                    <select name="component_${component.getIdentifier()}" id="component_${component.getIdentifier()}">
-                        <c:forEach items="${component.getMaterials()}" var="material">
-                            <option value="${material.getId()}">${material.getDescription()}</option>
+                    <c:set var="definition" value="${component.getDefinition()}"/>
+                    <select name="component_${definition.getIdentifier()}" id="component_${definition.getIdentifier()}">
+                        <c:forEach items="${materials.get(definition.getId())}" var="material">
+                            <option ${component.getMaterial().getId() == material.getId() ? 'selected' : ''}
+                                    value="${material.getId()}">${material.getDescription()}</option>
                         </c:forEach>
                     </select>
-                    <label for="component_${component.getIdentifier()}">${component.getIdentifier()}</label>
+                    <label for="component_${definition.getIdentifier()}">${definition.getIdentifier()}</label>
                 </div>
             </div>
         </c:forEach>

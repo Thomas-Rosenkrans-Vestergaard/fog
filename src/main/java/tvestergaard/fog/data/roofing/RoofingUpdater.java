@@ -10,12 +10,11 @@ public interface RoofingUpdater extends RoofingBlueprint
      * @param name        The name of the roofing to specify in the updater.
      * @param description The description of the roofing to specify in the updater.
      * @param active      Whether or not the roofing to specify in the updater can be applied to orders.
-     * @param type        The roofing type.
      * @return The newly created roofing updater.
      */
-    static RoofingUpdater from(int id, String name, String description, boolean active, RoofingType type)
+    static RoofingUpdater from(int id, String name, String description, boolean active)
     {
-        return new RoofingRecord(id, name, description, active, type);
+        return new RoofingRecord(id, name, description, active, null);
     }
 
     /**
