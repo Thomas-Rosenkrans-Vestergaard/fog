@@ -9,8 +9,6 @@ import tvestergaard.fog.logic.employees.UnknownEmployeeException;
 import tvestergaard.fog.presentation.Authentication;
 import tvestergaard.fog.presentation.Notifications;
 import tvestergaard.fog.presentation.Parameters;
-import tvestergaard.fog.presentation.servlets.Command;
-import tvestergaard.fog.presentation.servlets.CommandDispatcher;
 import tvestergaard.fog.presentation.servlets.Facades;
 
 import javax.servlet.ServletException;

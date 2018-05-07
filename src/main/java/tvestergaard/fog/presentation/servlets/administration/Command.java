@@ -1,4 +1,4 @@
-package tvestergaard.fog.presentation.servlets;
+package tvestergaard.fog.presentation.servlets.administration;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
