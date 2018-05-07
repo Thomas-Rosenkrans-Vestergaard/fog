@@ -32,9 +32,15 @@ INSERT INTO materials (id, `number`, `description`, `price`, `unit`, `category`)
   (4, '682229537074', 'B&C Rygstensbeslag', 25000, 50, 8),
   (5, '459740486968', 'B&C Tagstensbindere & Nakkekroge', 12500, 50, 9),
   (6, '343615203226', '19x100 mm. Trykimprægneret bræt', '30000', 6, 1),
-  (7, '229786742441', '38x73 mm. Taglægte T1', '30000', 6, 3);
+  (7, '229786742441', '38x73 mm. Taglægte T1', '30000', 6, 3),
+  (8, '788947415996', 'Fædigskåret (byg-selv spær)', 100000, 1, 2),
+  (9, '448582215123', '97x97 mm. Trykimprægneret stolpe', 4000, 1, 4),
+  (10, '851468122894', '45x195 spærtræ ubh.', 40000, 1, 2);
 
 INSERT INTO attribute_definitions (id, category, data_type, `name`) VALUES
+  (6, 1, 'INT', 'LENGTH_MM'),
+  (6, 1, 'INT', 'WIDTH_MM'),
+  (6, 1, 'INT', 'THICKNESS_MM'),
   (1, 5, 'INT', 'HEIGHT_MM'),
   (2, 5, 'INT', 'WIDTH_MM'),
   (3, 5, 'INT', 'LATH_DISTANCE_MM'),
