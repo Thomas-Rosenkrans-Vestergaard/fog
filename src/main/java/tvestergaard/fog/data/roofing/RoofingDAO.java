@@ -37,7 +37,7 @@ public interface RoofingDAO
      * @return The roofing instance representing the newly created roofing.
      * @throws DataAccessException When a data storage exception occurs while performing the operation.
      */
-    Roofing create(RoofingBlueprint blueprint, List<ComponentValueReference> components) throws DataAccessException;
+    Roofing create(RoofingBlueprint blueprint, List<ComponentReference> components) throws DataAccessException;
 
     /**
      * Updates the entity in the data storage to match the provided {@code roofing}.
@@ -47,7 +47,7 @@ public interface RoofingDAO
      * @return {@link true} if the record was updated.
      * @throws DataAccessException When a data storage exception occurs while performing the operation.
      */
-    boolean update(RoofingUpdater updater, List<ComponentValueReference> components) throws DataAccessException;
+    boolean update(RoofingUpdater updater, List<ComponentReference> components) throws DataAccessException;
 
     /**
      * Returns the components definitions for the provided roofing type.
@@ -65,7 +65,7 @@ public interface RoofingDAO
      * @return The list of the components active for the roofing with the provided id.
      * @throws DataAccessException When a data storage exception occurs while performing the operation.
      */
-    List<ComponentValue> getComponentsFor(int roofing) throws DataAccessException;
+    List<Component> getComponentsFor(int roofing) throws DataAccessException;
 
     /**
      * Returns the material choices for the provided components.

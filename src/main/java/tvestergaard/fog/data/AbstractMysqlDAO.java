@@ -303,16 +303,18 @@ public abstract class AbstractMysqlDAO
         );
     }
 
-    protected ComponentValue createComponentValue(String componentValueTable,
-                                                  String componentDefinitionTable,
-                                                  String materialsTable,
-                                                  String categoriesTable,
-                                                  ResultSet resultSet) throws SQLException
+    protected Component createComponent(String componentDefinitionTable,
+                                        String materialsTable,
+                                        String categoriesTable,
+                                        ResultSet resultSet,
+                                        String attributeDefinitions,
+                                        String attributeValues,
+                                        ResultSet attributes) throws SQLException
     {
         ComponentDefinition definition = createComponentDefinition(componentDefinitionTable, resultSet, categoriesTable);
-        SimpleMaterial      material   = createSimpleMaterial(materialsTable, categoriesTable, resultSet);
+        Material            material   = createMaterial(materialsTable, categoriesTable, resultSet, attributeDefinitions, attributeValues, attributes);
 
-        return new ComponentValueRecord(
+        return new ComponentRecord(
                 definition.getId(),
                 definition,
                 material.getId(),

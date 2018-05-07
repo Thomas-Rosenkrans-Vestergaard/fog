@@ -2,7 +2,7 @@ package tvestergaard.fog.logic.construction;
 
 import tvestergaard.fog.data.materials.Material;
 
-public interface MaterialsBillLine
+public interface MaterialLine
 {
 
     /**
@@ -27,9 +27,9 @@ public interface MaterialsBillLine
     String getNotes();
 
     /**
-     * Returns the cost of the line. Taking into consideration the unit size of the material.
+     * Returns the cost of the line. Taking into consideration the unit size and price of the material.
      *
      * @return The cost of the line.
      */
-    int getCost();
+    int getTotal();
 }

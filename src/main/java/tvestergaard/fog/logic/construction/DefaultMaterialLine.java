@@ -2,14 +2,14 @@ package tvestergaard.fog.logic.construction;
 
 import tvestergaard.fog.data.materials.Material;
 
-public class MaterialsBillLineImpl implements MaterialsBillLine
+public class DefaultMaterialLine implements MaterialLine
 {
 
     private final Material material;
     private final int      amount;
     private final String   notes;
 
-    public MaterialsBillLineImpl(Material material, int amount, String notes)
+    public DefaultMaterialLine(Material material, int amount, String notes)
     {
         this.material = material;
         this.amount = amount;
@@ -21,7 +21,7 @@ public class MaterialsBillLineImpl implements MaterialsBillLine
      *
      * @return The the material.
      */
-    @Override public Material getMaterial()
+    public Material getMaterial()
     {
         return material;
     }
@@ -31,7 +31,7 @@ public class MaterialsBillLineImpl implements MaterialsBillLine
      *
      * @return The amount of the material needed.
      */
-    @Override public int getAmount()
+    public int getAmount()
     {
         return amount;
     }
@@ -41,24 +41,24 @@ public class MaterialsBillLineImpl implements MaterialsBillLine
      *
      * @return The notes provided to the customer about the material.
      */
-    @Override public String getNotes()
+    public String getNotes()
     {
         return notes;
     }
 
     /**
-     * Returns the cost of the line. Taking into consideration the unit size of the material.
+     * Returns the cost of the line. Taking into consideration the unit size and price of the material.
      *
      * @return The cost of the line.
      */
-    @Override public int getCost()
+    public int getTotal()
     {
-        return ((int) Math.ceil((double) amount / material.getUnit())) * material.getPrice();
+        return amount / material.getUnit() * material.getPrice();
     }
 
     @Override public String toString()
     {
-        return "MaterialsBillLine{" +
+        return "DefaultMaterialLine{" +
                 "material=" + material +
                 ", amount=" + amount +
                 ", notes='" + notes + '\'' +

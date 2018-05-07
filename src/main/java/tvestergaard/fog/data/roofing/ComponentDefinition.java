@@ -19,6 +19,11 @@ public interface ComponentDefinition
      */
     String getIdentifier();
 
+    /**
+     * Returns the notes of the roofing component.
+     *
+     * @return The notes of the roofing component.
+     */
     String getNotes();
 
     /**

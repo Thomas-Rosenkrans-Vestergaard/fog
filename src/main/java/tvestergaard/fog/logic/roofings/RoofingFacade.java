@@ -78,7 +78,7 @@ public class RoofingFacade
      * @throws ApplicationException      When an exception occurs while performing the operation.
      * @throws RoofingValidatorException When the provided roofing information is considered invalid.
      */
-    public Roofing create(String name, String description, RoofingType type, boolean active, List<ComponentValueReference> components)
+    public Roofing create(String name, String description, RoofingType type, boolean active, List<ComponentReference> components)
             throws RoofingValidatorException
     {
         try {
@@ -104,7 +104,7 @@ public class RoofingFacade
      * @throws ApplicationException      When an exception occurs while performing the operation.
      * @throws RoofingValidatorException When the provided roofing information is considered invalid.
      */
-    public boolean update(int id, String name, String description, boolean active, List<ComponentValueReference> components)
+    public boolean update(int id, String name, String description, boolean active, List<ComponentReference> components)
             throws RoofingValidatorException
     {
         try {
@@ -141,7 +141,7 @@ public class RoofingFacade
      * @return The list of the components active for the roofing with the provided id.
      * @throws ApplicationException When a data storage exception occurs while performing the operation.
      */
-    public List<ComponentValue> getComponentsFor(int roofing)
+    public List<Component> getComponentsFor(int roofing)
     {
         try {
             return dao.getComponentsFor(roofing);

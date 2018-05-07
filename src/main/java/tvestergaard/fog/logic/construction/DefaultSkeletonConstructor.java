@@ -1,6 +1,6 @@
 package tvestergaard.fog.logic.construction;
 
-public interface SkeletonConstructor
+public class DefaultSkeletonConstructor implements SkeletonConstructor
 {
 
     /**
@@ -10,5 +10,8 @@ public interface SkeletonConstructor
      * @param components    The components to use while constructing the skeleton.
      * @param specification The specifications that the skeleton must satisfy.
      */
-    void construct(MaterialList materials, Components components, ConstructionSpecification specification);
+    @Override public void construct(MaterialList materials, Components components, ConstructionSpecification specification)
+    {
+
+    }
 }

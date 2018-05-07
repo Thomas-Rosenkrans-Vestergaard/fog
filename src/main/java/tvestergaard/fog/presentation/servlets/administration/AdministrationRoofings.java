@@ -123,10 +123,10 @@ public class AdministrationRoofings extends HttpServlet
                 return;
             }
 
-            List<ComponentValue> components = facade.getComponentsFor(parameters.getInt("id"));
-            int[]                ids        = new int[components.size()];
-            int                  index      = 0;
-            for (ComponentValue component : components)
+            List<Component> components = facade.getComponentsFor(parameters.getInt("id"));
+            int[]           ids        = new int[components.size()];
+            int             index      = 0;
+            for (Component component : components)
                 ids[index++] = component.getDefinitionId();
 
             request.setAttribute("title", "Opdater tag");
@@ -154,8 +154,8 @@ public class AdministrationRoofings extends HttpServlet
                 return;
             }
 
-            List<ComponentValueReference> values     = new ArrayList<>();
-            List<ComponentDefinition>     components = facade.getComponentsFor(parameters.getEnum("type", RoofingType.class));
+            List<ComponentReference>  values     = new ArrayList<>();
+            List<ComponentDefinition> components = facade.getComponentsFor(parameters.getEnum("type", RoofingType.class));
             for (ComponentDefinition definition : components) {
                 String parameterName = "component_" + definition.getIdentifier();
                 if (!parameters.isInt(parameterName)) {
@@ -164,7 +164,7 @@ public class AdministrationRoofings extends HttpServlet
                     return;
                 }
 
-                values.add(ComponentValueReference.from(definition.getId(), parameters.getInt(parameterName)));
+                values.add(ComponentReference.from(definition.getId(), parameters.getInt(parameterName)));
             }
 
             try {
@@ -232,8 +232,8 @@ public class AdministrationRoofings extends HttpServlet
                 return;
             }
 
-            List<ComponentValueReference> values     = new ArrayList<>();
-            List<ComponentDefinition>     components = facade.getComponentsFor(parameters.getEnum("type", RoofingType.class));
+            List<ComponentReference>  values     = new ArrayList<>();
+            List<ComponentDefinition> components = facade.getComponentsFor(parameters.getEnum("type", RoofingType.class));
             for (ComponentDefinition definition : components) {
                 String parameterName = "component_" + definition.getIdentifier();
                 if (!parameters.isInt(parameterName)) {
@@ -242,7 +242,7 @@ public class AdministrationRoofings extends HttpServlet
                     return;
                 }
 
-                values.add(ComponentValueReference.from(definition.getId(), parameters.getInt(parameterName)));
+                values.add(ComponentReference.from(definition.getId(), parameters.getInt(parameterName)));
             }
 
             try {

@@ -1,17 +1,16 @@
 package tvestergaard.fog.data.roofing;
 
 import tvestergaard.fog.data.materials.Material;
-import tvestergaard.fog.data.materials.SimpleMaterial;
 
-public class ComponentValueRecord implements ComponentValue
+public class ComponentRecord implements Component
 {
 
     private final ComponentDefinition definition;
     private final int                 definitionId;
-    private final SimpleMaterial      material;
+    private final Material            material;
     private final int                 materialId;
 
-    public ComponentValueRecord(int definitionId, ComponentDefinition definition, int materialId, SimpleMaterial material)
+    public ComponentRecord(int definitionId, ComponentDefinition definition, int materialId, Material material)
     {
         this.definitionId = definitionId;
         this.definition = definition;
@@ -44,7 +43,7 @@ public class ComponentValueRecord implements ComponentValue
      *
      * @return The material assigned to the component definition.
      */
-    @Override public SimpleMaterial getMaterial()
+    @Override public Material getMaterial()
     {
         return material;
     }

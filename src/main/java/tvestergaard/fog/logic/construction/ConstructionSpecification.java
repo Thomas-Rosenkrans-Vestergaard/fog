@@ -1,6 +1,7 @@
 package tvestergaard.fog.logic.construction;
 
 import tvestergaard.fog.data.cladding.Cladding;
+import tvestergaard.fog.data.roofing.Roofing;
 
 public class ConstructionSpecification
 {
@@ -8,16 +9,16 @@ public class ConstructionSpecification
     private final int      length;
     private final int      height;
     private final Cladding cladding;
-    private final int      roofingId;
+    private final Roofing  roofing;
     private final int      roofingSlope;
 
-    public ConstructionSpecification(int width, int length, int height, Cladding cladding, int roofingId, int roofingSlope)
+    public ConstructionSpecification(int width, int length, int height, Cladding cladding, Roofing roofing, int roofingSlope)
     {
         this.width = width;
         this.length = length;
         this.height = height;
         this.cladding = cladding;
-        this.roofingId = roofingId;
+        this.roofing = roofing;
         this.roofingSlope = roofingSlope;
     }
 
@@ -41,9 +42,9 @@ public class ConstructionSpecification
         return this.cladding;
     }
 
-    public int getRoofingId()
+    public Roofing getRoofing()
     {
-        return this.roofingId;
+        return this.roofing;
     }
 
     public int getRoofingSlope()
