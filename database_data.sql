@@ -23,7 +23,8 @@ INSERT INTO `categories` VALUES
   (7, 'ROOF_RIDGE_LATH_HOLDER'),
   (8, 'ROOF_RIDGE_TILE_BRACKET'),
   (9, 'ROOF_TILE_BINDER_AND_HOOKS'),
-  (10, 'OTHER');
+  (10, 'OTHER'),
+  (11, 'SCREW');
 
 INSERT INTO materials (id, `number`, `description`, `price`, `unit`, `category`) VALUES
   (1, '960919471840', 'B&C Dobbelt sort', 1000, 1, 5),
@@ -35,12 +36,21 @@ INSERT INTO materials (id, `number`, `description`, `price`, `unit`, `category`)
   (7, '229786742441', '38x73 mm. Taglægte T1', '30000', 6, 3),
   (8, '788947415996', 'Fædigskåret (byg-selv spær)', 100000, 1, 2),
   (9, '448582215123', '97x97 mm. Trykimprægneret stolpe', 4000, 1, 4),
-  (10, '851468122894', '45x195 spærtræ ubh.', 40000, 1, 2);
+  (10, '851468122894', '45x195 spærtræ ubh.', 40000, 1, 2),
+  (11, '514432595305', 'Universal 190 mm højre', 4500, 1, 10),
+  (12, '231983532544', 'Universal 190 mm venstre', 4500, 1, 10),
+  (13, '448646179776', 'Stalddørsgreb 50x75', 8000, 1, 10),
+  (14, '685076293556', 'T-hængsel 390 mm', 12000, 1, 10),
+  (15, '346844119739', 'Vinkelbeslag', 500, 1, 10),
+  (16, '763421115200', '4,5x60 mm. skruer 200 stk.', 35000, 200, 11),
+  (17, '013735613112', '5,0x40 mm. beslagskruer 250 stk.', 16000, 250, 11),
+  (18, '702351056728', '5,0x100 mm. skruer 100 stk.', 8500, 100, 11),
+  (19, '322772016293', '4,5x70 mm. Skruer 200 stk.', 15000, 200, 11),
+  (20, '347369061736', '4,5x50 mm. Skruer 350 stk.', 35000, 350, 11),
+  (21, '419643103011', 'Bræddebolt 10 x 120 mm.', 1500, 1, 10),
+  (22, '950209945881', 'Firkantskiver 40x40x11 mm.', 1500, 1, 10);
 
 INSERT INTO attribute_definitions (id, category, data_type, `name`) VALUES
-  (6, 1, 'INT', 'LENGTH_MM'),
-  (6, 1, 'INT', 'WIDTH_MM'),
-  (6, 1, 'INT', 'THICKNESS_MM'),
   (1, 5, 'INT', 'HEIGHT_MM'),
   (2, 5, 'INT', 'WIDTH_MM'),
   (3, 5, 'INT', 'LATH_DISTANCE_MM'),
