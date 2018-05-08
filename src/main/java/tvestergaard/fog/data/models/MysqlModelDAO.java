@@ -90,8 +90,8 @@ public class MysqlModelDAO extends AbstractMysqlDAO implements ModelDAO
 
                 String componentSQL = "UPDATE component_values cv SET material = ? " +
                         "WHERE definition = ? " +
-                        "AND id IN (SELECT component FROM skeleton_component_values scv " +
-                        "INNER JOIN skeleton_component_definitions scd ON scv.definition = scd.id WHERE scd.model = ?)";
+                        "AND id IN (SELECT component FROM garage_component_values gcv " +
+                        "INNER JOIN garage_component_definitions gcd ON gcv.definition = gcd.id WHERE gcd.model = ?)";
                 try (PreparedStatement componentStatement = connection.prepareStatement(componentSQL)) {
                     componentStatement.setInt(3, updater.getId());
                     for (ComponentReference component : components) {
@@ -125,8 +125,8 @@ public class MysqlModelDAO extends AbstractMysqlDAO implements ModelDAO
     {
         List<ComponentDefinition> definitions = new ArrayList<>();
 
-        String SQL = "SELECT * FROM skeleton_component_definitions scd " +
-                "INNER JOIN component_definitions cd ON scd.definition = cd.id " +
+        String SQL = "SELECT * FROM garage_component_definitions gcd " +
+                "INNER JOIN component_definitions cd ON gcd.definition = cd.id " +
                 "INNER JOIN categories ON categories.id = cd.category";
         try (PreparedStatement statement = getConnection().prepareStatement(SQL)) {
             ResultSet componentResults = statement.executeQuery();
@@ -150,8 +150,8 @@ public class MysqlModelDAO extends AbstractMysqlDAO implements ModelDAO
     {
         List<Component> components = new ArrayList<>();
 
-        String SQL = "SELECT * FROM skeleton_component_values scv " +
-                "INNER JOIN component_values cv ON scv.component = cv.id " +
+        String SQL = "SELECT * FROM garage_component_values gcv " +
+                "INNER JOIN component_values cv ON gcv.component = cv.id " +
                 "INNER JOIN component_definitions cd ON cv.definition = cd.id " +
                 "INNER JOIN materials ON cv.material = materials.id " +
                 "INNER JOIN categories ON materials.category = categories.id";
@@ -190,7 +190,7 @@ public class MysqlModelDAO extends AbstractMysqlDAO implements ModelDAO
         String SQL = "SELECT * FROM materials " +
                 "INNER JOIN categories ON materials.category = categories.id " +
                 "INNER JOIN component_definitions cd ON cd.category = categories.id " +
-                "INNER JOIN skeleton_component_definitions scd ON scd.definition = cd.id " +
+                "INNER JOIN garage_component_definitions gcd ON gcd.definition = cd.id " +
                 "GROUP BY materials.id";
         try (PreparedStatement statement = getConnection().prepareStatement(SQL)) {
             ResultSet resultSet = statement.executeQuery();

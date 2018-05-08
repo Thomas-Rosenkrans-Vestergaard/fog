@@ -2,8 +2,8 @@ SET SQL_SAFE_UPDATES = 0;
 
 DELETE FROM attribute_definitions;
 DELETE FROM attribute_values;
-DELETE FROM skeleton_component_values;
-DELETE FROM skeleton_component_definitions;
+DELETE FROM garage_component_values;
+DELETE FROM garage_component_definitions;
 DELETE FROM garage_models;
 DELETE FROM roofing_component_values;
 DELETE FROM roofing_component_definitions;
@@ -113,10 +113,10 @@ INSERT INTO roofing_component_values (id, roofing, component) VALUES
 INSERT INTO garage_models (id, name) VALUES
   (1, 'CAR01');
 
-INSERT INTO skeleton_component_definitions (id, definition, model) VALUES
+INSERT INTO garage_component_definitions (id, definition, model) VALUES
   (1, 7, 1);
 
-INSERT INTO skeleton_component_values (id, component, definition) VALUES
+INSERT INTO garage_component_values (id, component, definition) VALUES
   (1, 7, 1);
 
 INSERT INTO `customers` (id, `name`, `address`, email, phone, PASSWORD, active, confirmed) VALUES
