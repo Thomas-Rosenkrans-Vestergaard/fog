@@ -8,7 +8,6 @@ import tvestergaard.fog.presentation.Parameters;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -17,7 +16,7 @@ import java.io.IOException;
 import static tvestergaard.fog.presentation.PresentationFunctions.notifications;
 
 @WebServlet(urlPatterns = "/administration/authenticate")
-public class AdministrationAuthenticationServlet extends HttpServlet
+public class AdministrationAuthenticationServlet extends AdministrationServlet
 {
 
     private final EmployeeFacade facade = Facades.employeeFacade;
@@ -32,6 +31,7 @@ public class AdministrationAuthenticationServlet extends HttpServlet
      */
     @Override protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException
     {
+        req.setAttribute("title", "Medarbejderlogin");
         req.setAttribute("context", "..");
         req.getRequestDispatcher("/WEB-INF/administration/authentication.jsp").forward(req, resp);
     }
