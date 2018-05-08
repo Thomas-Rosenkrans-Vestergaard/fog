@@ -51,6 +51,7 @@ public class PlaceOrderServlet extends HttpServlet
     {
         Authentication authentication = new Authentication(req);
 
+        req.setAttribute("context", ".");
         req.setAttribute("title", "Placér ordre");
         req.setAttribute("navigation", "place-order");
         req.setAttribute("roofings", roofingsFacade.get(where(eq(RoofingColumn.ACTIVE, true))));

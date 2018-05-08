@@ -59,6 +59,7 @@ public class AdministrationMaterials extends HttpServlet
             return;
         }
 
+        req.setAttribute("context", "..");
         dispatcher.dispatch(req, resp);
     }
 
@@ -72,6 +73,7 @@ public class AdministrationMaterials extends HttpServlet
             return;
         }
 
+        req.setAttribute("context", "..");
         dispatcher.dispatch(req, resp);
     }
 

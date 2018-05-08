@@ -1,5 +1,5 @@
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
-<%@ include file="top.jspf" %>
+<%@ include file="../includes/top.jspf" %>
 <div class="row">
     <div class="col s12">
         <h2><span class="focus">UPDATE ORDER</span></h2>
@@ -153,4 +153,4 @@
         </script>
     </form>
 </div>
-<%@ include file="bot.jspf" %>
+<%@ include file="../includes/bottom.jspf" %>

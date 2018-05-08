@@ -55,6 +55,7 @@ public class AdministrationOffers extends HttpServlet
             return;
         }
 
+        req.setAttribute("context", "..");
         dispatcher.dispatch(req, resp);
     }
 
@@ -69,6 +70,7 @@ public class AdministrationOffers extends HttpServlet
             return;
         }
 
+        req.setAttribute("context", "..");
         dispatcher.dispatch(req, resp);
     }
 

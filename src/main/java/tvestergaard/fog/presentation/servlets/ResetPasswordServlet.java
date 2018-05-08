@@ -40,6 +40,7 @@ public class ResetPasswordServlet extends HttpServlet
             return;
         }
 
+        req.setAttribute("context", ".");
         req.setAttribute("title", "Gensæt adgangskode");
         req.setAttribute("tokenId", parameters.getInt("tokenId"));
         req.setAttribute("tokenSecret", parameters.value("tokenSecret"));

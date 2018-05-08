@@ -31,6 +31,7 @@ public class ForgotPasswordServlet extends HttpServlet
      */
     @Override protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException
     {
+        req.setAttribute("context", ".");
         req.setAttribute("title", "Glemt password");
         req.setAttribute("navigation", "forgot-password");
         req.getRequestDispatcher("/WEB-INF/forgot-password.jsp").forward(req, resp);

@@ -1,4 +1,4 @@
-<%@ include file="top.jspf" %>
+<%@ include file="../includes/top.jspf" %>
 <div class="row">
     <div class="col s12">
         <h2><span class="focus">${cladding.getName()}</span></h2>
@@ -49,4 +49,4 @@
         </script>
     </form>
 </div>
-<%@ include file="bot.jspf" %>
+<%@ include file="../includes/bottom.jspf" %>

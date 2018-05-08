@@ -68,6 +68,7 @@ public class AdministrationEmployees extends HttpServlet
             return;
         }
 
+        req.setAttribute("context", "..");
         dispatcher.dispatch(req, resp);
     }
 
@@ -90,6 +91,7 @@ public class AdministrationEmployees extends HttpServlet
             return;
         }
 
+        req.setAttribute("context", "..");
         dispatcher.dispatch(req, resp);
     }
 

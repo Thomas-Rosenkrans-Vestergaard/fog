@@ -64,6 +64,7 @@ public class AdministrationCladdings extends HttpServlet
             return;
         }
 
+        req.setAttribute("context", "..");
         dispatcher.dispatch(req, resp);
     }
 
@@ -86,6 +87,7 @@ public class AdministrationCladdings extends HttpServlet
             return;
         }
 
+        req.setAttribute("context", "..");
         dispatcher.dispatch(req, resp);
     }
 

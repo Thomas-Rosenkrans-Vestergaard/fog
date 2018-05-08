@@ -27,6 +27,7 @@ public class ProfileServlet extends HttpServlet
         if (authentication.redirect(resp, "profile"))
             return;
 
+        req.setAttribute("context", ".");
         req.setAttribute("title", "Profil");
         req.setAttribute("navigation", "profile");
         req.setAttribute("customer", authentication.getCustomer());

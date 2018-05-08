@@ -64,6 +64,7 @@ public class AdministrationFlooring extends HttpServlet
             return;
         }
 
+        req.setAttribute("context", "..");
         dispatcher.dispatch(req, resp);
     }
 
@@ -86,6 +87,7 @@ public class AdministrationFlooring extends HttpServlet
             return;
         }
 
+        req.setAttribute("context", "..");
         dispatcher.dispatch(req, resp);
     }
 

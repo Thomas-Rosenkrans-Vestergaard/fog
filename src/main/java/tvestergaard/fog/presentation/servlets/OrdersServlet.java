@@ -39,6 +39,7 @@ public class OrdersServlet extends HttpServlet
 
         Customer customer = authentication.getCustomer();
 
+        req.setAttribute("context", ".");
         req.setAttribute("title", "Mine ordre");
         req.setAttribute("navigation", "orders");
         req.setAttribute("customer", customer);

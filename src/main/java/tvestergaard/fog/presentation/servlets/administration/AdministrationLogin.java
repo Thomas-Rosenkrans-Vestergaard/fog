@@ -33,6 +33,7 @@ public class AdministrationLogin extends HttpServlet
      */
     @Override protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException
     {
+        req.setAttribute("context", "..");
         req.getRequestDispatcher("/WEB-INF/administration/login.jsp").forward(req, resp);
     }
 

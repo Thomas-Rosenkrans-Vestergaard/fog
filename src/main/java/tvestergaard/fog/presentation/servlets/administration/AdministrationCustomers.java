@@ -71,6 +71,7 @@ public class AdministrationCustomers extends HttpServlet
             return;
         }
 
+        req.setAttribute("context", "..");
         dispatcher.dispatch(req, resp);
     }
 
@@ -93,6 +94,7 @@ public class AdministrationCustomers extends HttpServlet
             return;
         }
 
+        req.setAttribute("context", "..");
         dispatcher.dispatch(req, resp);
     }
 

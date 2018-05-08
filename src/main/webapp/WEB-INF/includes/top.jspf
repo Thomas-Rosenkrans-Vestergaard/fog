@@ -6,11 +6,11 @@
 <html>
 <head>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <link rel="stylesheet" href="css/materialize.min.css"/>
-    <link rel="stylesheet" href="css/main.css"/>
+    <link rel="stylesheet" href="${context}/css/materialize.min.css"/>
+    <link rel="stylesheet" href="${context}/css/main.css"/>
     <meta SQLname="viewport" content="width=device-width, initial-scale=1.0"/>
-    <script src="js/jquery-3.3.1.min.js"></script>
-    <script type="text/javascript" src="js/materialize.min.js"></script>
+    <script src="${context}/js/jquery-3.3.1.min.js"></script>
+    <script type="text/javascript" src="${context}/js/materialize.min.js"></script>
     <title>${title}</title>
 </head>
 <body>
@@ -18,12 +18,12 @@
 <ul id="slide-out" class="side-nav fixed">
     <li>
         <div id="nav-logo-container" class="background">
-            <img id="side-logo" src="resources/logo.jpg">
+            <img id="side-logo" src="${context}/resources/logo.jpg">
         </div>
     </li>
-    <li class="${"place-order".equals(navigation) ? 'active' : ''}"><a href="place-order">Placér ordre</a></li>
-    <li class="${"registration".equals(navigation) ? 'active' : ''}"><a href="registration">Registrer</a></li>
-    <li class="${"authenticate".equals(navigation) ? 'active' : ''}"><a href="authenticate">Autentificer</a></li>
+    <li class="${"place-order".equals(navigation) ? 'active' : ''}"><a href="${context}/place-order">Placér ordre</a></li>
+    <li class="${"registration".equals(navigation) ? 'active' : ''}"><a href="${context}/registration">Registrer</a></li>
+    <li class="${"authenticate".equals(navigation) ? 'active' : ''}"><a href="${context}/authenticate">Autentificer</a></li>
     <%
         Customer customer = (Customer) session.getAttribute("customer");
 
@@ -33,16 +33,16 @@
         <div class="divider"></div>
     </li>
     <li><a class="subheader">Autentificeret</a></li>
-    <li class="${"profile".equals(navigation) ? 'active' : '' }"><a href="profile">Profil</a></li>
-    <li class="${"orders".equals(navigation) ? 'active' : ''}"><a href="orders">Mine ordre</a></li>
-    <li class="${"offers".equals(navigation) ? 'active' : '' }"><a href="offers">Mine tilbud</a></li>
-    <li class="${"purchases".equals(navigation) ? 'active' : '' }"><a href="purchases">Mine køb</a></li>
+    <li class="${"profile".equals(navigation) ? 'active' : '' }"><a href="${context}/profile">Profil</a></li>
+    <li class="${"orders".equals(navigation) ? 'active' : ''}"><a href="${context}/orders">Mine ordre</a></li>
+    <li class="${"offers".equals(navigation) ? 'active' : '' }"><a href="${context}/offers">Mine tilbud</a></li>
+    <li class="${"purchases".equals(navigation) ? 'active' : '' }"><a href="${context}/purchases">Mine køb</a></li>
     <li><a href="logout">Log ud</a></li>
     <% } %>
 </ul>
 <div id="menu-button">
     <a href="#" data-activates="slide-out" id="navigation-trigger"><i class="material-icons large">menu</i></a>
-    <a href="/" id="top-logo-link"><img id="top-logo" src="resources/logo.jpg" alt=""></a>
+    <a href="/" id="top-logo-link"><img id="top-logo" src="${context}/resources/logo.jpg" alt=""></a>
 </div>
 <script>
     $("#navigation-trigger").sideNav();
