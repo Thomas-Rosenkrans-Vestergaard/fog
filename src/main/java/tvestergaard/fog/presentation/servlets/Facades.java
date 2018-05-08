@@ -20,8 +20,11 @@ import tvestergaard.fog.data.purchases.MysqlPurchaseDAO;
 import tvestergaard.fog.data.purchases.PurchaseDAO;
 import tvestergaard.fog.data.roofing.MysqlRoofingDAO;
 import tvestergaard.fog.data.roofing.RoofingDAO;
+import tvestergaard.fog.data.models.MysqlModelDAO;
+import tvestergaard.fog.data.models.ModelDAO;
 import tvestergaard.fog.data.tokens.MysqlTokenDAO;
 import tvestergaard.fog.data.tokens.TokenDAO;
+import tvestergaard.fog.logic.ModelFacade;
 import tvestergaard.fog.logic.claddings.CladdingFacade;
 import tvestergaard.fog.logic.customers.CustomerFacade;
 import tvestergaard.fog.logic.email.ApplicationMailer;
@@ -46,12 +49,13 @@ public class Facades
     private static final CustomerDAO     customerDAO = new MysqlCustomerDAO(source);
     private static final TokenDAO        tokenDAO    = new MysqlTokenDAO(source);
     private static final EmployeeDAO     employeeDAO = new MysqlEmployeeDAO(source);
-    private static final FlooringDAO     flooringDAO = new MysqlFlooringDAO(source);
-    private static final MaterialDAO     materialDAO = new MysqlMaterialDAO(source);
-    private static final OrderDAO        orderDAO    = new MysqlOrderDAO(source);
-    private static final RoofingDAO      roofingDAO  = new MysqlRoofingDAO(source);
-    private static final OfferDAO        offerDAO    = new MysqlOfferDAO(source);
-    private static final PurchaseDAO     purchaseDAO = new MysqlPurchaseDAO(source);
+    private static final FlooringDAO flooringDAO = new MysqlFlooringDAO(source);
+    private static final MaterialDAO materialDAO = new MysqlMaterialDAO(source);
+    private static final OrderDAO    orderDAO    = new MysqlOrderDAO(source);
+    private static final RoofingDAO  roofingDAO  = new MysqlRoofingDAO(source);
+    private static final OfferDAO    offerDAO    = new MysqlOfferDAO(source);
+    private static final PurchaseDAO purchaseDAO = new MysqlPurchaseDAO(source);
+    private static final ModelDAO    skeletonDAO = new MysqlModelDAO(source);
 
 
     private static final TokenIssuer tokenIssuer = new TokenIssuer(tokenDAO, new TokenGenerator());
@@ -65,4 +69,5 @@ public class Facades
     public static final RoofingFacade  roofingFacade  = new RoofingFacade(roofingDAO);
     public static final OfferFacade    offerFacade    = new OfferFacade(offerDAO, orderDAO, employeeDAO, mailer, tokenIssuer);
     public static final PurchaseFacade purchaseFacade = new PurchaseFacade(purchaseDAO, offerDAO, employeeDAO);
+    public static final ModelFacade    skeletonFacade = new ModelFacade(skeletonDAO);
 }

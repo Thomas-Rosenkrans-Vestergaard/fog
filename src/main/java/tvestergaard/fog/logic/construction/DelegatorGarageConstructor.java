@@ -78,7 +78,7 @@ public class DelegatorGarageConstructor implements GarageConstructor
     public static void main(String[] args) throws Exception
     {
         RoofingDAO roofingDAO = new MysqlRoofingDAO(ProductionDataSource.getSource());
-        Roofing    roofing    = roofingDAO.first(where(eq(ID, 3)));
+        Roofing    roofing    = roofingDAO.first(where(eq(ID, 1)));
 
         ConstructionFacade        constructionFacade        = new ConstructionFacade();
         ConstructionSpecification constructionSpecification = new ConstructionSpecification(420, 630, 420, null, roofing, 45);

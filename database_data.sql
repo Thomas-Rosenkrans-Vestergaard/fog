@@ -2,6 +2,9 @@ SET SQL_SAFE_UPDATES = 0;
 
 DELETE FROM attribute_definitions;
 DELETE FROM attribute_values;
+DELETE FROM skeleton_component_values;
+DELETE FROM skeleton_component_definitions;
+DELETE FROM garage_models;
 DELETE FROM roofing_component_values;
 DELETE FROM roofing_component_definitions;
 DELETE FROM component_values;
@@ -55,14 +58,18 @@ INSERT INTO attribute_definitions (id, category, data_type, `name`) VALUES
   (2, 5, 'INT', 'WIDTH_MM'),
   (3, 5, 'INT', 'LATH_DISTANCE_MM'),
   (4, 6, 'INT', 'LENGTH_MM'),
-  (5, 7, 'INT', 'USE_DISTANCE_MM');
+  (5, 7, 'INT', 'USE_DISTANCE_MM'),
+  (6, 1, 'INT', 'LENGTH_MM'),
+  (7, 1, 'INT', 'WIDTH_MM');
 
 INSERT INTO attribute_values (attribute, material, `value`) VALUES
   (1, 1, '420'),
   (2, 1, '330'),
   (3, 1, '320'),
   (4, 2, '420'),
-  (5, 3, '900');
+  (5, 3, '900'),
+  (6, 6, '2400'),
+  (7, 6, '100');
 
 INSERT INTO roofings (id, name, description, active, type)
 VALUES (1, 'Sorte teglsten',
@@ -74,30 +81,45 @@ INSERT INTO component_definitions (id, identifier, category, notes) VALUES
   (2, 'ROOF_RIDGE_TILE', 6, 'Monteres på toplægte med medfølgende beslag se tagstens vejledning'),
   (3, 'ROOF_RIDGE_LATH_HOLDER', 7, 'Monteres på toppen af spæret (til toplægte)'),
   (4, 'ROOF_RIDGE_TILE_BRACKET', 8, 'Til	montering af rygsten'),
-  (5, 'ROOF_TILE_BINDER_AND_HOOKS', 9, 'Til	montering af tagsten, alle ydersten + hver anden fastgøres');
+  (5, 'ROOF_TILE_BINDER_AND_HOOKS', 9, 'Til	montering af tagsten, alle ydersten + hver anden fastgøres'),
+  (6, 'ROOF_GABLE_CLADDING', 1, 'Beklædning af gavle 1 på 2'),
+  (7, 'POST', 4, 'Stolper nedgraves 90 cm. i jord + skråstiver');
 
 INSERT INTO roofing_component_definitions (id, roofing_type, definition) VALUES
   (1, 'TILED', 1),
   (2, 'TILED', 2),
   (3, 'TILED', 3),
   (4, 'TILED', 4),
-  (5, 'TILED', 5);
+  (5, 'TILED', 5),
+  (6, 'TILED', 6);
 
 INSERT INTO component_values (id, definition, material) VALUES
   (1, 1, 1),
   (2, 2, 2),
   (3, 3, 3),
   (4, 4, 4),
-  (5, 5, 5);
+  (5, 5, 5),
+  (6, 6, 6),
+  (7, 7, 9);
 
 INSERT INTO roofing_component_values (id, roofing, component) VALUES
   (1, 1, 1),
   (2, 1, 2),
   (3, 1, 3),
   (4, 1, 4),
-  (5, 1, 5);
+  (5, 1, 5),
+  (6, 1, 6);
 
-INSERT INTO `customers` (id, `name`, `address`, email, phone, password, active, confirmed) VALUES
+INSERT INTO garage_models (id, name) VALUES
+  (1, 'CAR01');
+
+INSERT INTO skeleton_component_definitions (id, definition, model) VALUES
+  (1, 7, 1);
+
+INSERT INTO skeleton_component_values (id, component, definition) VALUES
+  (1, 7, 1);
+
+INSERT INTO `customers` (id, `name`, `address`, email, phone, PASSWORD, active, confirmed) VALUES
   (1, 'Thomas Rosenkrans Vestergaard', 'Møllevangen 23', 'tvestergaard@hotmail.com', '26508830',
    '$2a$10$9bIJX1ISI1flRxxkl.yb.u9u7M2ujahmwGwOMb8eD/sP3IvKJvtkm', b'1', b'1');
 INSERT INTO `employees` (id, name, username, password, active) VALUES

@@ -284,15 +284,4 @@ public class MysqlRoofingDAO extends AbstractMysqlDAO implements RoofingDAO
             throw new MysqlDataAccessException(e);
         }
     }
-
-    private String createIn(int size)
-    {
-        StringBuilder builder = new StringBuilder();
-        for (int x = 0; x < size; x++) {
-            if (x != 0) builder.append(',');
-            builder.append('?');
-        }
-
-        return builder.toString();
-    }
 }

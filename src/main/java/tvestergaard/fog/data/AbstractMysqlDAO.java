@@ -19,6 +19,8 @@ import tvestergaard.fog.data.orders.*;
 import tvestergaard.fog.data.purchases.Purchase;
 import tvestergaard.fog.data.purchases.PurchaseRecord;
 import tvestergaard.fog.data.roofing.*;
+import tvestergaard.fog.data.models.Model;
+import tvestergaard.fog.data.models.ModelRecord;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -319,6 +321,25 @@ public abstract class AbstractMysqlDAO
                 definition,
                 material.getId(),
                 material
+        );
+    }
+
+    protected String createIn(int size)
+    {
+        StringBuilder builder = new StringBuilder();
+        for (int x = 0; x < size; x++) {
+            if (x != 0) builder.append(',');
+            builder.append('?');
+        }
+
+        return builder.toString();
+    }
+
+    protected Model createModel(ResultSet resultSet, String tableName) throws SQLException
+    {
+        return new ModelRecord(
+                resultSet.getInt(tableName + ".id"),
+                resultSet.getString(tableName + ".name")
         );
     }
 

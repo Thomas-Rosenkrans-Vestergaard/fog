@@ -42,6 +42,7 @@ public class TiledRoofConstructor implements RoofConstructor
         calculateRidgeTiles(materials, components, specification);
         calculateTopLatheHolder(materials, components, specification);
         calculateBindersHooks(materials, components, tileRows, tileColumns);
+        calculateGableCladding(materials, components, roofHeight, width);
     }
 
     private int up(double v)
@@ -84,6 +85,20 @@ public class TiledRoofConstructor implements RoofConstructor
 
         Component component = components.from(TILE_BINDERS_AND_HOOKS);
         materials.add(component.getMaterial(), outer + inner, component.getNotes());
+    }
+
+    private void calculateGableCladding(MutableMaterialList materials, Components components, int roofHeight, int roofWidth)
+    {
+        Component component = components.from("ROOF_GABLE_CLADDING");
+        Material  material  = component.getMaterial();
+
+        int roofHeightMM = roofHeight * 10;
+        int roofWidthMM  = roofWidth * 10;
+
+        int plankLength = material.getAttribute("LENGTH_MM").getInt();
+        int plankWidth  = material.getAttribute("WIDTH_MM").getInt();
+
+        materials.add(material, roofHeightMM * roofWidthMM / (plankLength * plankWidth) * 2, component.getNotes());
     }
 
     /**

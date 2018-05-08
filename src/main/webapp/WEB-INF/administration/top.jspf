@@ -19,6 +19,7 @@
     <div class="nav-wrapper">
         <ul class="left">
             <li><a href="orders"><span id="new-orders-counter">0</span> Ordre</a></li>
+            <li><a href="models">Modeller</a></li>
             <li><a href="customers">Kunder</a></li>
             <li><a href="employees">Medarbejdere</a></li>
             <li><a href="roofings">Tag</a></li>
