@@ -1,17 +1,15 @@
-package tvestergaard.fog.presentation.servlets.administration;
+package tvestergaard.fog.presentation.servlets;
 
 import tvestergaard.fog.data.customers.Customer;
 import tvestergaard.fog.logic.customers.CustomerError;
 import tvestergaard.fog.logic.customers.CustomerFacade;
 import tvestergaard.fog.logic.customers.CustomerValidatorException;
-import tvestergaard.fog.presentation.Authentication;
 import tvestergaard.fog.presentation.Notifications;
 import tvestergaard.fog.presentation.Parameters;
-import tvestergaard.fog.presentation.servlets.Facades;
+import tvestergaard.fog.presentation.servlets.commands.Command;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -25,14 +23,13 @@ import static tvestergaard.fog.logic.customers.CustomerError.*;
 import static tvestergaard.fog.presentation.PresentationFunctions.notifications;
 
 @WebServlet(urlPatterns = "/administration/customers")
-public class AdministrationCustomers extends HttpServlet
+public class AdministrationCustomersServlet extends AdministrationServlet
 {
 
-    private final CustomerFacade             facade     = Facades.customerFacade;
-    private final CommandDispatcher          dispatcher = new CommandDispatcher();
-    private final Map<CustomerError, String> errors     = new HashMap<>();
+    private final CustomerFacade             facade = Facades.customerFacade;
+    private final Map<CustomerError, String> errors = new HashMap<>();
 
-    public AdministrationCustomers()
+    public AdministrationCustomersServlet()
     {
         dispatcher.get(null, new ShowTableCommand());
         dispatcher.get("create", new ShowCreateCommand());
@@ -50,52 +47,6 @@ public class AdministrationCustomers extends HttpServlet
         errors.put(PHONE_EMPTY, "Telefonnummeret der blev sendt var tomt.");
         errors.put(PHONE_LONGER_THAN_30, "Telefonnummeret der blev sendt var længere end 255 tegn.");
         errors.put(PASSWORD_SHORTER_THAN_4, "Adgangskoden der blev sendt var for kort (4 tegn).");
-    }
-
-    /**
-     * Delegates the dispatch.
-     *
-     * @param req  an {@link HttpServletRequest} object that contains the request the client has made of the servlet
-     * @param resp an {@link HttpServletResponse} object that contains the response the servlet sends to the client
-     * @throws IOException      if an input or output error is detected when the servlet handles the GET request
-     * @throws ServletException if the request for the GET could not be handled
-     */
-    @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException
-    {
-        Authentication authentication = new Authentication(req);
-        Notifications  notifications  = notifications(req);
-        if (!authentication.isEmployee()) {
-            notifications.error("Du skal være logged ind som en medarbejder for at tilgå denne side.");
-            resp.sendRedirect("login");
-            return;
-        }
-
-        req.setAttribute("context", "..");
-        dispatcher.dispatch(req, resp);
-    }
-
-    /**
-     * Delegates the dispatch.
-     *
-     * @param req  an {@link HttpServletRequest} object that contains the request the client has made of the servlet
-     * @param resp an {@link HttpServletResponse} object that contains the response the servlet sends to the client
-     * @throws IOException      if an input or output error is detected when the servlet handles the GET request
-     * @throws ServletException if the request for the GET could not be handled
-     */
-    @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException
-    {
-        Authentication authentication = new Authentication(req);
-        Notifications  notifications  = notifications(req);
-        if (!authentication.isEmployee()) {
-            notifications.error("Du skal være logged ind som en medarbejder for at tilgå denne side.");
-            resp.sendRedirect("login");
-            return;
-        }
-
-        req.setAttribute("context", "..");
-        dispatcher.dispatch(req, resp);
     }
 
     private class ShowTableCommand implements Command

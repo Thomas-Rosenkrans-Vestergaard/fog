@@ -30,7 +30,7 @@
 </script>
 <div class="row">
     <div class="col s12">
-        <table class="highlight">
+        <table class="highlight administration-table">
             <thead>
             <th>Nummer</th>
             <th>Beskrivelse</th>

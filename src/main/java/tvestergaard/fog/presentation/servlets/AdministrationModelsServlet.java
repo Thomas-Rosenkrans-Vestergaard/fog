@@ -1,71 +1,35 @@
-package tvestergaard.fog.presentation.servlets.administration;
+package tvestergaard.fog.presentation.servlets;
 
 import tvestergaard.fog.data.models.Model;
 import tvestergaard.fog.data.roofing.ComponentDefinition;
 import tvestergaard.fog.data.roofing.ComponentReference;
 import tvestergaard.fog.logic.ApplicationException;
 import tvestergaard.fog.logic.ModelFacade;
-import tvestergaard.fog.logic.roofings.RoofingError;
-import tvestergaard.fog.presentation.Authentication;
 import tvestergaard.fog.presentation.Notifications;
 import tvestergaard.fog.presentation.Parameters;
-import tvestergaard.fog.presentation.servlets.Facades;
+import tvestergaard.fog.presentation.servlets.commands.Command;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import static tvestergaard.fog.presentation.PresentationFunctions.notifications;
 
 @WebServlet("/administration/models")
-public class AdministrationModels extends HttpServlet
+public class AdministrationModelsServlet extends AdministrationServlet
 {
 
     private final ModelFacade modelFacade = Facades.skeletonFacade;
 
-    private final CommandDispatcher         dispatcher = new CommandDispatcher();
-    private final Map<RoofingError, String> errors     = new HashMap<>();
-
-    public AdministrationModels()
+    public AdministrationModelsServlet()
     {
         dispatcher.get(null, new ShowTableCommand());
         dispatcher.get("update", new ShowUpdateCommand());
         dispatcher.post("update", new HandleUpdateCommand());
-    }
-
-    @Override protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException
-    {
-        Authentication authentication = new Authentication(req);
-        Notifications  notifications  = notifications(req);
-        if (!authentication.isEmployee()) {
-            notifications.error("Du skal være logged ind som en medarbejder for at tilgå denne side.");
-            resp.sendRedirect("login");
-            return;
-        }
-
-        req.setAttribute("context", "..");
-        dispatcher.dispatch(req, resp);
-    }
-
-    @Override protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException
-    {
-        Authentication authentication = new Authentication(req);
-        Notifications  notifications  = notifications(req);
-        if (!authentication.isEmployee()) {
-            notifications.error("Du skal være logged ind som en medarbejder for at tilgå denne side.");
-            resp.sendRedirect("login");
-            return;
-        }
-
-        req.setAttribute("context", "..");
-        dispatcher.dispatch(req, resp);
     }
 
     private class ShowTableCommand implements Command

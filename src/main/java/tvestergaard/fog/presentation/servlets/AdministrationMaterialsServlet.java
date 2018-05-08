@@ -1,17 +1,15 @@
-package tvestergaard.fog.presentation.servlets.administration;
+package tvestergaard.fog.presentation.servlets;
 
 import tvestergaard.fog.data.materials.*;
 import tvestergaard.fog.logic.materials.MaterialError;
 import tvestergaard.fog.logic.materials.MaterialFacade;
 import tvestergaard.fog.logic.materials.MaterialValidatorException;
-import tvestergaard.fog.presentation.Authentication;
 import tvestergaard.fog.presentation.Notifications;
 import tvestergaard.fog.presentation.Parameters;
-import tvestergaard.fog.presentation.servlets.Facades;
+import tvestergaard.fog.presentation.servlets.commands.Command;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -27,14 +25,13 @@ import static tvestergaard.fog.logic.materials.MaterialError.*;
 import static tvestergaard.fog.presentation.PresentationFunctions.notifications;
 
 @WebServlet(urlPatterns = "/administration/materials")
-public class AdministrationMaterials extends HttpServlet
+public class AdministrationMaterialsServlet extends AdministrationServlet
 {
 
-    private final MaterialFacade             facade     = Facades.materialFacade;
-    private final CommandDispatcher          dispatcher = new CommandDispatcher();
-    private final Map<MaterialError, String> errors     = new HashMap<>();
+    private final MaterialFacade             facade = Facades.materialFacade;
+    private final Map<MaterialError, String> errors = new HashMap<>();
 
-    public AdministrationMaterials()
+    public AdministrationMaterialsServlet()
     {
         dispatcher.get(null, new ShowTableCommand());
         dispatcher.get("update", new ShowUpdateCommand());
@@ -47,34 +44,6 @@ public class AdministrationMaterials extends HttpServlet
         errors.put(DESCRIPTION_EMPTY, "Beskrivelsen må ikke være tom.");
         errors.put(DESCRIPTION_LONGER_THAN_255, "Beskrivelsen må ikke være længere end 255.");
         errors.put(UNIT_LESS_THAN_1, "Enheden er mindre end 1.");
-    }
-
-    @Override protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException
-    {
-        Authentication authentication = new Authentication(req);
-        Notifications  notifications  = notifications(req);
-        if (!authentication.isEmployee()) {
-            notifications.error("Du skal være logged ind som en medarbejder for at tilgå denne side.");
-            resp.sendRedirect("login");
-            return;
-        }
-
-        req.setAttribute("context", "..");
-        dispatcher.dispatch(req, resp);
-    }
-
-    @Override protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException
-    {
-        Authentication authentication = new Authentication(req);
-        Notifications  notifications  = notifications(req);
-        if (!authentication.isEmployee()) {
-            notifications.error("Du skal være logged ind som en medarbejder for at tilgå denne side.");
-            resp.sendRedirect("login");
-            return;
-        }
-
-        req.setAttribute("context", "..");
-        dispatcher.dispatch(req, resp);
     }
 
     private class ShowTableCommand implements Command

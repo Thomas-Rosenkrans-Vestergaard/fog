@@ -2,7 +2,7 @@
 <%@ include file="../includes/top.jspf" %>
 <div class="row">
     <div class="col s12">
-        <h2>Tag</h2>
+        <h2>Tagbeklædninger</h2>
     </div>
 </div>
 <div class="row">
@@ -27,7 +27,7 @@
 </div>
 <div class="row">
     <div class="col s12">
-        <table class="highlight">
+        <table class="highlight administration-table">
             <thead>
             <th>ID</th>
             <th>Navn</th>

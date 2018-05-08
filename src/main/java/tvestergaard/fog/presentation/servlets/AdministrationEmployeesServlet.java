@@ -1,4 +1,4 @@
-package tvestergaard.fog.presentation.servlets.administration;
+package tvestergaard.fog.presentation.servlets;
 
 import tvestergaard.fog.data.employees.Employee;
 import tvestergaard.fog.data.employees.Role;
@@ -6,14 +6,12 @@ import tvestergaard.fog.logic.employees.EmployeeError;
 import tvestergaard.fog.logic.employees.EmployeeFacade;
 import tvestergaard.fog.logic.employees.EmployeeValidatorException;
 import tvestergaard.fog.logic.employees.UnknownEmployeeException;
-import tvestergaard.fog.presentation.Authentication;
 import tvestergaard.fog.presentation.Notifications;
 import tvestergaard.fog.presentation.Parameters;
-import tvestergaard.fog.presentation.servlets.Facades;
+import tvestergaard.fog.presentation.servlets.commands.Command;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -27,19 +25,18 @@ import static tvestergaard.fog.logic.employees.EmployeeError.*;
 import static tvestergaard.fog.presentation.PresentationFunctions.notifications;
 
 @WebServlet(urlPatterns = "/administration/employees")
-public class AdministrationEmployees extends HttpServlet
+public class AdministrationEmployeesServlet extends AdministrationServlet
 {
-    private final EmployeeFacade             facade     = Facades.employeeFacade;
-    private final CommandDispatcher          dispatcher = new CommandDispatcher();
-    private final Map<EmployeeError, String> errors     = new HashMap<>();
+    private final EmployeeFacade             facade = Facades.employeeFacade;
+    private final Map<EmployeeError, String> errors = new HashMap<>();
 
-    public AdministrationEmployees()
+    public AdministrationEmployeesServlet()
     {
-        dispatcher.get(null, new AdministrationEmployees.ShowTableCommand());
-        dispatcher.get("create", new AdministrationEmployees.ShowCreateCommand());
-        dispatcher.get("update", new AdministrationEmployees.ShowUpdateCommand());
-        dispatcher.post("create", new AdministrationEmployees.HandleCreateCommand());
-        dispatcher.post("update", new AdministrationEmployees.HandleUpdateCommand());
+        dispatcher.get(null, new AdministrationEmployeesServlet.ShowTableCommand());
+        dispatcher.get("create", new AdministrationEmployeesServlet.ShowCreateCommand());
+        dispatcher.get("update", new AdministrationEmployeesServlet.ShowUpdateCommand());
+        dispatcher.post("create", new AdministrationEmployeesServlet.HandleCreateCommand());
+        dispatcher.post("update", new AdministrationEmployeesServlet.HandleUpdateCommand());
 
         errors.put(NAME_EMPTY, "Navnet der blev sendt var tomt.");
         errors.put(NAME_LONGER_THAN_255, "Navnet der blev sendt var længere end 255 tegn.");
@@ -47,52 +44,6 @@ public class AdministrationEmployees extends HttpServlet
         errors.put(USERNAME_LONGER_THAN_255, "Brugernavnet der sendt var længere end 255 tegn.");
         errors.put(USERNAME_TAKEN, "Brugernavnet er allerede i brug.");
         errors.put(PASSWORD_SHORTER_THAN_4, "Adgangskoden der blev sendt var for kort (4 tegn).");
-    }
-
-    /**
-     * Delegates the dispatch.
-     *
-     * @param req  an {@link HttpServletRequest} object that contains the request the client has made of the servlet
-     * @param resp an {@link HttpServletResponse} object that contains the response the servlet sends to the client
-     * @throws IOException      if an input or output error is detected when the servlet handles the GET request
-     * @throws ServletException if the request for the GET could not be handled
-     */
-    @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException
-    {
-        Authentication authentication = new Authentication(req);
-        Notifications  notifications  = notifications(req);
-        if (!authentication.isEmployee()) {
-            notifications.error("Du skal være logged ind som en medarbejder for at tilgå denne side.");
-            resp.sendRedirect("login");
-            return;
-        }
-
-        req.setAttribute("context", "..");
-        dispatcher.dispatch(req, resp);
-    }
-
-    /**
-     * Delegates the dispatch.
-     *
-     * @param req  an {@link HttpServletRequest} object that contains the request the client has made of the servlet
-     * @param resp an {@link HttpServletResponse} object that contains the response the servlet sends to the client
-     * @throws IOException      if an input or output error is detected when the servlet handles the GET request
-     * @throws ServletException if the request for the GET could not be handled
-     */
-    @Override
-    public void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException
-    {
-        Authentication authentication = new Authentication(req);
-        Notifications  notifications  = notifications(req);
-        if (!authentication.isEmployee()) {
-            notifications.error("Du skal være logged ind som en medarbejder for at tilgå denne side.");
-            resp.sendRedirect("login");
-            return;
-        }
-
-        req.setAttribute("context", "..");
-        dispatcher.dispatch(req, resp);
     }
 
     private class ShowTableCommand implements Command

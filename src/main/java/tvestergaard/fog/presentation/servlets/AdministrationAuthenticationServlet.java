@@ -1,11 +1,10 @@
-package tvestergaard.fog.presentation.servlets.administration;
+package tvestergaard.fog.presentation.servlets;
 
 import tvestergaard.fog.data.employees.Employee;
 import tvestergaard.fog.logic.employees.EmployeeFacade;
 import tvestergaard.fog.logic.employees.InactiveEmployeeException;
 import tvestergaard.fog.presentation.Notifications;
 import tvestergaard.fog.presentation.Parameters;
-import tvestergaard.fog.presentation.servlets.Facades;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -17,8 +16,8 @@ import java.io.IOException;
 
 import static tvestergaard.fog.presentation.PresentationFunctions.notifications;
 
-@WebServlet(urlPatterns = "/administration/login")
-public class AdministrationLogin extends HttpServlet
+@WebServlet(urlPatterns = "/administration/authenticate")
+public class AdministrationAuthenticationServlet extends HttpServlet
 {
 
     private final EmployeeFacade facade = Facades.employeeFacade;
@@ -34,7 +33,7 @@ public class AdministrationLogin extends HttpServlet
     @Override protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException
     {
         req.setAttribute("context", "..");
-        req.getRequestDispatcher("/WEB-INF/administration/login.jsp").forward(req, resp);
+        req.getRequestDispatcher("/WEB-INF/administration/authentication.jsp").forward(req, resp);
     }
 
     /**

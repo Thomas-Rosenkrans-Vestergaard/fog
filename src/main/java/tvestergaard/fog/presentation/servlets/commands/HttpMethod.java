@@ -1,4 +1,4 @@
-package tvestergaard.fog.presentation.servlets.administration;
+package tvestergaard.fog.presentation.servlets.commands;
 
 public enum HttpMethod
 {

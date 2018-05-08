@@ -5,6 +5,10 @@ function updateNewOrdersCounter() {
         url: '../api?action=getNumberOfNewOrders',
         success: function (data) {
             $('#new-orders-counter').text = data['orders'];
+            if (data['orders'] == 0)
+                $('#new-orders-counter').hide();
+            else
+                $('#new-orders-counter').show();
         }
     });
 }

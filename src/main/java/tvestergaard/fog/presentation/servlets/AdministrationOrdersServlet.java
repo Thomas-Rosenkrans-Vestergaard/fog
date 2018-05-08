@@ -1,4 +1,4 @@
-package tvestergaard.fog.presentation.servlets.administration;
+package tvestergaard.fog.presentation.servlets;
 
 import tvestergaard.fog.data.orders.Order;
 import tvestergaard.fog.data.orders.RafterChoice;
@@ -9,14 +9,13 @@ import tvestergaard.fog.logic.orders.OrderFacade;
 import tvestergaard.fog.logic.orders.OrderValidatorException;
 import tvestergaard.fog.logic.orders.ShedSpecification;
 import tvestergaard.fog.logic.roofings.RoofingFacade;
-import tvestergaard.fog.presentation.Authentication;
 import tvestergaard.fog.presentation.Notifications;
 import tvestergaard.fog.presentation.Parameters;
-import tvestergaard.fog.presentation.servlets.Facades;
+import tvestergaard.fog.presentation.servlets.commands.Command;
+import tvestergaard.fog.presentation.servlets.commands.CommandDispatcher;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -30,17 +29,16 @@ import static tvestergaard.fog.logic.orders.OrderError.*;
 import static tvestergaard.fog.presentation.PresentationFunctions.notifications;
 
 @WebServlet(name = "AdministrationOrders", urlPatterns = "/administration/orders")
-public class AdministrationOrders extends HttpServlet
+public class AdministrationOrdersServlet extends AdministrationServlet
 {
 
     private final OrderFacade             orderFacade    = Facades.orderFacade;
     private final CladdingFacade          claddingFacade = Facades.claddingFacade;
     private final FlooringFacade          flooringFacade = Facades.flooringFacade;
     private final RoofingFacade           roofingFacade  = Facades.roofingFacade;
-    private final CommandDispatcher       dispatcher     = new CommandDispatcher();
     private final Map<OrderError, String> errors         = new HashMap<>();
 
-    public AdministrationOrders()
+    public AdministrationOrdersServlet()
     {
         dispatcher.get(null, new ShowTableCommand());
         dispatcher.get("update", new ShowUpdateCommand());
@@ -64,53 +62,6 @@ public class AdministrationOrders extends HttpServlet
         errors.put(UNKNOWN_SHED_FLOORING, "Ukendt skurordre");
         errors.put(INACTIVE_SHED_FLOORING, "Inaktiv skurordre.");
     }
-
-    /**
-     * Shows the administration page for orders placed by orders.
-     *
-     * @param req  an {@link HttpServletRequest} object that contains the request the client has made of the servlet
-     * @param resp an {@link HttpServletResponse} object that contains the response the servlet sends to the client
-     * @throws IOException      if an input or output error is detected when the servlet handles the GET request
-     * @throws ServletException if the request for the GET could not be handled
-     */
-    @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException
-    {
-        Authentication authentication = new Authentication(req);
-        Notifications  notifications  = notifications(req);
-        if (!authentication.isEmployee()) {
-            notifications.error("Du skal være logged ind som en medarbejder for at tilgå denne side.");
-            resp.sendRedirect("login");
-            return;
-        }
-
-        req.setAttribute("context", "..");
-        dispatcher.dispatch(req, resp);
-    }
-
-    /**
-     * Shows the administration page for orders placed by orders.
-     *
-     * @param req  an {@link HttpServletRequest} object that contains the request the client has made of the servlet
-     * @param resp an {@link HttpServletResponse} object that contains the response the servlet sends to the client
-     * @throws IOException      if an input or output error is detected when the servlet handles the GET request
-     * @throws ServletException if the request for the GET could not be handled
-     */
-    @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException
-    {
-        Authentication authentication = new Authentication(req);
-        Notifications  notifications  = notifications(req);
-        if (!authentication.isEmployee()) {
-            notifications.error("Du skal være logged ind som en medarbejder for at tilgå denne side.");
-            resp.sendRedirect("login");
-            return;
-        }
-
-        req.setAttribute("context", "..");
-        dispatcher.dispatch(req, resp);
-    }
-
 
     private class ShowTableCommand implements Command
     {

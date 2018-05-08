@@ -1,8 +1,8 @@
 package tvestergaard.fog.presentation.servlets;
 
 import tvestergaard.fog.logic.orders.OrderFacade;
-import tvestergaard.fog.presentation.servlets.administration.Command;
-import tvestergaard.fog.presentation.servlets.administration.CommandDispatcher;
+import tvestergaard.fog.presentation.servlets.commands.Command;
+import tvestergaard.fog.presentation.servlets.commands.CommandDispatcher;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;

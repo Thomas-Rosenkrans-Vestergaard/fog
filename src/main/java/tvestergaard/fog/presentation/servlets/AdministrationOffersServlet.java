@@ -1,4 +1,4 @@
-package tvestergaard.fog.presentation.servlets.administration;
+package tvestergaard.fog.presentation.servlets;
 
 import tvestergaard.fog.logic.customers.InactiveCustomerException;
 import tvestergaard.fog.logic.employees.InactiveEmployeeException;
@@ -11,11 +11,10 @@ import tvestergaard.fog.logic.orders.UnknownOrderException;
 import tvestergaard.fog.presentation.Authentication;
 import tvestergaard.fog.presentation.Notifications;
 import tvestergaard.fog.presentation.Parameters;
-import tvestergaard.fog.presentation.servlets.Facades;
+import tvestergaard.fog.presentation.servlets.commands.Command;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -28,50 +27,19 @@ import static tvestergaard.fog.data.offers.OfferColumn.ID;
 import static tvestergaard.fog.presentation.PresentationFunctions.notifications;
 
 @WebServlet(urlPatterns = "/administration/offers")
-public class AdministrationOffers extends HttpServlet
+public class AdministrationOffersServlet extends AdministrationServlet
 {
 
     private final OfferFacade             offerFacade = Facades.offerFacade;
-    private final CommandDispatcher       dispatcher  = new CommandDispatcher();
     private final Map<OfferError, String> errors      = new HashMap();
 
-    public AdministrationOffers()
+    public AdministrationOffersServlet()
     {
         dispatcher.get(null, new ShowTableCommand());
         dispatcher.get("create", new ShowCreateCommand());
         dispatcher.post("create", new HandleCreateCommand());
 
         errors.put(OfferError.NEGATIVE_PRICE, "Prisen må ikke være negativ.");
-    }
-
-    @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException
-    {
-        Authentication authentication = new Authentication(req);
-        Notifications  notifications  = notifications(req);
-        if (!authentication.isEmployee()) {
-            notifications.error("Du skal være logged ind som en medarbejder for at tilgå denne side.");
-            resp.sendRedirect("login");
-            return;
-        }
-
-        req.setAttribute("context", "..");
-        dispatcher.dispatch(req, resp);
-    }
-
-    @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException
-    {
-        Authentication authentication = new Authentication(req);
-        Notifications  notifications  = notifications(req);
-        if (!authentication.isEmployee()) {
-            notifications.error("Du skal være logged ind som en medarbejder for at tilgå denne side.");
-            resp.sendRedirect("login");
-            return;
-        }
-
-        req.setAttribute("context", "..");
-        dispatcher.dispatch(req, resp);
     }
 
     private class ShowTableCommand implements Command
@@ -135,11 +103,11 @@ public class AdministrationOffers extends HttpServlet
                 notifications.error("Ukendt order.");
             } catch (InactiveCustomerException e) {
                 notifications.error("Inaktiv kunde.");
-            } catch (UnknownEmployeeException e){
+            } catch (UnknownEmployeeException e) {
                 notifications.error("Ukendt kunde");
-            } catch (InactiveEmployeeException e){
+            } catch (InactiveEmployeeException e) {
                 notifications.error("Ukendt medarbejder.");
-            } catch (InsufficientPermissionsException e){
+            } catch (InsufficientPermissionsException e) {
                 notifications.error("Medarbejderen er ikke en salgsperson.");
             }
 

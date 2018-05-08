@@ -125,5 +125,21 @@ hr {
 }
 
 #slide-out:hover {
-    overflow-y: scroll;
+    overflow: visible;
+}
+
+#new-orders-counter {
+    background: red;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 20px;
+    margin-right: 10px;
+}
+
+.administration-table tbody tr {
+    cursor: pointer;
+}
+
+#new-orders-counter {
+    display: none;
 }

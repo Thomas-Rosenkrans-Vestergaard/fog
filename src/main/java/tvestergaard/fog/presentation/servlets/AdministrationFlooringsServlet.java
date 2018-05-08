@@ -1,17 +1,15 @@
-package tvestergaard.fog.presentation.servlets.administration;
+package tvestergaard.fog.presentation.servlets;
 
 import tvestergaard.fog.data.flooring.Flooring;
 import tvestergaard.fog.logic.floorings.FlooringError;
 import tvestergaard.fog.logic.floorings.FlooringFacade;
 import tvestergaard.fog.logic.floorings.FlooringValidatorException;
-import tvestergaard.fog.presentation.Authentication;
 import tvestergaard.fog.presentation.Notifications;
 import tvestergaard.fog.presentation.Parameters;
-import tvestergaard.fog.presentation.servlets.Facades;
+import tvestergaard.fog.presentation.servlets.commands.Command;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -25,14 +23,13 @@ import static tvestergaard.fog.logic.floorings.FlooringError.*;
 import static tvestergaard.fog.presentation.PresentationFunctions.notifications;
 
 @WebServlet(urlPatterns = "/administration/floorings")
-public class AdministrationFlooring extends HttpServlet
+public class AdministrationFlooringsServlet extends AdministrationServlet
 {
 
-    private final FlooringFacade             facade     = Facades.flooringFacade;
-    private final CommandDispatcher          dispatcher = new CommandDispatcher();
-    private final Map<FlooringError, String> errors     = new HashMap<>();
+    private final FlooringFacade             facade = Facades.flooringFacade;
+    private final Map<FlooringError, String> errors = new HashMap<>();
 
-    public AdministrationFlooring()
+    public AdministrationFlooringsServlet()
     {
         dispatcher.get(null, new ShowTableCommand());
         dispatcher.get("create", new ShowCreateCommand());
@@ -43,52 +40,6 @@ public class AdministrationFlooring extends HttpServlet
         errors.put(EMPTY_NAME, "Det givne navn må ikke være tom.");
         errors.put(NAME_LONGER_THAN_255, "Det givne navn er for langt.");
         errors.put(EMPTY_DESCRIPTION, "Den givne beskrivelse må ikke være tom.");
-    }
-
-    /**
-     * Shows the administration page for orders placed by floorings.
-     *
-     * @param req  an {@link HttpServletRequest} object that contains the request the client has made of the servlet
-     * @param resp an {@link HttpServletResponse} object that contains the response the servlet sends to the client
-     * @throws IOException      if an input or output error is detected when the servlet handles the GET request
-     * @throws ServletException if the request for the GET could not be handled
-     */
-    @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException
-    {
-        Authentication authentication = new Authentication(req);
-        Notifications  notifications  = notifications(req);
-        if (!authentication.isEmployee()) {
-            notifications.error("Du skal være logged ind som en medarbejder for at tilgå denne side.");
-            resp.sendRedirect("login");
-            return;
-        }
-
-        req.setAttribute("context", "..");
-        dispatcher.dispatch(req, resp);
-    }
-
-    /**
-     * Shows the administration page for orders placed by floorings.
-     *
-     * @param req  an {@link HttpServletRequest} object that contains the request the client has made of the servlet
-     * @param resp an {@link HttpServletResponse} object that contains the response the servlet sends to the client
-     * @throws IOException      if an input or output error is detected when the servlet handles the GET request
-     * @throws ServletException if the request for the GET could not be handled
-     */
-    @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException
-    {
-        Authentication authentication = new Authentication(req);
-        Notifications  notifications  = notifications(req);
-        if (!authentication.isEmployee()) {
-            notifications.error("Du skal være logged ind som en medarbejder for at tilgå denne side.");
-            resp.sendRedirect("login");
-            return;
-        }
-
-        req.setAttribute("context", "..");
-        dispatcher.dispatch(req, resp);
     }
 
     private class ShowTableCommand implements Command

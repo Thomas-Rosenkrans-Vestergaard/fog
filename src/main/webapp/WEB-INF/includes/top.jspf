@@ -61,8 +61,8 @@
         <li><a href="${context}/administration/models">Modeller</a></li>
         <li><a href="${context}/administration/customers">Kunder</a></li>
         <li><a href="${context}/administration/employees">Medarbejdere</a></li>
-        <li><a href="${context}/administration/roofings">Tag</a></li>
-        <li><a href="${context}/administration/claddings">Bekældninger</a></li>
+        <li><a href="${context}/administration/roofings">Tagbeklædninger</a></li>
+        <li><a href="${context}/administration/claddings">Facadebekældninger</a></li>
         <li><a href="${context}/administration/floorings">Gulve</a></li>
         <li><a href="${context}/administration/materials">Materialer</a></li>
         <%
