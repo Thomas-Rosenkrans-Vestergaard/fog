@@ -29,17 +29,17 @@ INSERT INTO floorings (id, name, description, active) VALUES
    b'1');
 
 INSERT INTO `categories` VALUES
-  (1, 'PLANK'),
-  (2, 'RAFTER'),
-  (3, 'LATH'),
-  (4, 'POLE'),
-  (5, 'ROOF_TILE'),
-  (6, 'ROOF_RIDGE_TILE'),
-  (7, 'ROOF_RIDGE_LATH_HOLDER'),
-  (8, 'ROOF_RIDGE_TILE_BRACKET'),
-  (9, 'ROOF_TILE_BINDER_AND_HOOKS'),
-  (10, 'OTHER'),
-  (11, 'SCREW');
+  (1, 'Brædde'),
+  (2, 'Spærtræ'),
+  (3, 'Taglægte'),
+  (4, 'Stolpe'),
+  (5, 'Tegl'),
+  (6, 'Rygningssten'),
+  (7, 'Toplægteholder'),
+  (8, 'Rygningsstensbeslag'),
+  (9, 'Tagstens bindere & nakkekroge'),
+  (10, 'Andre'),
+  (11, 'Skruge');
 
 INSERT INTO materials (id, `number`, `description`, `price`, `unit`, `category`) VALUES
   (1, '960919471840', 'B&C Dobbelt sort', 1000, 1, 5),
@@ -48,22 +48,24 @@ INSERT INTO materials (id, `number`, `description`, `price`, `unit`, `category`)
   (4, '682229537074', 'B&C Rygstensbeslag', 25000, 50, 8),
   (5, '459740486968', 'B&C Tagstensbindere & Nakkekroge', 12500, 50, 9),
   (6, '343615203226', '19x100 mm. Trykimprægneret bræt', '30000', 6, 1),
-  (7, '229786742441', '38x73 mm. Taglægte T1', '30000', 6, 3),
-  (8, '788947415996', 'Fædigskåret (byg-selv spær)', 100000, 1, 2),
-  (9, '448582215123', '97x97 mm. Trykimprægneret stolpe', 4000, 1, 4),
-  (10, '851468122894', '45x195 spærtræ ubh.', 40000, 1, 2),
-  (11, '514432595305', 'Universal 190 mm højre', 4500, 1, 10),
-  (12, '231983532544', 'Universal 190 mm venstre', 4500, 1, 10),
-  (13, '448646179776', 'Stalddørsgreb 50x75', 8000, 1, 10),
-  (14, '685076293556', 'T-hængsel 390 mm', 12000, 1, 10),
-  (15, '346844119739', 'Vinkelbeslag', 500, 1, 10),
-  (16, '763421115200', '4,5x60 mm. skruer 200 stk.', 35000, 200, 11),
-  (17, '013735613112', '5,0x40 mm. beslagskruer 250 stk.', 16000, 250, 11),
-  (18, '702351056728', '5,0x100 mm. skruer 100 stk.', 8500, 100, 11),
-  (19, '322772016293', '4,5x70 mm. Skruer 200 stk.', 15000, 200, 11),
-  (20, '347369061736', '4,5x50 mm. Skruer 350 stk.', 35000, 350, 11),
-  (21, '419643103011', 'Bræddebolt 10 x 120 mm.', 1500, 1, 10),
-  (22, '950209945881', 'Firkantskiver 40x40x11 mm.', 1500, 1, 10);
+  (7, '093765091763', '25x50 mm. Trykimprægneret Bræt', '30000', 6, 1),
+  (8, '229786742441', '38x73 mm. Taglægte T1', '30000', 6, 3),
+  (9, '788947415996', 'Fædigskåret (byg-selv spær)', 100000, 1, 2),
+  (10, '448582215123', '97x97 mm. Trykimprægneret stolpe', 4000, 1, 4),
+  (11, '851468122894', '45x195 spærtræ ubh.', 40000, 1, 2),
+  (12, '234368028753', '45x95 Reglar ubh.', 40000, 1, 2),
+  (13, '514432595305', 'Universal 190 mm højre', 4500, 1, 10),
+  (14, '231983532544', 'Universal 190 mm venstre', 4500, 1, 10),
+  (15, '448646179776', 'Stalddørsgreb 50x75', 8000, 1, 10),
+  (16, '685076293556', 'T-hængsel 390 mm', 12000, 1, 10),
+  (17, '346844119739', 'Vinkelbeslag', 500, 1, 10),
+  (18, '763421115200', '4,5x60 mm. skruer 200 stk.', 35000, 200, 11),
+  (19, '013735613112', '5,0x40 mm. beslagskruer 250 stk.', 16000, 250, 11),
+  (20, '702351056728', '5,0x100 mm. skruer 100 stk.', 8500, 100, 11),
+  (21, '322772016293', '4,5x70 mm. Skruer 200 stk.', 15000, 200, 11),
+  (22, '347369061736', '4,5x50 mm. Skruer 350 stk.', 35000, 350, 11),
+  (23, '419643103011', 'Bræddebolt 10 x 120 mm.', 1500, 1, 10),
+  (24, '950209945881', 'Firkantskiver 40x40x11 mm.', 1500, 1, 10);
 
 INSERT INTO attribute_definitions (id, category, data_type, `name`) VALUES
   (1, 5, 'INT', 'HEIGHT_MM'),
@@ -95,7 +97,17 @@ INSERT INTO component_definitions (id, identifier, category, notes) VALUES
   (4, 'ROOF_RIDGE_TILE_BRACKET', 8, 'Til	montering af rygsten'),
   (5, 'ROOF_TILE_BINDER_AND_HOOKS', 9, 'Til	montering af tagsten, alle ydersten + hver anden fastgøres'),
   (6, 'ROOF_GABLE_CLADDING', 1, 'Beklædning af gavle 1 på 2'),
-  (7, 'POST', 4, 'Stolper nedgraves 90 cm. i jord + skråstiver');
+  (7, 'POST', 4, 'Stolper nedgraves 90 cm. i jord + skråstiver'),
+  (8, 'STRAPS_GARAGE', 2, 'Remme i sider, sadles ned i stolper Carport del'),
+  (9, 'STRAPS_SHED', 2, 'Remme i sider, sadles ned i stolper Skur del'),
+  (10, 'LOESHOLTER_SHED_SIDE', 2, 'Løsholter i siderne af skur'),
+  (11, 'LOESHOLTER_SHED_GABLE', 2, 'Løsholter i gavle af skur'),
+  (12, 'WATER_BOARD', 1, 'Vand bræt på vindskeder'),
+  (13, 'GABLE_CLADDING', 1, 'Beklædning af gavle 1 på 2'),
+  (14, 'SHED_CLADDING', 1, 'Beklædning af skur 1 på 2'),
+  (15, 'Z_DOOR', 3, 'Til z på bagside af dør'),
+  (16, 'ROOFING_LATHS', 3, 'Til montering på spær, 7 rækker lægter på hver skiftevis 1 hel & 1 halv lægte'),
+  (17, 'ROOF_RIDGE_LATH', 3, 'Toplægte til montering af rygsten lægges i toplægte holder');
 
 INSERT INTO roofing_component_definitions (id, roofing_type, definition) VALUES
   (1, 'TILED', 1),
@@ -103,7 +115,11 @@ INSERT INTO roofing_component_definitions (id, roofing_type, definition) VALUES
   (3, 'TILED', 3),
   (4, 'TILED', 4),
   (5, 'TILED', 5),
-  (6, 'TILED', 6);
+  (6, 'TILED', 6),
+  (7, 'TILED', 12),
+  (8, 'TILED', 13),
+  (9, 'TILED', 16),
+  (10, 'TILED', 17);
 
 INSERT INTO component_values (id, definition, material) VALUES
   (1, 1, 1),
@@ -112,7 +128,15 @@ INSERT INTO component_values (id, definition, material) VALUES
   (4, 4, 4),
   (5, 5, 5),
   (6, 6, 6),
-  (7, 7, 9);
+  (7, 7, 9),
+  (8, 8, 11),
+  (9, 9, 11),
+  (10, 10, 12),
+  (11, 11, 12),
+  (12, 14, 6),
+  (13, 15, 8),
+  (14, 16, 8),
+  (15, 17, 8);
 
 INSERT INTO roofing_component_values (id, roofing, component) VALUES
   (1, 1, 1),
@@ -126,10 +150,22 @@ INSERT INTO garage_models (id, name) VALUES
   (1, 'CAR01');
 
 INSERT INTO garage_component_definitions (id, definition, model) VALUES
-  (1, 7, 1);
+  (1, 7, 1),
+  (2, 8, 1),
+  (3, 9, 1),
+  (4, 10, 1),
+  (5, 11, 1),
+  (6, 14, 1),
+  (7, 15, 1);
 
 INSERT INTO garage_component_values (id, component, definition) VALUES
-  (1, 7, 1);
+  (1, 7, 1),
+  (2, 8, 2),
+  (3, 9, 3),
+  (4, 10, 4),
+  (5, 11, 5),
+  (6, 12, 6),
+  (7, 13, 7);
 
 INSERT INTO `customers` (id, `name`, `address`, email, phone, PASSWORD, active, confirmed) VALUES
   (1, 'Thomas Rosenkrans Vestergaard', 'Møllevangen 23', 'tvestergaard@hotmail.com', '26508830',

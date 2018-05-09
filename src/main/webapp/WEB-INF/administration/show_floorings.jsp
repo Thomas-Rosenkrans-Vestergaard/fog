@@ -7,6 +7,14 @@
 </div>
 <div class="row">
     <div class="col s12">
+        <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Nulla non lectus sed nisl molestie malesuada.
+            Mauris dolor felis, sagittis at, luctus sed, aliquam non, tellus. Vivamus luctus egestas leo. Sed elit dui,
+            pellentesque a, faucibus vel, interdum nec, diam. Itaque earum rerum hic tenetur a sapiente delectus, ut aut
+            reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus asperiores repellat.</p>
+    </div>
+</div>
+<div class="row">
+    <div class="col s12">
         <a class="btn-floating btn-large waves-effect waves-light red" href="?action=create">
             <i class="material-icons">add</i>
         </a>
@@ -16,10 +24,10 @@
     <div class="col s12">
         <table class="highlight administration-table">
             <thead>
-            <th>ID</th>
+            <th class="short">ID</th>
             <th>Navn</th>
-            <th>Beskrivelse</th>
-            <th>Aktiv</th>
+            <th class="long">Beskrivelse</th>
+            <th class="short">Aktiv</th>
             </thead>
             <tbody>
             <c:forEach items="${floorings}" var="flooring">

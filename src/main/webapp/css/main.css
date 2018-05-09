@@ -5,8 +5,9 @@
 
 main {
     padding: 40px 40px 40px 340px;
-    max-width: 1400px;
+    max-width: 1600px;
     margin: 0 auto;
+    position: relative;
 }
 
 @media only screen and (max-width: 992px) {
@@ -32,12 +33,12 @@ main {
 
 #top-logo {
     float: right;
-    height: 3rem;
-    margin: 30px;
+    height: 2.5rem;
+    margin: 25px;
 }
 
 #menu-button {
-    height: 100px;
+    height: 80px;
     width: 100%;
     background: #014785;
     display: none;
@@ -52,7 +53,7 @@ main {
 #navigation-trigger i {
     font-size: 3rem;
     color: white;
-    padding: 25px;
+    padding: 18px;
 }
 
 p {
@@ -142,4 +143,16 @@ hr {
 
 #new-orders-counter {
     display: none;
+}
+
+th.r5 {
+    width: 5rem;
+}
+
+th.r10 {
+    width: 10rem;
+}
+
+th.r15 {
+    width: 15rem;
 }

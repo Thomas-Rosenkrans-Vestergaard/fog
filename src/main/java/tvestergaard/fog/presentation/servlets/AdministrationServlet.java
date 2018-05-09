@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.net.URLEncoder;
 
 import static tvestergaard.fog.presentation.PresentationFunctions.notifications;
 
@@ -48,10 +49,22 @@ public abstract class AdministrationServlet extends HttpServlet
         Notifications notifications = notifications(req);
         if (session.getAttribute("employee") == null) {
             notifications.warning("Du skal være logget ind som en medarbejder for at tilgå denne side.");
-            resp.sendRedirect("authenticate");
+            resp.sendRedirect("authenticate?from=" + URLEncoder.encode(getFromUrl(req), "UTF-8"));
             return false;
         }
 
         return true;
+    }
+
+    private String getFromUrl(HttpServletRequest req)
+    {
+        String servletPath = req.getServletPath();
+        String relative    = servletPath.replaceAll("/administration/", "");
+        String queryString = req.getQueryString();
+
+        if (queryString == null)
+            return relative;
+
+        return relative + '?' + queryString;
     }
 }

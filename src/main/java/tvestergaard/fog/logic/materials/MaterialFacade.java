@@ -1,9 +1,9 @@
 package tvestergaard.fog.logic.materials;
 
+import com.google.common.collect.Multimap;
 import tvestergaard.fog.data.DataAccessException;
 import tvestergaard.fog.data.constraints.Constraint;
 import tvestergaard.fog.data.materials.*;
-import tvestergaard.fog.data.materials.Category;
 import tvestergaard.fog.logic.ApplicationException;
 
 import java.util.List;
@@ -99,7 +99,7 @@ public class MaterialFacade
      * @param description The material description to update to.
      * @param price       The price of the material to update to.
      * @param unit        The unit size of the material to update to.
-     * @param categoryId    The category of the material to update to.
+     * @param categoryId  The category of the material to update to.
      * @param attributes  The attributes of the material to update to.
      * @return {@link true} if the record was updated.
      * @throws ApplicationException       When an exception occurs while performing the operation.
@@ -144,6 +144,22 @@ public class MaterialFacade
     {
         try {
             return dao.getCategories();
+        } catch (DataAccessException e) {
+            throw new ApplicationException(e);
+        }
+    }
+
+    /**
+     * Returns a complete list of the materials in the provided categories.
+     *
+     * @param categories The categories to return the materials from.
+     * @return The materials in the provided categories, mapped to that category in the multimap.
+     * @throws ApplicationException When a data storage exception occurs while performing the operation.
+     */
+    public Multimap<Integer, SimpleMaterial> getByCategory(int... categories)
+    {
+        try {
+            return dao.getByCategory(categories);
         } catch (DataAccessException e) {
             throw new ApplicationException(e);
         }

@@ -190,8 +190,7 @@ public class MysqlModelDAO extends AbstractMysqlDAO implements ModelDAO
         String SQL = "SELECT * FROM materials " +
                 "INNER JOIN categories ON materials.category = categories.id " +
                 "INNER JOIN component_definitions cd ON cd.category = categories.id " +
-                "INNER JOIN garage_component_definitions gcd ON gcd.definition = cd.id " +
-                "GROUP BY materials.id";
+                "INNER JOIN garage_component_definitions gcd ON gcd.definition = cd.id";
         try (PreparedStatement statement = getConnection().prepareStatement(SQL)) {
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next())

@@ -1,5 +1,6 @@
 package tvestergaard.fog.data.materials;
 
+import com.google.common.collect.Multimap;
 import tvestergaard.fog.data.DataAccessException;
 import tvestergaard.fog.data.constraints.Constraint;
 
@@ -62,4 +63,13 @@ public interface MaterialDAO
      * @throws DataAccessException When a data storage exception occurs while performing the operation.
      */
     List<Category> getCategories() throws DataAccessException;
+
+    /**
+     * Returns a complete list of the materials in the provided categories.
+     *
+     * @param categories The categories to return the materials from.
+     * @return The materials in the provided categories, mapped to that category in the multimap.
+     * @throws DataAccessException When a data storage exception occurs while performing the operation.
+     */
+    Multimap<Integer, SimpleMaterial> getByCategory(int... categories) throws DataAccessException;
 }

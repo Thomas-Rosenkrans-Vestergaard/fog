@@ -1,5 +1,7 @@
 package tvestergaard.fog.data.materials;
 
+import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.Multimap;
 import com.mysql.cj.jdbc.MysqlDataSource;
 import tvestergaard.fog.data.AbstractMysqlDAO;
 import tvestergaard.fog.data.MysqlDataAccessException;
@@ -214,6 +216,34 @@ public class MysqlMaterialDAO extends AbstractMysqlDAO implements MaterialDAO
                 result.add(createCategory("categories", resultSet));
 
             return result;
+        } catch (SQLException e) {
+            throw new MysqlDataAccessException(e);
+        }
+    }
+
+    /**
+     * Returns a complete list of the materials in the provided categories.
+     *
+     * @param categories The categories to return the materials from.
+     * @return The materials in the provided categories, mapped to that category in the multimap.
+     * @throws MysqlDataAccessException When a data storage exception occurs while performing the operation.
+     */
+    @Override public Multimap<Integer, SimpleMaterial> getByCategory(int... categories) throws MysqlDataAccessException
+    {
+        Multimap<Integer, SimpleMaterial> map = ArrayListMultimap.create();
+        String SQL = "SELECT * FROM materials " +
+                "INNER JOIN categories ON materials.category = categories.id " +
+                "WHERE category IN (" + createIn(categories.length) + ")";
+        try (PreparedStatement statement = getConnection().prepareStatement(SQL)) {
+            for (int x = 0; x < categories.length; x++)
+                statement.setInt(x + 1, categories[x]);
+
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next())
+                map.put(resultSet.getInt("materials.category"),
+                        createSimpleMaterial("materials", "categories", resultSet));
+
+            return map;
         } catch (SQLException e) {
             throw new MysqlDataAccessException(e);
         }

@@ -1,10 +1,12 @@
 package tvestergaard.fog.presentation.servlets;
 
 import tvestergaard.fog.data.models.Model;
+import tvestergaard.fog.data.roofing.Component;
 import tvestergaard.fog.data.roofing.ComponentDefinition;
 import tvestergaard.fog.data.roofing.ComponentReference;
 import tvestergaard.fog.logic.ApplicationException;
 import tvestergaard.fog.logic.ModelFacade;
+import tvestergaard.fog.logic.materials.MaterialFacade;
 import tvestergaard.fog.presentation.Notifications;
 import tvestergaard.fog.presentation.Parameters;
 import tvestergaard.fog.presentation.servlets.commands.Command;
@@ -23,7 +25,8 @@ import static tvestergaard.fog.presentation.PresentationFunctions.notifications;
 public class AdministrationModelsServlet extends AdministrationServlet
 {
 
-    private final ModelFacade modelFacade = Facades.skeletonFacade;
+    private final ModelFacade    modelFacade    = Facades.skeletonFacade;
+    private final MaterialFacade materialFacade = Facades.materialFacade;
 
     public AdministrationModelsServlet()
     {
@@ -68,10 +71,15 @@ public class AdministrationModelsServlet extends AdministrationServlet
                 return;
             }
 
+            List<Component> components = modelFacade.getComponents(model.getId());
+            int[]           categories = new int[components.size()];
+            for (int x = 0; x < components.size(); x++)
+                categories[x] = components.get(x).getDefinition().getCategory().getId();
+
             request.setAttribute("title", "Opdater tag");
             request.setAttribute("model", model);
-            request.setAttribute("components", modelFacade.getComponents(model.getId()));
-            request.setAttribute("materials", modelFacade.getMaterialChoices(model.getId()).asMap());
+            request.setAttribute("components", components);
+            request.setAttribute("materials", materialFacade.getByCategory(categories).asMap());
             request.getRequestDispatcher("/WEB-INF/administration/update_model.jsp").forward(request, response);
         }
     }

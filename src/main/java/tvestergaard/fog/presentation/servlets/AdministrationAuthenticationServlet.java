@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.net.URLDecoder;
 
 import static tvestergaard.fog.presentation.PresentationFunctions.notifications;
 
@@ -62,9 +63,10 @@ public class AdministrationAuthenticationServlet extends AdministrationServlet
                 return;
             }
 
+            String      from    = req.getParameter("from");
             HttpSession session = req.getSession();
             session.setAttribute("employee", employee);
-            resp.sendRedirect("index");
+            resp.sendRedirect(from != null ? URLDecoder.decode(from, "UTF-8") : "index");
 
         } catch (InactiveEmployeeException e) {
             notifications.error("Inaktiv medarbejder.");

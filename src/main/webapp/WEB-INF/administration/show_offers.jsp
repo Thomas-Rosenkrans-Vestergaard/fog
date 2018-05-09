@@ -7,14 +7,22 @@
 </div>
 <div class="row">
     <div class="col s12">
+        <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Nulla non lectus sed nisl molestie malesuada.
+            Mauris dolor felis, sagittis at, luctus sed, aliquam non, tellus. Vivamus luctus egestas leo. Sed elit dui,
+            pellentesque a, faucibus vel, interdum nec, diam. Itaque earum rerum hic tenetur a sapiente delectus, ut aut
+            reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus asperiores repellat.</p>
+    </div>
+</div>
+<div class="row">
+    <div class="col s12">
         <table class="highlight administration-table">
             <thead>
-            <th>ID</th>
+            <th class="short">ID</th>
             <th>Kunde</th>
             <th>Beklædning</th>
-            <th>Bredde</th>
-            <th>Længde</th>
-            <th>Højde</th>
+            <th class="short">Bredde</th>
+            <th class="short">Længde</th>
+            <th class="short">Højde</th>
             <th>Tag</th>
             <th>Hældning</th>
             <th>Spær</th>
