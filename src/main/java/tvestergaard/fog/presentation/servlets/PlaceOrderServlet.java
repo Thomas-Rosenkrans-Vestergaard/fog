@@ -84,12 +84,12 @@ public class PlaceOrderServlet extends HttpServlet
                 !parameters.isInt("height") ||
                 !parameters.isInt("roofing") ||
                 !parameters.isInt("slope") ||
-                !parameters.isEnum("rafters", RafterChoice.class) /*||
+                !parameters.isEnum("rafters", RafterChoice.class) ||
                 (!parameters.isPresent("shed") || (
                         parameters.isInt("shed-width") ||
                                 parameters.isInt("shed-depth") ||
                                 (!parameters.isPresent("shed-flooring") || parameters.isInt("shed-flooring")) ||
-                                parameters.isInt("shed-cladding")))*/) {
+                                parameters.isInt("shed-cladding")))) {
             notifications.error("Invalid design data.");
             resp.sendRedirect("design");
             return;

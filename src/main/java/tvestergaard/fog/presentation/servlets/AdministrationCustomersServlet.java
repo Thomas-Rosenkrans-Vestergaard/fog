@@ -49,6 +49,11 @@ public class AdministrationCustomersServlet extends AdministrationServlet
         errors.put(PASSWORD_SHORTER_THAN_4, "Adgangskoden der blev sendt var for kort (4 tegn).");
     }
 
+    @Override protected void before(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException
+    {
+        req.setAttribute("navigation", "administration_customers");
+    }
+
     private class ShowTableCommand implements Command
     {
         @Override public void dispatch(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException

@@ -43,7 +43,7 @@
         <li class="${"orders".equals(navigation) ? 'active' : ''}"><a href="${context}/orders">Mine ordre</a></li>
         <li class="${"offers".equals(navigation) ? 'active' : '' }"><a href="${context}/offers">Mine tilbud</a></li>
         <li class="${"purchases".equals(navigation) ? 'active' : '' }"><a href="${context}/purchases">Mine køb</a></li>
-        <li><a href="logout">Log ud</a></li>
+        <li><a href="${context}/logout">Log ud</a></li>
         <% } %>
 
         <%
@@ -56,15 +56,24 @@
             <div class="divider"></div>
         </li>
         <li><a class="subheader">Medarbejder</a></li>
-        <li><a href="${context}/administration/orders"><span id="new-orders-counter">0</span> Ordre</a></li>
+        <li class="${"administration_orders".equals(navigation) ? 'active' : '' }">
+            <a href="${context}/administration/orders"><span id="new-orders-counter">0</span> Ordre</a>
+        </li>
         <script src="${context}/js/administration.js"></script>
-        <li><a href="${context}/administration/models">Modeller</a></li>
-        <li><a href="${context}/administration/customers">Kunder</a></li>
-        <li><a href="${context}/administration/employees">Medarbejdere</a></li>
-        <li><a href="${context}/administration/roofings">Tagbeklædninger</a></li>
-        <li><a href="${context}/administration/claddings">Facadebekældninger</a></li>
-        <li><a href="${context}/administration/floorings">Gulve</a></li>
-        <li><a href="${context}/administration/materials">Materialer</a></li>
+        <li class="${"administration_models".equals(navigation) ? 'active' : '' }">
+            <a href="${context}/administration/models">Modeller</a></li>
+        <li class="${"administration_customers".equals(navigation) ? 'active' : '' }">
+            <a href="${context}/administration/customers">Kunder</a></li>
+        <li class="${"administration_employees".equals(navigation) ? 'active' : '' }">
+            <a href="${context}/administration/employees">Medarbejdere</a></li>
+        <li class="${"administration_roofings".equals(navigation) ? 'active' : '' }">
+            <a href="${context}/administration/roofings">Tagbeklædninger</a></li>
+        <li class="${"administration_claddings".equals(navigation) ? 'active' : '' }">
+            <a href="${context}/administration/claddings">Facadebekældninger</a></li>
+        <li class="${"administration_floorings".equals(navigation) ? 'active' : '' }">
+            <a href="${context}/administration/floorings">Gulve</a></li>
+        <li class="${"administration_materials".equals(navigation) ? 'active' : '' }">
+            <a href="${context}/administration/materials">Materialer</a></li>
         <%
             }
         %>

@@ -32,6 +32,11 @@ public class AdministrationModelsServlet extends AdministrationServlet
         dispatcher.post("update", new HandleUpdateCommand());
     }
 
+    @Override protected void before(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException
+    {
+        req.setAttribute("navigation", "administration_models");
+    }
+
     private class ShowTableCommand implements Command
     {
         @Override public void dispatch(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException

@@ -42,6 +42,11 @@ public class AdministrationOffersServlet extends AdministrationServlet
         errors.put(OfferError.NEGATIVE_PRICE, "Prisen må ikke være negativ.");
     }
 
+    @Override protected void before(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException
+    {
+        req.setAttribute("navigation", "administration_offers");
+    }
+
     private class ShowTableCommand implements Command
     {
         @Override

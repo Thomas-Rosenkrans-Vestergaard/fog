@@ -46,6 +46,11 @@ public class AdministrationMaterialsServlet extends AdministrationServlet
         errors.put(UNIT_LESS_THAN_1, "Enheden er mindre end 1.");
     }
 
+    @Override protected void before(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException
+    {
+        req.setAttribute("navigation", "administration_materials");
+    }
+
     private class ShowTableCommand implements Command
     {
         @Override public void dispatch(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException

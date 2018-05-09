@@ -12,10 +12,15 @@ import java.io.IOException;
 
 import static tvestergaard.fog.presentation.PresentationFunctions.notifications;
 
-public class AdministrationServlet extends HttpServlet
+public abstract class AdministrationServlet extends HttpServlet
 {
 
     protected final CommandDispatcher dispatcher = new CommandDispatcher();
+
+    protected void before(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException
+    {
+
+    }
 
     @Override protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException
     {
@@ -23,6 +28,7 @@ public class AdministrationServlet extends HttpServlet
             return;
 
         req.setAttribute("context", "..");
+        before(req, resp);
         dispatcher.dispatch(req, resp);
     }
 
@@ -32,6 +38,7 @@ public class AdministrationServlet extends HttpServlet
             return;
 
         req.setAttribute("context", "..");
+        before(req, resp);
         dispatcher.dispatch(req, resp);
     }
 

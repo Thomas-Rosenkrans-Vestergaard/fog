@@ -15,6 +15,18 @@ DELETE FROM roofings;
 DELETE FROM customers;
 DELETE FROM roles;
 DELETE FROM employees;
+DELETE FROM floorings;
+DELETE FROM claddings;
+
+INSERT INTO claddings (id, name, description, active) VALUES
+  (1, 'Beklædning 1',
+   'Integer imperdiet lectus quis justo. In laoreet, magna id viverra tincidunt, sem odio bibendum justo, vel imperdiet sapien wisi sed libero.',
+   b'1');
+
+INSERT INTO floorings (id, name, description, active) VALUES
+  (1, 'Betongulv',
+   'Integer imperdiet lectus quis justo. In laoreet, magna id viverra tincidunt, sem odio bibendum justo, vel imperdiet sapien wisi sed libero.',
+   b'1');
 
 INSERT INTO `categories` VALUES
   (1, 'PLANK'),

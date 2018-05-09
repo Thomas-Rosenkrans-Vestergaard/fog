@@ -33,8 +33,16 @@
             </div>
         </div>
         <div class="row">
-            <div class="input-field col s12">
-                <select name="cladding" required>
+            <div class="col">
+                <div class="switch">
+                    <label>
+                        <input type="checkbox" id="cladding" value="true">
+                        <span class="lever"></span>
+                    </label>
+                </div>
+            </div>
+            <div class="input-field col">
+                <select name="cladding" id="cladding-input" required>
                     <c:forEach items="${claddings}" var="claddingId">
                         <option value="${claddingId.getId()}"><c:out value="${claddingId.getName()}"/></option>
                     </c:forEach>
@@ -42,6 +50,14 @@
                 <label>Beklædning</label>
             </div>
         </div>
+        <script>
+            $('#cladding').on('change', function () {
+                if ($(this).is(':checked'))
+                    $('#cladding-input').removeAttr('disabled');
+                else
+                    $('#cladding-input').attr('disabled', 'disabled');
+            });
+        </script>
         <div class="row">
             <div class="input-field col s12">
                 <select id="width" name="width" required>

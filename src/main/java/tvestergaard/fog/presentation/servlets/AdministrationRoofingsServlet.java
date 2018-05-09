@@ -41,6 +41,11 @@ public class AdministrationRoofingsServlet extends AdministrationServlet
         errors.put(EMPTY_DESCRIPTION, "Den givne beskrivelse må ikke være tom.");
     }
 
+    @Override protected void before(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException
+    {
+        req.setAttribute("navigation", "administration_roofings");
+    }
+
     private class ShowTableCommand implements Command
     {
         @Override public void dispatch(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException

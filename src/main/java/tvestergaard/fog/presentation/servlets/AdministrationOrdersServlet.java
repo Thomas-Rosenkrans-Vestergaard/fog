@@ -74,6 +74,11 @@ public class AdministrationOrdersServlet extends AdministrationServlet
         }
     }
 
+    @Override protected void before(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException
+    {
+        req.setAttribute("navigation", "administration_orders");
+    }
+
     class ShowUpdateCommand implements Command
     {
         @Override public void dispatch(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
