@@ -2,9 +2,9 @@ package tvestergaard.fog.logic.construction;
 
 import com.mysql.cj.jdbc.MysqlDataSource;
 import tvestergaard.fog.data.ProductionDataSource;
+import tvestergaard.fog.data.components.MysqlRoofingDAO;
 import tvestergaard.fog.data.models.ModelDAO;
 import tvestergaard.fog.data.models.MysqlModelDAO;
-import tvestergaard.fog.data.components.MysqlRoofingDAO;
 import tvestergaard.fog.data.roofing.Roofing;
 import tvestergaard.fog.data.roofing.RoofingDAO;
 import tvestergaard.fog.data.roofing.RoofingType;
@@ -56,25 +56,52 @@ public class DelegatorGarageConstructor implements GarageConstructor
      * @param specifications     The specifications for the garage to construct.
      * @param skeletonComponents The components used to construct the skeleton of the garage.
      * @param roofingComponents  The components used to construct the roofing of the garage.
-     * @return The bill of materials for the generated garage.
+     * @return The summary of the construction.
      */
-    @Override public MaterialList construct(ConstructionSpecification specifications,
-                                            Components skeletonComponents,
-                                            Components roofingComponents)
+    @Override public ConstructionSummary construct(ConstructionSpecification specifications,
+                                                   Components skeletonComponents,
+                                                   Components roofingComponents)
     {
-        MutableMaterialList materials = new MutableMaterialList();
+        MutableConstructionSummary summary = new MutableConstructionSummary();
+        constructSkeleton(summary, specifications, skeletonComponents);
+        constructRoofing(summary, specifications, roofingComponents);
 
-        Roofing         roofing         = specifications.getRoofing();
+        return summary;
+    }
+
+    /**
+     * Constructs the skeleton of the garage.
+     *
+     * @param summary       The object containing information about the construction process.
+     * @param specification The specifications that the skeleton must satisfy.
+     * @param components    The components to use while constructing the skeleton.
+     */
+    private void constructSkeleton(MutableConstructionSummary summary,
+                                   ConstructionSpecification specification,
+                                   Components components)
+    {
+        skeletonConstructor.construct(summary, specification, components);
+    }
+
+    /**
+     * Constructs the roof of the garage using the provided components.
+     *
+     * @param summary       The object containing information about the construction process.
+     * @param specification The specifications that the roofing must satisfy.
+     * @param components    The components to use while constructing the skeleton.
+     */
+    private void constructRoofing(MutableConstructionSummary summary,
+                                  ConstructionSpecification specification,
+                                  Components components)
+    {
+        Roofing         roofing         = specification.getRoofing();
         RoofingType     roofingType     = roofing.getType();
         RoofConstructor roofConstructor = roofConstructors.get(roofingType);
 
         if (roofConstructor == null)
             throw new IllegalStateException("No constructor able to construct " + roofingType.name());
 
-        skeletonConstructor.construct(materials, skeletonComponents, specifications);
-        roofConstructor.construct(materials, roofingComponents, specifications);
-
-        return materials;
+        roofConstructor.construct(summary, specification, components);
     }
 
     public static void main(String[] args) throws Exception
@@ -86,14 +113,17 @@ public class DelegatorGarageConstructor implements GarageConstructor
 
         ConstructionFacade        constructionFacade        = new ConstructionFacade();
         ConstructionSpecification constructionSpecification = new ConstructionSpecification(420, 630, 420, null, roofing, 45);
-        MaterialList list = constructionFacade.construct(
+        ConstructionSummary summary = constructionFacade.construct(
                 constructionSpecification,
                 new Components(modelDAO.getComponents(1)),
                 new Components(roofingDAO.getComponents(roofing.getId())));
 
-        for (MaterialLine line : list.getLines())
-            System.out.println(line);
+        for (MaterialList list : summary.getMaterialLists()) {
+            System.out.println(list.getTitle());
+            for (MaterialLine line : list.getLines())
+                System.out.println("\t" + line);
+        }
 
-        System.out.println(list.getTotal());
+        System.out.println(summary.getTotal());
     }
 }

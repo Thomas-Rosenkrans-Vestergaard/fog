@@ -1,9 +1,11 @@
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
 <%@ include file="../includes/top.jspf" %>
 <div class="row">
-    <div class="col s12">
-        <h2>Beklædninger</h2>
-        <a class="waves-effect waves-light btn-large"><i class="material-icons left">add</i>OPRET BEKLÆDNING</a>
+    <div class="col s12 administration-header">
+        <h2>Facadebeklædninger</h2>
+        <a class="btn-floating btn-large waves-effect waves-light" href="?action=create">
+            <i class="material-icons">add</i>
+        </a>
     </div>
 </div>
 <div class="row">

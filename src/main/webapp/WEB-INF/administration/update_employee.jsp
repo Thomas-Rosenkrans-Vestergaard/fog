@@ -2,11 +2,18 @@
 <%@ include file="../includes/top.jspf" %>
 <div class="row">
     <div class="col s12">
-        <h2><span class="focus">${employee.getName()}</span></h2>
+        <h2>Opdater medarbejder</h2>
     </div>
 </div>
 <div class="row">
-    <form method="post" class="col s12">
+    <div class="col s12">
+        <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Nulla non lectus sed nisl molestie malesuada.
+            Mauris dolor felis, sagittis at, luctus sed, aliquam non, tellus. Vivamus luctus egestas leo. Sed elit dui,
+            pellentesque a, faucibus vel, interdum nec, diam.</p>
+    </div>
+</div>
+<div class="row">
+    <form method="post" class="col s12 no-padding">
         <input type="hidden" value="${employee.getId()}" name="id">
         <div class="row">
             <div class="col s12 input-field">
@@ -39,16 +46,12 @@
                 <label for="password">Adgangskode</label>
             </div>
             <div class="col s4">
-                <p>
-                <div class="switch">
+                <div class="switch switch-input">
                     <label>
-                        Off
                         <input type="checkbox" id="update-password">
                         <span class="lever"></span>
-                        On
                     </label>
                 </div>
-                </p>
                 <script>
 
                     function updatePasswordInput() {

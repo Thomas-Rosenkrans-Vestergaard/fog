@@ -70,19 +70,11 @@ h2 {
 }
 
 h3 {
-    font-size: 2.5rem;
-}
-
-h4 {
     font-size: 2rem;
 }
 
-h5 {
+h4 {
     font-size: 1.5rem;
-}
-
-h6 {
-    font-size: 1.2rem;
 }
 
 hr {
@@ -155,4 +147,13 @@ th.r10 {
 
 th.r15 {
     width: 15rem;
+}
+
+.administration-header h2 {
+    display: inline-block;
+}
+
+.administration-header a {
+    float: right;
+    margin: 20px;
 }

@@ -6,6 +6,13 @@ public interface MaterialList
 {
 
     /**
+     * Returns the title of the material list.
+     *
+     * @return The title of the material list.
+     */
+    String getTitle();
+
+    /**
      * Returns the lines on the bill.
      *
      * @return The lines on the bill.

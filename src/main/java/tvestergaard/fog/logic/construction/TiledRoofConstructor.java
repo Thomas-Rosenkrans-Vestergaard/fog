@@ -18,12 +18,14 @@ public class TiledRoofConstructor implements RoofConstructor
     /**
      * Constructs the roof of the garage using the provided components.
      *
-     * @param materials     The summary being updated with the materials needed to construct the roof.
-     * @param components    The components to use while constructing the roof.
-     * @param specification The specifications that the roof must satisfy.
+     * @param summary       The object containing information about the construction process.
+     * @param specification The specifications that the roofing must satisfy.
+     * @param components    The components to use while constructing the skeleton.
      */
-    @Override public void construct(MutableMaterialList materials, Components components, ConstructionSpecification specification)
+    @Override public void construct(MutableConstructionSummary summary, ConstructionSpecification specification, Components components)
     {
+        MutableMaterialList materials = new MutableMaterialList("Tag materialer");
+
         int length    = specification.getLength();
         int width     = specification.getWidth();
         int widthHalf = width / 2;
@@ -49,6 +51,8 @@ public class TiledRoofConstructor implements RoofConstructor
 
         materials.add(vindSkede.getMaterial(), 2, vindSkede.getNotes());
         materials.add(sternBræt.getMaterial(), 2, vindSkede.getNotes());
+
+        summary.add(materials);
     }
 
     private int up(double v)

@@ -26,6 +26,7 @@ public class OfferRecord implements Offer
         this.employeeId = employeeId;
         this.price = price;
         this.createdAt = createdAt;
+        this.status = status;
     }
 
     /**

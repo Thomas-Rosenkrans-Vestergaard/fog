@@ -22,6 +22,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 import static tvestergaard.fog.data.constraints.Constraint.eq;
@@ -85,23 +86,21 @@ public class PlaceOrderServlet extends HttpServlet
                 !parameters.isInt("roofing") ||
                 !parameters.isInt("slope") ||
                 !parameters.isEnum("rafters", RafterChoice.class) ||
-                (!parameters.isPresent("shed") || (
+                !(!parameters.isPresent("shed") || (
                         parameters.isInt("shed-width") ||
                                 parameters.isInt("shed-depth") ||
                                 (!parameters.isPresent("shed-flooring") || parameters.isInt("shed-flooring")) ||
                                 parameters.isInt("shed-cladding")))) {
             notifications.error("Invalid design data.");
-            resp.sendRedirect("design");
+            resp.sendRedirect("place-order");
             return;
         }
 
         if (!authentication.isCustomer()) {
-            if (!parameters.isPresent("customer-name") ||
-                    !parameters.isPresent("customer-address") ||
-                    !parameters.isPresent("customer-email") ||
-                    !parameters.isPresent("customer-phone")) {
+            if (!parameters.isPresent("customer-email") ||
+                    !parameters.isPresent("customer-password")) {
                 notifications.error("Invalid customer data.");
-                resp.sendRedirect("design");
+                resp.sendRedirect("place-order");
                 return;
             }
         }
@@ -109,11 +108,15 @@ public class PlaceOrderServlet extends HttpServlet
         try {
 
             Customer customer = authentication.isCustomer() ? authentication.getCustomer() :
-                                customerFacade.authenticate(parameters.value("customer-email"), parameters.value("customer.password"));
+                                customerFacade.authenticate(
+                                        parameters.value("customer-email"),
+                                        parameters.value("customer-password"));
 
             if (customer == null) {
                 notifications.error("Incorrect customer credentials.");
-                resp.sendRedirect("design");
+                HttpSession session = req.getSession();
+                session.setAttribute("customer", customer);
+                resp.sendRedirect("place-order");
                 return;
             }
 
@@ -126,7 +129,7 @@ public class PlaceOrderServlet extends HttpServlet
                     parameters.getInt("roofing"),
                     parameters.getInt("slope"),
                     parameters.getEnum("rafters", RafterChoice.class),
-                    null /*createShed(parameters)*/);
+                    createShed(parameters));
 
             notifications.success("Din ordre blev registreret.");
             resp.sendRedirect("orders");
@@ -141,7 +144,7 @@ public class PlaceOrderServlet extends HttpServlet
             notifications.error("Du kan ikke placére en ordre, sides du er makeret inaktiv.");
         }
 
-        resp.sendRedirect("design");
+        resp.sendRedirect("place-order");
     }
 
     private ShedSpecification createShed(Parameters parameters)

@@ -4,6 +4,7 @@ import tvestergaard.fog.data.orders.Order;
 import tvestergaard.fog.data.orders.RafterChoice;
 import tvestergaard.fog.logic.claddings.CladdingFacade;
 import tvestergaard.fog.logic.floorings.FlooringFacade;
+import tvestergaard.fog.logic.offers.OfferFacade;
 import tvestergaard.fog.logic.orders.OrderError;
 import tvestergaard.fog.logic.orders.OrderFacade;
 import tvestergaard.fog.logic.orders.OrderValidatorException;
@@ -12,7 +13,6 @@ import tvestergaard.fog.logic.roofings.RoofingFacade;
 import tvestergaard.fog.presentation.Notifications;
 import tvestergaard.fog.presentation.Parameters;
 import tvestergaard.fog.presentation.servlets.commands.Command;
-import tvestergaard.fog.presentation.servlets.commands.CommandDispatcher;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -36,6 +36,7 @@ public class AdministrationOrdersServlet extends AdministrationServlet
     private final CladdingFacade          claddingFacade = Facades.claddingFacade;
     private final FlooringFacade          flooringFacade = Facades.flooringFacade;
     private final RoofingFacade           roofingFacade  = Facades.roofingFacade;
+    private final OfferFacade             offerFacade    = Facades.offerFacade;
     private final Map<OrderError, String> errors         = new HashMap<>();
 
     public AdministrationOrdersServlet()
@@ -104,6 +105,7 @@ public class AdministrationOrdersServlet extends AdministrationServlet
             request.setAttribute("claddings", claddingFacade.get());
             request.setAttribute("roofings", roofingFacade.get());
             request.setAttribute("floorings", flooringFacade.get());
+            request.setAttribute("offers", offerFacade.get(order.getId()));
             request.getRequestDispatcher("/WEB-INF/administration/update_order.jsp").forward(request, response);
         }
     }

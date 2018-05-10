@@ -102,6 +102,22 @@ public class OfferFacade
     }
 
     /**
+     * Returns the offers issued to the order with the provided id.
+     *
+     * @param order The id of the order to return the related offers of.
+     * @return The offers related to the order with the provided id.
+     * @throws ApplicationException When a data storage exception occurs while performing the operation.
+     */
+    public List get(int order)
+    {
+        try {
+            return offerDAO.get(order);
+        } catch (DataAccessException e) {
+            throw new ApplicationException(e);
+        }
+    }
+
+    /**
      * Returns the first offer matching the provided constraints.
      *
      * @param constraints The constraints that modify the resulting list.
@@ -137,12 +153,12 @@ public class OfferFacade
      *                                          create new offers.
      */
     public Offer create(int orderId, int employeeId, int price) throws
-            OfferValidatorException,
-            UnknownOrderException,
-            InactiveCustomerException,
-            UnknownEmployeeException,
-            InactiveEmployeeException,
-            InsufficientPermissionsException
+                                                                OfferValidatorException,
+                                                                UnknownOrderException,
+                                                                InactiveCustomerException,
+                                                                UnknownEmployeeException,
+                                                                InactiveEmployeeException,
+                                                                InsufficientPermissionsException
     {
         Set<OfferError> errors = validator.validate(price);
         if (!errors.isEmpty())

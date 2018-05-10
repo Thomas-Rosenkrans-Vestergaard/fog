@@ -1,8 +1,11 @@
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
 <%@ include file="../includes/top.jspf" %>
 <div class="row">
-    <div class="col s12">
+    <div class="col s12 administration-header">
         <h2>Gulve</h2>
+        <a class="btn-floating btn-large waves-effect waves-light" href="?action=create">
+            <i class="material-icons">add</i>
+        </a>
     </div>
 </div>
 <div class="row">

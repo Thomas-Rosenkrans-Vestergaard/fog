@@ -9,6 +9,8 @@ import java.util.List;
 public class MutableMaterialList implements MaterialList
 {
 
+    private final String title;
+
     /**
      * The internal storage of the {@link MaterialList}.
      */
@@ -18,6 +20,11 @@ public class MutableMaterialList implements MaterialList
      * The total price of the entire material list.
      */
     private int total = 0;
+
+    public MutableMaterialList(String title)
+    {
+        this.title = title;
+    }
 
     /**
      * Adds a new line to the bill using the provided information.
@@ -31,6 +38,16 @@ public class MutableMaterialList implements MaterialList
         MaterialLine line = new DefaultMaterialLine(material, amount, notes);
         lines.add(line);
         this.total += line.getTotal();
+    }
+
+    /**
+     * Returns the title of the material list.
+     *
+     * @return The title of the material list.
+     */
+    @Override public String getTitle()
+    {
+        return title;
     }
 
     /**

@@ -4,7 +4,7 @@ function updateNewOrdersCounter() {
         method: 'GET',
         url: '../api?action=getNumberOfNewOrders',
         success: function (data) {
-            $('#new-orders-counter').text = data['orders'];
+            $('#new-orders-counter').text(data['orders']);
             if (data['orders'] == 0)
                 $('#new-orders-counter').hide();
             else

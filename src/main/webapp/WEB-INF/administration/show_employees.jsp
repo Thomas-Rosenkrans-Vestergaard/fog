@@ -1,8 +1,11 @@
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
 <%@ include file="../includes/top.jspf" %>
 <div class="row">
-    <div class="col s12">
+    <div class="col s12 administration-header">
         <h2>Medarbejdere</h2>
+        <a class="btn-floating btn-large waves-effect waves-light" href="?action=create">
+            <i class="material-icons">add</i>
+        </a>
     </div>
 </div>
 <div class="row">
@@ -11,13 +14,6 @@
             Mauris dolor felis, sagittis at, luctus sed, aliquam non, tellus. Vivamus luctus egestas leo. Sed elit dui,
             pellentesque a, faucibus vel, interdum nec, diam. Itaque earum rerum hic tenetur a sapiente delectus, ut aut
             reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus asperiores repellat.</p>
-    </div>
-</div>
-<div class="row">
-    <div class="col s12">
-        <a class="btn-floating btn-large waves-effect waves-light red" href="?action=create">
-            <i class="material-icons">add</i>
-        </a>
     </div>
 </div>
 <div class="row">

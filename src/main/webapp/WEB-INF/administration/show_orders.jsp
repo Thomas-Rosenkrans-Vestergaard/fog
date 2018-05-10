@@ -17,33 +17,35 @@
     <div class="col s12">
         <table class="highlight administration-table">
             <thead>
-            <th class="short">ID</th>
+            <th>ID</th>
             <th>Kunde</th>
             <th>Beklædning</th>
-            <th class="short">Bredde</th>
-            <th class="short">Længde</th>
-            <th class="short">Højde</th>
+            <th>Bredde</th>
+            <th>Længde</th>
+            <th>Højde</th>
             <th>Tag</th>
             <th>Hældning</th>
             <th>Spær</th>
-            <th>Redskabsskur</th>
             <th>Oprettet</th>
             </thead>
             <tbody>
             <c:forEach items="${orders}" var="order">
                 <tr onclick="location.href = '?action=update&id=${order.getId()}'">
                     <td>${order.getId()}</td>
-                    <td><a href="${order.getCustomer().getId()}"><c:out value="${order.getCustomer().getName()}"/></a>
-                    </td>
-                    <td><a href="${order.getCladding().getId()}"><c:out value="${order.getCladding().getName()}"/></a>
+                    <td><a href="customers?action=update&id=${order.getCustomer().getId()}">
+                        <c:out value="${order.getCustomer().getName()}"/>
+                    </a></td>
+                    <td><a href="claddings?action=update&id=${order.getCladding().getId()}">
+                        <c:out value="${order.getCladding().getName()}"/>
+                    </a></td>
                     <td>${order.getWidth()}</td>
                     <td>${order.getLength()}</td>
                     <td>${order.getHeight()}</td>
-                    <td><a href="${order.getRoofing().getId()}"><c:out value="${order.getRoofing().getName()}"/></a>
-                    </td>
+                    <td><a href="roofings?action=update&id=${order.getRoofing().getId()}">
+                        <c:out value="${order.getRoofing().getName()}"/>
+                    </a></td>
                     <td>${order.getSlope()}</td>
                     <td>${order.getRafterChoice()}</td>
-                    <td><a href="${order.getShed().getId()}"><c:out value="${order.getRoofing().getId()}"/></a></td>
                     <td>${f:formatDatetime(order.getCreatedAt())}</td>
                 </tr>
             </c:forEach>

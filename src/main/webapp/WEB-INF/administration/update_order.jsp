@@ -2,14 +2,57 @@
 <%@ include file="../includes/top.jspf" %>
 <div class="row">
     <div class="col s12">
-        <h2><span class="focus">UPDATE ORDER</span></h2>
+        <h2><span class="focus">Opdatér ordre</span></h2>
     </div>
 </div>
 <div class="row">
     <div class="col s12">
-        <a href="offers?action=create&order=${order.getId()}" class="waves-effect waves-light btn-large">
+        <a href="offers?action=create&order=${order.getId()}" class="waves-effect waves-light btn">
             <i class="material-icons right">add</i>OPRET TILBUD
         </a>
+    </div>
+</div>
+<div class="row">
+    <div class="col s12">
+        <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Nulla non lectus sed nisl molestie malesuada.
+            Mauris dolor felis, sagittis at, luctus sed, aliquam non, tellus. Vivamus luctus egestas leo. Sed elit dui,
+            pellentesque a, faucibus vel, interdum nec, diam. Itaque earum rerum hic tenetur a sapiente delectus, ut aut
+            reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus asperiores repellat.</p>
+    </div>
+</div>
+<div class="row">
+    <div class="col s12">
+        <h2>Tilbud</h2>
+    </div>
+</div>
+<div class="row">
+    <div class="col s12">
+        <table>
+            <thead>
+            <tr>
+                <th>Tilbudspris</th>
+                <th>Medarbejder</th>
+                <th>Status</th>
+                <th>Oprettet</th>
+            </tr>
+            </thead>
+            <tbody>
+            <c:forEach items="${offers}" var="offer">
+                <tr>
+                    <td>${f:formatPrice(offer.getPrice())}</td>
+                    <td>${offer.getEmployee().getName()}</td>
+                    <td>${offer.getStatus()}</td>
+                    <td>${f:formatDatetime(offer.getCreatedAt())}</td>
+                </tr>
+            </c:forEach>
+            </tbody>
+        </table>
+    </div>
+</div>
+<div class="row">
+    <div class="col s12">
+        <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Nulla non lectus sed nisl molestie malesuada.
+            Mauris dolor felis, sagittis at, luctus sed, aliquam non, tellus. Vivamus luctus egestas leo.</p>
     </div>
 </div>
 <div class="row">

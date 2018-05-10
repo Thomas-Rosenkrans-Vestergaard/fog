@@ -15,11 +15,6 @@
 </div>
 <div class="row">
     <div class="col s12">
-        <a class="waves-effect waves-light btn-large"><i class="material-icons left">add</i>OPRET BEKLÆDNING</a>
-    </div>
-</div>
-<div class="row">
-    <div class="col s12">
         <table class="highlight administration-table">
             <thead>
             <th class="short">ID</th>
