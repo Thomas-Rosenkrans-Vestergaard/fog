@@ -46,7 +46,7 @@
                 <div class="col s12 input-field">
                     <c:set var="definition" value="${component.getDefinition()}"/>
                     <select name="component_${definition.getIdentifier()}" id="component_${definition.getIdentifier()}">
-                        <c:forEach items="${materials.get(definition.getId())}" var="material">
+                        <c:forEach items="${materials.get(definition.getCategory().getId())}" var="material">
                             <option ${component.getMaterial().getId() == material.getId() ? 'selected' : ''}
                                     value="${material.getId()}">${material.getDescription()}</option>
                         </c:forEach>

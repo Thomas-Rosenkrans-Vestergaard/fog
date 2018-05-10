@@ -1,7 +1,7 @@
 package tvestergaard.fog.logic.construction;
 
+import tvestergaard.fog.data.components.Component;
 import tvestergaard.fog.data.materials.Material;
-import tvestergaard.fog.data.roofing.Component;
 import tvestergaard.fog.data.roofing.RoofingType;
 
 import static tvestergaard.fog.data.roofing.RoofingType.TILED;
@@ -43,6 +43,12 @@ public class TiledRoofConstructor implements RoofConstructor
         calculateTopLatheHolder(materials, components, specification);
         calculateBindersHooks(materials, components, tileRows, tileColumns);
         calculateGableCladding(materials, components, roofHeight, width);
+
+        Component vindSkede = components.from("VINDSKEDER");
+        Component sternBræt = components.from("STERN_BOARD");
+
+        materials.add(vindSkede.getMaterial(), 2, vindSkede.getNotes());
+        materials.add(sternBræt.getMaterial(), 2, vindSkede.getNotes());
     }
 
     private int up(double v)
@@ -55,6 +61,13 @@ public class TiledRoofConstructor implements RoofConstructor
         return (double) mm / 10;
     }
 
+    /**
+     * Calculates the number of ridge tiles needed for the roof.
+     *
+     * @param materials
+     * @param components
+     * @param specification
+     */
     private void calculateRidgeTiles(MutableMaterialList materials, Components components, ConstructionSpecification specification)
     {
 

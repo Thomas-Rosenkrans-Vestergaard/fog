@@ -7,9 +7,9 @@ import tvestergaard.fog.data.AbstractMysqlDAO;
 import tvestergaard.fog.data.DataAccessException;
 import tvestergaard.fog.data.MysqlDataAccessException;
 import tvestergaard.fog.data.materials.SimpleMaterial;
-import tvestergaard.fog.data.roofing.Component;
-import tvestergaard.fog.data.roofing.ComponentDefinition;
-import tvestergaard.fog.data.roofing.ComponentReference;
+import tvestergaard.fog.data.components.Component;
+import tvestergaard.fog.data.components.ComponentDefinition;
+import tvestergaard.fog.data.components.ComponentReference;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

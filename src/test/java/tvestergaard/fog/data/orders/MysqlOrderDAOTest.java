@@ -13,7 +13,7 @@ import tvestergaard.fog.data.customers.MysqlCustomerDAO;
 import tvestergaard.fog.data.flooring.Flooring;
 import tvestergaard.fog.data.flooring.FlooringBlueprint;
 import tvestergaard.fog.data.flooring.MysqlFlooringDAO;
-import tvestergaard.fog.data.roofing.MysqlRoofingDAO;
+import tvestergaard.fog.data.components.MysqlRoofingDAO;
 import tvestergaard.fog.data.roofing.Roofing;
 import tvestergaard.fog.data.roofing.RoofingBlueprint;
 import tvestergaard.fog.data.roofing.RoofingType;

@@ -1,12 +1,14 @@
 package tvestergaard.fog.logic.construction;
 
+import com.mysql.cj.jdbc.MysqlDataSource;
 import tvestergaard.fog.data.ProductionDataSource;
-import tvestergaard.fog.data.roofing.MysqlRoofingDAO;
+import tvestergaard.fog.data.models.ModelDAO;
+import tvestergaard.fog.data.models.MysqlModelDAO;
+import tvestergaard.fog.data.components.MysqlRoofingDAO;
 import tvestergaard.fog.data.roofing.Roofing;
 import tvestergaard.fog.data.roofing.RoofingDAO;
 import tvestergaard.fog.data.roofing.RoofingType;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -77,15 +79,17 @@ public class DelegatorGarageConstructor implements GarageConstructor
 
     public static void main(String[] args) throws Exception
     {
-        RoofingDAO roofingDAO = new MysqlRoofingDAO(ProductionDataSource.getSource());
-        Roofing    roofing    = roofingDAO.first(where(eq(ID, 1)));
+        MysqlDataSource source     = ProductionDataSource.getSource();
+        RoofingDAO      roofingDAO = new MysqlRoofingDAO(source);
+        ModelDAO        modelDAO   = new MysqlModelDAO(source);
+        Roofing         roofing    = roofingDAO.first(where(eq(ID, 1)));
 
         ConstructionFacade        constructionFacade        = new ConstructionFacade();
         ConstructionSpecification constructionSpecification = new ConstructionSpecification(420, 630, 420, null, roofing, 45);
         MaterialList list = constructionFacade.construct(
                 constructionSpecification,
-                new Components(new ArrayList<>()),
-                new Components(roofingDAO.getComponentsFor(roofing.getId())));
+                new Components(modelDAO.getComponents(1)),
+                new Components(roofingDAO.getComponents(roofing.getId())));
 
         for (MaterialLine line : list.getLines())
             System.out.println(line);

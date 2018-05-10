@@ -1,4 +1,4 @@
-package tvestergaard.fog.data.roofing;
+package tvestergaard.fog.data.components;
 
 import tvestergaard.fog.data.materials.Category;
 

@@ -1,4 +1,4 @@
-package tvestergaard.fog.data.roofing;
+package tvestergaard.fog.data.components;
 
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
@@ -10,6 +10,7 @@ import tvestergaard.fog.data.constraints.Constraint;
 import tvestergaard.fog.data.constraints.StatementBinder;
 import tvestergaard.fog.data.constraints.StatementGenerator;
 import tvestergaard.fog.data.materials.SimpleMaterial;
+import tvestergaard.fog.data.roofing.*;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -195,7 +196,7 @@ public class MysqlRoofingDAO extends AbstractMysqlDAO implements RoofingDAO
      * @return The components for the roofing with the provided id.
      * @throws DataAccessException When a data storage exception occurs while performing the operation.
      */
-    @Override public List<ComponentDefinition> getComponentsFor(RoofingType roofingType) throws DataAccessException
+    @Override public List<ComponentDefinition> getComponentDefinitions(RoofingType roofingType) throws DataAccessException
     {
         List<ComponentDefinition> definitions = new ArrayList<>();
 
@@ -222,7 +223,7 @@ public class MysqlRoofingDAO extends AbstractMysqlDAO implements RoofingDAO
      * @return The list of the components active for the roofing with the provided id.
      * @throws MysqlDataAccessException When a data storage exception occurs while performing the operation.
      */
-    @Override public List<Component> getComponentsFor(int roofing) throws MysqlDataAccessException
+    @Override public List<Component> getComponents(int roofing) throws MysqlDataAccessException
     {
         List<Component> components = new ArrayList<>();
 
@@ -247,38 +248,6 @@ public class MysqlRoofingDAO extends AbstractMysqlDAO implements RoofingDAO
             }
 
             return components;
-
-        } catch (SQLException e) {
-            throw new MysqlDataAccessException(e);
-        }
-    }
-
-    /**
-     * Returns the material choices for the provided components.
-     *
-     * @param components The component(s) to return the values of.
-     * @return Contains the material choices for the provided components. The material choices for some component id
-     * is mapped to the component id.
-     * @throws DataAccessException When a data storage exception occurs while performing the operation.
-     */
-    @Override public Multimap<Integer, SimpleMaterial> getMaterialChoicesForComponents(int... components) throws DataAccessException
-    {
-        Multimap<Integer, SimpleMaterial> results = ArrayListMultimap.create();
-
-        String SQL = "SELECT * FROM materials " +
-                "INNER JOIN categories ON materials.category = categories.id " +
-                "INNER JOIN component_definitions cd ON cd.category = categories.id " +
-                "WHERE cd.id IN (" + createIn(components.length) + ") " +
-                "GROUP BY materials.id";
-        try (PreparedStatement statement = getConnection().prepareStatement(SQL)) {
-            for (int i = 0; i < components.length; i++)
-                statement.setInt(i + 1, components[i]);
-
-            ResultSet resultSet = statement.executeQuery();
-            while (resultSet.next())
-                results.put(resultSet.getInt("cd.id"), createSimpleMaterial("materials", "categories", resultSet));
-
-            return results;
 
         } catch (SQLException e) {
             throw new MysqlDataAccessException(e);

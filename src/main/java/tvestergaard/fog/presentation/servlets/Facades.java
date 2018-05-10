@@ -18,7 +18,7 @@ import tvestergaard.fog.data.orders.MysqlOrderDAO;
 import tvestergaard.fog.data.orders.OrderDAO;
 import tvestergaard.fog.data.purchases.MysqlPurchaseDAO;
 import tvestergaard.fog.data.purchases.PurchaseDAO;
-import tvestergaard.fog.data.roofing.MysqlRoofingDAO;
+import tvestergaard.fog.data.components.MysqlRoofingDAO;
 import tvestergaard.fog.data.roofing.RoofingDAO;
 import tvestergaard.fog.data.models.MysqlModelDAO;
 import tvestergaard.fog.data.models.ModelDAO;

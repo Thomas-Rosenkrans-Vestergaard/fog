@@ -1,6 +1,11 @@
 package tvestergaard.fog.presentation.servlets;
 
-import tvestergaard.fog.data.roofing.*;
+import tvestergaard.fog.data.components.Component;
+import tvestergaard.fog.data.components.ComponentDefinition;
+import tvestergaard.fog.data.components.ComponentReference;
+import tvestergaard.fog.data.roofing.Roofing;
+import tvestergaard.fog.data.roofing.RoofingType;
+import tvestergaard.fog.logic.materials.MaterialFacade;
 import tvestergaard.fog.logic.roofings.RoofingError;
 import tvestergaard.fog.logic.roofings.RoofingFacade;
 import tvestergaard.fog.logic.roofings.RoofingValidatorException;
@@ -25,8 +30,9 @@ import static tvestergaard.fog.presentation.PresentationFunctions.notifications;
 public class AdministrationRoofingsServlet extends AdministrationServlet
 {
 
-    private final RoofingFacade             facade = Facades.roofingFacade;
-    private final Map<RoofingError, String> errors = new HashMap<>();
+    private final RoofingFacade             roofingFacade  = Facades.roofingFacade;
+    private final MaterialFacade            materialFacade = Facades.materialFacade;
+    private final Map<RoofingError, String> errors         = new HashMap<>();
 
     public AdministrationRoofingsServlet()
     {
@@ -52,7 +58,7 @@ public class AdministrationRoofingsServlet extends AdministrationServlet
         {
             notifications(request);
             request.setAttribute("title", "Tage");
-            request.setAttribute("roofings", facade.get());
+            request.setAttribute("roofings", roofingFacade.get());
             request.setAttribute("types", EnumSet.allOf(RoofingType.class));
             request.getRequestDispatcher("/WEB-INF/administration/show_roofings.jsp").forward(request, response);
         }
@@ -71,23 +77,22 @@ public class AdministrationRoofingsServlet extends AdministrationServlet
                 return;
             }
 
-            Roofing roofing = facade.first(where(eq(ID, parameters.getInt("id"))));
+            Roofing roofing = roofingFacade.first(where(eq(ID, parameters.getInt("id"))));
             if (roofing == null) {
                 notifications.error("Unknown roofing.");
                 response.sendRedirect("roofings");
                 return;
             }
 
-            List<Component> components = facade.getComponentsFor(parameters.getInt("id"));
-            int[]           ids        = new int[components.size()];
-            int             index      = 0;
-            for (Component component : components)
-                ids[index++] = component.getDefinitionId();
+            List<Component> components = roofingFacade.getComponents(roofing.getId());
+            int[]           categories = new int[components.size()];
+            for (int x = 0; x < components.size(); x++)
+                categories[x] = components.get(x).getDefinition().getCategory().getId();
 
             request.setAttribute("title", "Opdater tag");
             request.setAttribute("roofing", roofing);
             request.setAttribute("components", components);
-            request.setAttribute("materials", facade.getMaterialChoicesForComponents(ids).asMap());
+            request.setAttribute("materials", materialFacade.getByCategory(categories).asMap());
             request.getRequestDispatcher("/WEB-INF/administration/update_roofing.jsp").forward(request, response);
         }
     }
@@ -110,7 +115,7 @@ public class AdministrationRoofingsServlet extends AdministrationServlet
             }
 
             List<ComponentReference>  values     = new ArrayList<>();
-            List<ComponentDefinition> components = facade.getComponentsFor(parameters.getEnum("type", RoofingType.class));
+            List<ComponentDefinition> components = roofingFacade.getComponentDefinitions(parameters.getEnum("type", RoofingType.class));
             for (ComponentDefinition definition : components) {
                 String parameterName = "component_" + definition.getIdentifier();
                 if (!parameters.isInt(parameterName)) {
@@ -123,7 +128,7 @@ public class AdministrationRoofingsServlet extends AdministrationServlet
             }
 
             try {
-                facade.update(
+                roofingFacade.update(
                         parameters.getInt("id"),
                         parameters.value("name"),
                         parameters.value("description"),
@@ -156,16 +161,15 @@ public class AdministrationRoofingsServlet extends AdministrationServlet
                 return;
             }
 
-            List<ComponentDefinition> definitions = facade.getComponentsFor(parameters.getEnum("type", RoofingType.class));
-            int[]                     ids         = new int[definitions.size()];
-            int                       index       = 0;
-            for (ComponentDefinition definition : definitions)
-                ids[index++] = definition.getId();
+            List<ComponentDefinition> components = roofingFacade.getComponentDefinitions(parameters.getEnum("type", RoofingType.class));
+            int[]                     categories = new int[components.size()];
+            for (int x = 0; x < components.size(); x++)
+                categories[x] = components.get(x).getCategory().getId();
 
             request.setAttribute("title", "Opret tag");
             request.setAttribute("type", request.getParameter("type"));
-            request.setAttribute("components", definitions);
-            request.setAttribute("materials", facade.getMaterialChoicesForComponents(ids).asMap());
+            request.setAttribute("components", components);
+            request.setAttribute("materials", materialFacade.getByCategory(categories).asMap());
             request.getRequestDispatcher("/WEB-INF/administration/create_roofing.jsp").forward(request, response);
         }
     }
@@ -188,7 +192,7 @@ public class AdministrationRoofingsServlet extends AdministrationServlet
             }
 
             List<ComponentReference>  values     = new ArrayList<>();
-            List<ComponentDefinition> components = facade.getComponentsFor(parameters.getEnum("type", RoofingType.class));
+            List<ComponentDefinition> components = roofingFacade.getComponentDefinitions(parameters.getEnum("type", RoofingType.class));
             for (ComponentDefinition definition : components) {
                 String parameterName = "component_" + definition.getIdentifier();
                 if (!parameters.isInt(parameterName)) {
@@ -201,7 +205,7 @@ public class AdministrationRoofingsServlet extends AdministrationServlet
             }
 
             try {
-                Roofing roofing = facade.create(
+                Roofing roofing = roofingFacade.create(
                         parameters.value("name"),
                         parameters.value("description"),
                         parameters.getEnum("type", RoofingType.class),

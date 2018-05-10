@@ -5,6 +5,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import tvestergaard.fog.data.TestDataSource;
+import tvestergaard.fog.data.components.MysqlRoofingDAO;
 
 import java.sql.Connection;
 import java.util.List;

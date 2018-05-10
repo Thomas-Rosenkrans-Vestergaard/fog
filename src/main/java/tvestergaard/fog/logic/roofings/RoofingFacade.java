@@ -1,9 +1,10 @@
 package tvestergaard.fog.logic.roofings;
 
-import com.google.common.collect.Multimap;
 import tvestergaard.fog.data.DataAccessException;
+import tvestergaard.fog.data.components.Component;
+import tvestergaard.fog.data.components.ComponentDefinition;
+import tvestergaard.fog.data.components.ComponentReference;
 import tvestergaard.fog.data.constraints.Constraint;
-import tvestergaard.fog.data.materials.SimpleMaterial;
 import tvestergaard.fog.data.roofing.*;
 import tvestergaard.fog.logic.ApplicationException;
 
@@ -125,10 +126,10 @@ public class RoofingFacade
      * @return The components for the roofing with the provided id.
      * @throws ApplicationException When a data storage exception occurs while performing the operation.
      */
-    public List<ComponentDefinition> getComponentsFor(RoofingType roofingType)
+    public List<ComponentDefinition> getComponentDefinitions(RoofingType roofingType)
     {
         try {
-            return dao.getComponentsFor(roofingType);
+            return dao.getComponentDefinitions(roofingType);
         } catch (DataAccessException e) {
             throw new ApplicationException(e);
         }
@@ -141,27 +142,10 @@ public class RoofingFacade
      * @return The list of the components active for the roofing with the provided id.
      * @throws ApplicationException When a data storage exception occurs while performing the operation.
      */
-    public List<Component> getComponentsFor(int roofing)
+    public List<Component> getComponents(int roofing)
     {
         try {
-            return dao.getComponentsFor(roofing);
-        } catch (DataAccessException e) {
-            throw new ApplicationException(e);
-        }
-    }
-
-    /**
-     * Returns the material choices for the provided components.
-     *
-     * @param components The component(s) to return the values of.
-     * @return Contains the material choices for the provided components. The material choices for some component id
-     * is mapped to the component id.
-     * @throws ApplicationException When a data storage exception occurs while performing the operation.
-     */
-    public Multimap<Integer, SimpleMaterial> getMaterialChoicesForComponents(int... components)
-    {
-        try {
-            return dao.getMaterialChoicesForComponents(components);
+            return dao.getComponents(roofing);
         } catch (DataAccessException e) {
             throw new ApplicationException(e);
         }

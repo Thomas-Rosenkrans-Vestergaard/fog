@@ -1,4 +1,4 @@
-package tvestergaard.fog.data.roofing;
+package tvestergaard.fog.data.components;
 
 public interface ComponentReference
 {

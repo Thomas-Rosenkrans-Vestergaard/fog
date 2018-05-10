@@ -65,7 +65,8 @@ INSERT INTO materials (id, `number`, `description`, `price`, `unit`, `category`)
   (21, '322772016293', '4,5x70 mm. Skruer 200 stk.', 15000, 200, 11),
   (22, '347369061736', '4,5x50 mm. Skruer 350 stk.', 35000, 350, 11),
   (23, '419643103011', 'Bræddebolt 10 x 120 mm.', 1500, 1, 10),
-  (24, '950209945881', 'Firkantskiver 40x40x11 mm.', 1500, 1, 10);
+  (24, '950209945881', 'Firkantskiver 40x40x11 mm.', 1500, 1, 10),
+  (25, '234789560123', '25x150 mm. trykimp. Bræt', 2000, 1, 1);
 
 INSERT INTO attribute_definitions (id, category, data_type, `name`) VALUES
   (1, 5, 'INT', 'HEIGHT_MM'),
@@ -107,7 +108,9 @@ INSERT INTO component_definitions (id, identifier, category, notes) VALUES
   (14, 'SHED_CLADDING', 1, 'Beklædning af skur 1 på 2'),
   (15, 'Z_DOOR', 3, 'Til z på bagside af dør'),
   (16, 'ROOFING_LATHS', 3, 'Til montering på spær, 7 rækker lægter på hver skiftevis 1 hel & 1 halv lægte'),
-  (17, 'ROOF_RIDGE_LATH', 3, 'Toplægte til montering af rygsten lægges i toplægte holder');
+  (17, 'ROOF_RIDGE_LATH', 3, 'Toplægte til montering af rygsten lægges i toplægte holder'),
+  (18, 'VINDSKEDER', 1, 'Vindskeder på rejsning'),
+  (19, 'STERN_BOARD', 1, 'Sternbrædder til siderne Carport del');
 
 INSERT INTO roofing_component_definitions (id, roofing_type, definition) VALUES
   (1, 'TILED', 1),
@@ -119,7 +122,9 @@ INSERT INTO roofing_component_definitions (id, roofing_type, definition) VALUES
   (7, 'TILED', 12),
   (8, 'TILED', 13),
   (9, 'TILED', 16),
-  (10, 'TILED', 17);
+  (10, 'TILED', 17),
+  (11, 'TILED', 18),
+  (12, 'TILED', 19);
 
 INSERT INTO component_values (id, definition, material) VALUES
   (1, 1, 1),
@@ -136,7 +141,9 @@ INSERT INTO component_values (id, definition, material) VALUES
   (12, 14, 6),
   (13, 15, 8),
   (14, 16, 8),
-  (15, 17, 8);
+  (15, 17, 8),
+  (16, 18, 25),
+  (17, 19, 25);
 
 INSERT INTO roofing_component_values (id, roofing, component) VALUES
   (1, 1, 1),
@@ -144,7 +151,9 @@ INSERT INTO roofing_component_values (id, roofing, component) VALUES
   (3, 1, 3),
   (4, 1, 4),
   (5, 1, 5),
-  (6, 1, 6);
+  (6, 1, 6),
+  (7, 1, 16),
+  (8, 1, 17);
 
 INSERT INTO garage_models (id, name) VALUES
   (1, 'CAR01');

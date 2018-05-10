@@ -7,7 +7,7 @@ public class ConstructionFacade
 
     public ConstructionFacade()
     {
-        SkeletonConstructor skeletonConstructor = new DefaultSkeletonConstructor();
+        SkeletonConstructor skeletonConstructor = new CAR01SkeletonConstructor();
         RoofConstructor     roofConstructor     = new TiledRoofConstructor();
         garageConstructor = new DelegatorGarageConstructor(skeletonConstructor);
         garageConstructor.register(roofConstructor);

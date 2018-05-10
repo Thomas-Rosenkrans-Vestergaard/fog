@@ -10,5 +10,5 @@ public interface SkeletonConstructor
      * @param components    The components to use while constructing the skeleton.
      * @param specification The specifications that the skeleton must satisfy.
      */
-    void construct(MaterialList materials, Components components, ConstructionSpecification specification);
+    void construct(MutableMaterialList materials, Components components, ConstructionSpecification specification);
 }

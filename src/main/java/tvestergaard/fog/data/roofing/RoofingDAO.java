@@ -1,9 +1,10 @@
 package tvestergaard.fog.data.roofing;
 
-import com.google.common.collect.Multimap;
 import tvestergaard.fog.data.DataAccessException;
+import tvestergaard.fog.data.components.Component;
+import tvestergaard.fog.data.components.ComponentDefinition;
+import tvestergaard.fog.data.components.ComponentReference;
 import tvestergaard.fog.data.constraints.Constraint;
-import tvestergaard.fog.data.materials.SimpleMaterial;
 
 import java.util.List;
 
@@ -56,7 +57,7 @@ public interface RoofingDAO
      * @return The components for the roofing with the provided id.
      * @throws DataAccessException When a data storage exception occurs while performing the operation.
      */
-    List<ComponentDefinition> getComponentsFor(RoofingType roofingType) throws DataAccessException;
+    List<ComponentDefinition> getComponentDefinitions(RoofingType roofingType) throws DataAccessException;
 
     /**
      * Returns the components active for the roofing with the provided id.
@@ -65,15 +66,5 @@ public interface RoofingDAO
      * @return The list of the components active for the roofing with the provided id.
      * @throws DataAccessException When a data storage exception occurs while performing the operation.
      */
-    List<Component> getComponentsFor(int roofing) throws DataAccessException;
-
-    /**
-     * Returns the material choices for the provided components.
-     *
-     * @param components The component(s) to return the values of.
-     * @return Contains the material choices for the provided components. The material choices for some component id
-     * is mapped to the component id.
-     * @throws DataAccessException When a data storage exception occurs while performing the operation.
-     */
-    Multimap<Integer, SimpleMaterial> getMaterialChoicesForComponents(int... components) throws DataAccessException;
+    List<Component> getComponents(int roofing) throws DataAccessException;
 }

@@ -1,6 +1,8 @@
-package tvestergaard.fog.data.roofing;
+package tvestergaard.fog.data.components;
 
 import tvestergaard.fog.data.materials.Material;
+
+import java.util.Objects;
 
 public class ComponentRecord implements Component
 {
@@ -46,5 +48,31 @@ public class ComponentRecord implements Component
     @Override public Material getMaterial()
     {
         return material;
+    }
+
+    @Override public boolean equals(Object o)
+    {
+        if (this == o) return true;
+        if (!(o instanceof Component)) return false;
+        Component that = (Component) o;
+        return getDefinitionId() == that.getDefinitionId() &&
+                getMaterialId() == that.getMaterialId() &&
+                Objects.equals(getDefinition(), that.getDefinition()) &&
+                Objects.equals(getMaterial(), that.getMaterial());
+    }
+
+    @Override public int hashCode()
+    {
+        return Objects.hash(getDefinition(), getDefinitionId(), getMaterial(), getMaterialId());
+    }
+
+    @Override public String toString()
+    {
+        return "ComponentRecord{" +
+                "definition=" + definition +
+                ", definitionId=" + definitionId +
+                ", material=" + material +
+                ", materialId=" + materialId +
+                '}';
     }
 }
