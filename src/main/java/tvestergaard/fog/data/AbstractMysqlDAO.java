@@ -16,15 +16,17 @@ import tvestergaard.fog.data.employees.Role;
 import tvestergaard.fog.data.flooring.Flooring;
 import tvestergaard.fog.data.flooring.FlooringRecord;
 import tvestergaard.fog.data.materials.*;
+import tvestergaard.fog.data.models.Model;
+import tvestergaard.fog.data.models.ModelRecord;
 import tvestergaard.fog.data.offers.Offer;
 import tvestergaard.fog.data.offers.OfferRecord;
 import tvestergaard.fog.data.offers.OfferStatus;
 import tvestergaard.fog.data.orders.*;
 import tvestergaard.fog.data.purchases.Purchase;
 import tvestergaard.fog.data.purchases.PurchaseRecord;
-import tvestergaard.fog.data.roofing.*;
-import tvestergaard.fog.data.models.Model;
-import tvestergaard.fog.data.models.ModelRecord;
+import tvestergaard.fog.data.roofing.Roofing;
+import tvestergaard.fog.data.roofing.RoofingRecord;
+import tvestergaard.fog.data.roofing.RoofingType;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -163,7 +165,6 @@ public abstract class AbstractMysqlDAO
     {
         return new ShedRecord(
                 resultSet.getInt(table + ".id"),
-                resultSet.getInt(table + ".width"),
                 resultSet.getInt(table + ".depth"),
                 resultSet.getInt(table + ".cladding"),
                 createCladding(claddingTable, resultSet),
@@ -357,7 +358,6 @@ public abstract class AbstractMysqlDAO
     protected Order createOrder(ResultSet resultSet,
                                 String table,
                                 String customerTable,
-                                String claddingTable,
                                 String roofingTable,
                                 String shedTable,
                                 String shedCladdingTable,
@@ -367,8 +367,6 @@ public abstract class AbstractMysqlDAO
                 resultSet.getInt(table + ".id"),
                 resultSet.getInt(table + ".customer"),
                 createCustomer(customerTable, resultSet),
-                resultSet.getInt(table + ".cladding"),
-                createCladding(claddingTable, resultSet),
                 resultSet.getInt(table + ".width"),
                 resultSet.getInt(table + ".length"),
                 resultSet.getInt(table + ".height"),
@@ -387,14 +385,13 @@ public abstract class AbstractMysqlDAO
                                 String table,
                                 String orderTable,
                                 String customerTable,
-                                String orderCladdingTable,
                                 String orderRoofingTable,
                                 String shedTable,
                                 String shedCladdingTable,
                                 String shedFlooringsTable,
                                 String employeeTable) throws SQLException
     {
-        Order    order    = createOrder(resultSet, orderTable, customerTable, orderCladdingTable, orderRoofingTable, shedTable, shedCladdingTable, shedFlooringsTable);
+        Order    order    = createOrder(resultSet, orderTable, customerTable, orderRoofingTable, shedTable, shedCladdingTable, shedFlooringsTable);
         Employee employee = createEmployee(employeeTable, resultSet);
 
         return new OfferRecord(
@@ -414,7 +411,6 @@ public abstract class AbstractMysqlDAO
                                       String offerTable,
                                       String orderTable,
                                       String customerTable,
-                                      String orderCladdingTable,
                                       String orderRoofingTable,
                                       String shedTable,
                                       String shedCladdingTable,
@@ -422,7 +418,7 @@ public abstract class AbstractMysqlDAO
                                       String offerEmployeeTable) throws SQLException
     {
         Offer offer = createOffer(
-                resultSet, offerTable, orderTable, customerTable, orderCladdingTable, orderRoofingTable, shedTable,
+                resultSet, offerTable, orderTable, customerTable, orderRoofingTable, shedTable,
                 shedCladdingTable, shedFlooringsTable, offerEmployeeTable);
         Employee employee = createEmployee(purchaseEmployeeTable, resultSet);
         Bom      bom      = null;

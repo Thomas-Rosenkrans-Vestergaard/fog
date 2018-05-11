@@ -55,7 +55,6 @@ public class MysqlOfferDAO extends AbstractMysqlDAO implements OfferDAO
                         "FROM offers " +
                         "INNER JOIN orders o ON offers.order = o.id " +
                         "INNER JOIN customers ON o.customer = customers.id " +
-                        "INNER JOIN claddings o_cladding ON o.cladding = o_cladding.id " +
                         "INNER JOIN roofings ON o.roofing = roofings.id " +
                         "LEFT  JOIN sheds ON o.id = sheds.order " +
                         "LEFT  JOIN claddings s_cladding ON sheds.cladding = s_cladding.id " +
@@ -65,7 +64,7 @@ public class MysqlOfferDAO extends AbstractMysqlDAO implements OfferDAO
             binder.bind(statement, constraints);
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next())
-                offers.add(createOffer(resultSet, "offers", "o", "customers", "o_cladding", "roofings", "sheds", "s_cladding", "floorings", "employees"));
+                offers.add(createOffer(resultSet, "offers", "o", "customers", "roofings", "sheds", "s_cladding", "floorings", "employees"));
 
             return offers;
         } catch (SQLException e) {

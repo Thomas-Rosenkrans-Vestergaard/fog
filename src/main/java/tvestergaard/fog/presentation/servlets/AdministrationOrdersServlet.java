@@ -117,7 +117,15 @@ public class AdministrationOrdersServlet extends AdministrationServlet
             Parameters    parameters    = new Parameters(request);
             Notifications notifications = notifications(request);
 
-            if (!validateParameters(parameters)) {
+            if (!parameters.isInt("width") ||
+                    !parameters.isInt("length") ||
+                    !parameters.isInt("height") ||
+                    !parameters.isInt("roofing") ||
+                    !parameters.isInt("slope") ||
+                    !parameters.isEnum("rafters", RafterChoice.class) ||
+                    !parameters.isInt("shed-depth") ||
+                    !parameters.isPresent("shed-flooring") ||
+                    !parameters.isInt("shed-cladding")) {
                 notifications.error("The provided data is invalid.");
                 request.getRequestDispatcher("/WEB-INF/design.jsp").forward(request, response);
                 return;
@@ -126,7 +134,6 @@ public class AdministrationOrdersServlet extends AdministrationServlet
             try {
                 orderFacade.update(
                         parameters.getInt("id"),
-                        parameters.getInt("cladding"),
                         parameters.getInt("width"),
                         parameters.getInt("length"),
                         parameters.getInt("height"),
@@ -155,35 +162,8 @@ public class AdministrationOrdersServlet extends AdministrationServlet
 
         return new ShedSpecification(
                 parameters.getInt("shed-width"),
-                parameters.getInt("shed-depth"),
                 parameters.getInt("shed-cladding"),
                 parameters.getInt("shed-flooring")
         );
-    }
-
-    /**
-     * Validates that the provided parameters can safely be converted to their target type.
-     *
-     * @param parameters
-     * @return
-     */
-    private boolean validateParameters(Parameters parameters)
-    {
-        return parameters.isInt("cladding") &&
-                parameters.isInt("width") &&
-                parameters.isInt("length") &&
-                parameters.isInt("height") &&
-                parameters.isInt("roofing") &&
-                parameters.isInt("slope") &&
-                parameters.isEnum("rafters", RafterChoice.class) &&
-                (!parameters.isPresent("shed") || (
-                        parameters.isInt("shed-width") &&
-                                parameters.isInt("shed-depth") &&
-                                (!parameters.isPresent("shed-flooring") || parameters.isInt("shed-flooring")) &&
-                                parameters.isInt("shed-cladding"))) &&
-                parameters.isPresent("customer-name") &&
-                parameters.isPresent("customer-address") &&
-                parameters.isPresent("customer-email") &&
-                parameters.isPresent("customer-phone");
     }
 }

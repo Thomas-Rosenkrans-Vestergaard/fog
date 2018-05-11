@@ -198,9 +198,16 @@ public class OfferFacade
      * @param offerId The id of the offer to mark reject.
      * @throws ApplicationException When a data storage exception occurs while performing the operation.
      */
-    public void reject(int offerId)
+    public void reject(int offerId) throws UnknownOfferException, OfferNotOpenException
     {
         try {
+
+            Offer offer = offerDAO.first(where(eq(OfferColumn.ID, offerId)));
+            if (offer == null)
+                throw new UnknownOfferException();
+            if (!offer.isOpen())
+                throw new OfferNotOpenException();
+
             offerDAO.reject(offerId);
         } catch (DataAccessException e) {
             throw new ApplicationException(e);

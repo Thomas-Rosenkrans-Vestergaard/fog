@@ -8,7 +8,6 @@ public interface OrderUpdater extends OrderBlueprint
      *
      * @param id           The id of the order to update.
      * @param customer     The customer of the order to specify in the updater.
-     * @param cladding     The cladding of the order to specify in the updater.
      * @param width        The width of the order to specify in the updater.
      * @param length       The length of the order to specify in the updater.
      * @param height       The height of the order to specify in the updater.
@@ -19,7 +18,6 @@ public interface OrderUpdater extends OrderBlueprint
      */
     static OrderUpdater from(int id,
                              int customer,
-                             int cladding,
                              int width,
                              int length,
                              int height,
@@ -28,8 +26,8 @@ public interface OrderUpdater extends OrderBlueprint
                              RafterChoice rafterChoice,
                              ShedBlueprint shed)
     {
-        return new OrderRecord(id, customer, null, cladding, null, width, length, height, roofing, null, slope, rafterChoice,
-                shed == null ? null : new ShedRecord(-1, shed.getWidth(), shed.getDepth(), shed.getCladdingId(), null, shed.getFlooringId(), null), false, -1,
+        return new OrderRecord(id, customer, null, width, length, height, roofing, null, slope, rafterChoice,
+                new ShedRecord(-1, shed.getDepth(), shed.getCladdingId(), null, shed.getFlooringId(), null), false, -1,
                 null);
     }
 

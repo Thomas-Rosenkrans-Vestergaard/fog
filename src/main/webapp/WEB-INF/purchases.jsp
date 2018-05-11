@@ -21,12 +21,21 @@
     <div class="col s12">
         <table class="highlight">
             <thead>
-
+            <th>Tilbud</th>
+            <th>Medarbejder</th>
+            <th>Købspris</th>
+            <th>Oprettet</th>
             </thead>
             <tbody>
-            <c:forEach items="${orders}" var="order">
-                <tr>
-
+            <c:forEach items="${purchases}" var="purchase">
+                <tr onclick="location.href = 'purchase?id=${purchase.getId()}'" style="cursor:pointer">
+                    <c:set var="offer" value="${purchase.getOffer()}"/>
+                    <c:set var="order" value="${offer.getOrder()}"/>
+                    <c:set var="employee" value="${offer.getEmployee()}"/>
+                    <td><a href="offer?id=${offer.getId()}">Tilbud</a></td>
+                    <td><c:out value="${employee.getName()}"/></td>
+                    <td>${f:formatPrice(offer.getPrice())}</td>
+                    <td>${f:formatDatetime(offer.getCreatedAt())}</td>
                 </tr>
             </c:forEach>
             </tbody>

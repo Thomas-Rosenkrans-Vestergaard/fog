@@ -14,11 +14,6 @@ public class ShedRecord implements Shed
     private final int id;
 
     /**
-     * The width of the shed.
-     */
-    private int width;
-
-    /**
      * The depth of the shed.
      */
     private int depth;
@@ -41,17 +36,15 @@ public class ShedRecord implements Shed
      * Creates a new {@link ShedRecord}.
      *
      * @param id         The unique identifier of the shed.
-     * @param width      The width of the shed.
      * @param depth      The depth of the shed.
      * @param claddingId The id of the cladding used on the shed.
      * @param cladding   The cladding on the shed.
      * @param flooringId The id of the flooring used on the shed.
      * @param flooring   The flooring on the shed.
      */
-    public ShedRecord(int id, int width, int depth, int claddingId, Cladding cladding, int flooringId, Flooring flooring)
+    public ShedRecord(int id, int depth, int claddingId, Cladding cladding, int flooringId, Flooring flooring)
     {
         this.id = id;
-        this.width = width;
         this.depth = depth;
         this.claddingId = claddingId;
         this.cladding = cladding;
@@ -68,28 +61,6 @@ public class ShedRecord implements Shed
     public int getId()
     {
         return id;
-    }
-
-    /**
-     * Returns the width of the shed.
-     *
-     * @return The width of the shed.
-     */
-    @Override
-    public int getWidth()
-    {
-        return width;
-    }
-
-    /**
-     * Sets the width of the shed.
-     *
-     * @param width The new width.
-     */
-    @Override
-    public void setWidth(int width)
-    {
-        this.width = width;
     }
 
     /**
@@ -184,7 +155,6 @@ public class ShedRecord implements Shed
         if (!(o instanceof Shed)) return false;
         Shed that = (Shed) o;
         return getId() == that.getId() &&
-                getWidth() == that.getWidth() &&
                 getDepth() == that.getDepth() &&
                 Objects.equals(getCladding(), that.getCladding()) &&
                 Objects.equals(getFlooring(), that.getFlooring());

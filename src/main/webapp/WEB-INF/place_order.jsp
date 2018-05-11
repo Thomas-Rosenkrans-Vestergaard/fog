@@ -33,32 +33,6 @@
             </div>
         </div>
         <div class="row">
-            <div class="col">
-                <div class="switch">
-                    <label>
-                        <input type="checkbox" id="cladding" value="true">
-                        <span class="lever"></span>
-                    </label>
-                </div>
-            </div>
-            <div class="input-field col">
-                <select name="cladding" id="cladding-input" required>
-                    <c:forEach items="${claddings}" var="claddingId">
-                        <option value="${claddingId.getId()}"><c:out value="${claddingId.getName()}"/></option>
-                    </c:forEach>
-                </select>
-                <label>Beklædning</label>
-            </div>
-        </div>
-        <script>
-            $('#cladding').on('change', function () {
-                if ($(this).is(':checked'))
-                    $('#cladding-input').removeAttr('disabled');
-                else
-                    $('#cladding-input').attr('disabled', 'disabled');
-            });
-        </script>
-        <div class="row">
             <div class="input-field col s12">
                 <select id="width" name="width" required>
                     <option value="240">240 cm</option>
@@ -187,30 +161,14 @@
             </div>
         </div>
         <div class="row">
-            <div class="col s12">
-                <div class="switch">
-                    <label>
-                        <input type="checkbox" name="shed" id="shed" value="true">
-                        <span class="lever"></span>
-                    </label>
-                </div>
-            </div>
-        </div>
-        <div class="row shed-rows">
-            <div class="input-field col s12 m6">
-                <input name="shed-width" id="shed-width" type="number" step="1" min="0"
-                       class="validate shed-input"
-                       required>
-                <label for="shed-width">Bredde</label>
-            </div>
-            <div class="input-field col s12 m6">
+            <div class="input-field col s12">
                 <input name="shed-depth" id="shed-depth" type="number" step="1" min="0"
                        class="validate shed-input"
                        required>
                 <label for="shed-depth">Dybde</label>
             </div>
         </div>
-        <div class="row shed-rows">
+        <div class="row">
             <div class="input-field col s12 m6">
                 <select name="shed-flooring" class="shed-input" required>
                     <c:forEach items="${floorings}" var="flooring">
@@ -262,29 +220,9 @@
                 </button>
             </div>
         </div>
-        <script>
-            $(document).ready(function () {
-
-                function updateShedInputs() {
-                    if ($('input#shed').is(':checked')) {
-                        $('input#shed').attr('value', 'true');
-                        $('.shed-rows').show(500);
-                        $('.shed-input').attr('required', 'required');
-                    } else {
-                        $('ïnput#shed').attr('value', 'false');
-                        $('.shed-rows').hide(500);
-                        $('.shed-input').removeAttr('required');
-                    }
-                }
-
-                updateShedInputs();
-                $('select').material_select();
-                $('input#customer-name, input#customer-mail, input#customer-telephone').characterCounter();
-                $('input#shed').on('change', function (input) {
-                    updateShedInputs();
-                });
-            });
-        </script>
     </form>
 </div>
+<script>
+    $('select').material_select();
+</script>
 <%@ include file="includes/bottom.jspf" %>

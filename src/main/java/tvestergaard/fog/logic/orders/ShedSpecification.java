@@ -1,30 +1,17 @@
 package tvestergaard.fog.logic.orders;
 
-import tvestergaard.fog.data.orders.ShedBlueprint;
-
 public class ShedSpecification
 {
 
-    private final int width;
     private final int depth;
     private final int claddingId;
     private final int flooringId;
-    public ShedSpecification(int width, int depth, int claddingId, int flooringId)
+
+    public ShedSpecification(int depth, int claddingId, int flooringId)
     {
-        this.width = width;
         this.depth = depth;
         this.claddingId = claddingId;
         this.flooringId = flooringId;
-    }
-
-    /**
-     * Returns the width of the shed.
-     *
-     * @return The width of the shed.
-     */
-    public int getWidth()
-    {
-        return width;
     }
 
     /**

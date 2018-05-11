@@ -1,5 +1,14 @@
 package tvestergaard.fog.logic.construction;
 
+import tvestergaard.fog.data.DataAccessException;
+import tvestergaard.fog.data.components.Component;
+import tvestergaard.fog.data.models.ModelDAO;
+import tvestergaard.fog.data.orders.Order;
+import tvestergaard.fog.data.roofing.RoofingDAO;
+import tvestergaard.fog.logic.ApplicationException;
+
+import java.util.List;
+
 public class ConstructionFacade
 {
 
@@ -7,30 +16,39 @@ public class ConstructionFacade
      * The garage constructor used to construct garages.
      */
     private final DelegatorGarageConstructor garageConstructor;
+    private final ModelDAO                   modelDAO;
+    private final RoofingDAO                 roofingDAO;
 
     /**
      * Creates a new {@link ConstructionFacade}.
      */
-    public ConstructionFacade()
+    public ConstructionFacade(ModelDAO modelDAO, RoofingDAO roofingDAO)
     {
         SkeletonConstructor skeletonConstructor = new CAR01SkeletonConstructor();
         RoofConstructor     roofConstructor     = new TiledRoofConstructor();
-        garageConstructor = new DelegatorGarageConstructor(skeletonConstructor);
+        this.garageConstructor = new DelegatorGarageConstructor(skeletonConstructor);
         garageConstructor.register(roofConstructor);
+        this.modelDAO = modelDAO;
+        this.roofingDAO = roofingDAO;
     }
 
     /**
      * Constructs a garage from the provided specifications.
      *
-     * @param specifications     The specifications for the garage to construct.
-     * @param skeletonComponents The components used to construct the skeleton of the garage.
-     * @param roofingComponents  The components used to construct the roofing of the garage.
+     * @param order The specifications for the garage to construct.
      * @return The summary of the construction.
+     * @throws ApplicationException When a DataAccessException occurs.
      */
-    public ConstructionSummary construct(ConstructionSpecification specifications,
-                                         Components skeletonComponents,
-                                         Components roofingComponents)
+    public ConstructionSummary construct(Order order)
     {
-        return garageConstructor.construct(specifications, skeletonComponents, roofingComponents);
+        try {
+            ConstructionSpecification specification      = ConstructionSpecification.from(order);
+            List<Component>           skeletonComponents = modelDAO.getComponents(1);
+            List<Component>           roofingComponents  = roofingDAO.getComponents(order.getRoofing().getId());
+            return garageConstructor.construct(specification, new Components(skeletonComponents), new Components(roofingComponents));
+
+        } catch (DataAccessException e) {
+            throw new ApplicationException(e);
+        }
     }
 }

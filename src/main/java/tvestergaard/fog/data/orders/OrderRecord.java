@@ -1,6 +1,5 @@
 package tvestergaard.fog.data.orders;
 
-import tvestergaard.fog.data.cladding.Cladding;
 import tvestergaard.fog.data.customers.Customer;
 import tvestergaard.fog.data.roofing.Roofing;
 
@@ -21,13 +20,6 @@ public class OrderRecord implements Order
      * The customer who placed the order.
      */
     private Customer customer;
-
-    /**
-     * The cladding used on the order.
-     */
-    private Cladding cladding;
-
-    private int claddingId;
 
     /**
      * The width of the order.
@@ -86,7 +78,6 @@ public class OrderRecord implements Order
      *
      * @param id             The unique identifier of the order.
      * @param customer       The customer who placed the order.
-     * @param cladding       The cladding used on the order.
      * @param width          The width of the order.
      * @param length         The length of the order.
      * @param height         The height of the order.
@@ -101,8 +92,6 @@ public class OrderRecord implements Order
     public OrderRecord(int id,
                        int customerId,
                        Customer customer,
-                       int claddingId,
-                       Cladding cladding,
                        int width,
                        int length,
                        int height,
@@ -118,8 +107,6 @@ public class OrderRecord implements Order
         this.id = id;
         this.customerId = customerId;
         this.customer = customer;
-        this.claddingId = claddingId;
-        this.cladding = cladding;
         this.width = width;
         this.length = length;
         this.height = height;
@@ -158,34 +145,6 @@ public class OrderRecord implements Order
     @Override public int getCustomerId()
     {
         return this.customerId;
-    }
-
-    /**
-     * Returns the cladding used on the order.
-     *
-     * @return The cladding used on the order.
-     */
-    @Override
-    public Cladding getCladding()
-    {
-        return cladding;
-    }
-
-    @Override
-    public int getCladdingId()
-    {
-        return claddingId;
-    }
-
-    /**
-     * Sets the cladding used on the order.
-     *
-     * @param cladding The new cladding.
-     */
-    @Override
-    public void setCladdingId(int cladding)
-    {
-        this.claddingId = cladding;
     }
 
     /**
@@ -390,7 +349,6 @@ public class OrderRecord implements Order
                 getHeight() == that.getHeight() &&
                 getSlope() == that.getSlope() &&
                 Objects.equals(getCustomer(), that.getCustomer()) &&
-                Objects.equals(getCladding(), that.getCladding()) &&
                 Objects.equals(getRoofing(), that.getRoofing()) &&
                 getRafterChoice() == that.getRafterChoice() &&
                 Objects.equals(getShed(), that.getShed()) &&

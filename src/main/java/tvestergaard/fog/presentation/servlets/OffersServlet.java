@@ -5,6 +5,8 @@ import tvestergaard.fog.data.offers.Offer;
 import tvestergaard.fog.logic.customers.InactiveCustomerException;
 import tvestergaard.fog.logic.employees.InsufficientPermissionsException;
 import tvestergaard.fog.logic.offers.OfferFacade;
+import tvestergaard.fog.logic.offers.OfferNotOpenException;
+import tvestergaard.fog.logic.offers.UnknownOfferException;
 import tvestergaard.fog.logic.purchases.PurchaseFacade;
 import tvestergaard.fog.presentation.Authentication;
 import tvestergaard.fog.presentation.Notifications;
@@ -58,11 +60,14 @@ public class OffersServlet extends HttpServlet
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException
     {
+        Authentication authentication = new Authentication(req);
+        if (authentication.redirect(resp, "offers"))
+            return;
+
         String action = req.getParameter("action");
 
-        Parameters     parameters     = new Parameters(req);
-        Notifications  notifications  = notifications(req);
-        Authentication authentication = new Authentication(req);
+        Parameters    parameters    = new Parameters(req);
+        Notifications notifications = notifications(req);
 
         if (!parameters.isInt("offer")) {
             notifications.error("Missing offer id.");
@@ -96,9 +101,14 @@ public class OffersServlet extends HttpServlet
             throw new UnsupportedOperationException();
         } catch (InactiveCustomerException e) {
             notifications.error("Du er markeret inaktiv.");
-            resp.sendRedirect("order");
         } catch (InsufficientPermissionsException e) {
-
+            notifications.error("No permission");
+        } catch (UnknownOfferException e) {
+            notifications.error("Unknown offer.");
+        } catch (OfferNotOpenException e) {
+            notifications.error("Offer not open.");
         }
+
+        resp.sendRedirect("order");
     }
 }

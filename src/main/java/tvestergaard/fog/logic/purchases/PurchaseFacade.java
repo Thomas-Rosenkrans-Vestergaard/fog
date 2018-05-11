@@ -3,6 +3,7 @@ package tvestergaard.fog.logic.purchases;
 import tvestergaard.fog.data.DataAccessException;
 import tvestergaard.fog.data.constraints.Constraint;
 import tvestergaard.fog.data.employees.Employee;
+import tvestergaard.fog.data.employees.EmployeeColumn;
 import tvestergaard.fog.data.employees.EmployeeDAO;
 import tvestergaard.fog.data.employees.Role;
 import tvestergaard.fog.data.offers.Offer;
@@ -100,7 +101,7 @@ public class PurchaseFacade
     public Purchase create(int offerId, int employeeId) throws InactiveCustomerException, InsufficientPermissionsException
     {
         try {
-            Employee employee = employeeDAO.first(where(eq(ID, employeeId)));
+            Employee employee = employeeDAO.first(where(eq(EmployeeColumn.ID, employeeId)));
             if (!employee.is(Role.SALESMAN))
                 throw new InsufficientPermissionsException(Role.SALESMAN);
 

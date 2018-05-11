@@ -36,6 +36,26 @@ public interface Offer extends OfferBlueprint
      */
     OfferStatus getStatus();
 
+    default boolean isOpen()
+    {
+        return getStatus() == OfferStatus.OPEN;
+    }
+
+    default boolean isClosed()
+    {
+        return getStatus() == OfferStatus.CLOSED;
+    }
+
+    default boolean isAccepted()
+    {
+        return getStatus() == OfferStatus.ACCEPTED;
+    }
+
+    default boolean isRejected()
+    {
+        return getStatus() == OfferStatus.REJECTED;
+    }
+
     /**
      * Returns the moment in time when the offer was created.
      *

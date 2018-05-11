@@ -79,18 +79,16 @@ public class PlaceOrderServlet extends HttpServlet
         Parameters     parameters     = new Parameters(req);
         Authentication authentication = new Authentication(req);
 
-        if (!parameters.isInt("cladding") ||
-                !parameters.isInt("width") ||
+        if (!parameters.isInt("width") ||
                 !parameters.isInt("length") ||
                 !parameters.isInt("height") ||
                 !parameters.isInt("roofing") ||
                 !parameters.isInt("slope") ||
                 !parameters.isEnum("rafters", RafterChoice.class) ||
-                !(!parameters.isPresent("shed") || (
-                        parameters.isInt("shed-width") ||
-                                parameters.isInt("shed-depth") ||
-                                (!parameters.isPresent("shed-flooring") || parameters.isInt("shed-flooring")) ||
-                                parameters.isInt("shed-cladding")))) {
+                !parameters.isInt("shed-depth") ||
+                !parameters.isInt("shed-flooring") ||
+                !parameters.isInt("shed-cladding")) {
+
             notifications.error("Invalid design data.");
             resp.sendRedirect("place-order");
             return;
@@ -114,15 +112,15 @@ public class PlaceOrderServlet extends HttpServlet
 
             if (customer == null) {
                 notifications.error("Incorrect customer credentials.");
-                HttpSession session = req.getSession();
-                session.setAttribute("customer", customer);
                 resp.sendRedirect("place-order");
                 return;
             }
 
+            HttpSession session = req.getSession();
+            session.setAttribute("customer", customer);
+
             orderFacade.create(
                     customer.getId(),
-                    parameters.getInt("cladding"),
                     parameters.getInt("width"),
                     parameters.getInt("length"),
                     parameters.getInt("height"),
@@ -149,12 +147,7 @@ public class PlaceOrderServlet extends HttpServlet
 
     private ShedSpecification createShed(Parameters parameters)
     {
-        if (!parameters.isPresent("shed")) {
-            return null;
-        }
-
         return new ShedSpecification(
-                parameters.getInt("shed-width"),
                 parameters.getInt("shed-depth"),
                 parameters.getInt("shed-cladding"),
                 parameters.getInt("shed-flooring")

@@ -52,7 +52,7 @@ CREATE TABLE `attribute_values` (
   UNIQUE KEY `unique_attribute_material` (`attribute`,`material`),
   KEY `fk_material_idx` (`material`),
   CONSTRAINT `fk_material` FOREIGN KEY (`material`) REFERENCES `materials` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=120 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=176 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -120,7 +120,7 @@ CREATE TABLE `claddings` (
   `active` bit(1) NOT NULL DEFAULT b'1',
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -139,7 +139,7 @@ CREATE TABLE `component_definitions` (
   UNIQUE KEY `id_UNIQUE` (`id`),
   KEY `fk_category_idx1` (`category`),
   CONSTRAINT `fk_category` FOREIGN KEY (`category`) REFERENCES `categories` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -159,7 +159,7 @@ CREATE TABLE `component_values` (
   KEY `material` (`material`),
   CONSTRAINT `component_values_ibfk_2` FOREIGN KEY (`definition`) REFERENCES `component_definitions` (`id`),
   CONSTRAINT `component_values_ibfk_3` FOREIGN KEY (`material`) REFERENCES `materials` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -217,7 +217,7 @@ CREATE TABLE `floorings` (
   `active` bit(1) NOT NULL DEFAULT b'1',
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -234,9 +234,9 @@ CREATE TABLE `garage_component_definitions` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`),
   KEY `definition` (`definition`),
-  KEY `garage_model_fk_idx` (`model`),
+  KEY `skeleton_model_fk_idx` (`model`),
   CONSTRAINT `garage_component_definitions_ibfk_1` FOREIGN KEY (`definition`) REFERENCES `component_definitions` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -252,10 +252,10 @@ CREATE TABLE `garage_component_values` (
   `definition` int(11) unsigned NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`),
-  KEY `garage_component_values_ibfk_2_idx` (`component`),
+  KEY `skeleton_component_values_ibfk_2_idx` (`component`),
   KEY `fk_definition_idx` (`definition`),
   CONSTRAINT `garage_component_values_ibfk_2` FOREIGN KEY (`component`) REFERENCES `component_values` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -291,7 +291,7 @@ CREATE TABLE `materials` (
   UNIQUE KEY `id_UNIQUE` (`id`),
   UNIQUE KEY `number_UNIQUE` (`number`),
   KEY `fk_category_idx` (`category`)
-) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -306,11 +306,11 @@ CREATE TABLE `offers` (
   `order` int(11) unsigned NOT NULL,
   `employee` int(11) unsigned NOT NULL,
   `price` int(11) unsigned NOT NULL,
-  `status` enum('ACCEPTED','REJECTED') DEFAULT NULL,
+  `status` enum('OPEN','CLOSED','ACCEPTED','REJECTED') DEFAULT 'OPEN',
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -323,7 +323,6 @@ DROP TABLE IF EXISTS `orders`;
 CREATE TABLE `orders` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `customer` int(11) unsigned NOT NULL,
-  `cladding` int(11) unsigned NOT NULL,
   `width` int(11) unsigned NOT NULL,
   `length` int(11) unsigned NOT NULL,
   `height` int(11) unsigned NOT NULL,
@@ -338,7 +337,7 @@ CREATE TABLE `orders` (
   KEY `cladding` (`roofing`),
   CONSTRAINT `orders_ibfk_1` FOREIGN KEY (`customer`) REFERENCES `customers` (`id`),
   CONSTRAINT `orders_ibfk_2` FOREIGN KEY (`roofing`) REFERENCES `roofings` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -378,7 +377,7 @@ CREATE TABLE `roles` (
   `role` enum('HEAD_OF_CENTER','HEAD_OF_MATERIALS','SALESMAN') NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=43 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=71 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -396,7 +395,7 @@ CREATE TABLE `roofing_component_definitions` (
   UNIQUE KEY `id_UNIQUE` (`id`),
   KEY `definition` (`definition`),
   CONSTRAINT `roofing_component_definitions_ibfk_1` FOREIGN KEY (`definition`) REFERENCES `component_definitions` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -416,7 +415,7 @@ CREATE TABLE `roofing_component_values` (
   KEY `roofing_component_values_ibfk_2_idx` (`component`),
   CONSTRAINT `roofing_component_values_ibfk_1` FOREIGN KEY (`roofing`) REFERENCES `roofings` (`id`),
   CONSTRAINT `roofing_component_values_ibfk_2` FOREIGN KEY (`component`) REFERENCES `component_values` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -491,4 +490,4 @@ CREATE TABLE `tokens` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-05-08 20:44:03
+-- Dump completed on 2018-05-10 18:50:18

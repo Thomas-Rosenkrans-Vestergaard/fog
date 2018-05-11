@@ -1,6 +1,5 @@
 package tvestergaard.fog.data.orders;
 
-import tvestergaard.fog.data.cladding.Cladding;
 import tvestergaard.fog.data.customers.Customer;
 import tvestergaard.fog.data.roofing.Roofing;
 
@@ -15,13 +14,6 @@ public interface Order extends OrderUpdater
      * @return The customer who placed the order.
      */
     Customer getCustomer();
-
-    /**
-     * Returns the cladding used on the order.
-     *
-     * @return The cladding used on the order.
-     */
-    Cladding getCladding();
 
     /**
      * Returns the roofing used on the order.

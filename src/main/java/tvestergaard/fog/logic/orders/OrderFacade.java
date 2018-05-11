@@ -58,7 +58,6 @@ public class OrderFacade
      * Creates a new order.
      *
      * @param customer The id of the customer who placed the order to create.
-     * @param cladding The id of the cladding used on the order to create.
      * @param width    The width of the order to create.
      * @param length   The length of the order to create.
      * @param height   The height of the order to create.
@@ -72,7 +71,6 @@ public class OrderFacade
      */
     public Order create(
             int customer,
-            int cladding,
             int width,
             int length,
             int height,
@@ -83,7 +81,7 @@ public class OrderFacade
     {
         try {
 
-            Set<OrderError> reasons = validator.validate(customer, cladding, width, length, height, roofing, slope, shed);
+            Set<OrderError> reasons = validator.validate(customer, width, length, height, roofing, slope, shed);
             if (!reasons.isEmpty())
                 throw new OrderValidatorException(reasons);
 
@@ -93,14 +91,13 @@ public class OrderFacade
 
             return dao.create(OrderBlueprint.from(
                     customer,
-                    cladding,
                     width,
                     length,
                     height,
                     roofing,
                     slope,
                     rafters,
-                    shed == null ? null : ShedBlueprint.from(shed.getWidth(), shed.getDepth(), shed.getCladdingId(), shed.getFlooringId())));
+                    shed == null ? null : ShedBlueprint.from(shed.getDepth(), shed.getCladdingId(), shed.getFlooringId())));
         } catch (DataAccessException e) {
             throw new ApplicationException(e);
         }
@@ -123,7 +120,6 @@ public class OrderFacade
     }
 
     public boolean update(int id,
-                          int cladding,
                           int width,
                           int length,
                           int height,
@@ -133,11 +129,11 @@ public class OrderFacade
                           ShedSpecification shed) throws OrderValidatorException
     {
         try {
-            Set<OrderError> reasons = validator.validate(-1, cladding, width, length, height, roofing, slope, shed);
+            Set<OrderError> reasons = validator.validate(-1, width, length, height, roofing, slope, shed);
             if (!reasons.isEmpty())
                 throw new OrderValidatorException(reasons);
 
-            return dao.update(OrderUpdater.from(id, -1, cladding, width, length, height, roofing, slope, rafters, ShedBlueprint.from(shed.getWidth(), shed.getDepth(), shed.getCladdingId(), shed.getFlooringId())));
+            return dao.update(OrderUpdater.from(id, -1, width, length, height, roofing, slope, rafters, ShedBlueprint.from(shed.getDepth(), shed.getCladdingId(), shed.getFlooringId())));
         } catch (DataAccessException e) {
             throw new ApplicationException(e);
         }

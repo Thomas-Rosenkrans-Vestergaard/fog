@@ -14,7 +14,6 @@ public class OrderValidator
      * Validates the provided details for creating a new order.
      *
      * @param customer The customer variable to perform validation upon.
-     * @param cladding The cladding variable to perform validation upon.
      * @param width    The width variable to perform validation upon.
      * @param length   The length variable to perform validation upon.
      * @param height   The height variable to perform validation upon.
@@ -25,7 +24,6 @@ public class OrderValidator
      */
     public Set<OrderError> validate(
             int customer,
-            int cladding,
             int width,
             int length,
             int height,

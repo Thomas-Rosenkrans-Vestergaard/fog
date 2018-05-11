@@ -41,7 +41,7 @@ public class OrderPlacer
     {
         try {
 
-            Set<OrderError> reasons = validator.validate(customerId, cladding, width, length, height, roofing, slope, shed);
+            Set<OrderError> reasons = validator.validate(customerId, width, length, height, roofing, slope, shed);
 
             if (!reasons.isEmpty())
                 throw new OrderValidatorException(reasons);
@@ -62,14 +62,13 @@ public class OrderPlacer
 
             return orderDAO.create(OrderBlueprint.from(
                     customerId,
-                    cladding,
                     width,
                     length,
                     height,
                     roofing,
                     slope,
                     rafters,
-                    shed == null ? null : ShedBlueprint.from(shed.getWidth(), shed.getDepth(), shed.getCladdingId(), shed.getFlooringId())));
+                    ShedBlueprint.from(shed.getDepth(), shed.getCladdingId(), shed.getFlooringId())));
         } catch (DataAccessException e) {
             throw new ApplicationException(e);
         }

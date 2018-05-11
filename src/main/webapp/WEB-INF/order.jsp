@@ -19,30 +19,40 @@
 </div>
 <div class="row">
     <div class="col s12">
-        <table class="highlight">
-            <thead>
-            <th>ID</th>
-            <th>Bredde</th>
-            <th>Længde</th>
-            <th>Højde</th>
-            <th>Tag</th>
-            <th>Hældning</th>
-            <th>Spær</th>
-            <th>Oprettet</th>
-            </thead>
+        <table>
             <tbody>
-            <c:forEach items="${orders}" var="order">
-                <tr style="cursor:pointer;" onclick="location.href = 'order?id=${order.getId()}'">
-                    <td>${order.getId()}</td>
-                    <td>${order.getWidth()}</td>
-                    <td>${order.getLength()}</td>
-                    <td>${order.getHeight()}</td>
-                    <td><c:out value="${order.getRoofing().getName()}"/></td>
-                    <td>${order.getSlope()}</td>
-                    <td>${order.getRafterChoice()}</td>
-                    <td>${f:formatDatetime(order.getCreatedAt())}</td>
-                </tr>
-            </c:forEach>
+            <tr>
+                <th>ID</th>
+                <td>${order.getId()}</td>
+            </tr>
+            <tr>
+                <th>Bredde</th>
+                <td>${order.getWidth()}</td>
+            </tr>
+            <tr>
+                <th>Længde</th>
+                <td>${order.getLength()}</td>
+            </tr>
+            <tr>
+                <th>Højde</th>
+                <td>${order.getHeight()}</td>
+            </tr>
+            <tr>
+                <th>Tag</th>
+                <td><c:out value="${order.getRoofing().getName()}"/></td>
+            </tr>
+            <tr>
+                <th>Hældning</th>
+                <td>${order.getSlope()}</td>
+            </tr>
+            <tr>
+                <th>Spær</th>
+                <td>${order.getRafterChoice()}</td>
+            </tr>
+            <tr>
+                <th>Oprettet</th>
+                <td>${f:formatDatetime(order.getCreatedAt())}</td>
+            </tr>
             </tbody>
         </table>
     </div>

@@ -7,7 +7,6 @@ public interface OrderBlueprint
      * Returns a new order blueprint from the provided information.
      *
      * @param customer     The customer of the order to specify in the blueprint.
-     * @param cladding     The cladding of the order to specify in the blueprint.
      * @param width        The width of the order to specify in the blueprint.
      * @param length       The length of the order to specify in the blueprint.
      * @param height       The height of the order to specify in the blueprint.
@@ -17,7 +16,6 @@ public interface OrderBlueprint
      * @return The newly created order blueprint.
      */
     static OrderBlueprint from(int customer,
-                               int cladding,
                                int width,
                                int length,
                                int height,
@@ -26,8 +24,8 @@ public interface OrderBlueprint
                                RafterChoice rafterChoice,
                                ShedBlueprint shed)
     {
-        return new OrderRecord(-1, customer, null, cladding, null, width, length, height, roofing, null, slope, rafterChoice,
-                shed == null ? null : new ShedRecord(-1, shed.getWidth(), shed.getDepth(), shed.getCladdingId(), null, shed.getFlooringId(), null), false, -1,
+        return new OrderRecord(-1, customer, null, width, length, height, roofing, null, slope, rafterChoice,
+                new ShedRecord(-1, shed.getDepth(), shed.getCladdingId(), null, shed.getFlooringId(), null), false, -1,
                 null);
     }
 
@@ -37,20 +35,6 @@ public interface OrderBlueprint
      * @return The customer who placed the order.
      */
     int getCustomerId();
-
-    /**
-     * Returns the id of the cladding used on the order.
-     *
-     * @return The cladding used on the order.
-     */
-    int getCladdingId();
-
-    /**
-     * Sets the id of the cladding used on the order.
-     *
-     * @param cladding The new cladding.
-     */
-    void setCladdingId(int cladding);
 
     /**
      * Returns the width of the order.

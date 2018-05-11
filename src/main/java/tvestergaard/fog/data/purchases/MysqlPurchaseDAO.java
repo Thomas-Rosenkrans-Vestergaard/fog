@@ -58,7 +58,6 @@ public class MysqlPurchaseDAO extends AbstractMysqlDAO implements PurchaseDAO
                 "INNER JOIN offers ON purchases.offer = offers.id " +
                 "INNER JOIN orders o ON offers.order = o.id " +
                 "INNER JOIN customers ON o.customer = customers.id " +
-                "INNER JOIN claddings o_cladding ON o.cladding = o_cladding.id " +
                 "INNER JOIN roofings ON o.roofing = roofings.id " +
                 "LEFT  JOIN sheds ON o.id = sheds.order " +
                 "LEFT  JOIN claddings s_cladding ON sheds.cladding = s_cladding.id " +
@@ -68,7 +67,7 @@ public class MysqlPurchaseDAO extends AbstractMysqlDAO implements PurchaseDAO
             binder.bind(statement, constraints);
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next())
-                purchases.add(createPurchase(resultSet, "purchases", "c_emp", "offers", "o", "customers", "o_cladding", "roofings", "sheds", "s_cladding", "floorings", "o_emp"));
+                purchases.add(createPurchase(resultSet, "purchases", "c_emp", "offers", "o", "customers", "roofings", "sheds", "s_cladding", "floorings", "o_emp"));
 
             return purchases;
         } catch (SQLException e) {
@@ -106,9 +105,16 @@ public class MysqlPurchaseDAO extends AbstractMysqlDAO implements PurchaseDAO
 
             String bomSQL = "INSERT INTO bom VALUES ()";
             try (PreparedStatement bomStatement = connection.prepareStatement(bomSQL, RETURN_GENERATED_KEYS)) {
-                ResultSet resultSet = bomStatement.getGeneratedKeys();
                 bomStatement.executeUpdate();
+                ResultSet resultSet = bomStatement.getGeneratedKeys();
+                resultSet.first();
                 int bomId = resultSet.getInt(1);
+
+                String offerSQL = "UPDATE offers SET status = 'ACCEPTED' WHERE id = ?";
+                try (PreparedStatement offerStatement = connection.prepareStatement(offerSQL)) {
+                    offerStatement.setInt(1, blueprint.getOfferId());
+                    offerStatement.executeUpdate();
+                }
 
                 final String purchaseSQL = "INSERT INTO purchases (offer, employee, bom) VALUES (?, ?, ?)";
                 try (PreparedStatement statement = connection.prepareStatement(purchaseSQL, RETURN_GENERATED_KEYS)) {
@@ -117,9 +123,15 @@ public class MysqlPurchaseDAO extends AbstractMysqlDAO implements PurchaseDAO
                     statement.setInt(3, bomId);
                     statement.executeUpdate();
                     ResultSet generated = statement.getGeneratedKeys();
+                    generated.first();
+
+                    connection.commit();
 
                     return first(where(eq(PurchaseColumn.ID, generated.getInt(1))));
                 }
+            } catch (SQLException e) {
+                connection.rollback();
+                throw e;
             }
 
         } catch (SQLException e) {

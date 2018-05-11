@@ -21,39 +21,37 @@
     <div class="col s12">
         <table class="highlight">
             <thead>
-            <th>Beklædning</th>
-            <th>Bredde</th>
-            <th>Længde</th>
-            <th>Højde</th>
-            <th>Tag</th>
-            <th>Hældning</th>
-            <th>Spær</th>
-            <th>Redskabsskur</th>
+            <th>Ordre</th>
+            <th>Tilbudspris</th>
+            <th>Status</th>
             <th>Oprettet</th>
-            <th>Medarbejder</th>
-            <th>Tilbud pris</th>
-            <th>Acceptér</th>
-            <th>Afvis</th>
             </thead>
             <tbody>
             <c:forEach items="${offers}" var="offer">
                 <tr>
                     <c:set var="order" value="${offer.getOrder()}"/>
-                    <c:set var="employee" value="${offer.getEmployee()}"/>
-                    <td><c:out value="${order.getCladding().getName()}"/></td>
-                    <td>${order.getWidth()}</td>
-                    <td>${order.getLength()}</td>
-                    <td>${order.getHeight()}</td>
-                    <td><c:out value="${order.getRoofing().getName()}"/></td>
-                    <td>${order.getSlope()}</td>
-                    <td>${order.getRafterChoice()}</td>
-                    <td><c:out value="${order.getRoofing().getName()}"/></td>
-                    <td>${f:formatDatetime(order.getCreatedAt())}</td>
-                    <td><c:out value="${employee.getName()}"/></td>
+                    <td><a href="order?id=${order.getId()}">Ordre</a></td>
                     <td>${f:formatPrice(offer.getPrice())}</td>
-                    <td><a href="?action=accept&offer=${offer.getId()}">Acceptér</a></td>
-                    <td><a href="?action=reject&offer=${offer.getId()}">Afvis</a></td>
-                    <td></td>
+                    <th>${offer.getStatus()}</th>
+                    <td>${f:formatDatetime(offer.getCreatedAt())}</td>
+                    <c:if test="${offer.isOpen()}">
+                        <td>
+                            <form method="post">
+                                <input type="hidden" name="offer" value="${offer.getId()}">
+                                <button class="btn-large waves-effect waves-light" type="submit" name="action"
+                                        value="accept">Acceptér<i class="material-icons right">check</i>
+                                </button>
+                            </form>
+                        </td>
+                        <td>
+                            <form method="post">
+                                <input type="hidden" name="offer" value="${offer.getId()}">
+                                <button class="btn-large waves-effect waves-light" type="submit" name="action"
+                                        value="reject">Afvis<i class="material-icons right">clear</i>
+                                </button>
+                            </form>
+                        </td>
+                    </c:if>
                 </tr>
             </c:forEach>
             </tbody>
