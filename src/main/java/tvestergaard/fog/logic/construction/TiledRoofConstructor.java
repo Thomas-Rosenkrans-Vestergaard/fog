@@ -1,15 +1,13 @@
 package tvestergaard.fog.logic.construction;
 
 import org.w3c.dom.Document;
-import org.w3c.dom.Element;
 import tvestergaard.fog.data.components.Component;
 import tvestergaard.fog.data.materials.Material;
 import tvestergaard.fog.data.roofing.RoofingType;
 
-import static org.apache.batik.anim.dom.SVGDOMImplementation.SVG_NAMESPACE_URI;
 import static tvestergaard.fog.data.roofing.RoofingType.TILED;
 
-public class TiledRoofConstructor implements RoofingConstructor
+public class TiledRoofConstructor extends DrawingUtilities implements RoofingConstructor
 {
 
     private static final String TILE                   = "ROOF_TILE";
@@ -26,13 +24,99 @@ public class TiledRoofConstructor implements RoofingConstructor
      * @param skeletonConstructionSummary The object containing information about the construction of the garage skeleton.
      * @return The summary containing information about the construction of the roofing.
      */
-    @Override public RoofingConstructionSummary construct(ConstructionSpecification specification, Components components, SkeletonConstructionSummary skeletonConstructionSummary)
+    @Override public RoofingConstructionSummary construct(ConstructionSpecification specification,
+                                                          Components components,
+                                                          SkeletonConstructionSummary skeletonConstructionSummary)
+    {
+        this.length = mm(specification.getLength());
+        this.outerLength = length + END_OVERHANG_MM * 2;
+        this.width = mm(specification.getWidth());
+        this.outerWidth = width + SIDE_OVERHANG_MM * 2;
+
+        Materials materials    = calculateMaterials(specification, components);
+        Document  skeletonView = drawSkeletonView(specification, components, skeletonConstructionSummary);
+        Document  tiledView    = drawTiledView(specification, components, skeletonView);
+
+        return new DefaultRoofingConstructionSummary(materials,
+                new DocumentConstructionDrawing(skeletonView),
+                new DocumentConstructionDrawing(tiledView));
+    }
+
+    private Document drawTiledView(ConstructionSpecification specification, Components components, Document skeletonView)
+    {
+        Document document = createDocument(this.outerLength + DRAWING_PADDING * 2, this.outerWidth + DRAWING_PADDING * 2);
+        copy(skeletonView, document);
+
+        drawTiles(document, specification, components);
+        drawEnds(document, specification);
+
+        return document;
+    }
+
+    private void drawTiles(Document document, ConstructionSpecification specification, Components components)
+    {
+        int tileHeight      = 420;
+        int tileWidth       = 330;
+        int ridgeTileLength = 420;
+        int ridgeTileHeight = 252;
+        int lathDistance    = 320;
+        int thickness       = 73;
+        int mid             = DRAWING_PADDING + SIDE_OVERHANG_MM + this.width / 2 - thickness / 2;
+
+        int columns = this.outerLength / tileWidth;
+        int rows    = this.outerWidth / 2 / lathDistance;
+
+        for (int c = 0; c < columns; c++) {
+            for (int r = 0; r < rows; r++) {
+                rect(document, tileWidth, tileHeight, DRAWING_PADDING + tileWidth * c, mid + lathDistance * r);
+            }
+        }
+
+        int restBottom = this.outerWidth / 2 - rows * lathDistance + thickness / 2;
+        for (int c = 0; c < columns; c++)
+            rect(document, tileWidth, restBottom, DRAWING_PADDING + tileWidth * c, mid + lathDistance * rows);
+
+        int restRight = this.outerLength - columns * tileWidth;
+        for (int r = 0; r < rows; r++)
+            rect(document, restRight, tileHeight, DRAWING_PADDING + tileWidth * columns, mid + lathDistance * r);
+
+        rect(document, restRight, restBottom, DRAWING_PADDING + tileWidth * columns, mid + lathDistance * rows);
+
+        int numberOfRidgeTiles = this.outerLength / ridgeTileLength;
+        for (int c = 0; c < numberOfRidgeTiles; c++)
+            rect(document, ridgeTileLength, ridgeTileHeight, DRAWING_PADDING + ridgeTileLength * c, mid - ridgeTileHeight / 2);
+
+        int restRidgeTileLength = outerLength - numberOfRidgeTiles * ridgeTileLength;
+        rect(document, restRidgeTileLength, ridgeTileHeight, DRAWING_PADDING + restRidgeTileLength * (numberOfRidgeTiles + 1), mid - ridgeTileHeight / 2);
+    }
+
+    /**
+     * Draws the aeriel view of the skeleton.
+     *
+     * @param specification               The specifications that the roofing must satisfy.
+     * @param components                  The components to use while constructing the roofing.
+     * @param skeletonConstructionSummary The object containing information about the construction of the garage skeleton.
+     * @return The resulting drawing.
+     */
+    private Document drawSkeletonView(ConstructionSpecification specification, Components components, SkeletonConstructionSummary skeletonConstructionSummary)
+    {
+        Document document = createDocument(this.outerLength + DRAWING_PADDING * 2, this.outerWidth + DRAWING_PADDING * 2);
+        copy(skeletonConstructionSummary.getAerialView().getDocument(), document);
+
+        drawSides(document, specification);
+        drawRafters(document, specification);
+        drawLaths(document, specification);
+        drawEnds(document, specification);
+
+        return document;
+    }
+
+    private Materials calculateMaterials(ConstructionSpecification specification, Components components)
     {
         MutableMaterials materials = new MutableMaterials();
-
-        int length    = specification.getLength();
-        int width     = specification.getWidth();
-        int widthHalf = width / 2;
+        int              length    = specification.getLength();
+        int              width     = specification.getWidth();
+        int              widthHalf = width / 2;
 
         int roofHeight = up(Math.tan(Math.toRadians(specification.getRoofingSlope())) * widthHalf);
         int hypotenuse = up(Math.sqrt((widthHalf * widthHalf) + (roofHeight * roofHeight)));
@@ -55,90 +139,51 @@ public class TiledRoofConstructor implements RoofingConstructor
 
         materials.add(vindSkede.getMaterial(), 2, vindSkede.getNotes());
         materials.add(sternBræt.getMaterial(), 2, vindSkede.getNotes());
-
-        return new DefaultRoofingConstructionSummary(materials, null, null);
+        return materials;
     }
 
-//    private void drawLaths(Document document, Element svgRoot, ConstructionSpecification specification)
-//    {
-//        int thickness     = 73;
-//        int length        = mm(specification.getLength());
-//        int lathDistance  = 320;
-//        int numberOfLaths = mm(specification.getWidth()) / 2 / lathDistance;
-//        drawLath(document, svgRoot, length, thickness, (mm(specification.getWidth()) + thickness) / 2);
-//
-//        for (int i = 1; i <= numberOfLaths; i++)
-//            drawLath(document, svgRoot, length, thickness, lathDistance * i + DRAWING_PADDING);
-//
-//        int width = mm(specification.getWidth());
-//        for (int i = 1; i <= numberOfLaths; i++)
-//            drawLath(document, svgRoot, length, thickness, width + DRAWING_PADDING - i * lathDistance - thickness / 2);
-//    }
-//
-//    private void drawLath(Document document, Element svgRoot, int width, int height, int y)
-//    {
-//        Element rectangle = document.createElementNS(SVG_NAMESPACE_URI, "rect");
-//        rectangle.setAttributeNS(null, "width", Integer.toString(width));
-//        rectangle.setAttributeNS(null, "height", Integer.toString(height));
-//        rectangle.setAttributeNS(null, "style", "fill:white;stroke-width:5;stroke:black");
-//        rectangle.setAttributeNS(null, "x", Integer.toString(DRAWING_PADDING));
-//        rectangle.setAttributeNS(null, "y", Integer.toString(y));
-//        svgRoot.appendChild(rectangle);
-//    }
-//
-//    private void drawSides(Document document, Element svgRoot, ConstructionSpecification specification)
-//    {
-//        int thickness = 20;
-//
-//        int currentY = DRAWING_PADDING;
-//
-//        for (int i = 0; i < 2; i++) {
-//            Element rectangle = document.createElementNS(SVG_NAMESPACE_URI, "rect");
-//            rectangle.setAttributeNS(null, "width", Integer.toString(mm(specification.getLength())));
-//            rectangle.setAttributeNS(null, "height", Integer.toString(thickness));
-//            rectangle.setAttributeNS(null, "style", "fill:black;stroke:black");
-//            rectangle.setAttributeNS(null, "x", Integer.toString(DRAWING_PADDING));
-//            rectangle.setAttributeNS(null, "y", Integer.toString(currentY));
-//            svgRoot.appendChild(rectangle);
-//
-//            currentY = mm(specification.getWidth()) + DRAWING_PADDING - thickness;
-//        }
-//    }
-//
-//    private void drawEnds(Document document, Element svgRoot, ConstructionSpecification specification)
-//    {
-//        int thickness = 45;
-//        int currentX  = DRAWING_PADDING;
-//
-//        for (int i = 0; i < 2; i++) {
-//            Element rectangle = document.createElementNS(SVG_NAMESPACE_URI, "rect");
-//            rectangle.setAttributeNS(null, "width", Integer.toString(thickness));
-//            rectangle.setAttributeNS(null, "height", Integer.toString(mm(specification.getWidth())));
-//            rectangle.setAttributeNS(null, "style", "fill:white;stroke-width:5;stroke:black");
-//            rectangle.setAttributeNS(null, "x", Integer.toString(currentX));
-//            rectangle.setAttributeNS(null, "y", Integer.toString(DRAWING_PADDING));
-//            svgRoot.appendChild(rectangle);
-//
-//            currentX = mm(specification.getLength()) + DRAWING_PADDING - thickness;
-//        }
-//    }
-//
-//    private void drawRafters(Document document, Element svgRoot, ConstructionSpecification specification)
-//    {
-//        int thickness       = 45;
-//        int numberOfRafters = mm(specification.getLength()) / 1000;
-//        int rafterDistance  = mm(specification.getLength()) / numberOfRafters;
-//
-//        for (int i = 1; i <= numberOfRafters; i++) {
-//            Element rectangle = document.createElementNS(SVG_NAMESPACE_URI, "rect");
-//            rectangle.setAttributeNS(null, "width", Integer.toString(thickness));
-//            rectangle.setAttributeNS(null, "height", Integer.toString(mm(specification.getWidth())));
-//            rectangle.setAttributeNS(null, "style", "fill:white;stroke-width:5;stroke:black");
-//            rectangle.setAttributeNS(null, "x", Integer.toString(i * (thickness + rafterDistance)));
-//            rectangle.setAttributeNS(null, "y", Integer.toString(DRAWING_PADDING));
-//            svgRoot.appendChild(rectangle);
-//        }
-//    }
+    private void drawLaths(Document document, ConstructionSpecification specification)
+    {
+        int thickness     = 73;
+        int lathDistance  = 320;
+        int numberOfLaths = outerWidth / 2 / lathDistance;
+        int mid           = DRAWING_PADDING + SIDE_OVERHANG_MM + width / 2 - thickness / 2;
+        rect(document, this.outerLength, thickness, DRAWING_PADDING, mid);
+
+        for (int i = 1; i <= numberOfLaths; i++)
+            rect(document, this.outerLength, thickness, DRAWING_PADDING, mid - lathDistance * i);
+
+        for (int i = 1; i <= numberOfLaths; i++)
+            rect(document, this.outerLength, thickness, DRAWING_PADDING, mid + i * lathDistance);
+    }
+
+    private void drawSides(Document document, ConstructionSpecification specification)
+    {
+        int thickness = 20;
+
+        filledRect(document, this.outerLength, thickness, DRAWING_PADDING, DRAWING_PADDING);
+        filledRect(document, this.outerLength, thickness, DRAWING_PADDING, DRAWING_PADDING + this.outerWidth);
+    }
+
+    private void drawEnds(Document document, ConstructionSpecification specification)
+    {
+        int thickness = 45;
+
+        rect(document, thickness, this.outerWidth, DRAWING_PADDING, DRAWING_PADDING);
+        rect(document, thickness, this.outerWidth, this.outerLength + DRAWING_PADDING - thickness, DRAWING_PADDING);
+        filledRect(document, thickness, 20, DRAWING_PADDING, DRAWING_PADDING + this.outerWidth / 2);
+        filledRect(document, thickness, 20, this.outerLength + DRAWING_PADDING - thickness, DRAWING_PADDING + this.outerWidth / 2);
+    }
+
+    private void drawRafters(Document document, ConstructionSpecification specification)
+    {
+        int thickness       = 45;
+        int numberOfRafters = this.outerLength / 1000;
+        int rafterDistance  = this.outerLength / numberOfRafters;
+
+        for (int i = 1; i < numberOfRafters; i++)
+            rect(document, thickness, this.outerWidth, DRAWING_PADDING + i * (thickness + rafterDistance), DRAWING_PADDING);
+    }
 
     private int up(double v)
     {

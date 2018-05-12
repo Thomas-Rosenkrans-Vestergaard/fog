@@ -10,16 +10,6 @@ import static org.apache.batik.anim.dom.SVGDOMImplementation.SVG_NAMESPACE_URI;
 public class CAR01SkeletonConstructor extends DrawingUtilities implements SkeletonConstructor
 {
 
-    private static final int SIDE_OVERHANG_MM = 250;
-    private static final int END_OVERHANG_MM  = 500;
-    private static final int DRAWING_PADDING  = 1000;
-
-    private int length;
-    private int outerLength;
-    private int width;
-    private int outerWidth;
-    private int height;
-
     /**
      * Constructs the skeleton of the garage using the provided components.
      *
@@ -32,7 +22,6 @@ public class CAR01SkeletonConstructor extends DrawingUtilities implements Skelet
         this.outerLength = length + END_OVERHANG_MM * 2;
         this.width = mm(specification.getWidth());
         this.outerWidth = width + SIDE_OVERHANG_MM * 2;
-        this.height = mm(specification.getHeight());
 
         Materials           materials  = calculateMaterials(specification, components);
         ConstructionDrawing aerialView = drawAerialView(specification, components);
@@ -96,7 +85,7 @@ public class CAR01SkeletonConstructor extends DrawingUtilities implements Skelet
     {
         Document document = createDocument(
                 this.outerLength + DRAWING_PADDING * 2,
-                this.outerWidth + DRAWING_PADDING * 2);
+                mm(specification.getHeight()) + DRAWING_PADDING * 2);
         drawSideStraps(document, specification);
         drawSidePosts(document, specification);
 
@@ -162,10 +151,10 @@ public class CAR01SkeletonConstructor extends DrawingUtilities implements Skelet
         ruler(document, Rotation.VERTICAL, this.width, DRAWING_PADDING / 2, DRAWING_PADDING + SIDE_OVERHANG_MM,
                 String.format("%d cm", specification.getWidth()));
 
-        ruler(document, Rotation.HORIZONTAL, END_OVERHANG_MM, DRAWING_PADDING, DRAWING_PADDING + SIDE_OVERHANG_MM + 400,
+        ruler(document, Rotation.HORIZONTAL, END_OVERHANG_MM, DRAWING_PADDING, DRAWING_PADDING / 2,
                 String.format("%d cm", END_OVERHANG_MM / 10));
 
-        ruler(document, Rotation.HORIZONTAL, END_OVERHANG_MM, DRAWING_PADDING + outerLength - END_OVERHANG_MM, DRAWING_PADDING + SIDE_OVERHANG_MM + 400,
+        ruler(document, Rotation.HORIZONTAL, END_OVERHANG_MM, DRAWING_PADDING + outerLength - END_OVERHANG_MM, DRAWING_PADDING / 2,
                 String.format("%d cm", END_OVERHANG_MM / 10));
     }
 
@@ -197,7 +186,7 @@ public class CAR01SkeletonConstructor extends DrawingUtilities implements Skelet
                 Rotation.HORIZONTAL,
                 shedDepth,
                 currentX + 97,
-                DRAWING_PADDING + SIDE_OVERHANG_MM + 400,
+                DRAWING_PADDING / 2,
                 String.format("%s cm", (shedDepth - 97 * 2) / 10));
 
         // Overhang posts
@@ -213,12 +202,12 @@ public class CAR01SkeletonConstructor extends DrawingUtilities implements Skelet
                 Rotation.HORIZONTAL,
                 secondColumn - firstColumn - 97,
                 firstColumn + 97,
-                DRAWING_PADDING + SIDE_OVERHANG_MM + 400,
+                DRAWING_PADDING / 2,
                 String.format("%s cm", (secondColumn - firstColumn) / 10));
 
         ruler(document, Rotation.HORIZONTAL,
                 (currentX - firstColumn) / 2 - 97, secondColumn + 97,
-                DRAWING_PADDING + SIDE_OVERHANG_MM + 400,
+                DRAWING_PADDING / 2,
                 String.format("%d cm", ((currentX - firstColumn) / 2) / 10));
     }
 

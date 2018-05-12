@@ -10,6 +10,15 @@ import static org.apache.batik.util.SVGConstants.SVG_NAMESPACE_URI;
 public class DrawingUtilities
 {
 
+    protected static final int SIDE_OVERHANG_MM = 250;
+    protected static final int END_OVERHANG_MM  = 500;
+    protected static final int DRAWING_PADDING  = 1000;
+
+    protected int length;
+    protected int outerLength;
+    protected int width;
+    protected int outerWidth;
+
     public enum Rotation
     {
         HORIZONTAL,
@@ -30,9 +39,14 @@ public class DrawingUtilities
         String            svgNS    = SVG_NAMESPACE_URI;
         Document          document = impl.createDocument(svgNS, "svg", null);
 
-        Element svgRoot = document.getDocumentElement();
-        svgRoot.setAttributeNS(null, "viewBox", String.format("0 0 %s %s", viewBoxWidth, viewBoxHeight));
+        Element root = document.getDocumentElement();
+        root.setAttributeNS(null, "viewBox", String.format("0 0 %s %s", viewBoxWidth, viewBoxHeight));
         return document;
+    }
+
+    public void copy(Document source, Document destination)
+    {
+        destination.replaceChild(destination.importNode(source.getDocumentElement(), true), destination.getDocumentElement());
     }
 
     public void rect(Document document, int width, int height, int x, int y)
@@ -42,6 +56,18 @@ public class DrawingUtilities
         rectangle.setAttributeNS(null, "width", Integer.toString(width));
         rectangle.setAttributeNS(null, "height", Integer.toString(height));
         rectangle.setAttributeNS(null, "style", "fill:white;stroke-width:5;stroke:black");
+        rectangle.setAttributeNS(null, "x", Integer.toString(x));
+        rectangle.setAttributeNS(null, "y", Integer.toString(y));
+        root.appendChild(rectangle);
+    }
+
+    public void filledRect(Document document, int width, int height, int x, int y)
+    {
+        Element root      = document.getDocumentElement();
+        Element rectangle = document.createElementNS(SVGDOMImplementation.SVG_NAMESPACE_URI, "rect");
+        rectangle.setAttributeNS(null, "width", Integer.toString(width));
+        rectangle.setAttributeNS(null, "height", Integer.toString(height));
+        rectangle.setAttributeNS(null, "style", "fill:black;stroke-width:5;stroke:black");
         rectangle.setAttributeNS(null, "x", Integer.toString(x));
         rectangle.setAttributeNS(null, "y", Integer.toString(y));
         root.appendChild(rectangle);

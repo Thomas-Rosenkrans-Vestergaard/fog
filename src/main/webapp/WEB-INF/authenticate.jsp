@@ -19,13 +19,14 @@
         <form method="post">
             <div class="row">
                 <div class="col s12 input-field">
-                    <input type="email" name="email" id="login-email" data-length="255" class="validate" required>
+                    <input type="email" name="email" id="login-email" data-length="255" class="validate"
+                           value="tvestergaard@hotmail.com" required>
                     <label for="login-email">Email</label>
                 </div>
             </div>
             <div class="row">
                 <div class="col s12 input-field">
-                    <input type="password" name="password" id="login-password" class="validate" required>
+                    <input type="password" name="password" id="login-password" class="validate" value="123456" required>
                     <label for="login-password">Adgangskode</label>
                 </div>
             </div>
