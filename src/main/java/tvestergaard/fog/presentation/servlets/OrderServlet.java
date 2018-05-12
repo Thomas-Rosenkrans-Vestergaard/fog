@@ -30,7 +30,7 @@ public class OrderServlet extends HttpServlet
         Parameters     parameters     = new Parameters(req);
         Notifications  notifications  = notifications(req);
         Authentication authentication = new Authentication(req);
-        if (authentication.redirect(resp, "orders"))
+        if (authentication.redirect(resp))
             return;
 
         Customer customer = authentication.getCustomer();

@@ -32,7 +32,7 @@ public class PurchasesServlet extends HttpServlet
     @Override protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException
     {
         Authentication authentication = new Authentication(req);
-        if (authentication.redirect(resp, "purchases"))
+        if (authentication.redirect(resp))
             return;
 
         Customer customer = authentication.getCustomer();

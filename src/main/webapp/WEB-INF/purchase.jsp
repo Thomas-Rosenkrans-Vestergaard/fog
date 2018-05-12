@@ -55,35 +55,72 @@
 </div>
 <div class="row">
     <div class="col s12">
-        <c:forEach items="${constructionSummary.getMaterialLists()}" var="list">
-            <table class="highlight">
-                <caption>${list.getTitle()}</caption>
-                <thead>
-                <th>Materiale</th>
-                <th>Mængde</th>
-                <th>Noter</th>
-                <th>Pris</th>
-                </thead>
-                <tbody>
-                <c:forEach items="${list.getLines()}" var="line">
-                    <tr>
-                        <td>
-                            <c:out value="${line.getMaterial().getDescription()}"/>
-                        </td>
-                        <td>
-                            <c:out value="${line.getAmount()}"/>
-                        </td>
-                        <td>
-                            <c:out value="${line.getNotes()}"/>
-                        </td>
-                        <td>
-                            <c:out value="${f:formatPrice(line.getTotal())}"/>
-                        </td>
-                    </tr>
-                </c:forEach>
-                </tbody>
-            </table>
-        </c:forEach>
+        <table class="highlight">
+            <thead>
+            <th>Materiale</th>
+            <th>Mængde</th>
+            <th>Noter</th>
+            <th>Pris</th>
+            </thead>
+            <tbody>
+            <tr>
+                <c:forEach items="${constructionSummary.getSkeletonConstructionSummary().getMaterials().getLines()}"
+                           var="line">
+                <td>
+                    <c:out value="${line.getMaterial().getDescription()}"/>
+                </td>
+                <td>
+                    <c:out value="${line.getAmount()}"/>
+                </td>
+                <td>
+                    <c:out value="${line.getNotes()}"/>
+                </td>
+                <td>
+                    <c:out value="${f:formatPrice(line.getTotal())}"/>
+                </td>
+            </tr>
+            </c:forEach>
+            <c:forEach items="${constructionSummary.getRoofingConstructionSummary().getMaterials().getLines()}"
+                       var="line">
+                <tr>
+                    <td>
+                        <c:out value="${line.getMaterial().getDescription()}"/>
+                    </td>
+                    <td>
+                        <c:out value="${line.getAmount()}"/>
+                    </td>
+                    <td>
+                        <c:out value="${line.getNotes()}"/>
+                    </td>
+                    <td>
+                        <c:out value="${f:formatPrice(line.getTotal())}"/>
+                    </td>
+                </tr>
+            </c:forEach>
+            </tbody>
+        </table>
+    </div>
+</div>
+<div class="row">
+    <div class="col s12">
+        <h3>Tegninger</h3>
+    </div>
+</div>
+<div class="row">
+    <div class="col s12">
+        <p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum
+            tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas
+            semper. Aenean ultricies mi vitae est.</p>
+    </div>
+</div>
+<div class="row">
+    <div class="col s12">
+        ${constructionSummary.getSkeletonConstructionSummary().getAerialView().getXML()}
+    </div>
+</div>
+<div class="row">
+    <div class="col s12">
+        ${constructionSummary.getSkeletonConstructionSummary().getSideView().getXML()}
     </div>
 </div>
 <%@ include file="includes/bottom.jspf" %>

@@ -2,15 +2,8 @@ package tvestergaard.fog.logic.construction;
 
 import java.util.List;
 
-public interface MaterialList
+public interface Materials
 {
-
-    /**
-     * Returns the title of the material list.
-     *
-     * @return The title of the material list.
-     */
-    String getTitle();
 
     /**
      * Returns the lines on the bill.

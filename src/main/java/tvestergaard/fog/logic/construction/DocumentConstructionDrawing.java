@@ -1,14 +1,15 @@
 package tvestergaard.fog.logic.construction;
 
+import org.apache.batik.transcoder.TranscoderInput;
+import org.apache.batik.transcoder.TranscoderOutput;
+import org.apache.batik.transcoder.svg2svg.SVGTranscoder;
 import org.w3c.dom.Document;
+
+import java.io.ByteArrayOutputStream;
+import java.io.OutputStreamWriter;
 
 public class DocumentConstructionDrawing implements ConstructionDrawing
 {
-
-    /**
-     * The name of the drawing.
-     */
-    private final String name;
 
     /**
      * The document of the svg drawing.
@@ -18,31 +19,45 @@ public class DocumentConstructionDrawing implements ConstructionDrawing
     /**
      * Creates a new {@link DocumentConstructionDrawing}.
      *
-     * @param name The name of the drawing.
+     * @param document The document containing the svg directives.
      */
-    public DocumentConstructionDrawing(String name, Document document)
+    public DocumentConstructionDrawing(Document document)
     {
-        this.name = name;
         this.document = document;
     }
 
     /**
-     * Returns The name of the drawing.
+     * Returns the document containing the svg contents.
      *
-     * @return The name of the drawing.
+     * @return The document containing the svg contents.
      */
-    @Override public String getName()
+    @Override public Document getDocument()
     {
-        return name;
+        return document;
     }
 
     /**
-     * Returns the svg contents of the drawing.
+     * Returns the SVG XML contents.
      *
-     * @return The svg contents of the drawing.
+     * @return The SVG XML contents.
      */
-    @Override public String getSVG()
+    @Override public String getXML()
     {
-        return document.toString();
+        try {
+            SVGTranscoder t = new SVGTranscoder();
+
+            TranscoderInput       input            = new TranscoderInput(document);
+            ByteArrayOutputStream outputStream     = new ByteArrayOutputStream();
+            OutputStreamWriter    writer           = new OutputStreamWriter(outputStream);
+            TranscoderOutput      transcoderOutput = new TranscoderOutput(writer);
+
+            t.transcode(input, transcoderOutput);
+            writer.flush();
+            writer.close();
+
+            return new String(outputStream.toByteArray());
+        } catch (Exception e) {
+            throw new IllegalStateException(e);
+        }
     }
 }

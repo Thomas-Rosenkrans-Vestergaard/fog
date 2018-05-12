@@ -11,7 +11,7 @@ public interface GarageConstructor
      * @param roofingComponents  The components used to construct the roofing of the garage.
      * @return The summary of the construction.
      */
-    ConstructionSummary construct(ConstructionSpecification specifications,
-                                  Components skeletonComponents,
-                                  Components roofingComponents);
+    GarageConstructionSummary construct(ConstructionSpecification specifications,
+                                        Components skeletonComponents,
+                                        Components roofingComponents);
 }

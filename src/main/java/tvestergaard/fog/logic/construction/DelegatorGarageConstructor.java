@@ -18,7 +18,7 @@ public class DelegatorGarageConstructor implements GarageConstructor
     /**
      * The registered roof constructors mapped to the type of roof they construct.
      */
-    private final Map<RoofingType, RoofConstructor> roofConstructors = new HashMap<>();
+    private final Map<RoofingType, RoofingConstructor> roofConstructors = new HashMap<>();
 
     /**
      * Creates a new {@link DelegatorGarageConstructor}.
@@ -35,7 +35,7 @@ public class DelegatorGarageConstructor implements GarageConstructor
      *
      * @param constructor The roof constructor to register.
      */
-    public void register(RoofConstructor constructor)
+    public void register(RoofingConstructor constructor)
     {
         roofConstructors.put(constructor.getType(), constructor);
     }
@@ -48,49 +48,47 @@ public class DelegatorGarageConstructor implements GarageConstructor
      * @param roofingComponents  The components used to construct the roofing of the garage.
      * @return The summary of the construction.
      */
-    @Override public ConstructionSummary construct(ConstructionSpecification specifications,
-                                                   Components skeletonComponents,
-                                                   Components roofingComponents)
+    @Override public GarageConstructionSummary construct(ConstructionSpecification specifications,
+                                                         Components skeletonComponents,
+                                                         Components roofingComponents)
     {
-        MutableConstructionSummary summary = new MutableConstructionSummary();
-        constructSkeleton(summary, specifications, skeletonComponents);
-        constructRoofing(summary, specifications, roofingComponents);
-
-        return summary;
+        SkeletonConstructionSummary skeletonConstructionSummary = constructSkeleton(specifications, skeletonComponents);
+        return new DefaultGarageConstructionSummary(
+                skeletonConstructionSummary,
+                constructRoofing(specifications, roofingComponents, skeletonConstructionSummary));
     }
 
     /**
      * Constructs the skeleton of the garage.
      *
-     * @param summary       The object containing information about the construction process.
      * @param specification The specifications that the skeleton must satisfy.
      * @param components    The components to use while constructing the skeleton.
+     * @return The object containing information about the construction of the skeleton.
      */
-    private void constructSkeleton(MutableConstructionSummary summary,
-                                   ConstructionSpecification specification,
-                                   Components components)
+    private SkeletonConstructionSummary constructSkeleton(ConstructionSpecification specification, Components components)
     {
-        skeletonConstructor.construct(summary, specification, components);
+        return skeletonConstructor.construct(specification, components);
     }
 
     /**
      * Constructs the roof of the garage using the provided components.
      *
-     * @param summary       The object containing information about the construction process.
-     * @param specification The specifications that the roofing must satisfy.
-     * @param components    The components to use while constructing the skeleton.
+     * @param specification               The specifications that the roofing must satisfy.
+     * @param components                  The components to use while constructing the skeleton.
+     * @param skeletonConstructionSummary The object containing information about the construction of the garage skeleton.
+     * @return The object containing information about the construction of the roofing of the garage.
      */
-    private void constructRoofing(MutableConstructionSummary summary,
-                                  ConstructionSpecification specification,
-                                  Components components)
+    private RoofingConstructionSummary constructRoofing(ConstructionSpecification specification,
+                                                        Components components,
+                                                        SkeletonConstructionSummary skeletonConstructionSummary)
     {
-        Roofing         roofing         = specification.getRoofing();
-        RoofingType     roofingType     = roofing.getType();
-        RoofConstructor roofConstructor = roofConstructors.get(roofingType);
+        Roofing            roofing         = specification.getRoofing();
+        RoofingType        roofingType     = roofing.getType();
+        RoofingConstructor roofConstructor = roofConstructors.get(roofingType);
 
         if (roofConstructor == null)
             throw new IllegalStateException("No constructor able to construct " + roofingType.name());
 
-        roofConstructor.construct(summary, specification, components);
+        return roofConstructor.construct(specification, components, skeletonConstructionSummary);
     }
 }

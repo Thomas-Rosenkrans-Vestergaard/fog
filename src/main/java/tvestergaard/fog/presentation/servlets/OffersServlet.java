@@ -44,7 +44,7 @@ public class OffersServlet extends HttpServlet
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException
     {
         Authentication authentication = new Authentication(req);
-        if (authentication.redirect(resp, "offers"))
+        if (authentication.redirect(resp))
             return;
 
         Customer customer = authentication.getCustomer();
@@ -61,7 +61,7 @@ public class OffersServlet extends HttpServlet
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException
     {
         Authentication authentication = new Authentication(req);
-        if (authentication.redirect(resp, "offers"))
+        if (authentication.redirect(resp))
             return;
 
         String action = req.getParameter("action");

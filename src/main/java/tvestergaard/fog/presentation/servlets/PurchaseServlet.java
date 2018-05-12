@@ -3,7 +3,7 @@ package tvestergaard.fog.presentation.servlets;
 import tvestergaard.fog.data.customers.Customer;
 import tvestergaard.fog.data.purchases.Purchase;
 import tvestergaard.fog.logic.construction.ConstructionFacade;
-import tvestergaard.fog.logic.construction.ConstructionSummary;
+import tvestergaard.fog.logic.construction.GarageConstructionSummary;
 import tvestergaard.fog.logic.purchases.PurchaseFacade;
 import tvestergaard.fog.presentation.Authentication;
 import tvestergaard.fog.presentation.Notifications;
@@ -31,7 +31,7 @@ public class PurchaseServlet extends HttpServlet
     @Override protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException
     {
         Authentication authentication = new Authentication(req);
-        if (authentication.redirect(resp, "purchases"))
+        if (authentication.redirect(resp))
             return;
 
         Customer      customer      = authentication.getCustomer();
@@ -51,7 +51,7 @@ public class PurchaseServlet extends HttpServlet
             return;
         }
 
-        ConstructionSummary summary = constructionFacade.construct(purchase.getOffer().getOrder());
+        GarageConstructionSummary summary = constructionFacade.construct(purchase.getOffer().getOrder());
 
         req.setAttribute("context", ".");
         req.setAttribute("title", "Mine køb");

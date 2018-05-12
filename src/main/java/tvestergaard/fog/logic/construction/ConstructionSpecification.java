@@ -1,6 +1,7 @@
 package tvestergaard.fog.logic.construction;
 
 import tvestergaard.fog.data.orders.Order;
+import tvestergaard.fog.data.orders.Shed;
 import tvestergaard.fog.data.roofing.Roofing;
 
 public class ConstructionSpecification
@@ -10,19 +11,21 @@ public class ConstructionSpecification
     private final int     height;
     private final Roofing roofing;
     private final int     roofingSlope;
+    private final Shed    shed;
 
-    public ConstructionSpecification(int width, int length, int height, Roofing roofing, int roofingSlope)
+    public ConstructionSpecification(int width, int length, int height, Roofing roofing, int roofingSlope, Shed shed)
     {
         this.width = width;
         this.length = length;
         this.height = height;
         this.roofing = roofing;
         this.roofingSlope = roofingSlope;
+        this.shed = shed;
     }
 
     public static ConstructionSpecification from(Order order)
     {
-        return new ConstructionSpecification(order.getWidth(), order.getLength(), order.getHeight(), order.getRoofing(), order.getSlope());
+        return new ConstructionSpecification(order.getWidth(), order.getLength(), order.getHeight(), order.getRoofing(), order.getSlope(), order.getShed());
     }
 
     public int getWidth()
@@ -48,5 +51,10 @@ public class ConstructionSpecification
     public int getRoofingSlope()
     {
         return this.roofingSlope;
+    }
+
+    public Shed getShed()
+    {
+        return this.shed;
     }
 }

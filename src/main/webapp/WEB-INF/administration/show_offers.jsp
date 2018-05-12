@@ -19,7 +19,6 @@
             <thead>
             <th class="short">ID</th>
             <th>Kunde</th>
-            <th>Beklædning</th>
             <th class="short">Bredde</th>
             <th class="short">Længde</th>
             <th class="short">Højde</th>
@@ -40,11 +39,6 @@
                     <td>
                         <a href="customers?action=update&id=${order.getCustomer().getId()}">
                             <c:out value="${order.getCustomer().getName()}"/>
-                        </a>
-                    </td>
-                    <td>
-                        <a href="claddings?action=update&id=${order.getCladding().getId()}">
-                            <c:out value="${order.getCladding().getName()}"/>
                         </a>
                     </td>
                     <td>${order.getWidth()}</td>

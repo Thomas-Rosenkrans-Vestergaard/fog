@@ -1,19 +1,21 @@
 package tvestergaard.fog.logic.construction;
 
+import org.w3c.dom.Document;
+
 public interface ConstructionDrawing
 {
 
     /**
-     * Returns The name of the drawing.
+     * Returns the document containing the svg contents.
      *
-     * @return The name of the drawing.
+     * @return The document containing the svg contents.
      */
-    String getName();
+    Document getDocument();
 
     /**
-     * Returns the svg contents of the drawing.
+     * Returns the SVG XML contents.
      *
-     * @return The svg contents of the drawing.
+     * @return The SVG XML contents.
      */
-    String getSVG();
+    String getXML();
 }

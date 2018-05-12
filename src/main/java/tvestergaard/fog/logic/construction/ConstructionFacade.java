@@ -25,7 +25,7 @@ public class ConstructionFacade
     public ConstructionFacade(ModelDAO modelDAO, RoofingDAO roofingDAO)
     {
         SkeletonConstructor skeletonConstructor = new CAR01SkeletonConstructor();
-        RoofConstructor     roofConstructor     = new TiledRoofConstructor();
+        RoofingConstructor  roofConstructor     = new TiledRoofConstructor();
         this.garageConstructor = new DelegatorGarageConstructor(skeletonConstructor);
         garageConstructor.register(roofConstructor);
         this.modelDAO = modelDAO;
@@ -39,7 +39,7 @@ public class ConstructionFacade
      * @return The summary of the construction.
      * @throws ApplicationException When a DataAccessException occurs.
      */
-    public ConstructionSummary construct(Order order)
+    public GarageConstructionSummary construct(Order order)
     {
         try {
             ConstructionSpecification specification      = ConstructionSpecification.from(order);

@@ -157,3 +157,8 @@ th.r15 {
     float: right;
     margin: 20px;
 }
+
+svg {
+    width: 100%;
+    height: auto;
+}
