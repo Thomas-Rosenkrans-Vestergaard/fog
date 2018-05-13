@@ -1,5 +1,10 @@
 SET SQL_SAFE_UPDATES = 0;
 
+DELETE FROM purchases;
+DELETE FROM offers;
+DELETE FROM sheds;
+DELETE FROM orders;
+
 DELETE FROM attribute_definitions;
 DELETE FROM attribute_values;
 DELETE FROM garage_component_values;
@@ -41,6 +46,19 @@ INSERT INTO `categories` VALUES
   (10, 'Andre'),
   (11, 'Skruge');
 
+INSERT INTO attribute_definitions (id, category, data_type, `name`) VALUES
+  (1, 5, 'INT', 'HEIGHT_MM'),
+  (2, 5, 'INT', 'WIDTH_MM'),
+  (3, 5, 'INT', 'LATH_DISTANCE_MM'),
+  (4, 6, 'INT', 'LENGTH_MM'),
+  (5, 7, 'INT', 'USE_DISTANCE_MM'),
+  (7, 1, 'INT', 'THICKNESS_MM'),
+  (8, 2, 'INT', 'WIDTH_MM'),
+  (9, 2, 'INT', 'THICKNESS_MM'),
+  (10, 3, 'INT', 'WIDTH_MM'),
+  (11, 3, 'INT', 'THICKNESS_MM'),
+  (12, 4, 'INT', 'THICKNESS_MM');
+
 INSERT INTO materials (id, `number`, `description`, `price`, `unit`, `category`) VALUES
   (1, '960919471840', 'B&C Dobbelt sort', 1000, 1, 5),
   (2, '306606942576', 'B&C Rygsten sort', 4500, 1, 6),
@@ -68,23 +86,21 @@ INSERT INTO materials (id, `number`, `description`, `price`, `unit`, `category`)
   (24, '950209945881', 'Firkantskiver 40x40x11 mm.', 1500, 1, 10),
   (25, '234789560123', '25x150 mm. trykimp. Bræt', 2000, 1, 1);
 
-INSERT INTO attribute_definitions (id, category, data_type, `name`) VALUES
-  (1, 5, 'INT', 'HEIGHT_MM'),
-  (2, 5, 'INT', 'WIDTH_MM'),
-  (3, 5, 'INT', 'LATH_DISTANCE_MM'),
-  (4, 6, 'INT', 'LENGTH_MM'),
-  (5, 7, 'INT', 'USE_DISTANCE_MM'),
-  (6, 1, 'INT', 'LENGTH_MM'),
-  (7, 1, 'INT', 'WIDTH_MM');
-
 INSERT INTO attribute_values (attribute, material, `value`) VALUES
   (1, 1, '420'),
   (2, 1, '330'),
   (3, 1, '320'),
   (4, 2, '420'),
   (5, 3, '900'),
-  (6, 6, '2400'),
-  (7, 6, '100');
+  (6, 6, '100'),
+  (7, 6, '19'),
+  (6, 7, '50'),
+  (7, 7, '25'),
+  (8, 8, '73'),
+  (9, 8, '38'),
+  (9, 10, '97'),
+  (8, 11, '195'),
+  (9, 11, '45');
 
 INSERT INTO roofings (id, name, description, active, type)
 VALUES (1, 'Sorte teglsten',
@@ -101,12 +117,12 @@ INSERT INTO component_definitions (id, identifier, category, notes) VALUES
   (7, 'POST', 4, 'Stolper nedgraves 90 cm. i jord + skråstiver'),
   (8, 'STRAPS_GARAGE', 2, 'Remme i sider, sadles ned i stolper Carport del'),
   (9, 'STRAPS_SHED', 2, 'Remme i sider, sadles ned i stolper Skur del'),
-  (10, 'LOESHOLTER_SHED_SIDE', 2, 'Løsholter i siderne af skur'),
-  (11, 'LOESHOLTER_SHED_GABLE', 2, 'Løsholter i gavle af skur'),
+  (10, 'SHED_SIDE_NOGGING', 2, 'Løsholter i siderne af skur'),
+  (11, 'SHED_GABLE_NOGGING', 2, 'Løsholter i gavle af skur'),
   (12, 'WATER_BOARD', 1, 'Vand bræt på vindskeder'),
   (13, 'GABLE_CLADDING', 1, 'Beklædning af gavle 1 på 2'),
   (14, 'SHED_CLADDING', 1, 'Beklædning af skur 1 på 2'),
-  (15, 'Z_DOOR', 3, 'Til z på bagside af dør'),
+  (15, 'SHED_DOOR_NOGGING', 3, 'Til z på bagside af dør'),
   (16, 'ROOFING_LATHS', 3, 'Til montering på spær, 7 rækker lægter på hver skiftevis 1 hel & 1 halv lægte'),
   (17, 'ROOF_RIDGE_LATH', 3, 'Toplægte til montering af rygsten lægges i toplægte holder'),
   (18, 'VINDSKEDER', 1, 'Vindskeder på rejsning'),

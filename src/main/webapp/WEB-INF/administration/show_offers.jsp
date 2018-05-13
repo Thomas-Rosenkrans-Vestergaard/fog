@@ -13,6 +13,7 @@
             reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus asperiores repellat.</p>
     </div>
 </div>
+<%@ include file="../includes/administration_controls.jspf" %>
 <div class="row">
     <div class="col s12">
         <table class="highlight administration-table">

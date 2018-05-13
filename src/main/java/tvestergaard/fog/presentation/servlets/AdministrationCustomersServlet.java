@@ -1,6 +1,7 @@
 package tvestergaard.fog.presentation.servlets;
 
 import tvestergaard.fog.data.customers.Customer;
+import tvestergaard.fog.data.customers.CustomerColumn;
 import tvestergaard.fog.logic.customers.CustomerError;
 import tvestergaard.fog.logic.customers.CustomerFacade;
 import tvestergaard.fog.logic.customers.CustomerValidatorException;
@@ -58,9 +59,10 @@ public class AdministrationCustomersServlet extends AdministrationServlet
     {
         @Override public void dispatch(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
         {
+            TableControls<CustomerColumn> controls = new TableControls<>(request, CustomerColumn.class);
             notifications(request);
             request.setAttribute("title", "Kunder");
-            request.setAttribute("customers", facade.get());
+            request.setAttribute("customers", facade.get(controls.constraints()));
             request.getRequestDispatcher("/WEB-INF/administration/show_customers.jsp").forward(request, response);
         }
     }

@@ -1,5 +1,6 @@
 package tvestergaard.fog.presentation.servlets;
 
+import tvestergaard.fog.data.offers.OfferColumn;
 import tvestergaard.fog.logic.customers.InactiveCustomerException;
 import tvestergaard.fog.logic.employees.InactiveEmployeeException;
 import tvestergaard.fog.logic.employees.InsufficientPermissionsException;
@@ -52,8 +53,10 @@ public class AdministrationOffersServlet extends AdministrationServlet
         @Override
         public void dispatch(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
         {
+            TableControls<OfferColumn> controls = new TableControls<>(request, OfferColumn.class);
+            notifications(request);
             request.setAttribute("title", "Tilbud");
-            request.setAttribute("offers", offerFacade.get());
+            request.setAttribute("offers", offerFacade.get(controls.constraints()));
             request.getRequestDispatcher("/WEB-INF/administration/show_offers.jsp").forward(request, response);
         }
     }

@@ -55,9 +55,10 @@ public class AdministrationMaterialsServlet extends AdministrationServlet
     {
         @Override public void dispatch(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
         {
+            TableControls<MaterialColumn> controls = new TableControls<>(request, MaterialColumn.class);
             notifications(request);
             request.setAttribute("title", "Materialee");
-            request.setAttribute("materials", facade.get());
+            request.setAttribute("materials", facade.get(controls.constraints()));
             request.setAttribute("categories", facade.getCategories());
             request.getRequestDispatcher("/WEB-INF/administration/show_materials.jsp").forward(request, response);
         }

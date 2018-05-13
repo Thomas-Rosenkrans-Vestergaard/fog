@@ -1,6 +1,7 @@
 package tvestergaard.fog.presentation.servlets;
 
 import tvestergaard.fog.data.employees.Employee;
+import tvestergaard.fog.data.employees.EmployeeColumn;
 import tvestergaard.fog.data.employees.Role;
 import tvestergaard.fog.logic.employees.EmployeeError;
 import tvestergaard.fog.logic.employees.EmployeeFacade;
@@ -56,9 +57,10 @@ public class AdministrationEmployeesServlet extends AdministrationServlet
         @Override
         public void dispatch(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
         {
+            TableControls<EmployeeColumn> controls = new TableControls<>(request, EmployeeColumn.class);
             notifications(request);
             request.setAttribute("title", "Medarbejdere");
-            request.setAttribute("employees", facade.get());
+            request.setAttribute("employees", facade.get(controls.constraints()));
             request.getRequestDispatcher("/WEB-INF/administration/show_employees.jsp").forward(request, response);
         }
     }

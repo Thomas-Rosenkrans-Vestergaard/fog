@@ -1,6 +1,7 @@
 package tvestergaard.fog.presentation.servlets;
 
 import tvestergaard.fog.data.orders.Order;
+import tvestergaard.fog.data.orders.OrderColumn;
 import tvestergaard.fog.data.orders.RafterChoice;
 import tvestergaard.fog.logic.claddings.CladdingFacade;
 import tvestergaard.fog.logic.floorings.FlooringFacade;
@@ -68,9 +69,10 @@ public class AdministrationOrdersServlet extends AdministrationServlet
     {
         @Override public void dispatch(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
         {
+            TableControls<OrderColumn> controls = new TableControls<>(request, OrderColumn.class);
             notifications(request);
             request.setAttribute("title", "Ordree");
-            request.setAttribute("orders", orderFacade.get());
+            request.setAttribute("orders", orderFacade.get(controls.constraints()));
             request.getRequestDispatcher("/WEB-INF/administration/show_orders.jsp").forward(request, response);
         }
     }

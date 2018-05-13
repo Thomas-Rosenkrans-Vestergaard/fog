@@ -4,6 +4,7 @@ import tvestergaard.fog.data.components.Component;
 import tvestergaard.fog.data.components.ComponentDefinition;
 import tvestergaard.fog.data.components.ComponentReference;
 import tvestergaard.fog.data.roofing.Roofing;
+import tvestergaard.fog.data.roofing.RoofingColumn;
 import tvestergaard.fog.data.roofing.RoofingType;
 import tvestergaard.fog.logic.materials.MaterialFacade;
 import tvestergaard.fog.logic.roofings.RoofingError;
@@ -56,9 +57,10 @@ public class AdministrationRoofingsServlet extends AdministrationServlet
     {
         @Override public void dispatch(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
         {
+            TableControls<RoofingColumn> controls = new TableControls<>(request, RoofingColumn.class);
             notifications(request);
             request.setAttribute("title", "Tage");
-            request.setAttribute("roofings", roofingFacade.get());
+            request.setAttribute("roofings", roofingFacade.get(controls.constraints()));
             request.setAttribute("types", EnumSet.allOf(RoofingType.class));
             request.getRequestDispatcher("/WEB-INF/administration/show_roofings.jsp").forward(request, response);
         }

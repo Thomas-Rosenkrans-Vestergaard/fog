@@ -44,7 +44,7 @@ public class TiledRoofConstructor extends DrawingUtilities implements RoofingCon
 
     private Document drawTiledView(ConstructionSpecification specification, Components components, Document skeletonView)
     {
-        Document document = createDocument(this.outerLength + DRAWING_PADDING * 2, this.outerWidth + DRAWING_PADDING * 2);
+        Document document = createDocument(this.outerLength + PADDING * 2, this.outerWidth + PADDING * 2);
         copy(skeletonView, document);
 
         drawTiles(document, specification, components);
@@ -61,33 +61,33 @@ public class TiledRoofConstructor extends DrawingUtilities implements RoofingCon
         int ridgeTileHeight = 252;
         int lathDistance    = 320;
         int thickness       = 73;
-        int mid             = DRAWING_PADDING + SIDE_OVERHANG_MM + this.width / 2 - thickness / 2;
+        int mid             = PADDING + SIDE_OVERHANG_MM + this.width / 2 - thickness / 2;
 
         int columns = this.outerLength / tileWidth;
         int rows    = this.outerWidth / 2 / lathDistance;
 
         for (int c = 0; c < columns; c++) {
             for (int r = 0; r < rows; r++) {
-                rect(document, tileWidth, tileHeight, DRAWING_PADDING + tileWidth * c, mid + lathDistance * r);
+                rect(document, tileWidth, tileHeight, PADDING + tileWidth * c, mid + lathDistance * r);
             }
         }
 
         int restBottom = this.outerWidth / 2 - rows * lathDistance + thickness / 2;
         for (int c = 0; c < columns; c++)
-            rect(document, tileWidth, restBottom, DRAWING_PADDING + tileWidth * c, mid + lathDistance * rows);
+            rect(document, tileWidth, restBottom, PADDING + tileWidth * c, mid + lathDistance * rows);
 
         int restRight = this.outerLength - columns * tileWidth;
         for (int r = 0; r < rows; r++)
-            rect(document, restRight, tileHeight, DRAWING_PADDING + tileWidth * columns, mid + lathDistance * r);
+            rect(document, restRight, tileHeight, PADDING + tileWidth * columns, mid + lathDistance * r);
 
-        rect(document, restRight, restBottom, DRAWING_PADDING + tileWidth * columns, mid + lathDistance * rows);
+        rect(document, restRight, restBottom, PADDING + tileWidth * columns, mid + lathDistance * rows);
 
         int numberOfRidgeTiles = this.outerLength / ridgeTileLength;
         for (int c = 0; c < numberOfRidgeTiles; c++)
-            rect(document, ridgeTileLength, ridgeTileHeight, DRAWING_PADDING + ridgeTileLength * c, mid - ridgeTileHeight / 2);
+            rect(document, ridgeTileLength, ridgeTileHeight, PADDING + ridgeTileLength * c, mid - ridgeTileHeight / 2);
 
         int restRidgeTileLength = outerLength - numberOfRidgeTiles * ridgeTileLength;
-        rect(document, restRidgeTileLength, ridgeTileHeight, DRAWING_PADDING + restRidgeTileLength * (numberOfRidgeTiles + 1), mid - ridgeTileHeight / 2);
+        rect(document, restRidgeTileLength, ridgeTileHeight, PADDING + restRidgeTileLength * (numberOfRidgeTiles + 1), mid - ridgeTileHeight / 2);
     }
 
     /**
@@ -100,7 +100,7 @@ public class TiledRoofConstructor extends DrawingUtilities implements RoofingCon
      */
     private Document drawSkeletonView(ConstructionSpecification specification, Components components, SkeletonConstructionSummary skeletonConstructionSummary)
     {
-        Document document = createDocument(this.outerLength + DRAWING_PADDING * 2, this.outerWidth + DRAWING_PADDING * 2);
+        Document document = createDocument(this.outerLength + PADDING * 2, this.outerWidth + PADDING * 2);
         copy(skeletonConstructionSummary.getAerialView().getDocument(), document);
 
         drawSides(document, specification);
@@ -147,32 +147,32 @@ public class TiledRoofConstructor extends DrawingUtilities implements RoofingCon
         int thickness     = 73;
         int lathDistance  = 320;
         int numberOfLaths = outerWidth / 2 / lathDistance;
-        int mid           = DRAWING_PADDING + SIDE_OVERHANG_MM + width / 2 - thickness / 2;
-        rect(document, this.outerLength, thickness, DRAWING_PADDING, mid);
+        int mid           = PADDING + SIDE_OVERHANG_MM + width / 2 - thickness / 2;
+        rect(document, this.outerLength, thickness, PADDING, mid);
 
         for (int i = 1; i <= numberOfLaths; i++)
-            rect(document, this.outerLength, thickness, DRAWING_PADDING, mid - lathDistance * i);
+            rect(document, this.outerLength, thickness, PADDING, mid - lathDistance * i);
 
         for (int i = 1; i <= numberOfLaths; i++)
-            rect(document, this.outerLength, thickness, DRAWING_PADDING, mid + i * lathDistance);
+            rect(document, this.outerLength, thickness, PADDING, mid + i * lathDistance);
     }
 
     private void drawSides(Document document, ConstructionSpecification specification)
     {
         int thickness = 20;
 
-        filledRect(document, this.outerLength, thickness, DRAWING_PADDING, DRAWING_PADDING);
-        filledRect(document, this.outerLength, thickness, DRAWING_PADDING, DRAWING_PADDING + this.outerWidth);
+        filledRect(document, this.outerLength, thickness, PADDING, PADDING);
+        filledRect(document, this.outerLength, thickness, PADDING, PADDING + this.outerWidth);
     }
 
     private void drawEnds(Document document, ConstructionSpecification specification)
     {
         int thickness = 45;
 
-        rect(document, thickness, this.outerWidth, DRAWING_PADDING, DRAWING_PADDING);
-        rect(document, thickness, this.outerWidth, this.outerLength + DRAWING_PADDING - thickness, DRAWING_PADDING);
-        filledRect(document, thickness, 20, DRAWING_PADDING, DRAWING_PADDING + this.outerWidth / 2);
-        filledRect(document, thickness, 20, this.outerLength + DRAWING_PADDING - thickness, DRAWING_PADDING + this.outerWidth / 2);
+        rect(document, thickness, this.outerWidth, PADDING, PADDING);
+        rect(document, thickness, this.outerWidth, this.outerLength + PADDING - thickness, PADDING);
+        filledRect(document, thickness, 20, PADDING, PADDING + this.outerWidth / 2);
+        filledRect(document, thickness, 20, this.outerLength + PADDING - thickness, PADDING + this.outerWidth / 2);
     }
 
     private void drawRafters(Document document, ConstructionSpecification specification)
@@ -182,7 +182,7 @@ public class TiledRoofConstructor extends DrawingUtilities implements RoofingCon
         int rafterDistance  = this.outerLength / numberOfRafters;
 
         for (int i = 1; i < numberOfRafters; i++)
-            rect(document, thickness, this.outerWidth, DRAWING_PADDING + i * (thickness + rafterDistance), DRAWING_PADDING);
+            rect(document, thickness, this.outerWidth, PADDING + i * (thickness + rafterDistance), PADDING);
     }
 
     private int up(double v)

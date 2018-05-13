@@ -1,6 +1,7 @@
 package tvestergaard.fog.presentation.servlets;
 
 import tvestergaard.fog.data.cladding.Cladding;
+import tvestergaard.fog.data.cladding.CladdingColumn;
 import tvestergaard.fog.logic.claddings.CladdingError;
 import tvestergaard.fog.logic.claddings.CladdingFacade;
 import tvestergaard.fog.logic.claddings.CladdingValidatorException;
@@ -51,9 +52,10 @@ public class AdministrationCladdingsServlet extends AdministrationServlet
     {
         @Override public void dispatch(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
         {
+            TableControls<CladdingColumn> controls = new TableControls<>(request, CladdingColumn.class);
             notifications(request);
             request.setAttribute("title", "Beklædninger");
-            request.setAttribute("claddings", facade.get());
+            request.setAttribute("claddings", facade.get(controls.constraints()));
             request.getRequestDispatcher("/WEB-INF/administration/show_claddings.jsp").forward(request, response);
         }
     }

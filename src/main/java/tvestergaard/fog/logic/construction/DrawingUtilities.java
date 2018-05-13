@@ -12,7 +12,7 @@ public class DrawingUtilities
 
     protected static final int SIDE_OVERHANG_MM = 250;
     protected static final int END_OVERHANG_MM  = 500;
-    protected static final int DRAWING_PADDING  = 1000;
+    protected static final int PADDING          = 1000;
 
     protected int length;
     protected int outerLength;
@@ -122,5 +122,10 @@ public class DrawingUtilities
     public int mm(int cm)
     {
         return cm * 10;
+    }
+
+    public String formatCM(int cm)
+    {
+        return String.format("%d cm", cm);
     }
 }

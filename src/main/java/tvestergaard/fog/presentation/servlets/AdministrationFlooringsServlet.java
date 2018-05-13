@@ -1,6 +1,7 @@
 package tvestergaard.fog.presentation.servlets;
 
 import tvestergaard.fog.data.flooring.Flooring;
+import tvestergaard.fog.data.flooring.FlooringColumn;
 import tvestergaard.fog.logic.floorings.FlooringError;
 import tvestergaard.fog.logic.floorings.FlooringFacade;
 import tvestergaard.fog.logic.floorings.FlooringValidatorException;
@@ -51,9 +52,10 @@ public class AdministrationFlooringsServlet extends AdministrationServlet
     {
         @Override public void dispatch(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
         {
+            TableControls<FlooringColumn> controls = new TableControls<>(request, FlooringColumn.class);
             notifications(request);
             request.setAttribute("title", "Gulve");
-            request.setAttribute("floorings", facade.get());
+            request.setAttribute("floorings", facade.get(controls.constraints()));
             request.getRequestDispatcher("/WEB-INF/administration/show_floorings.jsp").forward(request, response);
         }
     }
