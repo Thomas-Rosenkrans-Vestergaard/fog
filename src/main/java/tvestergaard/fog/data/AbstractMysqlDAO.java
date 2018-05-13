@@ -374,7 +374,7 @@ public abstract class AbstractMysqlDAO
                 createRoofing(roofingTable, resultSet),
                 resultSet.getInt(table + ".slope"),
                 RafterChoice.from(resultSet.getInt(table + ".rafters")),
-                createShed(resultSet, shedTable, shedCladdingTable, shedFlooringTable),
+                resultSet.getInt("shed") == 0 ? null : createShed(resultSet, shedTable, shedCladdingTable, shedFlooringTable),
                 resultSet.getBoolean(table + ".active"),
                 resultSet.getInt(table + ".offers"),
                 resultSet.getTimestamp(table + ".created_at").toLocalDateTime()

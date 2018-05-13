@@ -1,7 +1,6 @@
 package tvestergaard.fog.logic.floorings;
 
 import tvestergaard.fog.data.DataAccessException;
-import tvestergaard.fog.data.ProductionDataSource;
 import tvestergaard.fog.data.constraints.Constraint;
 import tvestergaard.fog.data.flooring.*;
 import tvestergaard.fog.logic.ApplicationException;
@@ -104,6 +103,21 @@ public class FlooringFacade
             if (!reasons.isEmpty())
                 throw new FlooringValidatorException(reasons);
             return dao.update(FlooringUpdater.from(id, name, description, active));
+        } catch (DataAccessException e) {
+            throw new ApplicationException(e);
+        }
+    }
+
+    /**
+     * Returns the number of floorings in the data storage.
+     *
+     * @return The number of floorings in the data storage.
+     * @throws ApplicationException When a data storage exception occurs while performing the operation.
+     */
+    public int size() throws ApplicationException
+    {
+        try {
+            return dao.size();
         } catch (DataAccessException e) {
             throw new ApplicationException(e);
         }

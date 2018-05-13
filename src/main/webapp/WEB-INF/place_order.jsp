@@ -154,13 +154,23 @@
         </div>
         <div class="row">
             <div class="col s12">
+                <div class="switch">
+                    <label>
+                        <input type="checkbox" name="shed" id="shed" value="true">
+                        <span class="lever"></span>
+                    </label>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col s12">
                 <p>Nibh purus, eu eget amet sed semper, nisl pede donec pede, fusce libero blandit augue est. Ipsum
                     enim, et elit congue erat nisl. Metus sit adipiscing vitae libero, augue tincidunt sed lorem
                     praesent in, non sed, lacus dignissim vulputate vel erat vestibulum iaculis. Blandit metus, platea
                     mauris. Hymenaeos libero. Ultrices eu metus arcu congue.</p>
             </div>
         </div>
-        <div class="row">
+        <div class="row shed-rows">
             <div class="input-field col s12">
                 <input name="shed-depth" id="shed-depth" type="number" step="1" min="0"
                        class="validate shed-input"
@@ -168,7 +178,7 @@
                 <label for="shed-depth">Dybde</label>
             </div>
         </div>
-        <div class="row">
+        <div class="row shed-rows">
             <div class="input-field col s12 m6">
                 <select name="shed-flooring" class="shed-input" required>
                     <c:forEach items="${floorings}" var="flooring">
@@ -224,5 +234,26 @@
 </div>
 <script>
     $('select').material_select();
+
+    $(document).ready(function () {
+        function updateShedInputs() {
+            if ($('input#shed').is(':checked')) {
+                $('input#shed').attr('value', 'true');
+                $('.shed-rows').show(500);
+                $('.shed-input').attr('required', 'required');
+            } else {
+                $('ïnput#shed').attr('value', 'false');
+                $('.shed-rows').hide(500);
+                $('.shed-input').removeAttr('required');
+            }
+        }
+
+        updateShedInputs();
+        $('select').material_select();
+        $('input#customer-name, input#customer-mail, input#customer-telephone').characterCounter();
+        $('input#shed').on('change', function (input) {
+            updateShedInputs();
+        });
+    });
 </script>
 <%@ include file="includes/bottom.jspf" %>

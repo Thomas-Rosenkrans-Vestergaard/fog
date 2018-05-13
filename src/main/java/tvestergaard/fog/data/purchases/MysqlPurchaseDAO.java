@@ -138,4 +138,21 @@ public class MysqlPurchaseDAO extends AbstractMysqlDAO implements PurchaseDAO
             throw new MysqlDataAccessException(e);
         }
     }
+
+    /**
+     * Returns the number of purchases in the data storage.
+     *
+     * @return The number of purchases in the data storage.
+     * @throws MysqlDataAccessException When a data storage exception occurs while performing the operation.
+     */
+    @Override public int size() throws MysqlDataAccessException
+    {
+        try (PreparedStatement statement = getConnection().prepareStatement("SELECT count(*) FROM purchases")) {
+            ResultSet resultSet = statement.executeQuery();
+            resultSet.first();
+            return resultSet.getInt(1);
+        } catch (SQLException e) {
+            throw new MysqlDataAccessException(e);
+        }
+    }
 }

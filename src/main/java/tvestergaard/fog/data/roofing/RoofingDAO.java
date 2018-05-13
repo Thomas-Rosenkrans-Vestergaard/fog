@@ -67,4 +67,12 @@ public interface RoofingDAO
      * @throws DataAccessException When a data storage exception occurs while performing the operation.
      */
     List<Component> getComponents(int roofing) throws DataAccessException;
+
+    /**
+     * Returns the number of roofings in the data storage.
+     *
+     * @return The number of roofings in the data storage.
+     * @throws DataAccessException When a data storage exception occurs while performing the operation.
+     */
+    int size() throws DataAccessException;
 }

@@ -45,6 +45,10 @@ public class OrderValidator
         if (slope < 1 && slope > 89)
             reasons.add(ILLEGAL_SLOPE);
 
+        if (shed != null)
+            if (shed.getDepth() > length)
+                reasons.add(ILLEGAL_SHED_DEPTH);
+
         return reasons;
     }
 }

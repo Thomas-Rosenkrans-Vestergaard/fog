@@ -51,7 +51,7 @@ public class AdministrationAuthenticationServlet extends AdministrationServlet
         Notifications notifications = notifications(req);
 
         if (!parameters.isPresent("username") || !parameters.isPresent("password")) {
-            resp.sendRedirect("login");
+            resp.sendRedirect("authenticate");
             return;
         }
 
@@ -59,18 +59,18 @@ public class AdministrationAuthenticationServlet extends AdministrationServlet
             Employee employee = facade.authenticate(parameters.value("username"), parameters.value("password"));
             if (employee == null) {
                 notifications.error("Forkert brugernavn eller adgangskode.");
-                resp.sendRedirect("login");
+                resp.sendRedirect("authenticate");
                 return;
             }
 
             String      from    = req.getParameter("from");
             HttpSession session = req.getSession();
             session.setAttribute("employee", employee);
-            resp.sendRedirect(from != null ? URLDecoder.decode(from, "UTF-8") : "index");
+            resp.sendRedirect(from != null ? URLDecoder.decode(from, "UTF-8") : "models");
 
         } catch (InactiveEmployeeException e) {
             notifications.error("Inaktiv medarbejder.");
-            resp.sendRedirect("index");
+            resp.sendRedirect("models");
         }
     }
 }

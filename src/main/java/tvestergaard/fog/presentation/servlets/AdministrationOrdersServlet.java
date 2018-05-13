@@ -57,7 +57,6 @@ public class AdministrationOrdersServlet extends AdministrationServlet
         errors.put(UNKNOWN_ROOFING, "Ukendt tag.");
         errors.put(INACTIVE_ROOFING, "Inaktiv tag.");
         errors.put(ILLEGAL_SLOPE, "Ulovlig hældning.");
-        errors.put(ILLEGAL_SHED_WIDTH, "Ulovlig skurbredde.");
         errors.put(ILLEGAL_SHED_DEPTH, "Ulovlig skurhøjde.");
         errors.put(UNKNOWN_SHED_CLADDING, "Ukendt skurbeklædning.");
         errors.put(INACTIVE_SHED_CLADDING, "Inaktiv skurbeklædning.");
@@ -69,7 +68,7 @@ public class AdministrationOrdersServlet extends AdministrationServlet
     {
         @Override public void dispatch(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
         {
-            TableControls<OrderColumn> controls = new TableControls<>(request, OrderColumn.class);
+            TableControls<OrderColumn> controls = new TableControls<>(request, OrderColumn.class, orderFacade.size());
             notifications(request);
             request.setAttribute("title", "Ordree");
             request.setAttribute("orders", orderFacade.get(controls.constraints()));
@@ -129,7 +128,7 @@ public class AdministrationOrdersServlet extends AdministrationServlet
                     !parameters.isPresent("shed-flooring") ||
                     !parameters.isInt("shed-cladding")) {
                 notifications.error("The provided data is invalid.");
-                request.getRequestDispatcher("/WEB-INF/design.jsp").forward(request, response);
+                response.sendRedirect("orders?action=update&id=" + parameters.getInt("id"));
                 return;
             }
 
@@ -144,7 +143,7 @@ public class AdministrationOrdersServlet extends AdministrationServlet
                         parameters.getEnum("rafters", RafterChoice.class),
                         createShed(parameters));
 
-                notifications.success("Ordreet blev opdateret.");
+                notifications.success("Ordren blev opdateret.");
                 response.sendRedirect("?action=update&id=" + parameters.getInt("id"));
 
             } catch (OrderValidatorException e) {
@@ -158,12 +157,11 @@ public class AdministrationOrdersServlet extends AdministrationServlet
 
     private ShedSpecification createShed(Parameters parameters)
     {
-        if (!parameters.isPresent("shed")) {
+        if (!parameters.isPresent("shed"))
             return null;
-        }
 
         return new ShedSpecification(
-                parameters.getInt("shed-width"),
+                parameters.getInt("shed-depth"),
                 parameters.getInt("shed-cladding"),
                 parameters.getInt("shed-flooring")
         );

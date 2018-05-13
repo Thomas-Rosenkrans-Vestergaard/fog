@@ -16,11 +16,10 @@
 <%@ include file="../includes/administration_controls.jspf" %>
 <div class="row">
     <div class="col s12">
-        <table class="highlight administration-table">
+        <table class="highlight">
             <thead>
             <th>ID</th>
             <th>Kunde</th>
-            <th>Beklædning</th>
             <th>Bredde</th>
             <th>Længde</th>
             <th>Højde</th>
@@ -28,26 +27,44 @@
             <th>Hældning</th>
             <th>Spær</th>
             <th>Oprettet</th>
+            <th>Redskabsskur</th>
             </thead>
             <tbody>
             <c:forEach items="${orders}" var="order">
-                <tr onclick="location.href = '?action=update&id=${order.getId()}'">
+                <tr style="cursor:pointer;" onclick="location.href = 'order?id=${order.getId()}'">
                     <td>${order.getId()}</td>
-                    <td><a href="customers?action=update&id=${order.getCustomer().getId()}">
-                        <c:out value="${order.getCustomer().getName()}"/>
-                    </a></td>
-                    <td><a href="claddings?action=update&id=${order.getCladding().getId()}">
-                        <c:out value="${order.getCladding().getName()}"/>
-                    </a></td>
+                    <td><c:out value="${order.getCustomer().getName()}"/></td>
                     <td>${order.getWidth()}</td>
                     <td>${order.getLength()}</td>
                     <td>${order.getHeight()}</td>
-                    <td><a href="roofings?action=update&id=${order.getRoofing().getId()}">
-                        <c:out value="${order.getRoofing().getName()}"/>
-                    </a></td>
+                    <td><c:out value="${order.getRoofing().getName()}"/></td>
                     <td>${order.getSlope()}</td>
                     <td>${order.getRafterChoice()}</td>
                     <td>${f:formatDatetime(order.getCreatedAt())}</td>
+                    <c:if test="${order.getShed() == null}">
+                        <td>Intet skur</td>
+                    </c:if>
+                    <c:if test="${order.getShed() != null}">
+                        <td>
+                            <table>
+                                <thead>
+                                <tbody>
+                                <tr>
+                                    <th>Dybde</th>
+                                    <td>${order.getShed().getDepth()}</td>
+                                </tr>
+                                <tr>
+                                    <th>Beklædning</th>
+                                    <td>${order.getShed().getCladding().getName()}</td>
+                                </tr>
+                                <tr>
+                                    <th>Gulv</th>
+                                    <td>${order.getShed().getFlooring().getName()}</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </td>
+                    </c:if>
                 </tr>
             </c:forEach>
             </tbody>

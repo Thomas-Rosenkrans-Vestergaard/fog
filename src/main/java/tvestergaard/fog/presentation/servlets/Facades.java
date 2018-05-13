@@ -4,7 +4,7 @@ import com.mysql.cj.jdbc.MysqlDataSource;
 import tvestergaard.fog.data.ProductionDataSource;
 import tvestergaard.fog.data.cladding.CladdingDAO;
 import tvestergaard.fog.data.cladding.MysqlCladdingDAO;
-import tvestergaard.fog.data.components.MysqlRoofingDAO;
+import tvestergaard.fog.data.roofing.MysqlRoofingDAO;
 import tvestergaard.fog.data.customers.CustomerDAO;
 import tvestergaard.fog.data.customers.MysqlCustomerDAO;
 import tvestergaard.fog.data.employees.EmployeeDAO;

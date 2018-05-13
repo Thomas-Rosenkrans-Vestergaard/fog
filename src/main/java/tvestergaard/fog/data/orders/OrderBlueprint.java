@@ -25,7 +25,7 @@ public interface OrderBlueprint
                                ShedBlueprint shed)
     {
         return new OrderRecord(-1, customer, null, width, length, height, roofing, null, slope, rafterChoice,
-                new ShedRecord(-1, shed.getDepth(), shed.getCladdingId(), null, shed.getFlooringId(), null), false, -1,
+                shed == null ? null : new ShedRecord(-1, shed.getDepth(), shed.getCladdingId(), null, shed.getFlooringId(), null), false, -1,
                 null);
     }
 

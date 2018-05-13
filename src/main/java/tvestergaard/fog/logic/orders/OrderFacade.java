@@ -88,7 +88,6 @@ public class OrderFacade
             if (!reasons.isEmpty())
                 throw new OrderValidatorException(reasons);
 
-
             return dao.create(OrderBlueprint.from(
                     customer,
                     width,
@@ -119,6 +118,20 @@ public class OrderFacade
         }
     }
 
+    /**
+     * Updates the order with the provided id.
+     *
+     * @param id      The id of the oder to update.
+     * @param width   The new width of the order.
+     * @param length  The new length of the order.
+     * @param height  The new height of the order.
+     * @param roofing The new roofing of the order.
+     * @param slope   The new slope of the roofing on the order.
+     * @param rafters The rafter choice on the order.
+     * @param shed    The shed built into the order.
+     * @return {@code true} if the order was updated.
+     * @throws OrderValidatorException When the provided information is not valid.
+     */
     public boolean update(int id,
                           int width,
                           int length,
@@ -133,7 +146,23 @@ public class OrderFacade
             if (!reasons.isEmpty())
                 throw new OrderValidatorException(reasons);
 
-            return dao.update(OrderUpdater.from(id, -1, width, length, height, roofing, slope, rafters, ShedBlueprint.from(shed.getDepth(), shed.getCladdingId(), shed.getFlooringId())));
+            return dao.update(OrderUpdater.from(id, -1, width, length, height, roofing, slope, rafters,
+                    shed == null ? null : ShedBlueprint.from(shed.getDepth(), shed.getCladdingId(), shed.getFlooringId())));
+        } catch (DataAccessException e) {
+            throw new ApplicationException(e);
+        }
+    }
+
+    /**
+     * Returns the number of orders in the data storage.
+     *
+     * @return The number of orders in the data storage.
+     * @throws ApplicationException When a data storage exception occurs while performing the operation.
+     */
+    public int size() throws ApplicationException
+    {
+        try {
+            return dao.size();
         } catch (DataAccessException e) {
             throw new ApplicationException(e);
         }

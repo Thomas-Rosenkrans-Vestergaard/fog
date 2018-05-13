@@ -29,6 +29,7 @@
             <th>Hældning</th>
             <th>Spær</th>
             <th>Oprettet</th>
+            <th>Redskabsskur</th>
             </thead>
             <tbody>
             <c:forEach items="${orders}" var="order">
@@ -41,6 +42,30 @@
                     <td>${order.getSlope()}</td>
                     <td>${order.getRafterChoice()}</td>
                     <td>${f:formatDatetime(order.getCreatedAt())}</td>
+                    <c:if test="${order.getShed() == null}">
+                        <td>Intet skur</td>
+                    </c:if>
+                    <c:if test="${order.getShed() != null}">
+                        <td>
+                            <table>
+                                <thead>
+                                <tbody>
+                                <tr>
+                                    <th>Dybde</th>
+                                    <td>${order.getShed().getDepth()}</td>
+                                </tr>
+                                <tr>
+                                    <th>Beklædning</th>
+                                    <td>${order.getShed().getCladding().getName()}</td>
+                                </tr>
+                                <tr>
+                                    <th>Gulv</th>
+                                    <td>${order.getShed().getFlooring().getName()}</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </td>
+                    </c:if>
                 </tr>
             </c:forEach>
             </tbody>

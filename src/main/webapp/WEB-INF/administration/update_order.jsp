@@ -37,6 +37,9 @@
             </tr>
             </thead>
             <tbody>
+            <when tes>
+
+            </when>
             <c:forEach items="${offers}" var="offer">
                 <tr>
                     <td>${f:formatPrice(offer.getPrice())}</td>
@@ -45,6 +48,11 @@
                     <td>${f:formatDatetime(offer.getCreatedAt())}</td>
                 </tr>
             </c:forEach>
+            <c:if test="${empty offers}">
+                <tr>
+                    <td colspan="4">Ingen tilbud for denne ordre.</td>
+                </tr>
+            </c:if>
             </tbody>
         </table>
     </div>
@@ -60,44 +68,73 @@
         <input type="hidden" value="${order.getId()}" name="id">
         <div class="row">
             <div class="input-field col s12">
-                <select multiple name="cladding">
-                    <c:forEach items="${claddings}" var="cladding">
-                        <option value="${cladding.getId()}"
-                            ${cladding.getId() == order.getCladding().getId() ? 'selected' : ''}>
-                            <c:out value="${cladding.getName()}"/></option>
-                    </c:forEach>
+                <select id="width" name="width" required>
+                    <option ${order.getWidth() == 240 ? 'selected' : ''} value="240">240 cm</option>
+                    <option ${order.getWidth() == 270 ? 'selected' : ''} value="270">270 cm</option>
+                    <option ${order.getWidth() == 300 ? 'selected' : ''} value="300">300 cm</option>
+                    <option ${order.getWidth() == 330 ? 'selected' : ''} value="330">330 cm</option>
+                    <option ${order.getWidth() == 360 ? 'selected' : ''} value="360">360 cm</option>
+                    <option ${order.getWidth() == 390 ? 'selected' : ''} value="390">390 cm</option>
+                    <option ${order.getWidth() == 420 ? 'selected' : ''} value="420">420 cm</option>
+                    <option ${order.getWidth() == 450 ? 'selected' : ''} value="450">450 cm</option>
+                    <option ${order.getWidth() == 480 ? 'selected' : ''} value="480">480 cm</option>
+                    <option ${order.getWidth() == 510 ? 'selected' : ''} value="510">510 cm</option>
+                    <option ${order.getWidth() == 540 ? 'selected' : ''} value="540">540 cm</option>
+                    <option ${order.getWidth() == 570 ? 'selected' : ''} value="570">570 cm</option>
+                    <option ${order.getWidth() == 600 ? 'selected' : ''} value="600">600 cm</option>
+                    <option ${order.getWidth() == 630 ? 'selected' : ''} value="630">630 cm</option>
+                    <option ${order.getWidth() == 660 ? 'selected' : ''} value="660">660 cm</option>
+                    <option ${order.getWidth() == 690 ? 'selected' : ''} value="690">690 cm</option>
+                    <option ${order.getWidth() == 720 ? 'selected' : ''} value="720">720 cm</option>
+                    <option ${order.getWidth() == 750 ? 'selected' : ''} value="750">750 cm</option>
                 </select>
-                <label>Beklædninger</label>
+                <label>Bredde</label>
             </div>
         </div>
         <div class="row">
             <div class="input-field col s12">
-                <input type="number" name="width" id="width" min="1" class="validate" value="${order.getWidth()}"
-                       required>
-                <label for="width">Bredde</label>
+                <select id="length" name="length" required>
+                    <option ${order.getLength() == 240 ? 'selected' : ''} value="240">240 cm</option>
+                    <option ${order.getLength() == 270 ? 'selected' : ''} value="270">270 cm</option>
+                    <option ${order.getLength() == 300 ? 'selected' : ''} value="300">300 cm</option>
+                    <option ${order.getLength() == 330 ? 'selected' : ''} value="330">330 cm</option>
+                    <option ${order.getLength() == 360 ? 'selected' : ''} value="360">360 cm</option>
+                    <option ${order.getLength() == 390 ? 'selected' : ''} value="390">390 cm</option>
+                    <option ${order.getLength() == 420 ? 'selected' : ''} value="420">420 cm</option>
+                    <option ${order.getLength() == 450 ? 'selected' : ''} value="450">450 cm</option>
+                    <option ${order.getLength() == 480 ? 'selected' : ''} value="480">480 cm</option>
+                    <option ${order.getLength() == 510 ? 'selected' : ''} value="510">510 cm</option>
+                    <option ${order.getLength() == 540 ? 'selected' : ''} value="540">540 cm</option>
+                    <option ${order.getLength() == 570 ? 'selected' : ''} value="570">570 cm</option>
+                    <option ${order.getLength() == 600 ? 'selected' : ''} value="600">600 cm</option>
+                    <option ${order.getLength() == 630 ? 'selected' : ''} value="630">630 cm</option>
+                    <option ${order.getLength() == 660 ? 'selected' : ''} value="660">660 cm</option>
+                    <option ${order.getLength() == 690 ? 'selected' : ''} value="690">690 cm</option>
+                    <option ${order.getLength() == 720 ? 'selected' : ''} value="720">720 cm</option>
+                    <option ${order.getLength() == 750 ? 'selected' : ''} value="750">750 cm</option>
+                    <option ${order.getLength() == 780 ? 'selected' : ''} value="780">780 cm</option>
+                </select>
+                <label>Længde</label>
             </div>
         </div>
         <div class="row">
             <div class="input-field col s12">
-                <input type="number" name="length" id="length" min="1" class="validate" value="${order.getLength()}"
-                       required>
-                <label for="length">Længde</label>
+                <select id="height" name="height" required>
+                    <option ${order.getHeight() == 180 ? 'selected' : ''} value="180">180 cm</option>
+                    <option ${order.getHeight() == 210 ? 'selected' : ''} value="210">210 cm</option>
+                    <option ${order.getHeight() == 240 ? 'selected' : ''} value="240">240 cm</option>
+                    <option ${order.getHeight() == 270 ? 'selected' : ''} value="270">270 cm</option>
+                    <option ${order.getHeight() == 300 ? 'selected' : ''} value="300">300 cm</option>
+                </select>
+                <label>Height</label>
             </div>
         </div>
         <div class="row">
             <div class="input-field col s12">
-                <input type="number" name="height" id="height" min="1" class="validate" value="${order.getHeight()}"
-                       required>
-                <label for="height">Højde</label>
-            </div>
-        </div>
-        <div class="row">
-            <div class="input-field col s12">
-                <select multiple name="roofing">
+                <select name="roofing">
                     <c:forEach items="${roofings}" var="roofing">
-                        <option value="${roofing.getId()}"
-                            ${roofing.getId() == order.getRoofing().getId() ? 'selected' : ''}>
-                            <c:out value="${roofing.getName()}"/></option>
+                        <option value="${roofing.getId()}" ${roofing.getId() == order.getRoofing().getId() ?
+                                'selected' : ''}><c:out value="${roofing.getName()}"/></option>
                     </c:forEach>
                 </select>
                 <label>Tag</label>
@@ -111,27 +148,25 @@
             </div>
         </div>
         <div class="row">
-            <p>
+            <div class="col s12">
                 <input name="rafters" type="radio" id="rafters-premade" value="PREBUILT" checked="checked" required/>
                 <label for="rafters-premade">Færdiglavet spær</label>
-            </p>
-            <p>
+            </div>
+            <div class="col s12">
                 <input name="rafters" type="radio" id="rafters-self" value="BUILD_SELF" required/>
                 <label for="rafters-self">Byg selv spær</label>
-            </p>
+            </div>
         </div>
         <div class="class row">
             <div class="col s12">
-                <p>
-                    <input name="active" type="radio" id="active-true" value="true"
-                    ${order.isActive() ? 'checked' : ''}/>
-                    <label for="active-true">Aktiv</label>
-                </p>
-                <p>
-                    <input name="active" type="radio" id="active-false" value="false"
-                    ${order.isActive() ? '' : 'checked'}/>
-                    <label for="active-false">Inaktiv</label>
-                </p>
+                <input name="active" type="radio" id="active-true" value="true"
+                ${order.isActive() ? 'checked' : ''}/>
+                <label for="active-true">Aktiv</label>
+            </div>
+            <div class="col 12">
+                <input name="active" type="radio" id="active-false" value="false"
+                ${order.isActive() ? '' : 'checked'}/>
+                <label for="active-false">Inaktiv</label>
             </div>
         </div>
         <div class="row">
@@ -139,25 +174,10 @@
                 <h5>Redskabsskur</h5>
             </div>
         </div>
-        <div class="row">
-            <div class="col s12">
-                <div class="switch">
-                    <label>
-                        <input type="checkbox" name="shed" id="shed" value="true">
-                        <span class="lever"></span>
-                    </label>
-                </div>
-            </div>
-        </div>
         <div class="row shed-rows">
-            <div class="input-field col s12 m6">
-                <input name="shed-width" id="shed-width" type="number" step="1" min="0"
-                       class="validate shed-input"
-                       required>
-                <label for="shed-width">Bredde</label>
-            </div>
-            <div class="input-field col s12 m6">
+            <div class="input-field col s12">
                 <input name="shed-depth" id="shed-depth" type="number" step="1" min="0"
+                       value="${order.getShed().getDepth()}"
                        class="validate shed-input"
                        required>
                 <label for="shed-depth">Dybde</label>
@@ -167,7 +187,8 @@
             <div class="input-field col s12 m6">
                 <select name="shed-flooring" class="shed-input" required>
                     <c:forEach items="${floorings}" var="flooring">
-                        <option value="${flooring.getId()}"><c:out value="${flooring.getName()}"/></option>
+                        <option ${flooring.getId() == order.getShed().getFlooring().getId() ? 'selected' : ''}
+                                value="${flooring.getId()}"><c:out value="${flooring.getName()}"/></option>
                     </c:forEach>
                 </select>
                 <label>Gulv</label>
@@ -175,7 +196,8 @@
             <div class="input-field col s12 m6">
                 <select name="shed-cladding" class="shed-input" required>
                     <c:forEach items="${claddings}" var="cladding">
-                        <option value="${cladding.getId()}"><c:out value="${cladding.getName()}"/></option>
+                        <option ${cladding.getId() == order.getShed().getCladding().getId() ? 'selected' : ''}
+                                value="${cladding.getId()}"><c:out value="${cladding.getName()}"/></option>
                     </c:forEach>
                 </select>
                 <label>Beklædning</label>

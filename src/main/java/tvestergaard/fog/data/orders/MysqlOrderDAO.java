@@ -8,10 +8,7 @@ import tvestergaard.fog.data.constraints.Constraint;
 import tvestergaard.fog.data.constraints.StatementBinder;
 import tvestergaard.fog.data.constraints.StatementGenerator;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -56,7 +53,7 @@ public class MysqlOrderDAO extends AbstractMysqlDAO implements OrderDAO
                 "SELECT *, (SELECT count(*) FROM offers WHERE `order` = o.id) AS `o.offers` FROM orders o " +
                         "INNER JOIN customers ON o.customer = customers.id " +
                         "INNER JOIN roofings ON o.roofing = roofings.id " +
-                        "LEFT  JOIN sheds ON o.id = sheds.order " +
+                        "LEFT  JOIN sheds ON o.shed = sheds.id " +
                         "LEFT  JOIN claddings s_cladding ON sheds.cladding = s_cladding.id " +
                         "LEFT  JOIN floorings ON sheds.flooring = floorings.id", constraints);
         try (PreparedStatement statement = getConnection().prepareStatement(SQL)) {
@@ -97,13 +94,31 @@ public class MysqlOrderDAO extends AbstractMysqlDAO implements OrderDAO
     @Override public Order create(OrderBlueprint blueprint) throws DataAccessException
     {
         String orderSQL = "INSERT INTO orders " +
-                "(customer, width, `length`, height, roofing, slope, rafters) " +
-                "VALUES (?, ?, ?, ?, ?, ?, ?)";
-        String shedSQL = "INSERT INTO sheds (`order`, depth, cladding, flooring) VALUES (?, ?, ?, ?)";
+                "(customer, width, `length`, height, roofing, slope, rafters, shed) " +
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+        String shedSQL = "INSERT INTO sheds (depth, cladding, flooring) VALUES (?, ?, ?)";
 
         try {
             Connection con = getConnection();
             try {
+
+                int           shedId        = -1;
+                ShedBlueprint shedBlueprint = blueprint.getShed();
+                if (shedBlueprint != null) {
+                    ShedBlueprint shed = blueprint.getShed();
+                    if (shed != null) {
+                        try (PreparedStatement shedStatement = con.prepareStatement(shedSQL, RETURN_GENERATED_KEYS)) {
+                            shedStatement.setInt(1, shedBlueprint.getDepth());
+                            shedStatement.setInt(2, shed.getCladdingId());
+                            shedStatement.setInt(3, shed.getFlooringId());
+                            shedStatement.executeUpdate();
+
+                            ResultSet generated = shedStatement.getGeneratedKeys();
+                            generated.first();
+                            shedId = generated.getInt(1);
+                        }
+                    }
+                }
 
                 int orderId;
                 try (PreparedStatement orderStatement = con.prepareStatement(orderSQL, RETURN_GENERATED_KEYS)) {
@@ -114,21 +129,14 @@ public class MysqlOrderDAO extends AbstractMysqlDAO implements OrderDAO
                     orderStatement.setInt(5, blueprint.getRoofingId());
                     orderStatement.setInt(6, blueprint.getSlope());
                     orderStatement.setInt(7, blueprint.getRafterChoice().getId());
+                    if (shedId != -1)
+                        orderStatement.setInt(8, shedId);
+                    else
+                        orderStatement.setNull(8, Types.INTEGER);
                     orderStatement.executeUpdate();
                     ResultSet resultSet = orderStatement.getGeneratedKeys();
                     resultSet.first();
                     orderId = resultSet.getInt(1);
-                }
-
-                ShedBlueprint shed = blueprint.getShed();
-                if (shed != null) {
-                    try (PreparedStatement shedStatement = con.prepareStatement(shedSQL)) {
-                        shedStatement.setInt(1, orderId);
-                        shedStatement.setInt(2, shed.getDepth());
-                        shedStatement.setInt(3, shed.getCladdingId());
-                        shedStatement.setInt(4, shed.getFlooringId());
-                        shedStatement.executeUpdate();
-                    }
                 }
 
                 con.commit();
@@ -155,9 +163,12 @@ public class MysqlOrderDAO extends AbstractMysqlDAO implements OrderDAO
     {
         try {
             final String orderSQL = "UPDATE orders SET width = ?, `length` = ?, height = ?, " +
-                    "roofing = ?, slope = ?, rafters = ?, active = ? WHERE id = ?";
-            final String shedSQL    = "UPDATE sheds SET `order` = ?, `depth` = ?, `cladding` = ?, `flooring` = ? WHERE id = ?";
+                    "roofing = ?, slope = ?, rafters = ?, active = ?, shed = ? WHERE id = ?";
+            final String shedSQL    = "UPDATE sheds SET `depth` = ?, `cladding` = ?, `flooring` = ? WHERE id = ?";
             Connection   connection = getConnection();
+
+            ShedUpdater shed = updater.getShed();
+
             try {
                 try (PreparedStatement orderStatement = connection.prepareStatement(orderSQL)) {
                     orderStatement.setInt(1, updater.getWidth());
@@ -168,22 +179,20 @@ public class MysqlOrderDAO extends AbstractMysqlDAO implements OrderDAO
                     orderStatement.setInt(6, updater.getRafterChoice().getId());
                     orderStatement.setBoolean(7, updater.isActive());
                     orderStatement.setInt(8, updater.getId());
+                    if (shed != null)
+                        orderStatement.setInt(9, shed.getId());
+                    else
+                        orderStatement.setNull(9, Types.INTEGER);
                     orderStatement.executeUpdate();
                 }
 
-                ShedUpdater shed = updater.getShed();
-                if (shed == null) {
-                    try (PreparedStatement delete = connection.prepareStatement("DELETE FROM sheds WHERE `order` = ?")) {
-                        delete.setInt(1, updater.getId());
-                        delete.executeUpdate();
-                    }
-                } else {
-                    try (PreparedStatement update = connection.prepareStatement(shedSQL)) {
-                        update.setInt(1, updater.getId());
-                        update.setInt(2, shed.getDepth());
-                        update.setInt(3, shed.getCladdingId());
-                        update.setInt(4, shed.getFlooringId());
-                        update.executeUpdate();
+                if (shed != null) {
+                    try (PreparedStatement shedStatement = connection.prepareStatement(shedSQL)) {
+                        shedStatement.setInt(1, shed.getDepth());
+                        shedStatement.setInt(2, shed.getCladdingId());
+                        shedStatement.setInt(3, shed.getFlooringId());
+                        shedStatement.setInt(4, shed.getId());
+                        shedStatement.executeUpdate();
                     }
                 }
 
@@ -216,6 +225,23 @@ public class MysqlOrderDAO extends AbstractMysqlDAO implements OrderDAO
             ResultSet resultSet = statement.executeQuery();
             resultSet.first();
             return resultSet.getInt("count");
+        } catch (SQLException e) {
+            throw new MysqlDataAccessException(e);
+        }
+    }
+
+    /**
+     * Returns the number of orders in the data storage.
+     *
+     * @return The number of orders in the data storage.
+     * @throws MysqlDataAccessException When a data storage exception occurs while performing the operation.
+     */
+    @Override public int size() throws MysqlDataAccessException
+    {
+        try (PreparedStatement statement = getConnection().prepareStatement("SELECT count(*) FROM orders")) {
+            ResultSet resultSet = statement.executeQuery();
+            resultSet.first();
+            return resultSet.getInt(1);
         } catch (SQLException e) {
             throw new MysqlDataAccessException(e);
         }

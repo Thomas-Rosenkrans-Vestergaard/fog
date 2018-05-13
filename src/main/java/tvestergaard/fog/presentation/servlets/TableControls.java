@@ -12,11 +12,13 @@ import static tvestergaard.fog.data.constraints.Constraint.*;
 public class TableControls<T extends Enum<T>>
 {
 
+    private static final int RECORDS_PER_PAGE = 20;
+
     private final HttpServletRequest request;
     private final Class<T>           columns;
     private final Parameters         parameters;
 
-    public TableControls(HttpServletRequest request, Class<T> columns)
+    public TableControls(HttpServletRequest request, Class<T> columns, int numberOfRecords)
     {
         this.request = request;
         this.columns = columns;
@@ -28,6 +30,8 @@ public class TableControls<T extends Enum<T>>
         request.setAttribute("search_value", request.getParameter("search_value"));
         request.setAttribute("sort_column", request.getParameter("sort_column"));
         request.setAttribute("sort_direction", request.getParameter("sort_direction"));
+        request.setAttribute("number_of_pages", (int) Math.ceil((double) numberOfRecords / RECORDS_PER_PAGE));
+        request.setAttribute("current_page", parameters.isInt("page") ? parameters.getInt("page") : 1);
     }
 
     public Constraint<T>[] constraints()

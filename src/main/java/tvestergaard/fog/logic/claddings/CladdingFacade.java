@@ -1,7 +1,6 @@
 package tvestergaard.fog.logic.claddings;
 
 import tvestergaard.fog.data.DataAccessException;
-import tvestergaard.fog.data.ProductionDataSource;
 import tvestergaard.fog.data.cladding.*;
 import tvestergaard.fog.data.constraints.Constraint;
 import tvestergaard.fog.logic.ApplicationException;
@@ -68,9 +67,9 @@ public class CladdingFacade
     /**
      * Inserts a new cladding into the data storage.
      *
-     * @param name                The name of the cladding to create.
-     * @param description         The description of the cladding to create.
-     * @param active              Whether or not the cladding can be applied to orders.
+     * @param name        The name of the cladding to create.
+     * @param description The description of the cladding to create.
+     * @param active      Whether or not the cladding can be applied to orders.
      * @return The cladding instance representing the newly created cladding.
      * @throws ApplicationException       When an exception occurs while performing the operation.
      * @throws CladdingValidatorException When the provided information is considered invalid.
@@ -91,10 +90,10 @@ public class CladdingFacade
     /**
      * Updates the entity in the data storage to match the provided {@code cladding}.
      *
-     * @param id                  The id of the cladding to update.
-     * @param name                The name of the cladding to update to.
-     * @param description         The description of the cladding to update to.
-     * @param active              The active state to update to.
+     * @param id          The id of the cladding to update.
+     * @param name        The name of the cladding to update to.
+     * @param description The description of the cladding to update to.
+     * @param active      The active state to update to.
      * @return {@link true} if the record was updated.
      * @throws ApplicationException       When an exception occurs while performing the operation.
      * @throws CladdingValidatorException When the provided information is considered invalid.
@@ -106,6 +105,21 @@ public class CladdingFacade
             if (!reasons.isEmpty())
                 throw new CladdingValidatorException(reasons);
             return dao.update(CladdingUpdater.from(id, name, description, active));
+        } catch (DataAccessException e) {
+            throw new ApplicationException(e);
+        }
+    }
+
+    /**
+     * Returns the number of claddings in the data storage.
+     *
+     * @return The number of claddings in the data storage.
+     * @throws ApplicationException When a data storage exception occurs while performing the operation.
+     */
+    public int size() throws ApplicationException
+    {
+        try {
+            return dao.size();
         } catch (DataAccessException e) {
             throw new ApplicationException(e);
         }

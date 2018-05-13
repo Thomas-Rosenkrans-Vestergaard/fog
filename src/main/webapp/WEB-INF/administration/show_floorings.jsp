@@ -19,13 +19,6 @@
 <%@ include file="../includes/administration_controls.jspf" %>
 <div class="row">
     <div class="col s12">
-        <a class="btn-floating btn-large waves-effect waves-light red" href="?action=create">
-            <i class="material-icons">add</i>
-        </a>
-    </div>
-</div>
-<div class="row">
-    <div class="col s12">
         <table class="highlight administration-table">
             <thead>
             <th class="short">ID</th>

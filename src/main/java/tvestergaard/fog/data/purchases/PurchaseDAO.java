@@ -35,4 +35,12 @@ public interface PurchaseDAO
      * @throws DataAccessException When a data storage exception occurs while performing the operation.
      */
     Purchase create(PurchaseBlueprint blueprint) throws DataAccessException;
+
+    /**
+     * Returns the number of purchases in the data storage.
+     *
+     * @return The number of purchases in the data storage.
+     * @throws DataAccessException When a data storage exception occurs while performing the operation.
+     */
+    int size() throws DataAccessException;
 }

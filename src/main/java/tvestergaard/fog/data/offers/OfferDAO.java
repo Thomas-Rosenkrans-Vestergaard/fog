@@ -56,4 +56,12 @@ public interface OfferDAO
      * @throws DataAccessException When a data storage exception occurs while performing the operation.
      */
     void reject(int offerId) throws DataAccessException;
+
+    /**
+     * Returns the number of offers in the data storage.
+     *
+     * @return The number of offers in the data storage.
+     * @throws DataAccessException When a data storage exception occurs while performing the operation.
+     */
+    int size() throws DataAccessException;
 }

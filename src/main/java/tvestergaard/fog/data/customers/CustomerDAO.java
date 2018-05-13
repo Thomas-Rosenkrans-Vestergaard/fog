@@ -61,4 +61,12 @@ public interface CustomerDAO
      * @throws DataAccessException When a data storage exception occurs while performing the operation.
      */
     void confirmMembership(int token) throws DataAccessException;
+
+    /**
+     * Returns the number of customers in the data storage.
+     *
+     * @return The number of customers in the data storage.
+     * @throws DataAccessException When a data storage exception occurs while performing the operation.
+     */
+    int size() throws DataAccessException;
 }

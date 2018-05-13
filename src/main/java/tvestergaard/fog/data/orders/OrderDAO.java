@@ -17,7 +17,6 @@ public interface OrderDAO
      */
     List<Order> get(Constraint<OrderColumn>... constraints) throws DataAccessException;
 
-
     /**
      * Returns the first order matching the provided constraints.
      *
@@ -53,4 +52,12 @@ public interface OrderDAO
      * @throws DataAccessException When a data storage exception occurs while performing the operation.
      */
     int getNumberOfNewOrders() throws DataAccessException;
+
+    /**
+     * Returns the number of orders in the data storage.
+     *
+     * @return The number of orders in the data storage.
+     * @throws DataAccessException When a data storage exception occurs while performing the operation.
+     */
+    int size() throws DataAccessException;
 }

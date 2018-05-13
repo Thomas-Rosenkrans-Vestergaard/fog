@@ -1,16 +1,15 @@
-package tvestergaard.fog.data.components;
+package tvestergaard.fog.data.roofing;
 
-import com.google.common.collect.ArrayListMultimap;
-import com.google.common.collect.Multimap;
 import com.mysql.cj.jdbc.MysqlDataSource;
 import tvestergaard.fog.data.AbstractMysqlDAO;
 import tvestergaard.fog.data.DataAccessException;
 import tvestergaard.fog.data.MysqlDataAccessException;
+import tvestergaard.fog.data.components.Component;
+import tvestergaard.fog.data.components.ComponentDefinition;
+import tvestergaard.fog.data.components.ComponentReference;
 import tvestergaard.fog.data.constraints.Constraint;
 import tvestergaard.fog.data.constraints.StatementBinder;
 import tvestergaard.fog.data.constraints.StatementGenerator;
-import tvestergaard.fog.data.materials.SimpleMaterial;
-import tvestergaard.fog.data.roofing.*;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -249,6 +248,23 @@ public class MysqlRoofingDAO extends AbstractMysqlDAO implements RoofingDAO
 
             return components;
 
+        } catch (SQLException e) {
+            throw new MysqlDataAccessException(e);
+        }
+    }
+
+    /**
+     * Returns the number of roofings in the data storage.
+     *
+     * @return The number of roofings in the data storage.
+     * @throws MysqlDataAccessException When a data storage exception occurs while performing the operation.
+     */
+    @Override public int size() throws MysqlDataAccessException
+    {
+        try (PreparedStatement statement = getConnection().prepareStatement("SELECT count(*) FROM roofings")) {
+            ResultSet resultSet = statement.executeQuery();
+            resultSet.first();
+            return resultSet.getInt(1);
         } catch (SQLException e) {
             throw new MysqlDataAccessException(e);
         }

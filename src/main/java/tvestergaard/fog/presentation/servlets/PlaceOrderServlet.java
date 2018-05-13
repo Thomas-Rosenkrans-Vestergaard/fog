@@ -84,14 +84,21 @@ public class PlaceOrderServlet extends HttpServlet
                 !parameters.isInt("height") ||
                 !parameters.isInt("roofing") ||
                 !parameters.isInt("slope") ||
-                !parameters.isEnum("rafters", RafterChoice.class) ||
-                !parameters.isInt("shed-depth") ||
-                !parameters.isInt("shed-flooring") ||
-                !parameters.isInt("shed-cladding")) {
+                !parameters.isEnum("rafters", RafterChoice.class)) {
 
             notifications.error("Invalid design data.");
             resp.sendRedirect("place-order");
             return;
+        }
+
+        if (parameters.isPresent("shed")) {
+            if (!parameters.isInt("shed-depth") ||
+                    !parameters.isInt("shed-flooring") ||
+                    !parameters.isInt("shed-cladding")) {
+                notifications.error("Invalid design data.");
+                resp.sendRedirect("place-order");
+                return;
+            }
         }
 
         if (!authentication.isCustomer()) {
@@ -147,6 +154,9 @@ public class PlaceOrderServlet extends HttpServlet
 
     private ShedSpecification createShed(Parameters parameters)
     {
+        if (!parameters.isPresent("shed"))
+            return null;
+
         return new ShedSpecification(
                 parameters.getInt("shed-depth"),
                 parameters.getInt("shed-cladding"),
