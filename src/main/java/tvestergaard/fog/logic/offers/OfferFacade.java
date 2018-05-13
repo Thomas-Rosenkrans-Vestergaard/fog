@@ -228,4 +228,20 @@ public class OfferFacade
             throw new ApplicationException(e);
         }
     }
+
+    /**
+     * Returns the number of open offers for the provided customer.
+     *
+     * @param customer The customer to return the number of open offers for.
+     * @return The number of open offers for the provided customer.
+     * @throws ApplicationException When a data storage exception occurs while performing the operation.
+     */
+    public int getNumberOfOpenOffers(int customer)
+    {
+        try {
+            return offerDAO.getNumberOfOpenOffers(customer);
+        } catch (DataAccessException e) {
+            throw new ApplicationException(e);
+        }
+    }
 }

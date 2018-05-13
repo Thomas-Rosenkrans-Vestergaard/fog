@@ -59,7 +59,7 @@ public class MysqlPurchaseDAO extends AbstractMysqlDAO implements PurchaseDAO
                 "INNER JOIN orders o ON offers.order = o.id " +
                 "INNER JOIN customers ON o.customer = customers.id " +
                 "INNER JOIN roofings ON o.roofing = roofings.id " +
-                "LEFT  JOIN sheds ON o.id = sheds.order " +
+                "LEFT  JOIN sheds ON o.shed = sheds.id " +
                 "LEFT  JOIN claddings s_cladding ON sheds.cladding = s_cladding.id " +
                 "LEFT  JOIN floorings ON sheds.flooring = floorings.id " +
                 "INNER JOIN employees o_emp ON offers.employee = o_emp.id", constraints);

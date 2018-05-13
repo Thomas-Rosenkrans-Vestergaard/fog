@@ -1,6 +1,8 @@
 package tvestergaard.fog.presentation.servlets;
 
+import tvestergaard.fog.logic.offers.OfferFacade;
 import tvestergaard.fog.logic.orders.OrderFacade;
+import tvestergaard.fog.presentation.Parameters;
 import tvestergaard.fog.presentation.servlets.commands.Command;
 import tvestergaard.fog.presentation.servlets.commands.CommandDispatcher;
 
@@ -18,10 +20,12 @@ public class AjaxServlet extends HttpServlet
 
     private final CommandDispatcher dispatcher  = new CommandDispatcher();
     private final OrderFacade       orderFacade = Facades.orderFacade;
+    private final OfferFacade       offerFacade = Facades.offerFacade;
 
     public AjaxServlet()
     {
         dispatcher.get("getNumberOfNewOrders", new GetNumberOfNewOrdersCommand());
+        dispatcher.get("getNumberOfNewOffers", new GetNumberOfNewOffersCommand());
     }
 
     /**
@@ -53,6 +57,35 @@ public class AjaxServlet extends HttpServlet
             PrintWriter writer = response.getWriter();
             response.setContentType("application/json");
             writer.write(String.format("{\"orders\": %d}", orderFacade.getNumberOfNewOrders()));
+            writer.flush();
+            writer.close();
+        }
+    }
+
+    private class GetNumberOfNewOffersCommand implements Command
+    {
+
+        /**
+         * Delegates the request and response objects to this command.
+         *
+         * @param request  The request.
+         * @param response The response.
+         */
+        @Override public void dispatch(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
+        {
+            Parameters parameters = new Parameters(request);
+
+            PrintWriter writer = response.getWriter();
+            response.setContentType("application/json");
+
+            if (!parameters.isPresent("customer")) {
+                writer.write(String.format("{\"error\": \"No customer id provided.\"}"));
+                writer.flush();
+                writer.close();
+                return;
+            }
+
+            writer.write(String.format("{\"offers\": %d}", offerFacade.getNumberOfOpenOffers(parameters.getInt("customer"))));
             writer.flush();
             writer.close();
         }

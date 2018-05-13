@@ -19,13 +19,13 @@
         <form method="post">
             <div class="row">
                 <div class="col s12 input-field">
-                    <input type="text" name="username" id="username" class="validate" required>
+                    <input type="text" name="username" id="username" class="validate" value="admin" required>
                     <label for="username">Brugernavn</label>
                 </div>
             </div>
             <div class="row">
                 <div class="col s12 input-field">
-                    <input type="password" name="password" id="password" class="validate" required>
+                    <input type="password" name="password" id="password" class="validate" value="123456" required>
                     <label for="password">Adgangskode</label>
                 </div>
             </div>

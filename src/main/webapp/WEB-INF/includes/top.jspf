@@ -1,3 +1,4 @@
+<%@ page import="tvestergaard.fog.data.customers.Customer" %>
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="/WEB-INF/tld/functions.tld" prefix="f" %>
@@ -29,16 +30,43 @@
         <li class="${"authenticate".equals(navigation) ? 'active' : ''}"><a
                 href="${context}/authenticate">Autentificer</a>
         </li>
-        <% if (session.getAttribute("customer") != null) { %>
+        <%
+            Customer customer = (Customer) session.getAttribute("customer");
+
+            if (customer != null) { %>
         <li>
             <div class="divider"></div>
         </li>
         <li><a class="subheader">Kunde</a></li>
         <li class="${"profile".equals(navigation) ? 'active' : '' }"><a href="${context}/profile">Profil</a></li>
         <li class="${"orders".equals(navigation) ? 'active' : ''}"><a href="${context}/orders">Mine ordre</a></li>
-        <li class="${"offers".equals(navigation) ? 'active' : '' }"><a href="${context}/offers">Mine tilbud</a></li>
+        <li class="${"offers".equals(navigation) ? 'active' : '' }"><a href="${context}/offers"><span
+                id="new-offers-counter">0</span>Mine tilbud</a></li>
         <li class="${"purchases".equals(navigation) ? 'active' : '' }"><a href="${context}/purchases">Mine køb</a></li>
         <li><a href="${context}/logout">Log ud</a></li>
+
+        <script>
+            function updateNewOffersCounter() {
+
+                $.get({
+                    method: 'GET',
+                    url: '${context}/api?action=getNumberOfNewOffers&customer=<%= customer.getId()%>',
+                    success: function (data) {
+                        $('#new-offers-counter').text(data['offers']);
+                        if (data['offers'] == 0)
+                            $('#new-offers-counter').hide();
+                        else
+                            $('#new-offers-counter').show();
+                    }
+                });
+            }
+
+            $(document).ready(function () {
+                updateNewOffersCounter();
+                setInterval(updateNewOffersCounter, 60 * 1000);
+            });
+        </script>
+
         <% } %>
 
         <% if (session.getAttribute("employee") != null) { %>

@@ -21,20 +21,20 @@
     <div class="col s12">
         <table class="highlight">
             <thead>
-            <th>ID</th>
-            <th>Bredde</th>
-            <th>Længde</th>
-            <th>Højde</th>
-            <th>Tag</th>
-            <th>Hældning</th>
-            <th>Spær</th>
-            <th>Oprettet</th>
-            <th>Redskabsskur</th>
+            <tr>
+                <th>Bredde</th>
+                <th>Længde</th>
+                <th>Højde</th>
+                <th>Tag</th>
+                <th>Hældning</th>
+                <th>Spær</th>
+                <th>Oprettet</th>
+                <th>Redskabsskur</th>
+            </tr>
             </thead>
             <tbody>
             <c:forEach items="${orders}" var="order">
                 <tr style="cursor:pointer;" onclick="location.href = 'order?id=${order.getId()}'">
-                    <td>${order.getId()}</td>
                     <td>${order.getWidth()}</td>
                     <td>${order.getLength()}</td>
                     <td>${order.getHeight()}</td>

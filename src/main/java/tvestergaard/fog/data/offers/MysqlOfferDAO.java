@@ -56,7 +56,7 @@ public class MysqlOfferDAO extends AbstractMysqlDAO implements OfferDAO
                         "INNER JOIN orders o ON offers.order = o.id " +
                         "INNER JOIN customers ON o.customer = customers.id " +
                         "INNER JOIN roofings ON o.roofing = roofings.id " +
-                        "LEFT  JOIN sheds ON o.id = sheds.order " +
+                        "LEFT  JOIN sheds ON o.shed = sheds.id " +
                         "LEFT  JOIN claddings s_cladding ON sheds.cladding = s_cladding.id " +
                         "LEFT  JOIN floorings ON sheds.flooring = floorings.id " +
                         "INNER JOIN employees ON offers.employee = employees.id", constraints);
@@ -170,6 +170,28 @@ public class MysqlOfferDAO extends AbstractMysqlDAO implements OfferDAO
     @Override public int size() throws MysqlDataAccessException
     {
         try (PreparedStatement statement = getConnection().prepareStatement("SELECT count(*) FROM offers")) {
+            ResultSet resultSet = statement.executeQuery();
+            resultSet.first();
+            return resultSet.getInt(1);
+        } catch (SQLException e) {
+            throw new MysqlDataAccessException(e);
+        }
+    }
+
+    /**
+     * Returns the number of open offers for the provided customer.
+     *
+     * @param customer The customer to return the number of open offers for.
+     * @return The number of open offers for the provided customer.
+     * @throws MysqlDataAccessException When a data storage exception occurs while performing the operation.
+     */
+    @Override public int getNumberOfOpenOffers(int customer) throws MysqlDataAccessException
+    {
+        String SQL = "SELECT count(*) FROM offers " +
+                "INNER JOIN orders ON offers.order = orders.id AND orders.customer = ? " +
+                "WHERE offers.status = 'OPEN'";
+        try (PreparedStatement statement = getConnection().prepareStatement(SQL)) {
+            statement.setInt(1, customer);
             ResultSet resultSet = statement.executeQuery();
             resultSet.first();
             return resultSet.getInt(1);
