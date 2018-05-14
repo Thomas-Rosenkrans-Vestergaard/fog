@@ -1,18 +1,24 @@
 package tvestergaard.fog.logic.construction;
 
 import org.w3c.dom.Document;
-import org.w3c.dom.Element;
 import tvestergaard.fog.data.components.Component;
 import tvestergaard.fog.data.orders.Shed;
 
-import static org.apache.batik.anim.dom.SVGDOMImplementation.SVG_NAMESPACE_URI;
 import static tvestergaard.fog.logic.construction.DrawingUtilities.Rotation.HORIZONTAL;
 import static tvestergaard.fog.logic.construction.DrawingUtilities.Rotation.VERTICAL;
 
 public class CAR01SkeletonConstructor extends DrawingUtilities implements SkeletonConstructor
 {
 
-    private CAR01Components components;
+    protected static final int SIDE_OVERHANG_MM = 250;
+    protected static final int END_OVERHANG_MM  = 500;
+    protected static final int PADDING          = 1000;
+
+    protected int             length;
+    protected int             outerLength;
+    protected int             width;
+    protected int             outerWidth;
+    private   CAR01Components components;
 
     /**
      * Constructs the skeleton of the garage using the provided components.
@@ -29,11 +35,85 @@ public class CAR01SkeletonConstructor extends DrawingUtilities implements Skelet
 
         this.components = new CAR01Components(components);
 
-        Materials           materials  = calculateMaterials(specification);
-        ConstructionDrawing aerialView = drawAerialView(specification);
-        ConstructionDrawing sideView   = drawSideView(specification);
+        Materials materials      = calculateMaterials(specification);
+        Document  aerialDocument = createDocument(this.outerLength + PADDING * 2, this.outerWidth + PADDING * 2);
+        Document  sideDocument   = createDocument(this.outerLength + PADDING * 2, mm(specification.getHeight()) + PADDING * 2);
 
-        return new DefaultSkeletonConstructionSummary(materials, aerialView, sideView);
+        drawStraps(aerialDocument, sideDocument, specification);
+        drawPosts(aerialDocument, sideDocument, specification);
+
+        return new DefaultSkeletonConstructionSummary(
+                materials,
+                new DocumentConstructionDrawing(aerialDocument),
+                new DocumentConstructionDrawing(sideDocument));
+    }
+
+
+    private void drawStraps(Document aerialDocument,
+                            Document sideDocument,
+                            ConstructionSpecification specification)
+    {
+        final int thickness = 45;
+
+        rect(sideDocument, this.outerLength, 195, PADDING, PADDING);
+        rect(aerialDocument, this.outerLength, thickness, PADDING, PADDING + SIDE_OVERHANG_MM);
+        rect(aerialDocument, this.outerLength, thickness, PADDING, this.width + PADDING + SIDE_OVERHANG_MM - 97 / 2);
+
+        ruler(aerialDocument, HORIZONTAL, this.outerLength, PADDING, this.outerWidth + PADDING + PADDING / 2, formatCM(outerLength / 10));
+        ruler(aerialDocument, VERTICAL, this.width, PADDING / 2, PADDING + SIDE_OVERHANG_MM, formatCM(specification.getWidth()));
+        ruler(aerialDocument, HORIZONTAL, END_OVERHANG_MM, PADDING, PADDING / 2, formatCM(END_OVERHANG_MM / 10));
+        ruler(aerialDocument, HORIZONTAL, END_OVERHANG_MM, PADDING + outerLength - END_OVERHANG_MM, PADDING / 2, formatCM(END_OVERHANG_MM / 10));
+    }
+
+    private void drawPosts(Document aerialDocument,
+                           Document sideDocument,
+                           ConstructionSpecification specification)
+    {
+        Component post      = components.getGaragePosts();
+        Shed      shed      = specification.getShed();
+        int       thickness = post.getMaterial().getAttribute("THICKNESS_MM").getInt();
+        int       x         = this.outerLength + PADDING - END_OVERHANG_MM - thickness;
+        int       topRow    = PADDING + SIDE_OVERHANG_MM;
+        int       bottomRow = topRow + this.width - thickness;
+        int       shedDepth = mm(shed.getDepth());
+        int       height    = mm(specification.getHeight());
+
+        filledRect(sideDocument, thickness, height, x, PADDING);
+        filledRect(aerialDocument, thickness, thickness, x, topRow);
+        filledRect(aerialDocument, thickness, thickness, x, bottomRow);
+
+        x -= shedDepth;
+        x -= thickness;
+
+        filledRect(sideDocument, thickness, height, x, PADDING);
+        filledRect(aerialDocument, thickness, thickness, x, topRow);
+        filledRect(aerialDocument, thickness, thickness, x, bottomRow);
+
+        int firstColumn  = PADDING + END_OVERHANG_MM;
+        int secondColumn = firstColumn + (x - firstColumn) / 2;
+
+        filledRect(sideDocument, thickness, height, firstColumn, PADDING);
+        filledRect(aerialDocument, thickness, thickness, firstColumn, topRow);
+        filledRect(aerialDocument, thickness, thickness, firstColumn, bottomRow);
+
+        filledRect(sideDocument, thickness, height, secondColumn, PADDING);
+        filledRect(aerialDocument, thickness, thickness, secondColumn, topRow);
+        filledRect(aerialDocument, thickness, thickness, secondColumn, bottomRow);
+
+        ruler(aerialDocument, HORIZONTAL, shedDepth, x + 97, PADDING / 2, formatCM((shedDepth - 97 * 2) / 10));
+
+        ruler(
+                aerialDocument,
+                HORIZONTAL,
+                secondColumn - firstColumn - 97,
+                firstColumn + 97,
+                PADDING / 2,
+                formatCM((secondColumn - firstColumn) / 10));
+
+        ruler(aerialDocument, HORIZONTAL,
+                (x - firstColumn) / 2 - 97, secondColumn + 97,
+                PADDING / 2,
+                formatCM((x - firstColumn) / 2 / 10));
     }
 
     /**
@@ -62,93 +142,6 @@ public class CAR01SkeletonConstructor extends DrawingUtilities implements Skelet
     }
 
     /**
-     * Draws the areal view of the skeleton.
-     *
-     * @param specification The specifications of the garage skeleton.
-     * @return The resulting drawing.
-     */
-    private ConstructionDrawing drawAerialView(ConstructionSpecification specification)
-    {
-        Document document = createDocument(this.outerLength + PADDING * 2, this.outerWidth + PADDING * 2);
-        drawAerialPosts(document, specification);
-        drawAerialStraps(document, specification);
-
-        return new DocumentConstructionDrawing(document);
-    }
-
-    /**
-     * Draws the side view of the skeleton.
-     *
-     * @param specification The specifications of the garage skeleton.
-     * @return The resulting drawing.
-     */
-    private ConstructionDrawing drawSideView(ConstructionSpecification specification)
-    {
-        Document document = createDocument(this.outerLength + PADDING * 2, this.width + PADDING * 2);
-        drawSideStraps(document);
-        drawSidePosts(document, specification);
-
-        return new DocumentConstructionDrawing(document);
-    }
-
-    /**
-     * Draws the posts seen from the side view.
-     *
-     * @param document      The document to draw the straps on.
-     * @param specification The specifications of the garage skeleton.
-     */
-    private void drawSidePosts(Document document, ConstructionSpecification specification)
-    {
-        Shed shed      = specification.getShed();
-        int  thickness = 97;
-        int  currentX  = this.outerLength + PADDING - END_OVERHANG_MM - thickness;
-        int  topRow    = PADDING;
-        int  shedDepth = mm(shed.getDepth());
-        int  height    = mm(specification.getHeight());
-
-        drawPost(document, thickness, height, currentX, topRow);
-        currentX -= shedDepth;
-        currentX -= thickness;
-        drawPost(document, thickness, height, currentX, topRow);
-
-        int firstColumn = PADDING + END_OVERHANG_MM;
-        drawPost(document, thickness, height, firstColumn, topRow);
-        int secondColumn = firstColumn + (currentX - firstColumn) / 2;
-        drawPost(document, thickness, height, secondColumn, topRow);
-
-        ruler(document, VERTICAL, height, PADDING / 2, PADDING, String.format("%d cm", specification.getHeight()));
-    }
-
-    /**
-     * Draws the straps seen from the side view.
-     *
-     * @param document The document to draw the straps on.
-     */
-    private void drawSideStraps(Document document)
-    {
-        rect(document, this.outerLength, 195, PADDING, PADDING);
-    }
-
-    /**
-     * Draws the straps seen from the aerial view.
-     *
-     * @param document      The document to draw the straps on.
-     * @param specification The specifications of the garage skeleton.
-     */
-    private void drawAerialStraps(Document document, ConstructionSpecification specification)
-    {
-        final int thickness = 45;
-
-        rect(document, this.outerLength, thickness, PADDING, PADDING + SIDE_OVERHANG_MM);
-        rect(document, this.outerLength, thickness, PADDING, this.width + PADDING + SIDE_OVERHANG_MM - 97 / 2);
-
-        ruler(document, HORIZONTAL, this.outerLength, PADDING, this.outerWidth + PADDING + PADDING / 2, formatCM(outerLength / 10));
-        ruler(document, VERTICAL, this.width, PADDING / 2, PADDING + SIDE_OVERHANG_MM, formatCM(specification.getWidth()));
-        ruler(document, HORIZONTAL, END_OVERHANG_MM, PADDING, PADDING / 2, formatCM(END_OVERHANG_MM / 10));
-        ruler(document, HORIZONTAL, END_OVERHANG_MM, PADDING + outerLength - END_OVERHANG_MM, PADDING / 2, formatCM(END_OVERHANG_MM / 10));
-    }
-
-    /**
      * Draws the posts seen from the aerial view.
      *
      * @param document      The document to draw the straps on.
@@ -163,21 +156,21 @@ public class CAR01SkeletonConstructor extends DrawingUtilities implements Skelet
         int  bottomRow = topRow + this.width - 97;
         int  shedDepth = mm(shed.getDepth());
 
-        drawPost(document, thickness, thickness, currentX, topRow);
-        drawPost(document, thickness, thickness, currentX, bottomRow);
+        filledRect(document, thickness, thickness, currentX, topRow);
+        filledRect(document, thickness, thickness, currentX, bottomRow);
         currentX -= shedDepth;
         currentX -= thickness;
-        drawPost(document, thickness, thickness, currentX, topRow);
-        drawPost(document, thickness, thickness, currentX, bottomRow);
+        filledRect(document, thickness, thickness, currentX, topRow);
+        filledRect(document, thickness, thickness, currentX, bottomRow);
 
         ruler(document, HORIZONTAL, shedDepth, currentX + 97, PADDING / 2, formatCM((shedDepth - 97 * 2) / 10));
 
         int firstColumn = PADDING + END_OVERHANG_MM;
-        drawPost(document, thickness, thickness, firstColumn, topRow);
-        drawPost(document, thickness, thickness, firstColumn, bottomRow);
+        filledRect(document, thickness, thickness, firstColumn, topRow);
+        filledRect(document, thickness, thickness, firstColumn, bottomRow);
         int secondColumn = firstColumn + (currentX - firstColumn) / 2;
-        drawPost(document, thickness, thickness, secondColumn, topRow);
-        drawPost(document, thickness, thickness, secondColumn, bottomRow);
+        filledRect(document, thickness, thickness, secondColumn, topRow);
+        filledRect(document, thickness, thickness, secondColumn, bottomRow);
 
         ruler(
                 document,
@@ -191,27 +184,5 @@ public class CAR01SkeletonConstructor extends DrawingUtilities implements Skelet
                 (currentX - firstColumn) / 2 - 97, secondColumn + 97,
                 PADDING / 2,
                 formatCM((currentX - firstColumn) / 2 / 10));
-    }
-
-    /**
-     * Draws a post.
-     *
-     * @param document
-     * @param width
-     * @param height
-     * @param currentX
-     * @param currentY
-     */
-    private void drawPost(Document document, int width, int height, int currentX, int currentY)
-    {
-        Element root = document.getDocumentElement();
-
-        Element rectangle = document.createElementNS(SVG_NAMESPACE_URI, "rect");
-        rectangle.setAttributeNS(null, "width", Integer.toString(width));
-        rectangle.setAttributeNS(null, "height", Integer.toString(height));
-        rectangle.setAttributeNS(null, "style", "stroke:black");
-        rectangle.setAttributeNS(null, "x", Integer.toString(currentX));
-        rectangle.setAttributeNS(null, "y", Integer.toString(currentY));
-        root.appendChild(rectangle);
     }
 }

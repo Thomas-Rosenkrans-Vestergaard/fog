@@ -53,6 +53,33 @@
                 <th>Oprettet</th>
                 <td>${f:formatDatetime(order.getCreatedAt())}</td>
             </tr>
+            <tr>
+                <th>Redskabsskur</th>
+                <c:if test="${order.getShed() == null}">
+                    <td>Intet</td>
+                </c:if>
+                <c:if test="${order.getShed() != null}">
+                    <td>
+                        <table>
+                            <thead>
+                            <tbody>
+                            <tr>
+                                <th>Dybde</th>
+                                <td>${order.getShed().getDepth()}</td>
+                            </tr>
+                            <tr>
+                                <th>Beklædning</th>
+                                <td>${order.getShed().getCladding().getName()}</td>
+                            </tr>
+                            <tr>
+                                <th>Gulv</th>
+                                <td>${order.getShed().getFlooring().getName()}</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </td>
+                </c:if>
+            </tr>
             </tbody>
         </table>
     </div>

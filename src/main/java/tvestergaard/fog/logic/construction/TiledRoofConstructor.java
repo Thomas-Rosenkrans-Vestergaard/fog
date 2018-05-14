@@ -16,6 +16,17 @@ public class TiledRoofConstructor extends DrawingUtilities implements RoofingCon
     private static final String TOP_HOLDER             = "ROOF_RIDGE_LATH_HOLDER";
     private static final String TILE_BINDERS_AND_HOOKS = "ROOF_TILE_BINDER_AND_HOOKS";
 
+
+    protected static final int SIDE_OVERHANG_MM = 250;
+    protected static final int END_OVERHANG_MM  = 500;
+    protected static final int PADDING          = 1000;
+
+    protected int             length;
+    protected int             outerLength;
+    protected int             width;
+    protected int             outerWidth;
+    private   CAR01Components components;
+
     /**
      * Constructs the roof of the garage using the provided components.
      *
@@ -245,7 +256,7 @@ public class TiledRoofConstructor extends DrawingUtilities implements RoofingCon
 //        int plankLength = material.getAttribute("LENGTH_MM").getInt();
 //        int plankWidth  = material.getAttribute("WIDTH_MM").getInt();
 
-        materials.add(material, /*roofHeightMM * roofWidthMM / (plankLength * plankWidth) * 2*/ - 1, component.getNotes());
+        materials.add(material, /*roofHeightMM * roofWidthMM / (plankLength * plankWidth) * 2*/ -1, component.getNotes());
     }
 
     /**

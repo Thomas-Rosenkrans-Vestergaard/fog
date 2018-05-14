@@ -73,24 +73,56 @@
                 <th>Oprettet</th>
                 <td>${f:formatDatetime(order.getCreatedAt())}</td>
             </tr>
+            <tr>
+                <th>Redskabsskur</th>
+                <c:if test="${order.getShed() == null}">
+                    <td>Intet</td>
+                </c:if>
+                <c:if test="${order.getShed() != null}">
+                    <td>
+                        <table>
+                            <thead>
+                            <tbody>
+                            <tr>
+                                <th>Dybde</th>
+                                <td>${order.getShed().getDepth()}</td>
+                            </tr>
+                            <tr>
+                                <th>Beklædning</th>
+                                <td>${order.getShed().getCladding().getName()}</td>
+                            </tr>
+                            <tr>
+                                <th>Gulv</th>
+                                <td>${order.getShed().getFlooring().getName()}</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </td>
+                </c:if>
+            </tr>
             </tbody>
         </table>
     </div>
 </div>
 <div class="row">
-    <div class="col s6">
+    <div class="col s12">
         ${summary.getSkeletonConstructionSummary().getAerialView().getXML()}
     </div>
-    <div class="col s6">
+</div>
+<div class="row">
+    <div class="col s12">
         ${summary.getSkeletonConstructionSummary().getSideView().getXML()}
     </div>
 </div>
 <div class="row">
-    <div class="col s6">
-        ${summary.getRoofingConstructionSummary().getSkeletonView().getXML()}
-    </div>
-    <div class="col s6">
-        ${summary.getRoofingConstructionSummary().getTiledView().getXML()}
+    <div class="col s12">
+        ${summary.getRoofingConstructionSummary().getAerialSkeletonView().getXML()}
     </div>
 </div>
+<div class="row">
+    <div class="col s12">
+        ${summary.getRoofingConstructionSummary().getAerialTiledView().getXML()}
+    </div>
+</div>
+
 <%@ include file="../includes/bottom.jspf" %>

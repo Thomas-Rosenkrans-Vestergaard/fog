@@ -10,15 +10,6 @@ import static org.apache.batik.util.SVGConstants.SVG_NAMESPACE_URI;
 public class DrawingUtilities
 {
 
-    protected static final int SIDE_OVERHANG_MM = 250;
-    protected static final int END_OVERHANG_MM  = 500;
-    protected static final int PADDING          = 1000;
-
-    protected int length;
-    protected int outerLength;
-    protected int width;
-    protected int outerWidth;
-
     public enum Rotation
     {
         HORIZONTAL,
@@ -67,7 +58,7 @@ public class DrawingUtilities
         Element rectangle = document.createElementNS(SVGDOMImplementation.SVG_NAMESPACE_URI, "rect");
         rectangle.setAttributeNS(null, "width", Integer.toString(width));
         rectangle.setAttributeNS(null, "height", Integer.toString(height));
-        rectangle.setAttributeNS(null, "style", "fill:black;stroke-width:5;stroke:black");
+        rectangle.setAttributeNS(null, "style", "stroke:black;fill:black");
         rectangle.setAttributeNS(null, "x", Integer.toString(x));
         rectangle.setAttributeNS(null, "y", Integer.toString(y));
         root.appendChild(rectangle);

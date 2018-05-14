@@ -2,8 +2,8 @@ SET SQL_SAFE_UPDATES = 0;
 
 DELETE FROM purchases;
 DELETE FROM offers;
-DELETE FROM sheds;
 DELETE FROM orders;
+DELETE FROM sheds;
 
 DELETE FROM attribute_definitions;
 DELETE FROM attribute_values;
@@ -44,7 +44,7 @@ INSERT INTO `categories` VALUES
   (8, 'Rygningsstensbeslag'),
   (9, 'Tagstens bindere & nakkekroge'),
   (10, 'Andre'),
-  (11, 'Skruge');
+  (11, 'Skrue');
 
 INSERT INTO attribute_definitions (id, category, data_type, `name`) VALUES
   (1, 5, 'INT', 'HEIGHT_MM'),
@@ -149,7 +149,7 @@ INSERT INTO component_values (id, definition, material) VALUES
   (4, 4, 4),
   (5, 5, 5),
   (6, 6, 6),
-  (7, 7, 9),
+  (7, 7, 10),
   (8, 8, 11),
   (9, 9, 11),
   (10, 10, 12),
