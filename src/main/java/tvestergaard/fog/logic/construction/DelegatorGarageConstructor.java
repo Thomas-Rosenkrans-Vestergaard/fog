@@ -49,8 +49,8 @@ public class DelegatorGarageConstructor implements GarageConstructor
      * @return The summary of the construction.
      */
     @Override public GarageConstructionSummary construct(ConstructionSpecification specifications,
-                                                         Components skeletonComponents,
-                                                         Components roofingComponents)
+                                                         ComponentMap skeletonComponents,
+                                                         ComponentMap roofingComponents)
     {
         SkeletonConstructionSummary skeletonConstructionSummary = constructSkeleton(specifications, skeletonComponents);
         return new DefaultGarageConstructionSummary(
@@ -65,7 +65,7 @@ public class DelegatorGarageConstructor implements GarageConstructor
      * @param components    The components to use while constructing the skeleton.
      * @return The object containing information about the construction of the skeleton.
      */
-    private SkeletonConstructionSummary constructSkeleton(ConstructionSpecification specification, Components components)
+    private SkeletonConstructionSummary constructSkeleton(ConstructionSpecification specification, ComponentMap components)
     {
         return skeletonConstructor.construct(specification, components);
     }
@@ -79,7 +79,7 @@ public class DelegatorGarageConstructor implements GarageConstructor
      * @return The object containing information about the construction of the roofing of the garage.
      */
     private RoofingConstructionSummary constructRoofing(ConstructionSpecification specification,
-                                                        Components components,
+                                                        ComponentMap components,
                                                         SkeletonConstructionSummary skeletonConstructionSummary)
     {
         Roofing            roofing         = specification.getRoofing();

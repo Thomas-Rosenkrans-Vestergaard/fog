@@ -12,6 +12,6 @@ public interface GarageConstructor
      * @return The summary of the construction.
      */
     GarageConstructionSummary construct(ConstructionSpecification specifications,
-                                        Components skeletonComponents,
-                                        Components roofingComponents);
+                                        ComponentMap skeletonComponents,
+                                        ComponentMap roofingComponents);
 }

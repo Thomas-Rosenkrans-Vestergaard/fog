@@ -25,7 +25,6 @@ public class TiledRoofConstructor extends DrawingUtilities implements RoofingCon
     protected int             outerLength;
     protected int             width;
     protected int             outerWidth;
-    private   CAR01Components components;
 
     /**
      * Constructs the roof of the garage using the provided components.
@@ -36,7 +35,7 @@ public class TiledRoofConstructor extends DrawingUtilities implements RoofingCon
      * @return The summary containing information about the construction of the roofing.
      */
     @Override public RoofingConstructionSummary construct(ConstructionSpecification specification,
-                                                          Components components,
+                                                          ComponentMap components,
                                                           SkeletonConstructionSummary skeletonConstructionSummary)
     {
         this.length = mm(specification.getLength());
@@ -55,7 +54,7 @@ public class TiledRoofConstructor extends DrawingUtilities implements RoofingCon
                 new DocumentConstructionDrawing(gableView));
     }
 
-    private Document drawTiledView(ConstructionSpecification specification, Components components, Document skeletonView)
+    private Document drawTiledView(ConstructionSpecification specification, ComponentMap components, Document skeletonView)
     {
         Document document = createDocument(this.outerLength + PADDING * 2, this.outerWidth + PADDING * 2);
         copy(skeletonView, document);
@@ -66,7 +65,7 @@ public class TiledRoofConstructor extends DrawingUtilities implements RoofingCon
         return document;
     }
 
-    private void tiles(Document document, ConstructionSpecification specification, Components components)
+    private void tiles(Document document, ConstructionSpecification specification, ComponentMap components)
     {
         int tileHeight      = 420;
         int tileWidth       = 330;
@@ -111,7 +110,7 @@ public class TiledRoofConstructor extends DrawingUtilities implements RoofingCon
      * @param skeletonConstructionSummary The object containing information about the construction of the garage skeleton.
      * @return The resulting drawing.
      */
-    private Document drawSkeletonView(ConstructionSpecification specification, Components components, SkeletonConstructionSummary skeletonConstructionSummary)
+    private Document drawSkeletonView(ConstructionSpecification specification, ComponentMap components, SkeletonConstructionSummary skeletonConstructionSummary)
     {
         Document document = createDocument(this.outerLength + PADDING * 2, this.outerWidth + PADDING * 2);
         copy(skeletonConstructionSummary.getAerialView().getDocument(), document);
@@ -124,7 +123,7 @@ public class TiledRoofConstructor extends DrawingUtilities implements RoofingCon
         return document;
     }
 
-    private Materials calculateMaterials(ConstructionSpecification specification, Components components)
+    private Materials calculateMaterials(ConstructionSpecification specification, ComponentMap components)
     {
         MutableMaterials materials = new MutableMaterials();
         int              length    = specification.getLength();
@@ -215,7 +214,7 @@ public class TiledRoofConstructor extends DrawingUtilities implements RoofingCon
      * @param components
      * @param specification
      */
-    private void calculateRidgeTiles(MutableMaterials materials, Components components, ConstructionSpecification specification)
+    private void calculateRidgeTiles(MutableMaterials materials, ComponentMap components, ConstructionSpecification specification)
     {
 
         int       length             = specification.getLength();
@@ -229,7 +228,7 @@ public class TiledRoofConstructor extends DrawingUtilities implements RoofingCon
         materials.add(bracket, numberOfRidgeTiles, bracketComponent.getNotes());
     }
 
-    private void calculateTopLatheHolder(MutableMaterials materials, Components components, ConstructionSpecification specification)
+    private void calculateTopLatheHolder(MutableMaterials materials, ComponentMap components, ConstructionSpecification specification)
     {
         Component component = components.from(TOP_HOLDER);
         Material  material  = component.getMaterial();
@@ -238,7 +237,7 @@ public class TiledRoofConstructor extends DrawingUtilities implements RoofingCon
         materials.add(material, amount, component.getNotes());
     }
 
-    private void calculateBindersHooks(MutableMaterials materials, Components components, int tileRows, int tileColumns)
+    private void calculateBindersHooks(MutableMaterials materials, ComponentMap components, int tileRows, int tileColumns)
     {
         int outer = tileRows * 2 + tileColumns * 2;
         int inner = (tileRows * tileColumns - outer) / 2;
@@ -247,7 +246,7 @@ public class TiledRoofConstructor extends DrawingUtilities implements RoofingCon
         materials.add(component.getMaterial(), outer + inner, component.getNotes());
     }
 
-    private void calculateGableCladding(MutableMaterials materials, Components components, int roofHeight, int roofWidth)
+    private void calculateGableCladding(MutableMaterials materials, ComponentMap components, int roofHeight, int roofWidth)
     {
         Component component = components.from("ROOF_GABLE_CLADDING");
         Material  material  = component.getMaterial();

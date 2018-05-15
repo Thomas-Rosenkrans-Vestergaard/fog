@@ -21,6 +21,6 @@ public interface RoofingConstructor
      * @return The summary containing information about the construction of the roofing.
      */
     RoofingConstructionSummary construct(ConstructionSpecification specification,
-                                         Components components,
+                                         ComponentMap components,
                                          SkeletonConstructionSummary skeletonConstructionSummary);
 }

@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class Components
+public class ComponentMap
 {
 
     /**
@@ -15,11 +15,11 @@ public class Components
     private final Map<String, Component> components = new HashMap<>();
 
     /**
-     * Creates a new {@link Components} from the provided list of components.
+     * Creates a new {@link ComponentMap} from the provided list of components.
      *
      * @param components The components to add to the object.
      */
-    public Components(List<Component> components)
+    public ComponentMap(List<Component> components)
     {
         for (Component component : components)
             this.components.put(component.getDefinition().getIdentifier(), component);

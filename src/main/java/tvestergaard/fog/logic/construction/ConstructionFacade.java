@@ -45,7 +45,7 @@ public class ConstructionFacade
             ConstructionSpecification specification      = ConstructionSpecification.from(order);
             List<Component>           skeletonComponents = modelDAO.getComponents(1);
             List<Component>           roofingComponents  = roofingDAO.getComponents(order.getRoofing().getId());
-            return garageConstructor.construct(specification, new Components(skeletonComponents), new Components(roofingComponents));
+            return garageConstructor.construct(specification, new ComponentMap(skeletonComponents), new ComponentMap(roofingComponents));
 
         } catch (DataAccessException e) {
             throw new ApplicationException(e);
