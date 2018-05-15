@@ -16,6 +16,7 @@ import tvestergaard.fog.data.employees.Role;
 import tvestergaard.fog.data.flooring.Flooring;
 import tvestergaard.fog.data.flooring.FlooringRecord;
 import tvestergaard.fog.data.materials.*;
+import tvestergaard.fog.data.materials.attributes.*;
 import tvestergaard.fog.data.models.Model;
 import tvestergaard.fog.data.models.ModelRecord;
 import tvestergaard.fog.data.offers.Offer;
@@ -35,7 +36,7 @@ import java.sql.SQLException;
 import java.util.HashSet;
 import java.util.Set;
 
-import static tvestergaard.fog.data.materials.DataType.STRING;
+import static tvestergaard.fog.data.materials.attributes.DataType.STRING;
 
 public abstract class AbstractMysqlDAO
 {

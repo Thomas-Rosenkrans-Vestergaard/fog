@@ -1,5 +1,7 @@
 package tvestergaard.fog.data.materials;
 
+import tvestergaard.fog.data.materials.attributes.AttributeValue;
+
 import java.util.Set;
 
 public interface MaterialUpdater extends MaterialBlueprint

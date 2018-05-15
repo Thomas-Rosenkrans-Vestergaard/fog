@@ -8,6 +8,8 @@ import tvestergaard.fog.data.MysqlDataAccessException;
 import tvestergaard.fog.data.constraints.Constraint;
 import tvestergaard.fog.data.constraints.StatementBinder;
 import tvestergaard.fog.data.constraints.StatementGenerator;
+import tvestergaard.fog.data.materials.attributes.AttributeDefinition;
+import tvestergaard.fog.data.materials.attributes.AttributeValue;
 
 import java.sql.*;
 import java.util.ArrayList;

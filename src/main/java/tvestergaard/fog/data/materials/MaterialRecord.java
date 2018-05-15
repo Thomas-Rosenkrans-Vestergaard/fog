@@ -1,5 +1,7 @@
 package tvestergaard.fog.data.materials;
 
+import tvestergaard.fog.data.materials.attributes.AttributeValue;
+
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Objects;

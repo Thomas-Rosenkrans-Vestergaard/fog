@@ -1,4 +1,4 @@
-package tvestergaard.fog.data.materials;
+package tvestergaard.fog.data.materials.attributes;
 
 import java.util.Objects;
 
@@ -11,7 +11,7 @@ public class DefaultAttributeValue implements AttributeValue
     private final AttributeDefinition definition;
 
     /**
-     * The attribute value.
+     * The value of the attribute.
      */
     private Object value;
 

@@ -1,4 +1,4 @@
-package tvestergaard.fog.data.materials;
+package tvestergaard.fog.data.materials.attributes;
 
 public interface AttributeDefinition
 {
