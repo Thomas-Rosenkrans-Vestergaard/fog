@@ -66,7 +66,7 @@ public class AdministrationAuthenticationServlet extends AdministrationServlet
             String      from    = req.getParameter("from");
             HttpSession session = req.getSession();
             session.setAttribute("employee", employee);
-            resp.sendRedirect(from != null ? URLDecoder.decode(from, "UTF-8") : "models");
+            resp.sendRedirect(from != null ? URLDecoder.decode(from, "UTF-8") : "index");
 
         } catch (InactiveEmployeeException e) {
             notifications.error("Inaktiv medarbejder.");

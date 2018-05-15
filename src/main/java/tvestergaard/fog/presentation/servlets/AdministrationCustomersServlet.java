@@ -2,6 +2,7 @@ package tvestergaard.fog.presentation.servlets;
 
 import tvestergaard.fog.data.customers.Customer;
 import tvestergaard.fog.data.customers.CustomerColumn;
+import tvestergaard.fog.data.employees.Employee;
 import tvestergaard.fog.logic.customers.CustomerError;
 import tvestergaard.fog.logic.customers.CustomerFacade;
 import tvestergaard.fog.logic.customers.CustomerValidatorException;
@@ -50,9 +51,10 @@ public class AdministrationCustomersServlet extends AdministrationServlet
         errors.put(PASSWORD_SHORTER_THAN_4, "Adgangskoden der blev sendt var for kort (4 tegn).");
     }
 
-    @Override protected void before(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException
+    @Override protected boolean before(HttpServletRequest req, HttpServletResponse resp, Employee employee) throws ServletException, IOException
     {
         req.setAttribute("navigation", "administration_customers");
+        return true;
     }
 
     private class ShowTableCommand implements Command

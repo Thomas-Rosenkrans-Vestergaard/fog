@@ -4,6 +4,7 @@ import com.google.common.collect.Multimap;
 import tvestergaard.fog.data.DataAccessException;
 import tvestergaard.fog.data.constraints.Constraint;
 import tvestergaard.fog.data.materials.*;
+import tvestergaard.fog.data.materials.Category;
 import tvestergaard.fog.logic.ApplicationException;
 
 import java.util.List;

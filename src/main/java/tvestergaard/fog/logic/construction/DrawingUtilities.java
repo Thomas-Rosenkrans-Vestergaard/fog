@@ -72,16 +72,16 @@ public class DrawingUtilities
             line(document, x, y, x + length, y);
             line(document, x, y - height, x, y + height);
             line(document, x + length, y - height, x + length, y + height);
-            text(document, x + length / 2, y - 100, text);
+            text(document, rotation, x + length / 2, y - 100, text);
         } else {
             line(document, x, y, x, y + length);
             line(document, x - height, y, x + height, y);
             line(document, x - height, y + length, x + height, y + length);
-            text(document, x + 100, y + length / 2, text);
+            text(document, rotation, x + 100, y + length / 2, text);
         }
     }
 
-    private void text(Document document, int x, int y, String text)
+    private void text(Document document, Rotation rotation, int x, int y, String text)
     {
         Element root     = document.getDocumentElement();
         Element textNode = document.createElementNS(SVGDOMImplementation.SVG_NAMESPACE_URI, "text");

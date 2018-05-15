@@ -5,6 +5,7 @@ import tvestergaard.fog.data.constraints.Constraint;
 import tvestergaard.fog.data.orders.*;
 import tvestergaard.fog.logic.ApplicationException;
 import tvestergaard.fog.logic.customers.InactiveCustomerException;
+import tvestergaard.fog.logic.email.ApplicationMailer;
 
 import java.util.List;
 import java.util.Set;
@@ -12,12 +13,31 @@ import java.util.Set;
 public class OrderFacade
 {
 
-    private final OrderDAO       dao;
+    /**
+     * The dao used to access the order storage.
+     */
+    private final OrderDAO dao;
+
+    /**
+     * The validator used to validate orders to create.
+     */
     private final OrderValidator validator;
 
-    public OrderFacade(OrderDAO dao)
+    /**
+     * The object responsible for sending {@link OrderConfirmationEmail}s.
+     */
+    private final ApplicationMailer mailer;
+
+    /**
+     * Creates a new {@link OrderFacade}.
+     *
+     * @param dao    The dao used to access the order storage.
+     * @param mailer The object responsible for sending {@link OrderConfirmationEmail}s.
+     */
+    public OrderFacade(OrderDAO dao, ApplicationMailer mailer)
     {
         this.dao = dao;
+        this.mailer = mailer;
         this.validator = new OrderValidator();
     }
 
@@ -88,7 +108,7 @@ public class OrderFacade
             if (!reasons.isEmpty())
                 throw new OrderValidatorException(reasons);
 
-            return dao.create(OrderBlueprint.from(
+            Order order = dao.create(OrderBlueprint.from(
                     customer,
                     width,
                     length,
@@ -97,6 +117,11 @@ public class OrderFacade
                     slope,
                     rafters,
                     shed == null ? null : ShedBlueprint.from(shed.getDepth(), shed.getCladdingId(), shed.getFlooringId())));
+
+            OrderConfirmationEmail email = new OrderConfirmationEmail(order);
+            mailer.send(email);
+            return order;
+
         } catch (DataAccessException e) {
             throw new ApplicationException(e);
         }

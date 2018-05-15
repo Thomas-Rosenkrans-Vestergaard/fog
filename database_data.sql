@@ -172,7 +172,7 @@ INSERT INTO roofing_component_values (id, roofing, component) VALUES
   (8, 1, 17);
 
 INSERT INTO garage_models (id, name) VALUES
-  (1, 'CAR01');
+  (1, 'Carport');
 
 INSERT INTO garage_component_definitions (id, definition, model) VALUES
   (1, 7, 1),

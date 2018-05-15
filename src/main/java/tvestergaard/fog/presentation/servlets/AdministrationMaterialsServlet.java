@@ -1,5 +1,7 @@
 package tvestergaard.fog.presentation.servlets;
 
+import tvestergaard.fog.data.employees.Employee;
+import tvestergaard.fog.data.employees.Role;
 import tvestergaard.fog.data.materials.*;
 import tvestergaard.fog.logic.materials.MaterialError;
 import tvestergaard.fog.logic.materials.MaterialFacade;
@@ -46,9 +48,17 @@ public class AdministrationMaterialsServlet extends AdministrationServlet
         errors.put(UNIT_LESS_THAN_1, "Enheden er mindre end 1.");
     }
 
-    @Override protected void before(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException
+    @Override protected boolean before(HttpServletRequest req, HttpServletResponse resp, Employee employee) throws ServletException, IOException
     {
+        Notifications notifications = notifications(req);
+        if (!employee.is(Role.HEAD_OF_MATERIALS)) {
+            notifications.error("Du skal være materialeansvarlig for at tilgå denne side.");
+            resp.sendRedirect("index");
+            return false;
+        }
+
         req.setAttribute("navigation", "administration_materials");
+        return true;
     }
 
     private class ShowTableCommand implements Command

@@ -2,23 +2,28 @@ package tvestergaard.fog.logic.construction;
 
 import org.w3c.dom.Document;
 import tvestergaard.fog.data.components.Component;
+import tvestergaard.fog.data.materials.Material;
 import tvestergaard.fog.data.orders.Shed;
 
 import static tvestergaard.fog.logic.construction.DrawingUtilities.Rotation.HORIZONTAL;
 import static tvestergaard.fog.logic.construction.DrawingUtilities.Rotation.VERTICAL;
 
-public class CAR01SkeletonConstructor extends DrawingUtilities implements SkeletonConstructor
+public class CarportSkeletonConstructor extends DrawingUtilities implements SkeletonConstructor
 {
 
-    protected static final int SIDE_OVERHANG_MM = 250;
-    protected static final int END_OVERHANG_MM  = 500;
-    protected static final int PADDING          = 1000;
+    private static final int SIDE_OVERHANG_MM = 250;
+    private static final int END_OVERHANG_MM  = 500;
+    private static final int PADDING          = 1000;
 
-    protected int             length;
-    protected int             outerLength;
-    protected int             width;
-    protected int             outerWidth;
-    private   CAR01Components components;
+    private int              length;
+    private int              outerLength;
+    private int              width;
+    private int              outerWidth;
+    private int              height;
+    private MutableMaterials materials;
+    private Document         aerialDocument;
+    private Document         sideDocument;
+    private CAR01Components  components;
 
     /**
      * Constructs the skeleton of the garage using the provided components.
@@ -32,15 +37,16 @@ public class CAR01SkeletonConstructor extends DrawingUtilities implements Skelet
         this.outerLength = length + END_OVERHANG_MM * 2;
         this.width = mm(specification.getWidth());
         this.outerWidth = width + SIDE_OVERHANG_MM * 2;
+        this.height = mm(specification.getHeight());
 
         this.components = new CAR01Components(components);
+        materials = new MutableMaterials();
+        aerialDocument = createDocument(this.outerLength + PADDING * 2, this.outerWidth + PADDING * 2);
+        sideDocument = createDocument(this.outerLength + PADDING * 2, height + PADDING * 2);
 
-        Materials materials      = calculateMaterials(specification);
-        Document  aerialDocument = createDocument(this.outerLength + PADDING * 2, this.outerWidth + PADDING * 2);
-        Document  sideDocument   = createDocument(this.outerLength + PADDING * 2, mm(specification.getHeight()) + PADDING * 2);
-
-        drawStraps(aerialDocument, sideDocument, specification);
-        drawPosts(aerialDocument, sideDocument, specification);
+        straps(specification);
+        posts(specification);
+        calculateMaterials(specification);
 
         return new DefaultSkeletonConstructionSummary(
                 materials,
@@ -49,13 +55,20 @@ public class CAR01SkeletonConstructor extends DrawingUtilities implements Skelet
     }
 
 
-    private void drawStraps(Document aerialDocument,
-                            Document sideDocument,
-                            ConstructionSpecification specification)
+    /**
+     * Draws and adds the straps to the material list.
+     *
+     * @param specification The specifications of the garage to construct.
+     */
+    private void straps(ConstructionSpecification specification)
     {
-        final int thickness = 45;
+        Component component = components.getGaragePosts();
+        Material  material  = component.getMaterial();
 
-        rect(sideDocument, this.outerLength, 195, PADDING, PADDING);
+        final int thickness = material.getAttribute("THICKNESS_MM").getInt();
+        final int width     = material.getAttribute("WIDTH_MM").getInt();
+
+        rect(sideDocument, this.outerLength, width, PADDING, PADDING);
         rect(aerialDocument, this.outerLength, thickness, PADDING, PADDING + SIDE_OVERHANG_MM);
         rect(aerialDocument, this.outerLength, thickness, PADDING, this.width + PADDING + SIDE_OVERHANG_MM - 97 / 2);
 
@@ -65,13 +78,16 @@ public class CAR01SkeletonConstructor extends DrawingUtilities implements Skelet
         ruler(aerialDocument, HORIZONTAL, END_OVERHANG_MM, PADDING + outerLength - END_OVERHANG_MM, PADDING / 2, formatCM(END_OVERHANG_MM / 10));
     }
 
-    private void drawPosts(Document aerialDocument,
-                           Document sideDocument,
-                           ConstructionSpecification specification)
+    /**
+     * Draws and adds the garage posts to the material list.
+     *
+     * @param specification The specification
+     */
+    private void posts(ConstructionSpecification specification)
     {
-        Component post      = components.getGaragePosts();
+        Component component = components.getGaragePosts();
         Shed      shed      = specification.getShed();
-        int       thickness = post.getMaterial().getAttribute("THICKNESS_MM").getInt();
+        int       thickness = component.getMaterial().getAttribute("THICKNESS_MM").getInt();
         int       x         = this.outerLength + PADDING - END_OVERHANG_MM - thickness;
         int       topRow    = PADDING + SIDE_OVERHANG_MM;
         int       bottomRow = topRow + this.width - thickness;
@@ -102,17 +118,12 @@ public class CAR01SkeletonConstructor extends DrawingUtilities implements Skelet
 
         ruler(aerialDocument, HORIZONTAL, shedDepth, x + 97, PADDING / 2, formatCM((shedDepth - 97 * 2) / 10));
 
-        ruler(
-                aerialDocument,
-                HORIZONTAL,
-                secondColumn - firstColumn - 97,
-                firstColumn + 97,
-                PADDING / 2,
+        ruler(aerialDocument, HORIZONTAL,
+                secondColumn - firstColumn - thickness,
+                firstColumn + thickness, PADDING / 2,
                 formatCM((secondColumn - firstColumn) / 10));
 
-        ruler(aerialDocument, HORIZONTAL,
-                (x - firstColumn) / 2 - 97, secondColumn + 97,
-                PADDING / 2,
+        ruler(aerialDocument, HORIZONTAL, (x - firstColumn) / 2 - thickness, secondColumn + thickness, PADDING / 2,
                 formatCM((x - firstColumn) / 2 / 10));
     }
 
@@ -124,8 +135,6 @@ public class CAR01SkeletonConstructor extends DrawingUtilities implements Skelet
      */
     private Materials calculateMaterials(ConstructionSpecification specification)
     {
-        MutableMaterials materials = new MutableMaterials();
-
         Component garagePosts  = components.getGaragePosts();
         Component garageStraps = components.getGarageStraps();
         Component gableNogging = components.getShedGableNogging();
@@ -139,50 +148,5 @@ public class CAR01SkeletonConstructor extends DrawingUtilities implements Skelet
         materials.add(shedCladding.getMaterial(), 12, shedCladding.getNotes());
 
         return materials;
-    }
-
-    /**
-     * Draws the posts seen from the aerial view.
-     *
-     * @param document      The document to draw the straps on.
-     * @param specification The specifications of the garage skeleton.
-     */
-    private void drawAerialPosts(Document document, ConstructionSpecification specification)
-    {
-        Shed shed      = specification.getShed();
-        int  thickness = 97;
-        int  currentX  = this.outerLength + PADDING - END_OVERHANG_MM - thickness;
-        int  topRow    = PADDING + SIDE_OVERHANG_MM;
-        int  bottomRow = topRow + this.width - 97;
-        int  shedDepth = mm(shed.getDepth());
-
-        filledRect(document, thickness, thickness, currentX, topRow);
-        filledRect(document, thickness, thickness, currentX, bottomRow);
-        currentX -= shedDepth;
-        currentX -= thickness;
-        filledRect(document, thickness, thickness, currentX, topRow);
-        filledRect(document, thickness, thickness, currentX, bottomRow);
-
-        ruler(document, HORIZONTAL, shedDepth, currentX + 97, PADDING / 2, formatCM((shedDepth - 97 * 2) / 10));
-
-        int firstColumn = PADDING + END_OVERHANG_MM;
-        filledRect(document, thickness, thickness, firstColumn, topRow);
-        filledRect(document, thickness, thickness, firstColumn, bottomRow);
-        int secondColumn = firstColumn + (currentX - firstColumn) / 2;
-        filledRect(document, thickness, thickness, secondColumn, topRow);
-        filledRect(document, thickness, thickness, secondColumn, bottomRow);
-
-        ruler(
-                document,
-                HORIZONTAL,
-                secondColumn - firstColumn - 97,
-                firstColumn + 97,
-                PADDING / 2,
-                formatCM((secondColumn - firstColumn) / 10));
-
-        ruler(document, HORIZONTAL,
-                (currentX - firstColumn) / 2 - 97, secondColumn + 97,
-                PADDING / 2,
-                formatCM((currentX - firstColumn) / 2 / 10));
     }
 }

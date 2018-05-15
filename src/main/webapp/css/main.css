@@ -44,6 +44,10 @@ main {
     display: none;
 }
 
+.focus {
+    color: #014785;
+}
+
 @media only screen and (max-width: 992px) {
     #menu-button {
         display: block;

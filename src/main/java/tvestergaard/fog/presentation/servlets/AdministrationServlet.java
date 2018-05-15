@@ -1,5 +1,6 @@
 package tvestergaard.fog.presentation.servlets;
 
+import tvestergaard.fog.data.employees.Employee;
 import tvestergaard.fog.presentation.Notifications;
 import tvestergaard.fog.presentation.servlets.commands.CommandDispatcher;
 
@@ -18,9 +19,9 @@ public abstract class AdministrationServlet extends HttpServlet
 
     protected final CommandDispatcher dispatcher = new CommandDispatcher();
 
-    protected void before(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException
+    protected boolean before(HttpServletRequest req, HttpServletResponse resp, Employee employee) throws ServletException, IOException
     {
-
+        return true;
     }
 
     @Override protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException
@@ -29,7 +30,8 @@ public abstract class AdministrationServlet extends HttpServlet
             return;
 
         req.setAttribute("context", "..");
-        before(req, resp);
+        if (!before(req, resp, (Employee) req.getSession().getAttribute("employee")))
+            return;
         dispatcher.dispatch(req, resp);
     }
 
@@ -39,7 +41,8 @@ public abstract class AdministrationServlet extends HttpServlet
             return;
 
         req.setAttribute("context", "..");
-        before(req, resp);
+        if (!before(req, resp, (Employee) req.getSession().getAttribute("employee")))
+            return;
         dispatcher.dispatch(req, resp);
     }
 

@@ -3,6 +3,8 @@ package tvestergaard.fog.presentation.servlets;
 import tvestergaard.fog.data.components.Component;
 import tvestergaard.fog.data.components.ComponentDefinition;
 import tvestergaard.fog.data.components.ComponentReference;
+import tvestergaard.fog.data.employees.Employee;
+import tvestergaard.fog.data.employees.Role;
 import tvestergaard.fog.data.models.Model;
 import tvestergaard.fog.logic.ApplicationException;
 import tvestergaard.fog.logic.ModelFacade;
@@ -35,9 +37,17 @@ public class AdministrationModelsServlet extends AdministrationServlet
         dispatcher.post("update", new HandleUpdateCommand());
     }
 
-    @Override protected void before(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException
+    @Override protected boolean before(HttpServletRequest req, HttpServletResponse resp, Employee employee) throws ServletException, IOException
     {
+        Notifications notifications = notifications(req);
+        if (!employee.is(Role.HEAD_OF_MATERIALS)) {
+            notifications.error("Du skal være materialeansvarlig for at tilgå denne side.");
+            resp.sendRedirect("index");
+            return false;
+        }
+
         req.setAttribute("navigation", "administration_models");
+        return true;
     }
 
     private class ShowTableCommand implements Command

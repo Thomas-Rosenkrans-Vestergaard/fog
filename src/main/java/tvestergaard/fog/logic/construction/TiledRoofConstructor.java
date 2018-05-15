@@ -45,12 +45,14 @@ public class TiledRoofConstructor extends DrawingUtilities implements RoofingCon
         this.outerWidth = width + SIDE_OVERHANG_MM * 2;
 
         Materials materials    = calculateMaterials(specification, components);
-        Document  skeletonView = drawSkeletonView(specification, components, skeletonConstructionSummary);
-        Document  tiledView    = drawTiledView(specification, components, skeletonView);
+        Document  skeletonView = createDocument(this.outerLength + PADDING * 2, this.outerWidth + PADDING * 2);
+        Document  tiledView    = createDocument(this.outerLength + PADDING * 2, this.outerWidth + PADDING * 2);
+        Document  gableView    = null; //drawGableView(specification);
 
         return new DefaultRoofingConstructionSummary(materials,
                 new DocumentConstructionDrawing(skeletonView),
-                new DocumentConstructionDrawing(tiledView));
+                new DocumentConstructionDrawing(tiledView),
+                new DocumentConstructionDrawing(gableView));
     }
 
     private Document drawTiledView(ConstructionSpecification specification, Components components, Document skeletonView)
@@ -58,13 +60,13 @@ public class TiledRoofConstructor extends DrawingUtilities implements RoofingCon
         Document document = createDocument(this.outerLength + PADDING * 2, this.outerWidth + PADDING * 2);
         copy(skeletonView, document);
 
-        drawTiles(document, specification, components);
+        tiles(document, specification, components);
         drawEnds(document, specification);
 
         return document;
     }
 
-    private void drawTiles(Document document, ConstructionSpecification specification, Components components)
+    private void tiles(Document document, ConstructionSpecification specification, Components components)
     {
         int tileHeight      = 420;
         int tileWidth       = 330;

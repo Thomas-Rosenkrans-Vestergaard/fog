@@ -1,4 +1,6 @@
 <%@ page import="tvestergaard.fog.data.customers.Customer" %>
+<%@ page import="tvestergaard.fog.data.employees.Employee" %>
+<%@ page import="tvestergaard.fog.data.employees.Role" %>
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="/WEB-INF/tld/functions.tld" prefix="f" %>
@@ -69,15 +71,22 @@
 
         <% } %>
 
-        <% if (session.getAttribute("employee") != null) { %>
+
+        <%
+            Employee employee = (Employee) session.getAttribute("employee");
+
+            if (employee != null) {
+
+        %>
         <li>
             <div class="divider"></div>
         </li>
         <li><a class="subheader">Medarbejder</a></li>
-        <li class="${"administration_models".equals(navigation) ? 'active' : '' }">
-            <a href="${context}/administration/models">Modeller</a></li>
         <li class="${"administration_orders".equals(navigation) ? 'active' : '' }">
             <a href="${context}/administration/orders"><span id="new-orders-counter">0</span> Ordre</a>
+        </li>
+        <li class="${"administration_offers".equals(navigation) ? 'active' : '' }">
+            <a href="${context}/administration/offers">Tilbud</a>
         </li>
         <script>
             function updateNewOrdersCounter() {
@@ -104,6 +113,9 @@
             <a href="${context}/administration/customers">Kunder</a></li>
         <li class="${"administration_employees".equals(navigation) ? 'active' : '' }">
             <a href="${context}/administration/employees">Medarbejdere</a></li>
+        <% if (employee.is(Role.HEAD_OF_MATERIALS)) { %>
+        <li class="${"administration_models".equals(navigation) ? 'active' : '' }">
+            <a href="${context}/administration/models">Modeller</a></li>
         <li class="${"administration_roofings".equals(navigation) ? 'active' : '' }">
             <a href="${context}/administration/roofings">Tagbeklædninger</a></li>
         <li class="${"administration_claddings".equals(navigation) ? 'active' : '' }">
@@ -113,6 +125,7 @@
         <li class="${"administration_materials".equals(navigation) ? 'active' : '' }">
             <a href="${context}/administration/materials">Materialer</a></li>
         <li><a href="${context}/administration/logout">Log ud</a></li>
+        <% } %>
         <% } %>
     </div>
 </ul>
