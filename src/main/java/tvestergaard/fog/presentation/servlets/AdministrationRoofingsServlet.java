@@ -44,6 +44,8 @@ public class AdministrationRoofingsServlet extends AdministrationServlet
         dispatcher.get("update", new ShowUpdateCommand());
         dispatcher.post("create", new HandleCreateCommand());
         dispatcher.post("update", new HandleUpdateCommand());
+        dispatcher.get("update_components", new ShowUpdateComponentsCommand());
+        dispatcher.post("update_components", new HandleUpdateComponentsCommand());
 
         errors.put(EMPTY_NAME, "Det givne navn må ikke være tom.");
         errors.put(NAME_LONGER_THAN_255, "Det givne navn er for langt.");
@@ -232,6 +234,71 @@ public class AdministrationRoofingsServlet extends AdministrationServlet
                     notifications.error(errors.get(error));
                 response.sendRedirect("?action=create");
             }
+        }
+    }
+
+
+    private class ShowUpdateComponentsCommand implements Command
+    {
+
+        /**
+         * Delegates the request and response objects to this command.
+         *
+         * @param request  The request.
+         * @param response The response.
+         */
+        @Override public void dispatch(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
+        {
+            Parameters    parameters    = new Parameters(request);
+            Notifications notifications = notifications(request);
+
+            if (!parameters.isEnum("roofing", RoofingType.class)) {
+                notifications.error("No roofing type provided.");
+                response.sendRedirect("roofings");
+                return;
+            }
+
+            request.setAttribute("title", "Opdater roofing componenter");
+            request.setAttribute("definitions", roofingFacade.getComponentDefinitions(parameters.getEnum("roofing", RoofingType.class)));
+            request.getRequestDispatcher("/WEB-INF/administration/update_roofing_components.jsp").forward(request, response);
+        }
+    }
+
+    private class HandleUpdateComponentsCommand implements Command
+    {
+
+        /**
+         * Delegates the request and response objects to this command.
+         *
+         * @param request  The request.
+         * @param response The response.
+         */
+        @Override public void dispatch(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
+        {
+            Parameters    parameters    = new Parameters(request);
+            Notifications notifications = notifications(request);
+
+            if (!parameters.isEnum("roofing", RoofingType.class)) {
+                notifications.error("No roofing type provided.");
+                response.sendRedirect("roofings");
+                return;
+            }
+
+            List<ComponentDefinition> definitions = roofingFacade.getComponentDefinitions(parameters.getEnum("roofing", RoofingType.class));
+            for (ComponentDefinition definition : definitions) {
+                String inputName = "component_notes_" + definition.getIdentifier();
+                if (!parameters.isPresent(inputName)) {
+                    notifications.error("No " + inputName + " sent");
+                    response.sendRedirect("?action=update_components&roofing=" + parameters.value("roofing"));
+                    return;
+                }
+
+                definition.setNotes(parameters.value(inputName));
+            }
+
+            roofingFacade.update(definitions);
+            notifications.success("Komponenterne blev opdateret med success.");
+            response.sendRedirect("?action=update_components&roofing=" + parameters.value("roofing"));
         }
     }
 }

@@ -51,6 +51,15 @@ public interface RoofingDAO
     boolean update(RoofingUpdater updater, List<ComponentReference> components) throws DataAccessException;
 
     /**
+     * Updates the component definitions for a roofing.
+     *
+     * @param definitions The definitions to update.
+     * @return {@code true} if the component definitions was successfully updated.
+     * @throws DataAccessException When a data storage exception occurs while performing the operation.
+     */
+    boolean update(List<ComponentDefinition> definitions) throws DataAccessException;
+
+    /**
      * Returns the components definitions for the provided roofing type.
      *
      * @param roofingType The id of the roofing to return the components of.

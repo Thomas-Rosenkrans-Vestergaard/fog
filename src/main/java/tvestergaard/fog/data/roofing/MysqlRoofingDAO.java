@@ -189,6 +189,39 @@ public class MysqlRoofingDAO extends AbstractMysqlDAO implements RoofingDAO
     }
 
     /**
+     * Updates the component definitions for a roofing.
+     *
+     * @param definitions The definitions to update.
+     * @return {@code true} if the component definitions was successfully updated.
+     * @throws DataAccessException When a data storage exception occurs while performing the operation.
+     */
+    @Override public boolean update(List<ComponentDefinition> definitions) throws DataAccessException
+    {
+        try {
+
+            String     SQL        = "UPDATE component_definitions cd SET cd.notes = ? WHERE cd.id = ?";
+            Connection connection = getConnection();
+            try (PreparedStatement statement = connection.prepareStatement(SQL)) {
+                for (ComponentDefinition definition : definitions) {
+                    statement.setString(1, definition.getNotes());
+                    statement.setInt(2, definition.getId());
+                    statement.executeUpdate();
+                }
+
+                connection.commit();
+                return true;
+
+            } catch (SQLException e) {
+                connection.rollback();
+                throw e;
+            }
+
+        } catch (SQLException e) {
+            throw new MysqlDataAccessException(e);
+        }
+    }
+
+    /**
      * Returns the components definitions for the provided roofing type.
      *
      * @param roofingType The id of the roofing to return the components of.

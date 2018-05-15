@@ -136,6 +136,22 @@ public class RoofingFacade
     }
 
     /**
+     * Updates the component definitions for a roofing.
+     *
+     * @param definitions The definitions to update.
+     * @return {@code true} if the component definitions was successfully updated.
+     * @throws ApplicationException When a data storage exception occurs while performing the operation.
+     */
+    public boolean update(List<ComponentDefinition> definitions)
+    {
+        try {
+            return dao.update(definitions);
+        } catch (DataAccessException e) {
+            throw new ApplicationException(e);
+        }
+    }
+
+    /**
      * Returns the components active for the roofing with the provided id.
      *
      * @param roofing The id of the roofing to return the active components of.

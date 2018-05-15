@@ -196,6 +196,7 @@ public class AdministrationModelsServlet extends AdministrationServlet
             }
 
             modelFacade.update(definitions);
+            notifications.success("Komponenterne blev opdateret med success.");
             response.sendRedirect("?action=update_components&model=" + parameters.getInt("model"));
         }
     }
