@@ -35,11 +35,23 @@ public class CarportSkeletonConstructor extends DrawingUtilities implements Skel
     private Document                  aerialDocument;
     private Document                  sideDocument;
     private ConstructionSpecification specification;
-    private Component                 post;
-    private Component                 strap;
-    private Component                 shedGableNogging;
-    private Component                 shedCladding;
-    private Component                 shedDoorNogging;
+
+    /**
+     * The posts used to support the garage.
+     */
+    private Component post;
+
+    /**
+     * The straps that supports the roof.
+     */
+    private Component strap;
+
+    /**
+     * The wood used to
+     */
+    private Component shedGableNogging;
+    private Component shedCladding;
+    private Component shedDoorNogging;
 
     /**
      * Constructs the skeleton of the garage using the provided components.

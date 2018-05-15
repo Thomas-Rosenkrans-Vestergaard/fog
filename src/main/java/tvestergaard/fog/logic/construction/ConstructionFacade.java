@@ -36,7 +36,7 @@ public class ConstructionFacade
     public ConstructionFacade(ModelDAO modelDAO, RoofingDAO roofingDAO)
     {
         SkeletonConstructor skeletonConstructor = new CarportSkeletonConstructor();
-        RoofingConstructor  roofConstructor     = new TiledRoofConstructor();
+        RoofingConstructor  roofConstructor     = new TiledRoofingConstructor();
         this.garageConstructor = new DelegatorGarageConstructor(skeletonConstructor);
         garageConstructor.register(roofConstructor);
         this.modelDAO = modelDAO;

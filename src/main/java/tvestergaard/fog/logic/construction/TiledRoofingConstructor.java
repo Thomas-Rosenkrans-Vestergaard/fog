@@ -7,7 +7,7 @@ import tvestergaard.fog.data.roofing.RoofingType;
 
 import static tvestergaard.fog.data.roofing.RoofingType.TILED;
 
-public class TiledRoofConstructor extends DrawingUtilities implements RoofingConstructor
+public class TiledRoofingConstructor extends DrawingUtilities implements RoofingConstructor
 {
 
     private static final String TILE                   = "ROOF_TILE";
@@ -21,10 +21,14 @@ public class TiledRoofConstructor extends DrawingUtilities implements RoofingCon
     protected static final int END_OVERHANG_MM  = 500;
     protected static final int PADDING          = 1000;
 
-    protected int             length;
-    protected int             outerLength;
-    protected int             width;
-    protected int             outerWidth;
+    private Document skeletonView;
+    private Document tiledView;
+    private Document gableView;
+
+    protected int length;
+    protected int outerLength;
+    protected int width;
+    protected int outerWidth;
 
     /**
      * Constructs the roof of the garage using the provided components.
@@ -43,10 +47,20 @@ public class TiledRoofConstructor extends DrawingUtilities implements RoofingCon
         this.width = mm(specification.getWidth());
         this.outerWidth = width + SIDE_OVERHANG_MM * 2;
 
-        Materials materials    = calculateMaterials(specification, components);
-        Document  skeletonView = createDocument(this.outerLength + PADDING * 2, this.outerWidth + PADDING * 2);
-        Document  tiledView    = createDocument(this.outerLength + PADDING * 2, this.outerWidth + PADDING * 2);
-        Document  gableView    = null; //drawGableView(specification);
+        Materials materials = calculateMaterials(specification, components);
+        skeletonView = createDocument(this.outerLength + PADDING * 2, this.outerWidth + PADDING * 2);
+        tiledView = createDocument(this.outerLength + PADDING * 2, this.outerWidth + PADDING * 2);
+        gableView = null; //drawGableView(specification);
+
+        copy(skeletonConstructionSummary.getAerialView().getDocument(), skeletonView);
+
+        rafters(specification);
+        laths(specification);
+        sides(specification);
+
+        copy(skeletonView, tiledView);
+        tiles(specification, components);
+        ends(specification);
 
         return new DefaultRoofingConstructionSummary(materials,
                 new DocumentConstructionDrawing(skeletonView),
@@ -54,18 +68,7 @@ public class TiledRoofConstructor extends DrawingUtilities implements RoofingCon
                 new DocumentConstructionDrawing(gableView));
     }
 
-    private Document drawTiledView(ConstructionSpecification specification, ComponentMap components, Document skeletonView)
-    {
-        Document document = createDocument(this.outerLength + PADDING * 2, this.outerWidth + PADDING * 2);
-        copy(skeletonView, document);
-
-        tiles(document, specification, components);
-        drawEnds(document, specification);
-
-        return document;
-    }
-
-    private void tiles(Document document, ConstructionSpecification specification, ComponentMap components)
+    private void tiles(ConstructionSpecification specification, ComponentMap components)
     {
         int tileHeight      = 420;
         int tileWidth       = 330;
@@ -80,47 +83,26 @@ public class TiledRoofConstructor extends DrawingUtilities implements RoofingCon
 
         for (int c = 0; c < columns; c++) {
             for (int r = 0; r < rows; r++) {
-                rect(document, tileWidth, tileHeight, PADDING + tileWidth * c, mid + lathDistance * r);
+                rect(tiledView, tileWidth, tileHeight, PADDING + tileWidth * c, mid + lathDistance * r);
             }
         }
 
         int restBottom = this.outerWidth / 2 - rows * lathDistance + thickness / 2;
         for (int c = 0; c < columns; c++)
-            rect(document, tileWidth, restBottom, PADDING + tileWidth * c, mid + lathDistance * rows);
+            rect(tiledView, tileWidth, restBottom, PADDING + tileWidth * c, mid + lathDistance * rows);
 
         int restRight = this.outerLength - columns * tileWidth;
         for (int r = 0; r < rows; r++)
-            rect(document, restRight, tileHeight, PADDING + tileWidth * columns, mid + lathDistance * r);
+            rect(tiledView, restRight, tileHeight, PADDING + tileWidth * columns, mid + lathDistance * r);
 
-        rect(document, restRight, restBottom, PADDING + tileWidth * columns, mid + lathDistance * rows);
+        rect(tiledView, restRight, restBottom, PADDING + tileWidth * columns, mid + lathDistance * rows);
 
         int numberOfRidgeTiles = this.outerLength / ridgeTileLength;
         for (int c = 0; c < numberOfRidgeTiles; c++)
-            rect(document, ridgeTileLength, ridgeTileHeight, PADDING + ridgeTileLength * c, mid - ridgeTileHeight / 2);
+            rect(tiledView, ridgeTileLength, ridgeTileHeight, PADDING + ridgeTileLength * c, mid - ridgeTileHeight / 2);
 
         int restRidgeTileLength = outerLength - numberOfRidgeTiles * ridgeTileLength;
-        rect(document, restRidgeTileLength, ridgeTileHeight, PADDING + restRidgeTileLength * (numberOfRidgeTiles + 1), mid - ridgeTileHeight / 2);
-    }
-
-    /**
-     * Draws the aeriel view of the skeleton.
-     *
-     * @param specification               The specifications that the roofing must satisfy.
-     * @param components                  The components to use while constructing the roofing.
-     * @param skeletonConstructionSummary The object containing information about the construction of the garage skeleton.
-     * @return The resulting drawing.
-     */
-    private Document drawSkeletonView(ConstructionSpecification specification, ComponentMap components, SkeletonConstructionSummary skeletonConstructionSummary)
-    {
-        Document document = createDocument(this.outerLength + PADDING * 2, this.outerWidth + PADDING * 2);
-        copy(skeletonConstructionSummary.getAerialView().getDocument(), document);
-
-        drawSides(document, specification);
-        drawRafters(document, specification);
-        drawLaths(document, specification);
-        drawEnds(document, specification);
-
-        return document;
+        rect(tiledView, restRidgeTileLength, ridgeTileHeight, PADDING + restRidgeTileLength * (numberOfRidgeTiles + 1), mid - ridgeTileHeight / 2);
     }
 
     private Materials calculateMaterials(ConstructionSpecification specification, ComponentMap components)
@@ -146,7 +128,7 @@ public class TiledRoofConstructor extends DrawingUtilities implements RoofingCon
         calculateBindersHooks(materials, components, tileRows, tileColumns);
         calculateGableCladding(materials, components, roofHeight, width);
 
-        Component vindSkede = components.from("VINDSKEDER");
+        Component vindSkede  = components.from("VINDSKEDER");
         Component sternBoard = components.from("STERN_BOARD");
 
         materials.add(vindSkede.getMaterial(), 2, vindSkede.getNotes());
@@ -154,47 +136,52 @@ public class TiledRoofConstructor extends DrawingUtilities implements RoofingCon
         return materials;
     }
 
-    private void drawLaths(Document document, ConstructionSpecification specification)
+    private void laths(ConstructionSpecification specification)
     {
         int thickness     = 73;
         int lathDistance  = 320;
         int numberOfLaths = outerWidth / 2 / lathDistance;
         int mid           = PADDING + SIDE_OVERHANG_MM + width / 2 - thickness / 2;
-        rect(document, this.outerLength, thickness, PADDING, mid);
+        rect(skeletonView, this.outerLength, thickness, PADDING, mid);
 
         for (int i = 1; i <= numberOfLaths; i++)
-            rect(document, this.outerLength, thickness, PADDING, mid - lathDistance * i);
+            rect(skeletonView, this.outerLength, thickness, PADDING, mid - lathDistance * i);
 
         for (int i = 1; i <= numberOfLaths; i++)
-            rect(document, this.outerLength, thickness, PADDING, mid + i * lathDistance);
+            rect(skeletonView, this.outerLength, thickness, PADDING, mid + i * lathDistance);
     }
 
-    private void drawSides(Document document, ConstructionSpecification specification)
+    private void sides(ConstructionSpecification specification)
     {
         int thickness = 20;
 
-        filledRect(document, this.outerLength, thickness, PADDING, PADDING);
-        filledRect(document, this.outerLength, thickness, PADDING, PADDING + this.outerWidth);
+        filledRect(skeletonView, this.outerLength, thickness, PADDING, PADDING);
+        filledRect(skeletonView, this.outerLength, thickness, PADDING, PADDING + this.outerWidth);
     }
 
-    private void drawEnds(Document document, ConstructionSpecification specification)
+    private void ends(ConstructionSpecification specification)
     {
         int thickness = 45;
 
-        rect(document, thickness, this.outerWidth, PADDING, PADDING);
-        rect(document, thickness, this.outerWidth, this.outerLength + PADDING - thickness, PADDING);
-        filledRect(document, thickness, 20, PADDING, PADDING + this.outerWidth / 2);
-        filledRect(document, thickness, 20, this.outerLength + PADDING - thickness, PADDING + this.outerWidth / 2);
+        rect(skeletonView, thickness, this.outerWidth, PADDING, PADDING);
+        rect(skeletonView, thickness, this.outerWidth, this.outerLength + PADDING - thickness, PADDING);
+        filledRect(skeletonView, thickness, 20, PADDING, PADDING + this.outerWidth / 2);
+        filledRect(skeletonView, thickness, 20, this.outerLength + PADDING - thickness, PADDING + this.outerWidth / 2);
+
+        rect(tiledView, thickness, this.outerWidth, PADDING, PADDING);
+        rect(tiledView, thickness, this.outerWidth, this.outerLength + PADDING - thickness, PADDING);
+        filledRect(tiledView, thickness, 20, PADDING, PADDING + this.outerWidth / 2);
+        filledRect(tiledView, thickness, 20, this.outerLength + PADDING - thickness, PADDING + this.outerWidth / 2);
     }
 
-    private void drawRafters(Document document, ConstructionSpecification specification)
+    private void rafters(ConstructionSpecification specification)
     {
         int thickness       = 45;
         int numberOfRafters = this.outerLength / 1000;
         int rafterDistance  = this.outerLength / numberOfRafters;
 
         for (int i = 1; i < numberOfRafters; i++)
-            rect(document, thickness, this.outerWidth, PADDING + i * (thickness + rafterDistance), PADDING);
+            rect(skeletonView, thickness, this.outerWidth, PADDING + i * (thickness + rafterDistance), PADDING);
     }
 
     private int up(double v)
