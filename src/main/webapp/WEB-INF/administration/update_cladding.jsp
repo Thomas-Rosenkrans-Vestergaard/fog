@@ -1,4 +1,4 @@
-<%@ include file="../includes/top.jspf" %>
+<%@page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8" %>
 <div class="row">
     <div class="col s12">
         <h2><span class="focus">${cladding.getName()}</span></h2>
