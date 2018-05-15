@@ -50,7 +50,7 @@ public class TiledRoofingConstructor extends DrawingUtilities implements Roofing
         Materials materials = calculateMaterials(specification, components);
         skeletonView = createDocument(this.outerLength + PADDING * 2, this.outerWidth + PADDING * 2);
         tiledView = createDocument(this.outerLength + PADDING * 2, this.outerWidth + PADDING * 2);
-        gableView = null; //drawGableView(specification);
+        gableView = createDocument(this.outerWidth + PADDING * 2, specification.getHeight() * 10 + calculateRoofHeight(specification));
 
         copy(skeletonConstructionSummary.getAerialView().getDocument(), skeletonView);
 
@@ -66,6 +66,11 @@ public class TiledRoofingConstructor extends DrawingUtilities implements Roofing
                 new DocumentConstructionDrawing(skeletonView),
                 new DocumentConstructionDrawing(tiledView),
                 new DocumentConstructionDrawing(gableView));
+    }
+
+    private int calculateRoofHeight(ConstructionSpecification specification)
+    {
+        return up(Math.tan(Math.toRadians(specification.getRoofingSlope())) * width);
     }
 
     private void tiles(ConstructionSpecification specification, ComponentMap components)

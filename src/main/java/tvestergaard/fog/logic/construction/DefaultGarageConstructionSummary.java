@@ -24,7 +24,8 @@ public class DefaultGarageConstructionSummary implements GarageConstructionSumma
      * @param skeletonConstructionSummary The object containing information about the construction of the garage skeleton.
      * @param roofingConstructionSummary  The object containing information about the construction of the roofing.
      */
-    public DefaultGarageConstructionSummary(SkeletonConstructionSummary skeletonConstructionSummary, RoofingConstructionSummary roofingConstructionSummary)
+    public DefaultGarageConstructionSummary(SkeletonConstructionSummary skeletonConstructionSummary,
+                                            RoofingConstructionSummary roofingConstructionSummary)
     {
         this.skeletonConstructionSummary = skeletonConstructionSummary;
         this.roofingConstructionSummary = roofingConstructionSummary;

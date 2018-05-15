@@ -26,16 +26,6 @@ public class CarportSkeletonConstructor extends DrawingUtilities implements Skel
      */
     private static final int PADDING = 1000;
 
-    private int                       length;
-    private int                       outerLength;
-    private int                       width;
-    private int                       outerWidth;
-    private int                       height;
-    private MutableMaterials          materials;
-    private Document                  aerialDocument;
-    private Document                  sideDocument;
-    private ConstructionSpecification specification;
-
     /**
      * The posts used to support the garage.
      */
@@ -47,11 +37,28 @@ public class CarportSkeletonConstructor extends DrawingUtilities implements Skel
     private Component strap;
 
     /**
-     * The wood used to
+     * The wood used to clad the shed.
      */
-    private Component shedGableNogging;
     private Component shedCladding;
+
+    /**
+     * The wood used to support the cladding used on the shed.
+     */
+    private Component shedCladdingNogging;
+
+    /**
+     * The wood used to support the cladding used to construct the door to the shed.
+     */
     private Component shedDoorNogging;
+
+    private int              length;
+    private int              outerLength;
+    private int              width;
+    private int              outerWidth;
+    private int              height;
+    private MutableMaterials materials;
+    private Document         aerialDocument;
+    private Document         sideDocument;
 
     /**
      * Constructs the skeleton of the garage using the provided components.
@@ -68,11 +75,10 @@ public class CarportSkeletonConstructor extends DrawingUtilities implements Skel
 
         this.post = components.from("POST");
         this.strap = components.from("STRAPS_GARAGE");
-        this.shedGableNogging = components.from("SHED_GABLE_NOGGING");
+        this.shedCladdingNogging = components.from("SHED_CLADDING_NOGGING");
         this.shedCladding = components.from("SHED_CLADDING");
         this.shedDoorNogging = components.from("SHED_DOOR_NOGGING");
 
-        this.specification = specification;
         materials = new MutableMaterials();
         aerialDocument = createDocument(this.outerLength + PADDING * 2, this.outerWidth + PADDING * 2);
         sideDocument = createDocument(this.outerLength + PADDING * 2, height + 195 + PADDING * 2);
@@ -98,8 +104,8 @@ public class CarportSkeletonConstructor extends DrawingUtilities implements Skel
 
         materials.add(material, 2, strap.getNotes());
 
-        final int thickness = material.getAttribute("THICKNESS_MM").getInt();
-        final int width     = 195;// material.getAttribute("WIDTH_MM").getInt();
+        int thickness = material.getAttribute("THICKNESS_MM").getInt();
+        int width     = material.getAttribute("WIDTH_MM").getInt();
 
         rect(sideDocument, this.outerLength, width, PADDING, PADDING);
         rect(aerialDocument, this.outerLength, thickness, PADDING, PADDING + SIDE_OVERHANG_MM);
@@ -240,7 +246,7 @@ public class CarportSkeletonConstructor extends DrawingUtilities implements Skel
      */
     private Materials calculateMaterials(ConstructionSpecification specification)
     {
-        materials.add(shedGableNogging.getMaterial(), 1, shedGableNogging.getNotes());
+        materials.add(shedCladdingNogging.getMaterial(), 1, shedCladdingNogging.getNotes());
         materials.add(shedDoorNogging.getMaterial(), 20, shedDoorNogging.getNotes());
 
         return materials;

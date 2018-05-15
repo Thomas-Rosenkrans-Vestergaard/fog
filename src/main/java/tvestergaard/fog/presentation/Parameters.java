@@ -214,8 +214,13 @@ public class Parameters
      * Checks that the value of the provided parameter can safely be extracted to a boolean value using the {@link
      * Parameters#getBoolean(String)} method.
      * <p>
-     * The values that can be converted to a boolean value are: - true  -> true - on    -> true - false -> false - off
-     * -> false
+     * The values that can be converted to a boolean value are:
+     * <pre>
+     * - "true" : true
+     * - "on"   : true
+     * - "false": false
+     * - "off"  : false
+     * </pre>
      *
      * @param parameter The name of the parameter to test the format of.
      * @return {@code true} if the value of the provided parameter can safely be extracted to a boolean value using the

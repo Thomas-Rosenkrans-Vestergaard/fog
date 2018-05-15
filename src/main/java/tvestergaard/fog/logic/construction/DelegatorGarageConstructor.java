@@ -87,7 +87,7 @@ public class DelegatorGarageConstructor implements GarageConstructor
         RoofingConstructor roofConstructor = roofConstructors.get(roofingType);
 
         if (roofConstructor == null)
-            throw new IllegalStateException("No constructor able to construct " + roofingType.name());
+            throw new IllegalStateException("No constructor for roofing type: " + roofingType.name());
 
         return roofConstructor.construct(specification, components, skeletonConstructionSummary);
     }

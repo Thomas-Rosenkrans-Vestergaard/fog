@@ -121,7 +121,7 @@ INSERT INTO component_definitions (id, identifier, category, notes) VALUES
   (8, 'STRAPS_GARAGE', 2, 'Remme i sider, sadles ned i stolper Carport del'),
   (9, 'STRAPS_SHED', 2, 'Remme i sider, sadles ned i stolper Skur del'),
   (10, 'SHED_SIDE_NOGGING', 2, 'Løsholter i siderne af skur'),
-  (11, 'SHED_GABLE_NOGGING', 2, 'Løsholter i gavle af skur'),
+  (11, 'SHED_CLADDING_NOGGING', 2, 'Løsholter i gavle af skur'),
   (12, 'WATER_BOARD', 1, 'Vand bræt på vindskeder'),
   (13, 'GABLE_CLADDING', 1, 'Beklædning af gavle 1 på 2'),
   (14, 'SHED_CLADDING', 1, 'Beklædning af skur 1 på 2'),

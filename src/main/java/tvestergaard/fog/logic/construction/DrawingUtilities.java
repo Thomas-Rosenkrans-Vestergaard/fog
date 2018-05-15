@@ -24,6 +24,13 @@ public class DrawingUtilities
         }
     }
 
+    /**
+     * Creates a new document with the provided viewbox dimensions.
+     *
+     * @param viewBoxWidth  The width of the viewbox of the document to create.
+     * @param viewBoxHeight The height of the viewbox of the document to create.
+     * @return The newly created document.
+     */
     public Document createDocument(int viewBoxWidth, int viewBoxHeight)
     {
         DOMImplementation impl     = SVGDOMImplementation.getDOMImplementation();
@@ -35,11 +42,26 @@ public class DrawingUtilities
         return document;
     }
 
+    /**
+     * Copies the source document to the destination document.
+     *
+     * @param source      The source document.
+     * @param destination The document the source is copied to.
+     */
     public void copy(Document source, Document destination)
     {
         destination.replaceChild(destination.importNode(source.getDocumentElement(), true), destination.getDocumentElement());
     }
 
+    /**
+     * Creates a new rectangle in the provided document.
+     *
+     * @param document The document to draw the rectangle in.
+     * @param width    The width of the rectangle.
+     * @param height   The height of the rectangle.
+     * @param x        The x position of the top left corner of the rectangle.
+     * @param y        The y position of the top left corner of the rectangle.
+     */
     public void rect(Document document, int width, int height, int x, int y)
     {
         Element root      = document.getDocumentElement();
@@ -52,6 +74,15 @@ public class DrawingUtilities
         root.appendChild(rectangle);
     }
 
+    /**
+     * Creates a new filled black rectangle in the provided document.
+     *
+     * @param document The document to draw the filled rectangle in.
+     * @param width    The width of the filled rectangle.
+     * @param height   The height of the filled rectangle.
+     * @param x        The x position of the top left corner of the filled rectangle.
+     * @param y        The y position of the top left corner of the filled rectangle.
+     */
     public void filledRect(Document document, int width, int height, int x, int y)
     {
         Element root      = document.getDocumentElement();
@@ -64,6 +95,18 @@ public class DrawingUtilities
         root.appendChild(rectangle);
     }
 
+    /**
+     * Creates a new ruler in the provided document.
+     *
+     * @param document The document to insert the ruler into.
+     * @param rotation The rotation of the ruler.
+     * @param length   The length of the ruler.
+     * @param x        The x position of the start of the ruler. In horizontal rulers the start of the ruler is the left
+     *                 most point. In vertical rulers the start of the ruler is the top most point.
+     * @param y        The y position of the start of the ruler. In horizontal rulers the start of the ruler is the left most
+     *                 point. In vertical rulers the start of the ruler is the top most point.
+     * @param text     The text to add to the ruler.
+     */
     public void ruler(Document document, Rotation rotation, int length, int x, int y, String text)
     {
         int height = 50;
@@ -81,6 +124,15 @@ public class DrawingUtilities
         }
     }
 
+    /**
+     * Inserts a middle anchored text node into the provided document.
+     *
+     * @param document The document to insert the text node into.
+     * @param rotation The rotation of the text node.
+     * @param x        The x position to insert the text node at.
+     * @param y        The y position to insert the text node at.
+     * @param text     The text contents.
+     */
     private void text(Document document, Rotation rotation, int x, int y, String text)
     {
         Element root     = document.getDocumentElement();
@@ -96,6 +148,15 @@ public class DrawingUtilities
         root.appendChild(textNode);
     }
 
+    /**
+     * Inserts a line into the provided document.
+     *
+     * @param document The document to insert the line into.
+     * @param x1       The x position of the start of the line.
+     * @param y1       The y position of the start of the line.
+     * @param x2       The x position of the end of the line.
+     * @param y2       The y position of the end of the line.
+     */
     public void line(Document document, int x1, int y1, int x2, int y2)
     {
         Element root = document.getDocumentElement();

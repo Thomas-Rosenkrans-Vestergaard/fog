@@ -44,14 +44,14 @@ public class DocumentConstructionDrawing implements ConstructionDrawing
     @Override public String getXML()
     {
         try {
-            SVGTranscoder t = new SVGTranscoder();
+            SVGTranscoder transcoder = new SVGTranscoder();
 
             TranscoderInput       input            = new TranscoderInput(document);
             ByteArrayOutputStream outputStream     = new ByteArrayOutputStream();
             OutputStreamWriter    writer           = new OutputStreamWriter(outputStream);
             TranscoderOutput      transcoderOutput = new TranscoderOutput(writer);
 
-            t.transcode(input, transcoderOutput);
+            transcoder.transcode(input, transcoderOutput);
             writer.flush();
             writer.close();
 
