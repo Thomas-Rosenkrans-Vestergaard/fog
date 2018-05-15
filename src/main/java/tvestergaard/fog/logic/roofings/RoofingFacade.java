@@ -101,7 +101,7 @@ public class RoofingFacade
      * @param description The new description.
      * @param active      Whether or not the roofing can be applied to orders.
      * @param components  The new components.
-     * @return {@link true} if the record was updated.
+     * @return {@code true} if the record was updated.
      * @throws ApplicationException      When an exception occurs while performing the operation.
      * @throws RoofingValidatorException When the provided roofing information is considered invalid.
      */

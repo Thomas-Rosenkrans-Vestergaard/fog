@@ -124,7 +124,7 @@ public class MysqlEmployeeDAO extends AbstractMysqlDAO implements EmployeeDAO
      * Updates the entity in the data storage to match the provided {@code employee}.
      *
      * @param updater The cladding updater that contains the information necessary to create the cladding.
-     * @return {@link true} if the record was updated.
+     * @return {@code true} if the record was updated.
      * @throws MysqlDataAccessException When a data storage exception occurs while performing the operation.
      */
     @Override public boolean update(EmployeeUpdater updater) throws MysqlDataAccessException

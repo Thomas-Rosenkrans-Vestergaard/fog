@@ -143,7 +143,7 @@ public class MysqlMaterialDAO extends AbstractMysqlDAO implements MaterialDAO
      * Updates the entity in the data storage to match the provided {@code material}.
      *
      * @param updater The material updater that contains the information necessary to create the material.
-     * @return {@link true} if the record was updated.
+     * @return {@code true} if the record was updated.
      * @throws MysqlDataAccessException When an exception occurs while performing the operation.
      */
     @Override public boolean update(MaterialUpdater updater) throws MysqlDataAccessException

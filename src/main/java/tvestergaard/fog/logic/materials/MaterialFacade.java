@@ -4,7 +4,6 @@ import com.google.common.collect.Multimap;
 import tvestergaard.fog.data.DataAccessException;
 import tvestergaard.fog.data.constraints.Constraint;
 import tvestergaard.fog.data.materials.*;
-import tvestergaard.fog.data.materials.Category;
 import tvestergaard.fog.data.materials.attributes.AttributeDefinition;
 import tvestergaard.fog.data.materials.attributes.AttributeValue;
 import tvestergaard.fog.logic.ApplicationException;
@@ -102,20 +101,20 @@ public class MaterialFacade
      * @param description The material description to update to.
      * @param price       The price of the material to update to.
      * @param unit        The unit size of the material to update to.
-     * @param categoryId  The category of the material to update to.
+     * @param category    The category of the material to update to.
      * @param attributes  The attributes of the material to update to.
-     * @return {@link true} if the record was updated.
+     * @return {@code true} if the record was updated.
      * @throws ApplicationException       When an exception occurs while performing the operation.
      * @throws MaterialValidatorException When the provided information is considered invalid.
      */
-    public boolean update(int id, String number, String description, int price, int unit, int categoryId, Set<AttributeValue> attributes)
+    public boolean update(int id, String number, String description, int price, int unit, int category, Set<AttributeValue> attributes)
             throws MaterialValidatorException
     {
         try {
             Set<MaterialError> reasons = validator.validate(number, description, price, unit);
             if (!reasons.isEmpty())
                 throw new MaterialValidatorException(reasons);
-            return dao.update(MaterialUpdater.from(id, number, description, price, unit, categoryId, attributes));
+            return dao.update(MaterialUpdater.from(id, number, description, price, unit, category, attributes));
         } catch (DataAccessException e) {
             throw new ApplicationException(e);
         }

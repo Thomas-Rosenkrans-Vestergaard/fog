@@ -16,11 +16,22 @@ public class ConstructionFacade
      * The garage constructor used to construct garages.
      */
     private final DelegatorGarageConstructor garageConstructor;
-    private final ModelDAO                   modelDAO;
-    private final RoofingDAO                 roofingDAO;
+
+    /**
+     * The dao to use to access model components.
+     */
+    private final ModelDAO modelDAO;
+
+    /**
+     * The dao to use to access the possible roofings.
+     */
+    private final RoofingDAO roofingDAO;
 
     /**
      * Creates a new {@link ConstructionFacade}.
+     *
+     * @param modelDAO   The dao to use to access model components.
+     * @param roofingDAO The dao to use to access the possible roofings.
      */
     public ConstructionFacade(ModelDAO modelDAO, RoofingDAO roofingDAO)
     {

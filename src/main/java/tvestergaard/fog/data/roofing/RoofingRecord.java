@@ -122,7 +122,7 @@ public class RoofingRecord implements Roofing
     /**
      * Returns {@code true} if the roofing can currently be applied to new orders.
      *
-     * @return {@link true} if the roofing can currently be applied to new orders.
+     * @return {@code true} if the roofing can currently be applied to new orders.
      */
     @Override public boolean isActive()
     {

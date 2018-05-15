@@ -15,12 +15,13 @@ public interface MaterialUpdater extends MaterialBlueprint
      * @param description The material description to specify in the updater.
      * @param price       The price of the material.
      * @param unit        The type of unit the material is in.
+     * @param category    The category the material belongs to.
      * @param attributes  The attributes to add to the material.
      * @return The resulting updater.
      */
-    static MaterialUpdater from(int id, String number, String description, int price, int unit, int categoryId, Set<AttributeValue> attributes)
+    static MaterialUpdater from(int id, String number, String description, int price, int unit, int category, Set<AttributeValue> attributes)
     {
-        return new MaterialRecord(id, number, description, price, unit, categoryId, null, attributes);
+        return new MaterialRecord(id, number, description, price, unit, category, null, attributes);
     }
 
     /**

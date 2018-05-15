@@ -34,7 +34,7 @@ public interface RoofingDAO
      * Inserts a new roofing into the data storage.
      *
      * @param blueprint  The roofing blueprint that contains the information necessary to create the roofing.
-     * @param components
+     * @param components The components of the roofing to create.
      * @return The roofing instance representing the newly created roofing.
      * @throws DataAccessException When a data storage exception occurs while performing the operation.
      */
@@ -45,7 +45,7 @@ public interface RoofingDAO
      *
      * @param updater    The roofing updater that contains the information necessary to create the roofing.
      * @param components The components in the updated roofing.
-     * @return {@link true} if the record was updated.
+     * @return {@code true} if the record was updated.
      * @throws DataAccessException When a data storage exception occurs while performing the operation.
      */
     boolean update(RoofingUpdater updater, List<ComponentReference> components) throws DataAccessException;

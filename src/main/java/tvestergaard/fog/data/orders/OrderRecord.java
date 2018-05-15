@@ -77,10 +77,12 @@ public class OrderRecord implements Order
      * Creates a new {@link OrderRecord}.
      *
      * @param id             The unique identifier of the order.
+     * @param customerId     The id of the customer who placed the order.
      * @param customer       The customer who placed the order.
      * @param width          The width of the order.
      * @param length         The length of the order.
      * @param height         The height of the order.
+     * @param roofingId      The id of the roofing used on the order.
      * @param roofing        The roofing used on the order.
      * @param slope          The slope of the roofing.
      * @param rafters        The type of rafters chosen by the customer who placed the order.

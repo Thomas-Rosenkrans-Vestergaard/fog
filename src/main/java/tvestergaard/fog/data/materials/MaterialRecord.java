@@ -52,6 +52,7 @@ public class MaterialRecord implements Material
      * @param description The material description to specify in the updater.
      * @param price       The price of the material.
      * @param unit        The type of unit the material is in.
+     * @param categoryId  The id of the category the material belongs to.
      * @param category    The category the material belongs to.
      * @param attributes  The attribute to add to the material.
      */

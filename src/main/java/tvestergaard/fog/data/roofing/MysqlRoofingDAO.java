@@ -147,7 +147,7 @@ public class MysqlRoofingDAO extends AbstractMysqlDAO implements RoofingDAO
      *
      * @param updater    The roofing updater that contains the information necessary to create the roofing.
      * @param components The components in the updated roofing.
-     * @return {@link true} if the record was updated.
+     * @return {@code true} if the record was updated.
      * @throws MysqlDataAccessException When a data storage exception occurs while performing the operation.
      */
     @Override public boolean update(RoofingUpdater updater, List<ComponentReference> components) throws MysqlDataAccessException

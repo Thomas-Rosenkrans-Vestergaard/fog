@@ -23,6 +23,7 @@ public class DefaultAttributeDefinition implements AttributeDefinition
     /**
      * Creates a new {@link DefaultAttributeDefinition}.
      *
+     * @param id       The id of the attribute.
      * @param name     The name of the attribute.
      * @param dataType The data type of the attribute.
      */

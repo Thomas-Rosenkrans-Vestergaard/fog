@@ -10,6 +10,7 @@ public interface Constraint<T extends Enum<T>>
      *
      * @param array   The array to append the element to.
      * @param element The element to append to the array.
+     * @param <C>     The type of the column used when appending the elements.
      * @return The extended array.
      */
     static <C extends Enum<C>> Constraint<C>[] append(Constraint<C>[] array, Constraint<C> element)
@@ -47,9 +48,10 @@ public interface Constraint<T extends Enum<T>>
      *
      * @param column    The column to order by.
      * @param direction The direction to order in.
+     * @param <C>       The type of the column used in the {@link OrderConstraint}.
      * @return The newly created {@link OrderConstraint}.
      */
-    static <T extends Enum<T>> OrderConstraint<T> order(T column, Direction direction)
+    static <C extends Enum<C>> OrderConstraint<C> order(C column, Direction direction)
     {
         return new OrderConstraint(column, direction);
     }
@@ -58,9 +60,10 @@ public interface Constraint<T extends Enum<T>>
      * Creates a new {@link WhereConstraint}.
      *
      * @param conditions The {@link WhereCondition}s to use in the {@link WhereConstraint}.
+     * @param <C>        The type of the column used in the {@link WhereConstraint}.
      * @return The newly created {@link WhereConstraint}.
      */
-    static WhereConstraint where(WhereCondition... conditions)
+    static <C extends Enum<C>> WhereConstraint<C> where(WhereCondition<C>... conditions)
     {
         return new WhereConstraint(conditions);
     }
@@ -70,6 +73,7 @@ public interface Constraint<T extends Enum<T>>
      *
      * @param column The column used in the {@link EqualsCondition}.
      * @param value  The value to use in the {@link EqualsCondition}.
+     * @param <C>    The type of the column used in the {@link EqualsCondition}.
      * @return The newly created instance of {@link EqualsCondition}.
      */
     static <C extends Enum<C>> EqualsCondition eq(C column, Object value)
@@ -83,6 +87,7 @@ public interface Constraint<T extends Enum<T>>
      *
      * @param column The column used in the {@link NotCondition}.
      * @param value  The value to use in the {@link NotCondition}.
+     * @param <C>    The type of the column used in the {@link NotCondition}.
      * @return The newly created instance of {@link NotCondition}.
      */
     static <C extends Enum<C>> NotCondition not(C column, Object value)
@@ -95,6 +100,7 @@ public interface Constraint<T extends Enum<T>>
      *
      * @param column The column used in the {@link LikeCondition}.
      * @param value  The value to use in the {@link LikeCondition}.
+     * @param <C>    The type of the column used in the {@link LikeCondition}.
      * @return The newly created instance of {@link LikeCondition}.
      */
     static <C extends Enum<C>> LikeCondition like(C column, String value)
@@ -107,6 +113,7 @@ public interface Constraint<T extends Enum<T>>
      *
      * @param left  The left operand.
      * @param right The right operand.
+     * @param <C>   The type of the column used in the {@link BinaryAndCondition}.
      * @return The newly created {@link BinaryAndCondition}.
      */
     static <C extends Enum<C>> BinaryAndCondition and(WhereCondition<C> left, WhereCondition<C> right)
@@ -118,6 +125,7 @@ public interface Constraint<T extends Enum<T>>
      * Creates a new {@link UnaryAndCondition}.
      *
      * @param operand The operand provided to the {@link UnaryAndCondition}.
+     * @param <C>     The type of the column used in the {@link UnaryAndCondition}.
      * @return The newly created instance of {@link UnaryAndCondition}.
      */
     static <C extends Enum<C>> UnaryAndCondition and(WhereCondition<C> operand)
@@ -130,6 +138,7 @@ public interface Constraint<T extends Enum<T>>
      *
      * @param left  The left operand.
      * @param right The right operand.
+     * @param <C>   The type of the column used in the {@link BinaryOrCondition}.
      * @return The newly created {@link BinaryOrCondition}.
      */
     static <C extends Enum<C>> BinaryOrCondition or(WhereCondition<C> left, WhereCondition<C> right)
@@ -137,11 +146,11 @@ public interface Constraint<T extends Enum<T>>
         return new BinaryOrCondition(left, right);
     }
 
-
     /**
      * Creates a new {@link UnaryOrCondition}.
      *
      * @param operand The operand provided to the {@link UnaryOrCondition}.
+     * @param <C>     The type of the column used in the {@link UnaryOrCondition}.
      * @return The newly created instance of {@link UnaryOrCondition}.
      */
     static <C extends Enum<C>> UnaryOrCondition or(WhereCondition<C> operand)

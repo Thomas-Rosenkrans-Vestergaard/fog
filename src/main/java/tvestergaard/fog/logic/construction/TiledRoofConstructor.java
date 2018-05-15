@@ -147,10 +147,10 @@ public class TiledRoofConstructor extends DrawingUtilities implements RoofingCon
         calculateGableCladding(materials, components, roofHeight, width);
 
         Component vindSkede = components.from("VINDSKEDER");
-        Component sternBræt = components.from("STERN_BOARD");
+        Component sternBoard = components.from("STERN_BOARD");
 
         materials.add(vindSkede.getMaterial(), 2, vindSkede.getNotes());
-        materials.add(sternBræt.getMaterial(), 2, vindSkede.getNotes());
+        materials.add(sternBoard.getMaterial(), 2, vindSkede.getNotes());
         return materials;
     }
 

@@ -15,6 +15,7 @@ public interface MaterialBlueprint
      * @param price       The price of the material.
      * @param unit        The unit size of the material.
      * @param category    The category the material belongs to.
+     * @param attributes  The attributes of the material specified in the blueprint.
      * @return The resulting blueprint.
      */
     static MaterialBlueprint from(String number, String description, int price, int unit, int category, Set<AttributeValue> attributes)

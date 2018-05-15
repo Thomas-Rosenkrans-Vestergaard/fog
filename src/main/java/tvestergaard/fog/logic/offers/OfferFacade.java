@@ -196,7 +196,9 @@ public class OfferFacade
      * that will mark the provided offer accepted.
      *
      * @param offerId The id of the offer to mark reject.
-     * @throws ApplicationException When a data storage exception occurs while performing the operation.
+     * @throws ApplicationException  When a data storage exception occurs while performing the operation.
+     * @throws UnknownOfferException When the provided offer id does not exist in the application.
+     * @throws OfferNotOpenException When the provided offer is not open, and can therefor not be rejected.
      */
     public void reject(int offerId) throws UnknownOfferException, OfferNotOpenException
     {

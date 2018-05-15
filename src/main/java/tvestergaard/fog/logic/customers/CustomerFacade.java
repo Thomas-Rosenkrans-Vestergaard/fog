@@ -102,9 +102,9 @@ public class CustomerFacade
      *
      * @param id    The id of the token.
      * @param token The secret token.
-     * @throws ApplicationException
-     * @throws IncorrectTokenException
-     * @throws ExpiredTokenException
+     * @throws ApplicationException    When an exception occurs while performing the operation.
+     * @throws IncorrectTokenException When the provided token could not be validated.
+     * @throws ExpiredTokenException   When the token secret was valid, but the token had expired.
      */
     public void confirm(int id, String token) throws IncorrectTokenException, ExpiredTokenException
     {
@@ -125,7 +125,7 @@ public class CustomerFacade
      * @param phone    The new phone.
      * @param password The new password.
      * @param active   The new active status.
-     * @return {@link true} if the record was updated.
+     * @return {@code true} if the record was updated.
      * @throws ApplicationException       When an exception occurs while performing the operation.
      * @throws CustomerValidatorException When the provided customer information is considered invalid.
      */

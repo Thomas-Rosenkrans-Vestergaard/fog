@@ -94,7 +94,7 @@ public class CladdingFacade
      * @param name        The name of the cladding to update to.
      * @param description The description of the cladding to update to.
      * @param active      The active state to update to.
-     * @return {@link true} if the record was updated.
+     * @return {@code true} if the record was updated.
      * @throws ApplicationException       When an exception occurs while performing the operation.
      * @throws CladdingValidatorException When the provided information is considered invalid.
      */

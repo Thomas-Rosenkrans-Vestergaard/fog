@@ -13,6 +13,7 @@ public interface OrderBlueprint
      * @param roofing      The roofing of the order to specify in the blueprint.
      * @param slope        The slope of the order to specify in the blueprint.
      * @param rafterChoice The choice of rafters on the order to specify in the blueprint.
+     * @param shed         The shed to include in the order. {@code null} for no shed.
      * @return The newly created order blueprint.
      */
     static OrderBlueprint from(int customer,

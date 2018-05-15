@@ -14,6 +14,7 @@ public interface OrderUpdater extends OrderBlueprint
      * @param roofing      The roofing of the order to specify in the updater.
      * @param slope        The slope of the order to specify in the updater.
      * @param rafterChoice The choice of rafters on the order to specify in the updater.
+     * @param shed         The shed to include in the order. {@code null} when the order has no shed.
      * @return The newly created order updater.
      */
     static OrderUpdater from(int id,

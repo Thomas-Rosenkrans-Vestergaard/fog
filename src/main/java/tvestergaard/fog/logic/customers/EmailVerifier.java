@@ -47,7 +47,7 @@ public class EmailVerifier
      *
      * @param customer The customer to send the registration confirmation email to.
      * @return {@code true} if the registration confirmation email was successfully sent.
-     * @throws DataAccessException
+     * @throws DataAccessException When a data storage exception occurs.
      */
     public void challenge(Customer customer) throws DataAccessException
     {
@@ -61,9 +61,9 @@ public class EmailVerifier
      *
      * @param id    The id of the token.
      * @param token The secret token.
-     * @throws DataAccessException
-     * @throws IncorrectTokenException
-     * @throws ExpiredTokenException
+     * @throws DataAccessException     When an exception occurs while performing the operation.
+     * @throws IncorrectTokenException When the provided token could not be validated.
+     * @throws ExpiredTokenException   When the token secret was valid, but the token had expired.
      */
     public void confirm(int id, String token) throws DataAccessException, IncorrectTokenException, ExpiredTokenException
     {

@@ -40,7 +40,7 @@ public interface OrderDAO
      * Updates the entity in the data storage to match the provided {@code order}.
      *
      * @param updater The order updater that contains the information necessary to create the order.
-     * @return {@link true} if the record was updated.
+     * @return {@code true} if the record was updated.
      * @throws DataAccessException When a data storage exception occurs while performing the operation.
      */
     boolean update(OrderUpdater updater) throws DataAccessException;
