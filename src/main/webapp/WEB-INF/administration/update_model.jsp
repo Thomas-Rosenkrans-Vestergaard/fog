@@ -6,6 +6,13 @@
     </div>
 </div>
 <div class="row">
+    <div class="col 12">
+        <a class="btn-large btn-large waves-effect waves-light" href="?action=update_components&model=${model.getId()}">
+            Opdater component definitioner
+        </a>
+    </div>
+</div>
+<div class="row">
     <div class="col s12">
         <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Nulla non lectus sed nisl molestie malesuada.
             Mauris dolor felis, sagittis at, luctus sed, aliquam non, tellus. Vivamus luctus egestas leo. Sed elit dui,

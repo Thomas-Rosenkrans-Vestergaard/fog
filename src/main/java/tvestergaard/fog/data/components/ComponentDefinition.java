@@ -6,30 +6,37 @@ public interface ComponentDefinition
 {
 
     /**
-     * Returns the id of the roofing component definition.
+     * Returns the id of the component definition.
      *
-     * @return The id of the roofing component definition.
+     * @return The id of the component definition.
      */
     int getId();
 
     /**
-     * Returns the identifier of the roofing component.
+     * Returns the identifier of the component.
      *
-     * @return The identifier of the roofing component.
+     * @return The identifier of the component.
      */
     String getIdentifier();
 
     /**
-     * Returns the notes of the roofing component.
+     * Returns the notes of the component.
      *
-     * @return The notes of the roofing component.
+     * @return The notes of the component.
      */
     String getNotes();
 
     /**
-     * Returns the material category that the roofing component must be of.
+     * Updates the notes of the component.
      *
-     * @return The material category that the roofing component must be of.
+     * @param notes The new notes.
+     */
+    void setNotes(String notes);
+
+    /**
+     * Returns the material category that the component must be of.
+     *
+     * @return The material category that the component must be of.
      */
     Category getCategory();
 }

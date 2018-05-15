@@ -35,6 +35,8 @@ public class AdministrationModelsServlet extends AdministrationServlet
         dispatcher.get(null, new ShowTableCommand());
         dispatcher.get("update", new ShowUpdateCommand());
         dispatcher.post("update", new HandleUpdateCommand());
+        dispatcher.get("update_components", new ShowUpdateComponentsCommand());
+        dispatcher.post("update_components", new HandleUpdateComponentsCommand());
     }
 
     @Override protected boolean before(HttpServletRequest req, HttpServletResponse resp, Employee employee) throws ServletException, IOException
@@ -132,6 +134,69 @@ public class AdministrationModelsServlet extends AdministrationServlet
                 response.sendRedirect("?action=update&id=" + parameters.getInt("id"));
                 return;
             }
+        }
+    }
+
+    private class ShowUpdateComponentsCommand implements Command
+    {
+
+        /**
+         * Delegates the request and response objects to this command.
+         *
+         * @param request  The request.
+         * @param response The response.
+         */
+        @Override public void dispatch(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
+        {
+            Parameters    parameters    = new Parameters(request);
+            Notifications notifications = notifications(request);
+
+            if (!parameters.isInt("model")) {
+                notifications.error("No model id provided.");
+                response.sendRedirect("models");
+                return;
+            }
+
+            request.setAttribute("title", "Opdater model componenter");
+            request.setAttribute("definitions", modelFacade.getComponentDefinitions(parameters.getInt("model")));
+            request.getRequestDispatcher("/WEB-INF/administration/update_model_components.jsp").forward(request, response);
+        }
+    }
+
+    private class HandleUpdateComponentsCommand implements Command
+    {
+
+        /**
+         * Delegates the request and response objects to this command.
+         *
+         * @param request  The request.
+         * @param response The response.
+         */
+        @Override public void dispatch(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
+        {
+            Parameters    parameters    = new Parameters(request);
+            Notifications notifications = notifications(request);
+
+            if (!parameters.isInt("model")) {
+                notifications.error("No model id provided.");
+                response.sendRedirect("models");
+                return;
+            }
+
+            List<ComponentDefinition> definitions = modelFacade.getComponentDefinitions(parameters.getInt("model"));
+            for (ComponentDefinition definition : definitions) {
+                String inputName = "component_notes_" + definition.getIdentifier();
+                if (!parameters.isPresent(inputName)) {
+                    notifications.error("No " + inputName + " sent");
+                    response.sendRedirect("?action=update_components&model=" + parameters.getInt("model"));
+                    return;
+                }
+
+                definition.setNotes(parameters.value(inputName));
+            }
+
+            modelFacade.update(definitions);
+            response.sendRedirect("?action=update_components&model=" + parameters.getInt("model"));
         }
     }
 }

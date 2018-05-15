@@ -7,7 +7,7 @@ public class ComponentDefinitionRecord implements ComponentDefinition
 
     private final int      id;
     private final String   identifier;
-    private final String   notes;
+    private       String   notes;
     private final Category category;
 
     public ComponentDefinitionRecord(int id, String identifier, String notes, Category category)
@@ -41,6 +41,16 @@ public class ComponentDefinitionRecord implements ComponentDefinition
     @Override public String getNotes()
     {
         return notes;
+    }
+
+    /**
+     * Updates the notes of the component.
+     *
+     * @param notes The new notes.
+     */
+    @Override public void setNotes(String notes)
+    {
+        this.notes = notes;
     }
 
     /**

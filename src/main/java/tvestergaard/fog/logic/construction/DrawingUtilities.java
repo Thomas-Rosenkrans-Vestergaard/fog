@@ -87,6 +87,10 @@ public class DrawingUtilities
         Element textNode = document.createElementNS(SVGDOMImplementation.SVG_NAMESPACE_URI, "text");
         textNode.setAttributeNS(null, "x", Integer.toString(x));
         textNode.setAttributeNS(null, "y", Integer.toString(y));
+        textNode.setAttributeNS(null, "text-anchor", "middle");
+        if (rotation == Rotation.VERTICAL) {
+            textNode.setAttributeNS(null, "x", Integer.toString(x - 100));
+        }
         textNode.setAttributeNS(null, "style", "font-family:Arial;font-size:130;stroke:#000000;#fill:#00ff00;");
         textNode.setTextContent(text);
         root.appendChild(textNode);

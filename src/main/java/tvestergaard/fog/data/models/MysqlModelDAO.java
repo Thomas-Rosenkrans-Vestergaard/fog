@@ -6,10 +6,10 @@ import com.mysql.cj.jdbc.MysqlDataSource;
 import tvestergaard.fog.data.AbstractMysqlDAO;
 import tvestergaard.fog.data.DataAccessException;
 import tvestergaard.fog.data.MysqlDataAccessException;
-import tvestergaard.fog.data.materials.SimpleMaterial;
 import tvestergaard.fog.data.components.Component;
 import tvestergaard.fog.data.components.ComponentDefinition;
 import tvestergaard.fog.data.components.ComponentReference;
+import tvestergaard.fog.data.materials.SimpleMaterial;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -115,6 +115,39 @@ public class MysqlModelDAO extends AbstractMysqlDAO implements ModelDAO
     }
 
     /**
+     * Updates the component definitions for a model.
+     *
+     * @param definitions The definitions to update.
+     * @return {@code true} if the component definitions was successfully updated.
+     * @throws MysqlDataAccessException
+     */
+    @Override public boolean update(List<ComponentDefinition> definitions) throws MysqlDataAccessException
+    {
+        try {
+
+            String     SQL        = "UPDATE component_definitions cd SET cd.notes = ? WHERE cd.id = ?";
+            Connection connection = getConnection();
+            try (PreparedStatement statement = connection.prepareStatement(SQL)) {
+                for (ComponentDefinition definition : definitions) {
+                    statement.setString(1, definition.getNotes());
+                    statement.setInt(2, definition.getId());
+                    statement.executeUpdate();
+                }
+
+                connection.commit();
+                return true;
+
+            } catch (SQLException e) {
+                connection.rollback();
+                throw e;
+            }
+
+        } catch (SQLException e) {
+            throw new MysqlDataAccessException(e);
+        }
+    }
+
+    /**
      * Returns the component definitions for the provided garage model.
      *
      * @param model The garage model to return the component definitions for.
@@ -127,8 +160,10 @@ public class MysqlModelDAO extends AbstractMysqlDAO implements ModelDAO
 
         String SQL = "SELECT * FROM garage_component_definitions gcd " +
                 "INNER JOIN component_definitions cd ON gcd.definition = cd.id " +
-                "INNER JOIN categories ON categories.id = cd.category";
+                "INNER JOIN categories ON categories.id = cd.category " +
+                "WHERE gcd.model = ?";
         try (PreparedStatement statement = getConnection().prepareStatement(SQL)) {
+            statement.setInt(1, model);
             ResultSet componentResults = statement.executeQuery();
             while (componentResults.next())
                 definitions.add(createComponentDefinition("cd", componentResults, "categories"));

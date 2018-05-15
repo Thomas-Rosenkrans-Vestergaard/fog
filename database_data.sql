@@ -53,6 +53,7 @@ INSERT INTO attribute_definitions (id, category, data_type, `name`) VALUES
   (4, 6, 'INT', 'LENGTH_MM'),
   (5, 7, 'INT', 'USE_DISTANCE_MM'),
   (7, 1, 'INT', 'THICKNESS_MM'),
+  (13, 1, 'INT', 'WIDTH_MM'),
   (8, 2, 'INT', 'WIDTH_MM'),
   (9, 2, 'INT', 'THICKNESS_MM'),
   (10, 3, 'INT', 'WIDTH_MM'),
@@ -66,7 +67,7 @@ INSERT INTO materials (id, `number`, `description`, `price`, `unit`, `category`)
   (4, '682229537074', 'B&C Rygstensbeslag', 25000, 50, 8),
   (5, '459740486968', 'B&C Tagstensbindere & Nakkekroge', 12500, 50, 9),
   (6, '343615203226', '19x100 mm. Trykimprægneret bræt', '30000', 6, 1),
-  (7, '093765091763', '25x50 mm. Trykimprægneret Bræt', '30000', 6, 1),
+  (7, '093765091763', '25x50 mm. Trykimprægneret bræt', '30000', 6, 1),
   (8, '229786742441', '38x73 mm. Taglægte T1', '30000', 6, 3),
   (9, '788947415996', 'Fædigskåret (byg-selv spær)', 100000, 1, 2),
   (10, '448582215123', '97x97 mm. Trykimprægneret stolpe', 4000, 1, 4),
@@ -100,7 +101,9 @@ INSERT INTO attribute_values (attribute, material, `value`) VALUES
   (9, 8, '38'),
   (9, 10, '97'),
   (8, 11, '195'),
-  (9, 11, '45');
+  (9, 11, '45'),
+  (13, 6, '100'),
+  (13, 7, '50');
 
 INSERT INTO roofings (id, name, description, active, type)
 VALUES (1, 'Sorte teglsten',

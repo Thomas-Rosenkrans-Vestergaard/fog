@@ -31,6 +31,16 @@ public class ComponentRecord implements Component
     }
 
     /**
+     * Updates the notes of the component.
+     *
+     * @param notes The new notes.
+     */
+    @Override public void setNotes(String notes)
+    {
+        definition.setNotes(notes);
+    }
+
+    /**
      * Returns the component definition the value is assigned to.
      *
      * @return The component definition the value is assigned to.

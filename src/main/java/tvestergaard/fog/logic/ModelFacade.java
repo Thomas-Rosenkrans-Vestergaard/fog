@@ -2,13 +2,13 @@ package tvestergaard.fog.logic;
 
 import com.google.common.collect.Multimap;
 import tvestergaard.fog.data.DataAccessException;
+import tvestergaard.fog.data.components.Component;
+import tvestergaard.fog.data.components.ComponentDefinition;
+import tvestergaard.fog.data.components.ComponentReference;
 import tvestergaard.fog.data.materials.SimpleMaterial;
 import tvestergaard.fog.data.models.Model;
 import tvestergaard.fog.data.models.ModelDAO;
 import tvestergaard.fog.data.models.ModelUpdater;
-import tvestergaard.fog.data.components.Component;
-import tvestergaard.fog.data.components.ComponentDefinition;
-import tvestergaard.fog.data.components.ComponentReference;
 
 import java.util.List;
 
@@ -60,12 +60,29 @@ public class ModelFacade
      * @param name       The new name of the model.
      * @param components The components.
      * @return {@code true} if the model was successfully updated.
+     * @throws ApplicationException When a data storage exception occurs while performing the operation.
      */
     public boolean update(int id, String name, List<ComponentReference> components)
     {
         try {
             ModelUpdater updater = ModelUpdater.from(id, name);
             return modelDAO.update(updater, components);
+        } catch (DataAccessException e) {
+            throw new ApplicationException(e);
+        }
+    }
+
+    /**
+     * Updates the component definitions for a model.
+     *
+     * @param definitions The definitions to update.
+     * @return {@code true} if the component definitions was successfully updated.
+     * @throws ApplicationException When a data storage exception occurs while performing the operation.
+     */
+    public boolean update(List<ComponentDefinition> definitions)
+    {
+        try {
+            return modelDAO.update(definitions);
         } catch (DataAccessException e) {
             throw new ApplicationException(e);
         }
