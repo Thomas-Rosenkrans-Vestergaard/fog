@@ -52,7 +52,7 @@ CREATE TABLE `attribute_values` (
   UNIQUE KEY `unique_attribute_material` (`attribute`,`material`),
   KEY `fk_material_idx` (`material`),
   CONSTRAINT `fk_material` FOREIGN KEY (`material`) REFERENCES `materials` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=192 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=208 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -330,11 +330,14 @@ CREATE TABLE `orders` (
   `slope` tinyint(11) unsigned NOT NULL,
   `rafters` tinyint(11) unsigned NOT NULL,
   `active` bit(1) NOT NULL DEFAULT b'1',
+  `shed` int(11) unsigned DEFAULT NULL,
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`),
   KEY `customer` (`customer`),
   KEY `cladding` (`roofing`),
+  KEY `fk_sheds_idx` (`shed`),
+  CONSTRAINT `fk_sheds` FOREIGN KEY (`shed`) REFERENCES `sheds` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `orders_ibfk_1` FOREIGN KEY (`customer`) REFERENCES `customers` (`id`),
   CONSTRAINT `orders_ibfk_2` FOREIGN KEY (`roofing`) REFERENCES `roofings` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
@@ -377,7 +380,7 @@ CREATE TABLE `roles` (
   `role` enum('HEAD_OF_CENTER','HEAD_OF_MATERIALS','SALESMAN') CHARACTER SET utf8 NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=74 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=77 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -445,16 +448,13 @@ DROP TABLE IF EXISTS `sheds`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `sheds` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `order` int(11) unsigned NOT NULL,
   `depth` int(11) unsigned NOT NULL,
   `cladding` int(11) unsigned NOT NULL,
   `flooring` int(11) unsigned NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`),
-  UNIQUE KEY `order_UNIQUE` (`order`),
   KEY `cladding` (`cladding`),
   KEY `flooring` (`flooring`),
-  CONSTRAINT `fk_orders` FOREIGN KEY (`order`) REFERENCES `orders` (`id`),
   CONSTRAINT `sheds_ibfk_1` FOREIGN KEY (`cladding`) REFERENCES `claddings` (`id`),
   CONSTRAINT `sheds_ibfk_2` FOREIGN KEY (`flooring`) REFERENCES `floorings` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
@@ -489,4 +489,4 @@ CREATE TABLE `tokens` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-05-15 16:29:25
+-- Dump completed on 2018-05-15 16:41:26
