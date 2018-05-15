@@ -121,17 +121,16 @@ public class MysqlCustomerDAO extends AbstractMysqlDAO implements CustomerDAO
     @Override public boolean update(CustomerUpdater updater) throws MysqlDataAccessException
     {
         try {
-            final String SQL = "UPDATE customers SET name = ?, address = ?, email = ?, phone = ?," +
-                    "password = ?, active = ? WHERE id = ?";
+
+            String     SQL        = "UPDATE customers SET name = ?, address = ?, email = ?, phone = ?, active = ? WHERE id = ?";
             Connection connection = getConnection();
             try (PreparedStatement statement = connection.prepareStatement(SQL)) {
                 statement.setString(1, updater.getName());
                 statement.setString(2, updater.getAddress());
                 statement.setString(3, updater.getEmail());
                 statement.setString(4, updater.getPhone());
-                statement.setString(5, updater.getPassword());
-                statement.setBoolean(6, updater.isActive());
-                statement.setInt(7, updater.getId());
+                statement.setBoolean(5, updater.isActive());
+                statement.setInt(6, updater.getId());
                 int updated = statement.executeUpdate();
                 connection.commit();
                 return updated != 0;
