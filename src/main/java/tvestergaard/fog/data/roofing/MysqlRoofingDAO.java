@@ -259,10 +259,11 @@ public class MysqlRoofingDAO extends AbstractMysqlDAO implements RoofingDAO
     {
         List<Component> components = new ArrayList<>();
 
-        String SQL = "SELECT * FROM roofing_component_values rcv " +
-                "INNER JOIN component_values cv ON rcv.component = cv.id " +
-                "INNER JOIN component_definitions cd ON cv.definition = cd.id " +
-                "INNER JOIN materials ON cv.material = materials.id " +
+        String SQL = "SELECT * FROM roofing_component_values rcd " +
+                "INNER JOIN component_definitions cd ON rcd.component = cd.id " +
+                "INNER JOIN component_values cv ON cv.definition = cd.id " +
+                "INNER JOIN roofing_component_values rcv ON cv.id = rcv.component " +
+                "INNER JOIN materials ON materials.id = cv.material " +
                 "INNER JOIN categories ON materials.category = categories.id " +
                 "WHERE rcv.roofing = ?";
         try (PreparedStatement statement = getConnection().prepareStatement(SQL)) {
