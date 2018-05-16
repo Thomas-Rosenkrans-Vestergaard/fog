@@ -364,6 +364,8 @@ public abstract class AbstractMysqlDAO
                                 String shedCladdingTable,
                                 String shedFlooringTable) throws SQLException
     {
+        Shed shed = resultSet.getInt("shed") == 0 ? null : createShed(resultSet, shedTable, shedCladdingTable, shedFlooringTable);
+
         return new OrderRecord(
                 resultSet.getInt(table + ".id"),
                 resultSet.getInt(table + ".customer"),
@@ -375,7 +377,9 @@ public abstract class AbstractMysqlDAO
                 createRoofing(roofingTable, resultSet),
                 resultSet.getInt(table + ".slope"),
                 RafterChoice.from(resultSet.getInt(table + ".rafters")),
-                resultSet.getInt("shed") == 0 ? null : createShed(resultSet, shedTable, shedCladdingTable, shedFlooringTable),
+                shed,
+                shed,
+                shed,
                 resultSet.getBoolean(table + ".active"),
                 resultSet.getInt(table + ".offers"),
                 resultSet.getTimestamp(table + ".created_at").toLocalDateTime()

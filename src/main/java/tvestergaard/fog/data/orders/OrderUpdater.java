@@ -14,7 +14,8 @@ public interface OrderUpdater extends OrderBlueprint
      * @param roofing      The roofing of the order to specify in the updater.
      * @param slope        The slope of the order to specify in the updater.
      * @param rafterChoice The choice of rafters on the order to specify in the updater.
-     * @param shed         The shed to include in the order. {@code null} when the order has no shed.
+     * @param active       The active status of the order in the updater.
+     * @param shedUpdater  The shed to include in the order. {@code null} when the order has no shed.
      * @return The newly created order updater.
      */
     static OrderUpdater from(int id,
@@ -25,10 +26,11 @@ public interface OrderUpdater extends OrderBlueprint
                              int roofing,
                              int slope,
                              RafterChoice rafterChoice,
-                             ShedBlueprint shed)
+                             boolean active,
+                             ShedUpdater shedUpdater)
     {
         return new OrderRecord(id, customer, null, width, length, height, roofing, null, slope, rafterChoice,
-                new ShedRecord(-1, shed.getDepth(), shed.getCladdingId(), null, shed.getFlooringId(), null), false, -1,
+                shedUpdater, shedUpdater, null, active, -1,
                 null);
     }
 
@@ -44,7 +46,7 @@ public interface OrderUpdater extends OrderBlueprint
      *
      * @return The shed updater.
      */
-    ShedUpdater getShed();
+    ShedUpdater getShedUpdater();
 
     /**
      * Returns whether or not the order is considered active.

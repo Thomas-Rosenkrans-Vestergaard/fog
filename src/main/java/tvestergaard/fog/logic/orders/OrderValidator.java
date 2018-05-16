@@ -1,6 +1,7 @@
 package tvestergaard.fog.logic.orders;
 
 import tvestergaard.fog.data.DataAccessException;
+import tvestergaard.fog.data.orders.ShedBlueprint;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -29,7 +30,7 @@ public class OrderValidator
             int height,
             int roofing,
             int slope,
-            ShedSpecification shed) throws DataAccessException
+            ShedBlueprint shed) throws DataAccessException
     {
         Set<OrderError> reasons = new HashSet<>();
 

@@ -110,10 +110,10 @@ public class MysqlOrderDAOTest
         assertEquals(expectedRoofing, actual.getRoofing());
         assertEquals(expectedSlope, actual.getSlope());
         assertEquals(expectedRafters, actual.getRafterChoice());
-        assertEquals(expectedShed.getWidth(), actual.getShed().getWidth());
-        assertEquals(expectedShed.getDepth(), actual.getShed().getDepth());
-        assertEquals(expectedShed.getCladding(), actual.getShed().getCladding());
-        assertEquals(expectedShed.getFlooring(), actual.getShed().getFlooring());
+        assertEquals(expectedShed.getWidth(), actual.getShedBlueprint().getWidth());
+        assertEquals(expectedShed.getDepth(), actual.getShedBlueprint().getDepth());
+        assertEquals(expectedShed.getCladding(), actual.getShedBlueprint().getCladding());
+        assertEquals(expectedShed.getFlooring(), actual.getShedBlueprint().getFlooring());
         assertTrue(actual.isActive());
         assertEquals(0, actual.getNumberOfOffers());
     }

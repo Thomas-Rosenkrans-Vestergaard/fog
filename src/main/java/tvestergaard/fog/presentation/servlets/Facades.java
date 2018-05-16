@@ -35,6 +35,7 @@ import tvestergaard.fog.logic.floorings.FlooringFacade;
 import tvestergaard.fog.logic.materials.MaterialFacade;
 import tvestergaard.fog.logic.offers.OfferFacade;
 import tvestergaard.fog.logic.orders.OrderFacade;
+import tvestergaard.fog.logic.orders.OrderPlacer;
 import tvestergaard.fog.logic.purchases.PurchaseFacade;
 import tvestergaard.fog.logic.roofings.RoofingFacade;
 import tvestergaard.fog.logic.tokens.TokenGenerator;
@@ -66,7 +67,7 @@ public class Facades
     public static final EmployeeFacade     employeeFacade     = new EmployeeFacade(employeeDAO);
     public static final FlooringFacade     flooringFacade     = new FlooringFacade(flooringDAO);
     public static final MaterialFacade     materialFacade     = new MaterialFacade(materialDAO);
-    public static final OrderFacade        orderFacade        = new OrderFacade(orderDAO, mailer);
+    public static final OrderFacade        orderFacade        = new OrderFacade(new OrderPlacer(orderDAO, customerDAO, mailer), orderDAO);
     public static final RoofingFacade      roofingFacade      = new RoofingFacade(roofingDAO);
     public static final OfferFacade        offerFacade        = new OfferFacade(offerDAO, orderDAO, employeeDAO, mailer, tokenIssuer);
     public static final PurchaseFacade     purchaseFacade     = new PurchaseFacade(purchaseDAO, offerDAO, employeeDAO);

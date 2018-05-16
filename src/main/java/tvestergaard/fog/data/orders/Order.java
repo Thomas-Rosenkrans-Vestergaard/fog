@@ -23,11 +23,11 @@ public interface Order extends OrderUpdater
     Roofing getRoofing();
 
     /**
-     * Returns the shed installed in the order.
+     * Returns the shed included with the order.
      *
-     * @return The shed installed in the order.
+     * @return The shed instance.
      */
-    @Override Shed getShed();
+    Shed getShed();
 
     /**
      * Returns the number of offers that have been made regarding this order.

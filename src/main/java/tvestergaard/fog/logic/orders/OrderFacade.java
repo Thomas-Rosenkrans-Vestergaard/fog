@@ -2,16 +2,21 @@ package tvestergaard.fog.logic.orders;
 
 import tvestergaard.fog.data.DataAccessException;
 import tvestergaard.fog.data.constraints.Constraint;
+import tvestergaard.fog.data.customers.UnknownCustomerException;
 import tvestergaard.fog.data.orders.*;
 import tvestergaard.fog.logic.ApplicationException;
 import tvestergaard.fog.logic.customers.InactiveCustomerException;
-import tvestergaard.fog.logic.email.ApplicationMailer;
 
 import java.util.List;
 import java.util.Set;
 
 public class OrderFacade
 {
+
+    /**
+     * The object responsible for creating new orders.
+     */
+    private final OrderPlacer placer;
 
     /**
      * The dao used to access the order storage.
@@ -24,20 +29,15 @@ public class OrderFacade
     private final OrderValidator validator;
 
     /**
-     * The object responsible for sending {@link OrderConfirmationEmail}s.
-     */
-    private final ApplicationMailer mailer;
-
-    /**
      * Creates a new {@link OrderFacade}.
      *
-     * @param dao    The dao used to access the order storage.
-     * @param mailer The object responsible for sending {@link OrderConfirmationEmail}s.
+     * @param orderPlacer The object responsible for creating new orders.
+     * @param dao         The dao used to access the order storage.
      */
-    public OrderFacade(OrderDAO dao, ApplicationMailer mailer)
+    public OrderFacade(OrderPlacer orderPlacer, OrderDAO dao)
     {
+        this.placer = orderPlacer;
         this.dao = dao;
-        this.mailer = mailer;
         this.validator = new OrderValidator();
     }
 
@@ -86,8 +86,12 @@ public class OrderFacade
      * @param rafters  The rafters construction delivered with the order to create.
      * @param shed     The shed to add to the order.
      * @return The new order.
-     * @throws OrderValidatorException When the provided details are considered invalid.
-     * @throws ApplicationException    When an exception occurs during the operation.
+     * @throws OrderValidatorException      When the provided information is considered invalid.
+     * @throws UnknownCustomerException     When the customer placing the order is unknown to the application.
+     * @throws InactiveCustomerException    When the customer is inactive, and can therefor not place new orders.
+     * @throws UnconfirmedCustomerException When the customer has not confirmed their email address, and can therefor
+     *                                      not place new orders.
+     * @throws ApplicationException         When a data storage exception occurs while performing the operation.
      */
     public Order create(
             int customer,
@@ -97,31 +101,13 @@ public class OrderFacade
             int roofing,
             int slope,
             RafterChoice rafters,
-            ShedSpecification shed) throws OrderValidatorException, InactiveCustomerException, UnconfirmedCustomerException
+            ShedBlueprint shed) throws OrderValidatorException,
+                                       UnknownCustomerException,
+                                       InactiveCustomerException,
+                                       UnconfirmedCustomerException
     {
         try {
-
-            Set<OrderError> reasons = validator.validate(customer, width, length, height, roofing, slope, shed);
-            if (!reasons.isEmpty())
-                throw new OrderValidatorException(reasons);
-
-            if (!reasons.isEmpty())
-                throw new OrderValidatorException(reasons);
-
-            Order order = dao.create(OrderBlueprint.from(
-                    customer,
-                    width,
-                    length,
-                    height,
-                    roofing,
-                    slope,
-                    rafters,
-                    shed == null ? null : ShedBlueprint.from(shed.getDepth(), shed.getCladdingId(), shed.getFlooringId())));
-
-            OrderConfirmationEmail email = new OrderConfirmationEmail(order);
-            mailer.send(email);
-            return order;
-
+            return placer.place(customer, width, length, height, roofing, slope, rafters, shed);
         } catch (DataAccessException e) {
             throw new ApplicationException(e);
         }
@@ -146,14 +132,15 @@ public class OrderFacade
     /**
      * Updates the order with the provided id.
      *
-     * @param id      The id of the oder to update.
-     * @param width   The new width of the order.
-     * @param length  The new length of the order.
-     * @param height  The new height of the order.
-     * @param roofing The new roofing of the order.
-     * @param slope   The new slope of the roofing on the order.
-     * @param rafters The rafter choice on the order.
-     * @param shed    The shed built into the order.
+     * @param id          The id of the oder to update.
+     * @param width       The new width of the order.
+     * @param length      The new length of the order.
+     * @param height      The new height of the order.
+     * @param roofing     The new roofing of the order.
+     * @param slope       The new slope of the roofing on the order.
+     * @param rafters     The rafter choice on the order.
+     * @param active      The active status of the order.
+     * @param shedUpdater The shed built into the order.
      * @return {@code true} if the order was updated.
      * @throws OrderValidatorException When the provided information is not valid.
      */
@@ -164,15 +151,15 @@ public class OrderFacade
                           int roofing,
                           int slope,
                           RafterChoice rafters,
-                          ShedSpecification shed) throws OrderValidatorException
+                          boolean active,
+                          ShedUpdater shedUpdater) throws OrderValidatorException
     {
         try {
-            Set<OrderError> reasons = validator.validate(-1, width, length, height, roofing, slope, shed);
+            Set<OrderError> reasons = validator.validate(-1, width, length, height, roofing, slope, shedUpdater);
             if (!reasons.isEmpty())
                 throw new OrderValidatorException(reasons);
 
-            return dao.update(OrderUpdater.from(id, -1, width, length, height, roofing, slope, rafters,
-                    shed == null ? null : ShedBlueprint.from(shed.getDepth(), shed.getCladdingId(), shed.getFlooringId())));
+            return dao.update(OrderUpdater.from(id, -1, width, length, height, roofing, slope, rafters, active, shedUpdater));
         } catch (DataAccessException e) {
             throw new ApplicationException(e);
         }

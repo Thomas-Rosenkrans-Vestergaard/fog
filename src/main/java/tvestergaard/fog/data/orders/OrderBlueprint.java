@@ -6,14 +6,15 @@ public interface OrderBlueprint
     /**
      * Returns a new order blueprint from the provided information.
      *
-     * @param customer     The customer of the order to specify in the blueprint.
-     * @param width        The width of the order to specify in the blueprint.
-     * @param length       The length of the order to specify in the blueprint.
-     * @param height       The height of the order to specify in the blueprint.
-     * @param roofing      The roofing of the order to specify in the blueprint.
-     * @param slope        The slope of the order to specify in the blueprint.
-     * @param rafterChoice The choice of rafters on the order to specify in the blueprint.
-     * @param shed         The shed to include in the order. {@code null} for no shed.
+     * @param customer      The customer of the order to specify in the blueprint.
+     * @param width         The width of the order to specify in the blueprint.
+     * @param length        The length of the order to specify in the blueprint.
+     * @param height        The height of the order to specify in the blueprint.
+     * @param roofing       The roofing of the order to specify in the blueprint.
+     * @param slope         The slope of the order to specify in the blueprint.
+     * @param rafterChoice  The choice of rafters on the order to specify in the blueprint.
+     * @param active        Whether or not the order is currently active.
+     * @param shedBlueprint The shed to include in the order. {@code null} for no shed.
      * @return The newly created order blueprint.
      */
     static OrderBlueprint from(int customer,
@@ -23,10 +24,11 @@ public interface OrderBlueprint
                                int roofing,
                                int slope,
                                RafterChoice rafterChoice,
-                               ShedBlueprint shed)
+                               boolean active,
+                               ShedBlueprint shedBlueprint)
     {
         return new OrderRecord(-1, customer, null, width, length, height, roofing, null, slope, rafterChoice,
-                shed == null ? null : new ShedRecord(-1, shed.getDepth(), shed.getCladdingId(), null, shed.getFlooringId(), null), false, -1,
+                shedBlueprint, null, null, active, -1,
                 null);
     }
 
@@ -126,12 +128,12 @@ public interface OrderBlueprint
      *
      * @return The shed included in the order.
      */
-    ShedBlueprint getShed();
+    ShedBlueprint getShedBlueprint();
 
     /**
      * Sets the shed included in the order. {@code null} means no shed is included.
      *
-     * @param shed The new shed.
+     * @param shedBlueprint The new shed.
      */
-    void setShed(Shed shed);
+    void setShedBlueprint(ShedBlueprint shedBlueprint);
 }

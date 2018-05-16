@@ -2,16 +2,13 @@ package tvestergaard.fog.presentation.servlets;
 
 import tvestergaard.fog.data.employees.Employee;
 import tvestergaard.fog.data.employees.Role;
-import tvestergaard.fog.data.orders.Order;
-import tvestergaard.fog.data.orders.OrderColumn;
-import tvestergaard.fog.data.orders.RafterChoice;
+import tvestergaard.fog.data.orders.*;
 import tvestergaard.fog.logic.claddings.CladdingFacade;
 import tvestergaard.fog.logic.floorings.FlooringFacade;
 import tvestergaard.fog.logic.offers.OfferFacade;
 import tvestergaard.fog.logic.orders.OrderError;
 import tvestergaard.fog.logic.orders.OrderFacade;
 import tvestergaard.fog.logic.orders.OrderValidatorException;
-import tvestergaard.fog.logic.orders.ShedSpecification;
 import tvestergaard.fog.logic.roofings.RoofingFacade;
 import tvestergaard.fog.presentation.Notifications;
 import tvestergaard.fog.presentation.Parameters;
@@ -133,13 +130,33 @@ public class AdministrationOrdersServlet extends AdministrationServlet
                     !parameters.isInt("height") ||
                     !parameters.isInt("roofing") ||
                     !parameters.isInt("slope") ||
+                    !parameters.isBoolean("active") ||
                     !parameters.isEnum("rafters", RafterChoice.class) ||
-                    !parameters.isInt("shed-depth") ||
-                    !parameters.isPresent("shed-flooring") ||
-                    !parameters.isInt("shed-cladding")) {
+                    !parameters.isPresent("shed-action")) {
                 notifications.error("The provided data is invalid.");
                 response.sendRedirect("orders?action=update&id=" + parameters.getInt("id"));
                 return;
+            }
+
+            if (parameters.isPresent("shed")) {
+                if ("create".equals(parameters.value("shed-action"))) {
+                    if (!parameters.isInt("shed-depth") ||
+                            !parameters.isPresent("shed-flooring") ||
+                            !parameters.isInt("shed-cladding")) {
+                        notifications.error("Manglende inforamtion om redskabsskur.");
+                        response.sendRedirect("orders?action=update&id=" + parameters.getInt("id"));
+                        return;
+                    }
+                } else {
+                    if (!parameters.isInt("shed-id") ||
+                            !parameters.isInt("shed-depth") ||
+                            !parameters.isPresent("shed-flooring") ||
+                            !parameters.isInt("shed-cladding")) {
+                        notifications.error("The provided data is invalid.");
+                        response.sendRedirect("orders?action=update&id=" + parameters.getInt("id"));
+                        return;
+                    }
+                }
             }
 
             try {
@@ -151,6 +168,7 @@ public class AdministrationOrdersServlet extends AdministrationServlet
                         parameters.getInt("roofing"),
                         parameters.getInt("slope"),
                         parameters.getEnum("rafters", RafterChoice.class),
+                        parameters.getBoolean("active"),
                         createShed(parameters));
 
                 notifications.success("Ordren blev opdateret.");
@@ -165,15 +183,18 @@ public class AdministrationOrdersServlet extends AdministrationServlet
         }
     }
 
-    private ShedSpecification createShed(Parameters parameters)
+    private ShedUpdater createShed(Parameters parameters)
     {
         if (!parameters.isPresent("shed"))
             return null;
 
-        return new ShedSpecification(
+
+        return new ShedRecord(
+                "update".equals(parameters.value("shed-action")) ? parameters.getInt("shed-id") : -1,
                 parameters.getInt("shed-depth"),
                 parameters.getInt("shed-cladding"),
-                parameters.getInt("shed-flooring")
-        );
+                null,
+                parameters.getInt("shed-flooring"),
+                null);
     }
 }

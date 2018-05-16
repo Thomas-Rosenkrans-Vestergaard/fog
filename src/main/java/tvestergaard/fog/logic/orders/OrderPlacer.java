@@ -6,8 +6,8 @@ import tvestergaard.fog.data.customers.CustomerColumn;
 import tvestergaard.fog.data.customers.CustomerDAO;
 import tvestergaard.fog.data.customers.UnknownCustomerException;
 import tvestergaard.fog.data.orders.*;
-import tvestergaard.fog.logic.ApplicationException;
 import tvestergaard.fog.logic.customers.InactiveCustomerException;
+import tvestergaard.fog.logic.email.ApplicationMailer;
 
 import java.util.Set;
 
@@ -17,60 +17,106 @@ import static tvestergaard.fog.data.constraints.Constraint.where;
 public class OrderPlacer
 {
 
-    private final OrderDAO       orderDAO;
-    private final CustomerDAO    customerDAO;
+    /**
+     * The order dao used to persist new orders.
+     */
+    private final OrderDAO orderDAO;
+
+    /**
+     * The customer dao used to validate the customer placing new orders.
+     */
+    private final CustomerDAO customerDAO;
+
+    /**
+     * The object responsible for validating the information about the order.
+     */
     private final OrderValidator validator;
 
-    public OrderPlacer(OrderDAO orderDAO, CustomerDAO customerDAO, OrderValidator validator)
+    /**
+     * The object responsible for sending order confirmation emails to the customer.
+     */
+    private final ApplicationMailer mailer;
+
+    /**
+     * Creates a new {@link OrderPlacer}.
+     *
+     * @param orderDAO    The order dao used to persist new orders.
+     * @param customerDAO The customer dao used to validate the customer placing new orders.
+     * @param mailer      The object responsible for sending order confirmation emails to the customer.
+     */
+    public OrderPlacer(OrderDAO orderDAO, CustomerDAO customerDAO, ApplicationMailer mailer)
     {
         this.orderDAO = orderDAO;
         this.customerDAO = customerDAO;
-        this.validator = validator;
+        this.validator = new OrderValidator();
+        this.mailer = mailer;
     }
 
+    /**
+     * Places a new order using the provided information.
+     *
+     * @param customerId The id of the customer placing the order.
+     * @param width      The width of the order in centimeters.
+     * @param length     The length of the order in centimeters.
+     * @param height     The height of the order in centimeters.
+     * @param roofing    The roofing to be applied to the order.
+     * @param slope      The slope of the roofing.
+     * @param rafters    The choice of rafters.
+     * @param shed       The shed to include in the order.
+     * @return The object representing the newly created order.
+     * @throws OrderValidatorException      When the provided information is considered invalid.
+     * @throws UnknownCustomerException     When the customer placing the order is unknown to the application.
+     * @throws InactiveCustomerException    When the customer is inactive, and can therefor not place new orders.
+     * @throws UnconfirmedCustomerException When the customer has not confirmed their email address, and can therefor
+     *                                      not place new orders.
+     * @throws DataAccessException          When a data storage exception occurs while performing the operation.
+     */
     public Order place(
             int customerId,
-            int cladding,
             int width,
             int length,
             int height,
             int roofing,
             int slope,
             RafterChoice rafters,
-            ShedSpecification shed) throws OrderValidatorException, UnknownCustomerException, InactiveCustomerException, UnconfirmedCustomerException
+            ShedBlueprint shed) throws OrderValidatorException,
+                                       UnknownCustomerException,
+                                       InactiveCustomerException,
+                                       UnconfirmedCustomerException,
+                                       DataAccessException
     {
-        try {
+        Set<OrderError> reasons = validator.validate(customerId, width, length, height, roofing, slope, shed);
 
-            Set<OrderError> reasons = validator.validate(customerId, width, length, height, roofing, slope, shed);
+        if (!reasons.isEmpty())
+            throw new OrderValidatorException(reasons);
 
-            if (!reasons.isEmpty())
-                throw new OrderValidatorException(reasons);
+        if (!reasons.isEmpty())
+            throw new OrderValidatorException(reasons);
 
-            if (!reasons.isEmpty())
-                throw new OrderValidatorException(reasons);
+        Customer customer = customerDAO.first(where(eq(CustomerColumn.ID, customerId)));
 
-            Customer customer = customerDAO.first(where(eq(CustomerColumn.ID, customerId)));
+        if (customer == null)
+            throw new UnknownCustomerException();
 
-            if (customer == null)
-                throw new UnknownCustomerException();
+        if (!customer.isActive())
+            throw new InactiveCustomerException();
 
-            if (!customer.isActive())
-                throw new InactiveCustomerException();
+        if (!customer.isConfirmed())
+            throw new UnconfirmedCustomerException();
 
-            if (!customer.isConfirmed())
-                throw new UnconfirmedCustomerException();
+        Order order = orderDAO.create(OrderBlueprint.from(
+                customerId,
+                width,
+                length,
+                height,
+                roofing,
+                slope,
+                rafters,
+                true,
+                shed));
 
-            return orderDAO.create(OrderBlueprint.from(
-                    customerId,
-                    width,
-                    length,
-                    height,
-                    roofing,
-                    slope,
-                    rafters,
-                    ShedBlueprint.from(shed.getDepth(), shed.getCladdingId(), shed.getFlooringId())));
-        } catch (DataAccessException e) {
-            throw new ApplicationException(e);
-        }
+        OrderConfirmationEmail email = new OrderConfirmationEmail(order);
+        mailer.send(email);
+        return order;
     }
 }

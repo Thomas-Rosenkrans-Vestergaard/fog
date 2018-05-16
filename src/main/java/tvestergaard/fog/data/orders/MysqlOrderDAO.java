@@ -103,9 +103,9 @@ public class MysqlOrderDAO extends AbstractMysqlDAO implements OrderDAO
             try {
 
                 int           shedId        = -1;
-                ShedBlueprint shedBlueprint = blueprint.getShed();
+                ShedBlueprint shedBlueprint = blueprint.getShedBlueprint();
                 if (shedBlueprint != null) {
-                    ShedBlueprint shed = blueprint.getShed();
+                    ShedBlueprint shed = blueprint.getShedBlueprint();
                     if (shed != null) {
                         try (PreparedStatement shedStatement = con.prepareStatement(shedSQL, RETURN_GENERATED_KEYS)) {
                             shedStatement.setInt(1, shedBlueprint.getDepth());
@@ -164,10 +164,9 @@ public class MysqlOrderDAO extends AbstractMysqlDAO implements OrderDAO
         try {
             final String orderSQL = "UPDATE orders SET width = ?, `length` = ?, height = ?, " +
                     "roofing = ?, slope = ?, rafters = ?, active = ?, shed = ? WHERE id = ?";
-            final String shedSQL    = "UPDATE sheds SET `depth` = ?, `cladding` = ?, `flooring` = ? WHERE id = ?";
-            Connection   connection = getConnection();
+            Connection connection = getConnection();
 
-            ShedUpdater shed = updater.getShed();
+            ShedUpdater shed = updater.getShedUpdater();
 
             try {
                 try (PreparedStatement orderStatement = connection.prepareStatement(orderSQL)) {
@@ -178,21 +177,41 @@ public class MysqlOrderDAO extends AbstractMysqlDAO implements OrderDAO
                     orderStatement.setInt(5, updater.getSlope());
                     orderStatement.setInt(6, updater.getRafterChoice().getId());
                     orderStatement.setBoolean(7, updater.isActive());
-                    orderStatement.setInt(8, updater.getId());
-                    if (shed != null)
-                        orderStatement.setInt(9, shed.getId());
+                    if (shed != null && shed.getId() > 0)
+                        orderStatement.setInt(8, shed.getId());
                     else
-                        orderStatement.setNull(9, Types.INTEGER);
+                        orderStatement.setNull(8, Types.INTEGER);
+                    orderStatement.setInt(9, updater.getId());
                     orderStatement.executeUpdate();
                 }
 
                 if (shed != null) {
+                    final String shedSQL = "UPDATE sheds SET `depth` = ?, `cladding` = ?, `flooring` = ? WHERE id = (SELECT shed FROM orders WHERE orders.id = ?)";
                     try (PreparedStatement shedStatement = connection.prepareStatement(shedSQL)) {
                         shedStatement.setInt(1, shed.getDepth());
                         shedStatement.setInt(2, shed.getCladdingId());
                         shedStatement.setInt(3, shed.getFlooringId());
-                        shedStatement.setInt(4, shed.getId());
-                        shedStatement.executeUpdate();
+                        shedStatement.setInt(4, updater.getId());
+                        int updated = shedStatement.executeUpdate();
+
+                        if (updated == 0) {
+                            String createShedSQL = "INSERT INTO sheds (depth, cladding, flooring) VALUES (?,?,?)";
+                            try (PreparedStatement createShed = connection.prepareStatement(createShedSQL, RETURN_GENERATED_KEYS)) {
+                                createShed.setInt(1, shed.getDepth());
+                                createShed.setInt(2, shed.getCladdingId());
+                                createShed.setInt(3, shed.getFlooringId());
+                                createShed.executeUpdate();
+                                ResultSet newShed = createShed.getGeneratedKeys();
+                                newShed.first();
+
+                                String updateSQL = "UPDATE orders SET shed = ? WHERE id = ?";
+                                try (PreparedStatement updateStatement = connection.prepareStatement(updateSQL)) {
+                                    updateStatement.setInt(1, newShed.getInt(1));
+                                    updateStatement.setInt(2, updater.getId());
+                                    updateStatement.executeUpdate();
+                                }
+                            }
+                        }
                     }
                 }
 

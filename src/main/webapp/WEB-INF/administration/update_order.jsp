@@ -174,11 +174,24 @@
                 <h5>Redskabsskur</h5>
             </div>
         </div>
+        <c:set var="shed" value="${order.getShed()}"/>
+        <input name="shed-action" type="hidden" value="${shed == null ? 'create' : 'update'}">
+        <input name="shed-id" type="hidden" value="${shed.getId()}">
+        <div class="row">
+            <div class="col s12">
+                <div class="switch">
+                    <label>
+                        <input type="checkbox" name="shed" id="shed" value="true" ${shed != null ? 'checked' : ''}>
+                        <span class="lever"></span>
+                    </label>
+                </div>
+            </div>
+        </div>
         <div class="row shed-rows">
             <div class="input-field col s12">
                 <input name="shed-depth" id="shed-depth" type="number" step="1" min="0"
-                       value="${order.getShed().getDepth()}"
                        class="validate shed-input"
+                       value="${shed.getDepth()}"
                        required>
                 <label for="shed-depth">Dybde</label>
             </div>
@@ -187,7 +200,7 @@
             <div class="input-field col s12 m6">
                 <select name="shed-flooring" class="shed-input" required>
                     <c:forEach items="${floorings}" var="flooring">
-                        <option ${flooring.getId() == order.getShed().getFlooring().getId() ? 'selected' : ''}
+                        <option ${shed.getFlooring().getId() == flooring.getId() ? 'selected' : ''}
                                 value="${flooring.getId()}"><c:out value="${flooring.getName()}"/></option>
                     </c:forEach>
                 </select>
@@ -196,7 +209,7 @@
             <div class="input-field col s12 m6">
                 <select name="shed-cladding" class="shed-input" required>
                     <c:forEach items="${claddings}" var="cladding">
-                        <option ${cladding.getId() == order.getShed().getCladding().getId() ? 'selected' : ''}
+                        <option ${shed.getCladding().getId() == cladding.getId() ? 'selected' : ''}
                                 value="${cladding.getId()}"><c:out value="${cladding.getName()}"/></option>
                     </c:forEach>
                 </select>
@@ -214,6 +227,21 @@
             $(document).ready(function () {
                 $('input#name').characterCounter();
                 $('select').material_select();
+
+                function updateShedInputs() {
+                    if ($('input#shed').is(':checked')) {
+                        $('input#shed').attr('value', 'true');
+                        $('.shed-rows').show(500);
+                        $('.shed-input').attr('required', 'required');
+                    } else {
+                        $('ïnput#shed').attr('value', 'false');
+                        $('.shed-rows').hide(500);
+                        $('.shed-input').removeAttr('required');
+                    }
+                }
+
+                updateShedInputs();
+                $('input#shed').on('change', updateShedInputs);
             });
         </script>
     </form>

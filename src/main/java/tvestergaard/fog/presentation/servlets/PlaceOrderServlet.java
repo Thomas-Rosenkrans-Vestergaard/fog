@@ -2,14 +2,21 @@ package tvestergaard.fog.presentation.servlets;
 
 import tvestergaard.fog.data.cladding.CladdingColumn;
 import tvestergaard.fog.data.customers.Customer;
+import tvestergaard.fog.data.customers.UnknownCustomerException;
 import tvestergaard.fog.data.flooring.FlooringColumn;
+import tvestergaard.fog.data.orders.Order;
 import tvestergaard.fog.data.orders.RafterChoice;
+import tvestergaard.fog.data.orders.ShedBlueprint;
+import tvestergaard.fog.data.orders.ShedRecord;
 import tvestergaard.fog.data.roofing.RoofingColumn;
 import tvestergaard.fog.logic.claddings.CladdingFacade;
 import tvestergaard.fog.logic.customers.CustomerFacade;
 import tvestergaard.fog.logic.customers.InactiveCustomerException;
 import tvestergaard.fog.logic.floorings.FlooringFacade;
-import tvestergaard.fog.logic.orders.*;
+import tvestergaard.fog.logic.orders.OrderError;
+import tvestergaard.fog.logic.orders.OrderFacade;
+import tvestergaard.fog.logic.orders.OrderValidatorException;
+import tvestergaard.fog.logic.orders.UnconfirmedCustomerException;
 import tvestergaard.fog.logic.roofings.RoofingFacade;
 import tvestergaard.fog.presentation.Authentication;
 import tvestergaard.fog.presentation.Notifications;
@@ -126,7 +133,7 @@ public class PlaceOrderServlet extends HttpServlet
             HttpSession session = req.getSession();
             session.setAttribute("customer", customer);
 
-            orderFacade.create(
+            Order order = orderFacade.create(
                     customer.getId(),
                     parameters.getInt("width"),
                     parameters.getInt("length"),
@@ -137,7 +144,7 @@ public class PlaceOrderServlet extends HttpServlet
                     createShed(parameters));
 
             notifications.success("Din ordre blev registreret.");
-            resp.sendRedirect("orders");
+            resp.sendRedirect("order?id=" + order.getId());
             return;
 
         } catch (OrderValidatorException e) {
@@ -147,20 +154,25 @@ public class PlaceOrderServlet extends HttpServlet
             notifications.error("Du har endnu ikke bekræftet din mailaddresse.");
         } catch (InactiveCustomerException e) {
             notifications.error("Du kan ikke placére en ordre, sides du er makeret inaktiv.");
+        } catch (UnknownCustomerException e) {
+            notifications.error("Ukendt kunde.");
         }
 
         resp.sendRedirect("place-order");
     }
 
-    private ShedSpecification createShed(Parameters parameters)
+    private ShedBlueprint createShed(Parameters parameters)
     {
         if (!parameters.isPresent("shed"))
             return null;
 
-        return new ShedSpecification(
+        return new ShedRecord(
+                -1,
                 parameters.getInt("shed-depth"),
                 parameters.getInt("shed-cladding"),
-                parameters.getInt("shed-flooring")
+                null,
+                parameters.getInt("shed-flooring"),
+                null
         );
     }
 }

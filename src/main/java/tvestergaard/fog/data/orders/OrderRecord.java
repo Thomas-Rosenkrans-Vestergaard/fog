@@ -56,7 +56,9 @@ public class OrderRecord implements Order
     /**
      * The shed included with the order.
      */
-    private Shed shed;
+    private ShedBlueprint shedBlueprint;
+    private ShedUpdater   shedUpdater;
+    private Shed          shed;
 
     /**
      * Whether or not the order is considered active.
@@ -86,7 +88,7 @@ public class OrderRecord implements Order
      * @param roofing        The roofing used on the order.
      * @param slope          The slope of the roofing.
      * @param rafters        The type of rafters chosen by the customer who placed the order.
-     * @param shed           The shed included with the order.
+     * @param shedBlueprint  The shed included with the order.
      * @param active         Whether or not the order is considered active.
      * @param numberOfOffers The number of offers that have been made regarding this order.
      * @param createdAt      The time when the order was placed.
@@ -101,6 +103,8 @@ public class OrderRecord implements Order
                        Roofing roofing,
                        int slope,
                        RafterChoice rafters,
+                       ShedBlueprint shedBlueprint,
+                       ShedUpdater shedUpdater,
                        Shed shed,
                        boolean active,
                        int numberOfOffers,
@@ -116,6 +120,8 @@ public class OrderRecord implements Order
         this.roofing = roofing;
         this.slope = slope;
         this.rafters = rafters;
+        this.shedBlueprint = shedBlueprint;
+        this.shedUpdater = shedUpdater;
         this.shed = shed;
         this.numberOfOffers = numberOfOffers;
         this.active = active;
@@ -292,9 +298,9 @@ public class OrderRecord implements Order
      * @return The shed included in the order.
      */
     @Override
-    public Shed getShed()
+    public ShedBlueprint getShedBlueprint()
     {
-        return this.shed;
+        return this.shedBlueprint;
     }
 
     /**
@@ -303,9 +309,29 @@ public class OrderRecord implements Order
      * @param shed The new shed.
      */
     @Override
-    public void setShed(Shed shed)
+    public void setShedBlueprint(ShedBlueprint shed)
     {
-        this.shed = shed;
+        this.shedBlueprint = shed;
+    }
+
+    /**
+     * Returns the shed updater.
+     *
+     * @return The shed updater.
+     */
+    @Override public ShedUpdater getShedUpdater()
+    {
+        return shedUpdater;
+    }
+
+    /**
+     * Returns the shed included with the order.
+     *
+     * @return The shed instance.
+     */
+    @Override public Shed getShed()
+    {
+        return shed;
     }
 
     /**
@@ -353,7 +379,7 @@ public class OrderRecord implements Order
                 Objects.equals(getCustomer(), that.getCustomer()) &&
                 Objects.equals(getRoofing(), that.getRoofing()) &&
                 getRafterChoice() == that.getRafterChoice() &&
-                Objects.equals(getShed(), that.getShed()) &&
+                Objects.equals(getShedBlueprint(), that.getShedBlueprint()) &&
                 Objects.equals(getCreatedAt(), that.getCreatedAt());
     }
 
