@@ -4,10 +4,8 @@ import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
 import com.mysql.cj.jdbc.MysqlDataSource;
 import tvestergaard.fog.data.AbstractMysqlDAO;
+import tvestergaard.fog.data.DataAccessException;
 import tvestergaard.fog.data.MysqlDataAccessException;
-import tvestergaard.fog.data.constraints.Constraint;
-import tvestergaard.fog.data.constraints.StatementBinder;
-import tvestergaard.fog.data.constraints.StatementGenerator;
 import tvestergaard.fog.data.materials.attributes.AttributeDefinition;
 import tvestergaard.fog.data.materials.attributes.AttributeValue;
 
@@ -17,21 +15,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import static tvestergaard.fog.data.constraints.Constraint.*;
-import static tvestergaard.fog.data.materials.MaterialColumn.ID;
-
 public class MysqlMaterialDAO extends AbstractMysqlDAO implements MaterialDAO
 {
-
-    /**
-     * The generator used to create SQL for the constraints provided to this DAO.
-     */
-    private final StatementGenerator generator = new StatementGenerator();
-
-    /**
-     * The binder used to bind prepared variables for the constraints provided to this DAO.
-     */
-    private final StatementBinder binder = new StatementBinder();
 
     /**
      * Creates a new {@link MysqlMaterialDAO}.
@@ -46,18 +31,17 @@ public class MysqlMaterialDAO extends AbstractMysqlDAO implements MaterialDAO
     /**
      * Returns the materials in the data storage. The results can be constrained using the provided constraints.
      *
-     * @param constraints The constraints that modify the resulting list.
-     * @return The resulting materials.
-     * @throws MysqlDataAccessException When a data storage exception occurs while performing the operation.
+     * @return The complete list of the materials in the data storage.
+     * @throws DataAccessException When a data storage exception occurs while performing the operation.
      */
-    @Override
-    public List<Material> get(Constraint<MaterialColumn>... constraints) throws MysqlDataAccessException
+    @Override public List<Material> get() throws DataAccessException
     {
         final List<Material> materials = new ArrayList<>();
-        final String SQL = generator.generate("SELECT * FROM materials " +
-                "INNER JOIN categories ON materials.category = categories.id", constraints);
+        final String SQL = "SELECT * FROM materials " +
+                "INNER JOIN categories ON materials.category = categories.id " +
+                "GROUP BY materials.number " +
+                "ORDER BY max(materials.id) DESC";
         try (PreparedStatement statement = getConnection().prepareStatement(SQL)) {
-            binder.bind(statement, constraints);
             ResultSet resultSet = statement.executeQuery();
             String attributeSQL = "SELECT * FROM attribute_definitions ad " +
                     "INNER JOIN attribute_values av ON ad.id = av.attribute " +
@@ -77,19 +61,38 @@ public class MysqlMaterialDAO extends AbstractMysqlDAO implements MaterialDAO
     }
 
     /**
-     * Returns the first material matching the provided constraints.
+     * Returns the material with the provided id.
      *
-     * @param constraints The constraints that modify the resulting list.
-     * @return The first material matching the provided constraints. Returns {@code null} when no constraints matches
-     * the provided constraints.
+     * @param id The id of the material to return.
+     * @return The material with the provided id. {@code null} in case a material with the provided id does not exist.
      * @throws MysqlDataAccessException When a data storage exception occurs while performing the operation.
      */
-    @Override
-    public Material first(Constraint<MaterialColumn>... constraints) throws MysqlDataAccessException
+    @Override public Material get(int id) throws MysqlDataAccessException
     {
-        List<Material> materials = get(append(constraints, limit(1)));
+        final String SQL = "SELECT * FROM materials " +
+                "INNER JOIN categories ON materials.category = categories.id " +
+                "WHERE materials.id = ? " +
+                "GROUP BY materials.number " +
+                "ORDER BY max(materials.id) DESC ";
+        try (PreparedStatement statement = getConnection().prepareStatement(SQL)) {
+            statement.setInt(1, id);
+            ResultSet resultSet = statement.executeQuery();
+            String attributeSQL = "SELECT * FROM attribute_definitions ad " +
+                    "INNER JOIN attribute_values av ON ad.id = av.attribute " +
+                    "WHERE av.material = ?";
 
-        return materials.isEmpty() ? null : materials.get(0);
+            if (!resultSet.first())
+                return null;
+
+            try (PreparedStatement attributeStatement = getConnection().prepareStatement(attributeSQL)) {
+                attributeStatement.setInt(1, resultSet.getInt("materials.id"));
+                ResultSet attributes = attributeStatement.executeQuery();
+                return createMaterial("materials", "categories", resultSet, "ad", "av", attributes);
+            }
+
+        } catch (SQLException e) {
+            throw new MysqlDataAccessException(e);
+        }
     }
 
     /**
@@ -129,7 +132,7 @@ public class MysqlMaterialDAO extends AbstractMysqlDAO implements MaterialDAO
 
                 connection.commit();
 
-                return first(where(eq(ID, generated.getInt(1))));
+                return get(generated.getInt(1));
             } catch (SQLException e) {
                 connection.rollback();
                 throw e;
@@ -140,36 +143,50 @@ public class MysqlMaterialDAO extends AbstractMysqlDAO implements MaterialDAO
     }
 
     /**
-     * Updates the entity in the data storage to match the provided {@code material}.
+     * Inserts a new material into the data storage, replacing the provided previous material.
      *
-     * @param updater The material updater that contains the information necessary to create the material.
-     * @return {@code true} if the record was updated.
-     * @throws MysqlDataAccessException When an exception occurs while performing the operation.
+     * @param updater The blueprint containing information about the material to update.
+     * @return The material instance representing the newly created material.
+     * @throws DataAccessException When a data storage exception occurs while performing the operation.
      */
-    @Override public boolean update(MaterialUpdater updater) throws MysqlDataAccessException
+    @Override public Material update(MaterialUpdater updater) throws DataAccessException
     {
         try {
-            final String SQL        = "UPDATE materials SET description = ?, price = ?, unit = ? WHERE id = ?";
-            Connection   connection = getConnection();
-            try (PreparedStatement statement = connection.prepareStatement(SQL)) {
-                statement.setString(1, updater.getDescription());
-                statement.setInt(2, updater.getPrice());
-                statement.setInt(3, updater.getUnit());
-                statement.setInt(4, updater.getId());
-                statement.executeUpdate();
-
-                String attributeSQL = "UPDATE attribute_values av SET av.`value` = ? WHERE av.attribute = ? AND av.material = ?";
+            final String SQL = "INSERT INTO materials (`number`, description, price, unit, category) " +
+                    "VALUES (?, ?, ?, ?, ?)";
+            Connection connection = getConnection();
+            try (PreparedStatement statement = connection.prepareStatement(SQL, Statement.RETURN_GENERATED_KEYS)) {
+                statement.setString(1, updater.getNumber());
+                statement.setString(2, updater.getDescription());
+                statement.setInt(3, updater.getPrice());
+                statement.setInt(4, updater.getUnit());
+                statement.setInt(5, updater.getCategoryId());
+                int updated = statement.executeUpdate();
+                if (updated == 0)
+                    return null;
+                ResultSet generated = statement.getGeneratedKeys();
+                generated.first();
+                int    materialId   = generated.getInt(1);
+                String attributeSQL = "INSERT INTO attribute_values (attribute, material, `value`) VALUES (?, ?, ?)";
                 try (PreparedStatement attributeStatement = connection.prepareStatement(attributeSQL)) {
-                    attributeStatement.setInt(3, updater.getId());
-                    for (AttributeValue attributeValue : updater.getAttributes()) {
-                        setAttributeValue(attributeStatement, 1, attributeValue);
-                        attributeStatement.setInt(2, attributeValue.getDefinition().getId());
+                    attributeStatement.setInt(2, materialId);
+                    for (AttributeValue attribute : updater.getAttributes()) {
+                        attributeStatement.setInt(1, attribute.getDefinition().getId());
+                        setAttributeValue(attributeStatement, 3, attribute);
                         attributeStatement.executeUpdate();
+                    }
+
+                    String componentUpdateSQL = "UPDATE component_values cv SET cv.material = ? WHERE cv.material = ?";
+                    try (PreparedStatement componentUpdateStatement = connection.prepareStatement(componentUpdateSQL)) {
+                        componentUpdateStatement.setInt(1, materialId);
+                        componentUpdateStatement.setInt(2, updater.getId());
+                        componentUpdateStatement.executeUpdate();
                     }
                 }
 
                 connection.commit();
-                return true;
+
+                return get(generated.getInt(1));
             } catch (SQLException e) {
                 connection.rollback();
                 throw e;

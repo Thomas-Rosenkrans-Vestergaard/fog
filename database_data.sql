@@ -64,17 +64,6 @@ LOCK TABLES `bom` WRITE;
 UNLOCK TABLES;
 
 --
--- Dumping data for table `bom_materials`
---
-
-LOCK TABLES `bom_materials` WRITE;
-/*!40000 ALTER TABLE `bom_materials`
-  DISABLE KEYS */;
-/*!40000 ALTER TABLE `bom_materials`
-  ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Dumping data for table `categories`
 --
 

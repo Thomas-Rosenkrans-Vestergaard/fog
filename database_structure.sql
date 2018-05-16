@@ -70,24 +70,22 @@ CREATE TABLE `bom` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Table structure for table `bom_materials`
+-- Table structure for table `bom_lines`
 --
 
-DROP TABLE IF EXISTS `bom_materials`;
+DROP TABLE IF EXISTS `bom_lines`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `bom_materials` (
+CREATE TABLE `bom_lines` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `bom` int(11) unsigned NOT NULL,
-  `material` int(11) unsigned NOT NULL,
-  `amount` int(11) NOT NULL,
-  `notes` varchar(255) CHARACTER SET utf8 DEFAULT NULL,
+  `description` varchar(255) COLLATE utf8_bin NOT NULL,
+  `amount` int(11) unsigned NOT NULL,
+  `notes` varchar(255) CHARACTER SET utf8 NOT NULL,
+  `price` int(11) unsigned NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`),
-  KEY `bom` (`bom`),
-  KEY `material` (`material`),
-  CONSTRAINT `bom_materials_ibfk_1` FOREIGN KEY (`bom`) REFERENCES `bom` (`id`),
-  CONSTRAINT `bom_materials_ibfk_2` FOREIGN KEY (`material`) REFERENCES `materials` (`id`)
+  KEY `bom` (`bom`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -289,7 +287,6 @@ CREATE TABLE `materials` (
   `category` int(11) unsigned NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`),
-  UNIQUE KEY `number_UNIQUE` (`number`),
   KEY `fk_category_idx` (`category`)
 ) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -489,4 +486,4 @@ CREATE TABLE `tokens` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-05-15 16:41:26
+-- Dump completed on 2018-05-16 22:58:54

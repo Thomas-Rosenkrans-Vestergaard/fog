@@ -2,7 +2,6 @@ package tvestergaard.fog.data.materials;
 
 import com.google.common.collect.Multimap;
 import tvestergaard.fog.data.DataAccessException;
-import tvestergaard.fog.data.constraints.Constraint;
 import tvestergaard.fog.data.materials.attributes.AttributeDefinition;
 
 import java.util.List;
@@ -14,21 +13,19 @@ public interface MaterialDAO
     /**
      * Returns the materials in the data storage. The results can be constrained using the provided constraints.
      *
-     * @param constraints The constraints that modify the resulting list.
      * @return The complete list of the materials in the data storage.
      * @throws DataAccessException When a data storage exception occurs while performing the operation.
      */
-    List<Material> get(Constraint<MaterialColumn>... constraints) throws DataAccessException;
+    List<Material> get() throws DataAccessException;
 
     /**
-     * Returns the first material matching the provided constraints.
+     * Returns the material with the provided id.
      *
-     * @param constraints The constraints that modify the resulting list.
-     * @return The first material matching the provided constraints. Returns {@code null} when no constraints matches
-     * the provided constraints.
+     * @param id The id of the material to return.
+     * @return The material with the provided id. {@code null} in case a material with the provided id does not exist.
      * @throws DataAccessException When a data storage exception occurs while performing the operation.
      */
-    Material first(Constraint<MaterialColumn>... constraints) throws DataAccessException;
+    Material get(int id) throws DataAccessException;
 
     /**
      * Inserts a new material into the data storage.
@@ -40,13 +37,13 @@ public interface MaterialDAO
     Material create(MaterialBlueprint blueprint) throws DataAccessException;
 
     /**
-     * Updates the entity in the data storage to match the provided {@code material}.
+     * Inserts a new material into the data storage, replacing the provided previous material.
      *
-     * @param updater The material updater that contains the information necessary to create the material.
-     * @return {@code true} if the record was updated.
+     * @param updater The blueprint containing information about the material to update.
+     * @return The material instance representing the newly created material.
      * @throws DataAccessException When a data storage exception occurs while performing the operation.
      */
-    boolean update(MaterialUpdater updater) throws DataAccessException;
+    Material update(MaterialUpdater updater) throws DataAccessException;
 
     /**
      * Returns a list of the attributes required for the provided category id.

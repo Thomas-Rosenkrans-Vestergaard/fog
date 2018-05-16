@@ -52,7 +52,7 @@
                 <tr onclick="location.href = '?action=update&id=${material.getId()}'">
                     <td><c:out value="${material.getNumber()}"/></td>
                     <td><c:out value="${material.getDescription()}"/></td>
-                    <td><c:out value="${material.getPrice()}"/></td>
+                    <td><c:out value="${f:formatPrice(material.getPrice())}"/></td>
                     <td><c:out value="${material.getUnit()}"/></td>
                     <td><c:out value="${material.getCategory().getName()}"/></td>
                 </tr>

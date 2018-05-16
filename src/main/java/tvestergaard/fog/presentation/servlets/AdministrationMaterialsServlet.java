@@ -2,7 +2,7 @@ package tvestergaard.fog.presentation.servlets;
 
 import tvestergaard.fog.data.employees.Employee;
 import tvestergaard.fog.data.employees.Role;
-import tvestergaard.fog.data.materials.*;
+import tvestergaard.fog.data.materials.Material;
 import tvestergaard.fog.data.materials.attributes.AttributeDefinition;
 import tvestergaard.fog.data.materials.attributes.AttributeValue;
 import tvestergaard.fog.data.materials.attributes.DataType;
@@ -24,9 +24,6 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import static tvestergaard.fog.data.constraints.Constraint.eq;
-import static tvestergaard.fog.data.constraints.Constraint.where;
-import static tvestergaard.fog.data.materials.MaterialColumn.ID;
 import static tvestergaard.fog.logic.materials.MaterialError.*;
 import static tvestergaard.fog.presentation.PresentationFunctions.notifications;
 
@@ -69,10 +66,9 @@ public class AdministrationMaterialsServlet extends AdministrationServlet
     {
         @Override public void dispatch(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
         {
-            TableControls<MaterialColumn> controls = new TableControls<>(request, MaterialColumn.class, facade.size());
             notifications(request);
             request.setAttribute("title", "Materialee");
-            request.setAttribute("materials", facade.get(controls.constraints()));
+            request.setAttribute("materials", facade.get());
             request.setAttribute("categories", facade.getCategories());
             request.getRequestDispatcher("/WEB-INF/administration/show_materials.jsp").forward(request, response);
         }
@@ -166,7 +162,7 @@ public class AdministrationMaterialsServlet extends AdministrationServlet
                 return;
             }
 
-            Material material = facade.first(where(eq(ID, parameters.getInt("id"))));
+            Material material = facade.get(parameters.getInt("id"));
             if (material == null) {
                 notifications.error("Unknown material.");
                 response.sendRedirect("materials");
@@ -213,7 +209,7 @@ public class AdministrationMaterialsServlet extends AdministrationServlet
             }
 
             try {
-                facade.update(
+                Material material = facade.update(
                         parameters.getInt("id"),
                         parameters.value("number"),
                         parameters.value("description"),
@@ -223,7 +219,7 @@ public class AdministrationMaterialsServlet extends AdministrationServlet
                         attributes);
 
                 notifications.success("Materialeet blev opdateret.");
-                response.sendRedirect("?action=update&id=" + parameters.getInt("id"));
+                response.sendRedirect("?action=update&id=" + material.getId());
 
             } catch (MaterialValidatorException e) {
                 for (MaterialError error : e.getErrors())

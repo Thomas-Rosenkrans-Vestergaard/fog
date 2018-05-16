@@ -2,7 +2,6 @@ package tvestergaard.fog.logic.materials;
 
 import com.google.common.collect.Multimap;
 import tvestergaard.fog.data.DataAccessException;
-import tvestergaard.fog.data.constraints.Constraint;
 import tvestergaard.fog.data.materials.*;
 import tvestergaard.fog.data.materials.attributes.AttributeDefinition;
 import tvestergaard.fog.data.materials.attributes.AttributeValue;
@@ -37,31 +36,29 @@ public class MaterialFacade
     /**
      * Returns the materials in the data storage. The results can be constrained using the provided constraints.
      *
-     * @param constraints The constraints that modify the resulting list.
      * @return The complete list of the materials in the data storage.
-     * @throws ApplicationException When an exception occurs while performing the operation.
+     * @throws ApplicationException When a data storage exception occurs while performing the operation.
      */
-    public List<Material> get(Constraint<MaterialColumn>... constraints)
+    public List<Material> get()
     {
         try {
-            return dao.get(constraints);
+            return dao.get();
         } catch (DataAccessException e) {
             throw new ApplicationException(e);
         }
     }
 
     /**
-     * Returns the first material matching the provided constraints.
+     * Returns the material with the provided id.
      *
-     * @param constraints The constraints that modify the resulting list.
-     * @return The first material matching the provided constraints. Returns {@code null} when no constraints matches
-     * the provided constraints.
-     * @throws ApplicationException When an exception occurs while performing the operation.
+     * @param id The id of the material to return.
+     * @return The ApplicationException with the provided id. {@code null} in case a material with the provided id does not exist.
+     * @throws DataAccessException When a data storage exception occurs while performing the operation.
      */
-    public Material first(Constraint<MaterialColumn>... constraints)
+    public Material get(int id)
     {
         try {
-            return dao.first(constraints);
+            return dao.get(id);
         } catch (DataAccessException e) {
             throw new ApplicationException(e);
         }
@@ -93,22 +90,8 @@ public class MaterialFacade
         }
     }
 
-    /**
-     * Updates the entity in the data storage to match the provided material.
-     *
-     * @param id          The id of the material to update.
-     * @param number      The material number to update to.
-     * @param description The material description to update to.
-     * @param price       The price of the material to update to.
-     * @param unit        The unit size of the material to update to.
-     * @param category    The category of the material to update to.
-     * @param attributes  The attributes of the material to update to.
-     * @return {@code true} if the record was updated.
-     * @throws ApplicationException       When an exception occurs while performing the operation.
-     * @throws MaterialValidatorException When the provided information is considered invalid.
-     */
-    public boolean update(int id, String number, String description, int price, int unit, int category, Set<AttributeValue> attributes)
-            throws MaterialValidatorException
+    public Material update(int id, String number, String description, int price, int unit, int category,
+                           Set<AttributeValue> attributes) throws MaterialValidatorException
     {
         try {
             Set<MaterialError> reasons = validator.validate(number, description, price, unit);
