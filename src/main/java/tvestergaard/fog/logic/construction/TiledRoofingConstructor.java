@@ -53,7 +53,7 @@ public class TiledRoofingConstructor extends DrawingUtilities implements Roofing
         copy(skeletonConstructionSummary.getAerialView().getDocument(), skeletonView);
 
         rafters(specification);
-        laths(specification);
+        laths();
         sides(specification);
 
         copy(skeletonView, tiledView);
@@ -63,11 +63,6 @@ public class TiledRoofingConstructor extends DrawingUtilities implements Roofing
         return new DefaultRoofingConstructionSummary(materials,
                 new DocumentConstructionDrawing(skeletonView),
                 new DocumentConstructionDrawing(tiledView));
-    }
-
-    private int calculateRoofHeight(ConstructionSpecification specification)
-    {
-        return up(Math.tan(Math.toRadians(specification.getRoofingSlope())) * width);
     }
 
     private void tiles(ConstructionSpecification specification, ComponentMap components)
@@ -138,7 +133,10 @@ public class TiledRoofingConstructor extends DrawingUtilities implements Roofing
         return materials;
     }
 
-    private void laths(ConstructionSpecification specification)
+    /**
+     * Draws the laths, and adds the materials needed to construct the laths to the material list.
+     */
+    private void laths()
     {
         int thickness     = 73;
         int lathDistance  = 320;

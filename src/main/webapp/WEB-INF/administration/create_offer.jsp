@@ -106,23 +106,78 @@
 </div>
 <div class="row">
     <div class="col s12">
-        ${summary.getSkeletonConstructionSummary().getAerialView().getXML()}
+        <h3>TEGNINGER</h3>
     </div>
 </div>
 <div class="row">
-    <div class="col s12">
+    <div class="col s12 l6">
+        ${summary.getSkeletonConstructionSummary().getAerialView().getXML()}
+    </div>
+    <div class="col s12 l6">
         ${summary.getSkeletonConstructionSummary().getSideView().getXML()}
     </div>
 </div>
 <div class="row">
-    <div class="col s12">
+    <div class="col s12 l6">
         ${summary.getRoofingConstructionSummary().getAerialSkeletonView().getXML()}
+    </div>
+    <div class="col s12 l6">
+        ${summary.getRoofingConstructionSummary().getAerialTiledView().getXML()}
     </div>
 </div>
 <div class="row">
     <div class="col s12">
-        ${summary.getRoofingConstructionSummary().getAerialTiledView().getXML()}
+        <h3>MATERIALER</h3>
     </div>
 </div>
+<div class="row">
+    <div class="col s12">
+        <table>
+            <table class="highlight">
+                <thead>
+                <th>Materiale</th>
+                <th>Mængde</th>
+                <th>Noter</th>
+                <th>Pris</th>
+                </thead>
+                <tbody>
+                <c:forEach items="${summary.getSkeletonConstructionSummary().getMaterials().getLines()}"
+                           var="line">
+                    <tr>
+                        <td>
+                            <c:out value="${line.getMaterial().getDescription()}"/>
+                        </td>
+                        <td>
+                            <c:out value="${line.getAmount()}"/>
+                        </td>
+                        <td>
+                            <c:out value="${line.getNotes()}"/>
+                        </td>
+                        <td>
+                            <c:out value="${f:formatPrice(line.getTotal())}"/>
+                        </td>
+                    </tr>
+                </c:forEach>
 
+                <c:forEach items="${summary.getRoofingConstructionSummary().getMaterials().getLines()}" var="line">
+                    <tr>
+                        <td>
+                            <c:out value="${line.getMaterial().getDescription()}"/>
+                        </td>
+                        <td>
+                            <c:out value="${line.getAmount()}"/>
+                        </td>
+                        <td>
+                            <c:out value="${line.getNotes()}"/>
+                        </td>
+                        <td>
+                            <c:out value="${f:formatPrice(line.getTotal())}"/>
+                        </td>
+                    </tr>
+                </c:forEach>
+                </tbody>
+            </table>
+        </table>
+    </div>
+</div>
 <%@ include file="../includes/bottom.jspf" %>

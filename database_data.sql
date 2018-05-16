@@ -44,7 +44,8 @@ INSERT INTO `categories` VALUES
   (8, 'Rygningsstensbeslag'),
   (9, 'Tagstens bindere & nakkekroge'),
   (10, 'Andre'),
-  (11, 'Skrue');
+  (11, 'Skrue'),
+  (12, 'Reglar');
 
 INSERT INTO attribute_definitions (id, category, data_type, `name`) VALUES
   (1, 5, 'INT', 'HEIGHT_MM'),
@@ -58,7 +59,9 @@ INSERT INTO attribute_definitions (id, category, data_type, `name`) VALUES
   (9, 2, 'INT', 'THICKNESS_MM'),
   (10, 3, 'INT', 'WIDTH_MM'),
   (11, 3, 'INT', 'THICKNESS_MM'),
-  (12, 4, 'INT', 'THICKNESS_MM');
+  (12, 4, 'INT', 'THICKNESS_MM'),
+  (14, 12, 'INT', 'WIDTH_MM'),
+  (15, 12, 'INT', 'THICKNESS_MM');
 
 INSERT INTO materials (id, `number`, `description`, `price`, `unit`, `category`) VALUES
   (1, '960919471840', 'B&C Dobbelt sort', 1000, 1, 5),
@@ -72,7 +75,7 @@ INSERT INTO materials (id, `number`, `description`, `price`, `unit`, `category`)
   (9, '788947415996', 'Fædigskåret (byg-selv spær)', 100000, 1, 2),
   (10, '448582215123', '97x97 mm. Trykimprægneret stolpe', 4000, 1, 4),
   (11, '851468122894', '45x195 spærtræ ubh.', 40000, 1, 2),
-  (12, '234368028753', '45x95 Reglar ubh.', 40000, 1, 2),
+  (12, '234368028753', '45x95 Reglar ubh.', 40000, 1, 12),
   (13, '514432595305', 'Universal 190 mm højre', 4500, 1, 10),
   (14, '231983532544', 'Universal 190 mm venstre', 4500, 1, 10),
   (15, '448646179776', 'Stalddørsgreb 50x75', 8000, 1, 10),
@@ -103,7 +106,9 @@ INSERT INTO attribute_values (attribute, material, `value`) VALUES
   (8, 11, '195'),
   (9, 11, '45'),
   (13, 6, '100'),
-  (13, 7, '50');
+  (13, 7, '50'),
+  (14, 12, '95'),
+  (15, 12, '45');
 
 INSERT INTO roofings (id, name, description, active, type)
 VALUES (1, 'Sorte teglsten',
@@ -111,7 +116,7 @@ VALUES (1, 'Sorte teglsten',
         b'1', 'TILED');
 
 INSERT INTO component_definitions (id, identifier, category, notes) VALUES
-  (1, 'ROOF_TILE', 5, 'Monteres på taglægter 6 rækker af 24 sten på hver side af taget'),
+  (1, 'ROOF_TILE', 5, 'Monteres på taglægter'),
   (2, 'ROOF_RIDGE_TILE', 6, 'Monteres på toplægte med medfølgende beslag se tagstens vejledning'),
   (3, 'ROOF_RIDGE_LATH_HOLDER', 7, 'Monteres på toppen af spæret (til toplægte)'),
   (4, 'ROOF_RIDGE_TILE_BRACKET', 8, 'Til	montering af rygsten'),
@@ -120,9 +125,9 @@ INSERT INTO component_definitions (id, identifier, category, notes) VALUES
   (7, 'POST', 4, 'Stolper nedgraves 90 cm. i jord + skråstiver'),
   (8, 'STRAPS_GARAGE', 2, 'Remme i sider, sadles ned i stolper Carport del'),
   (9, 'STRAPS_SHED', 2, 'Remme i sider, sadles ned i stolper Skur del'),
-  (10, 'SHED_SIDE_NOGGING', 2, 'Løsholter i siderne af skur'),
-  (11, 'SHED_CLADDING_NOGGING', 2, 'Løsholter i gavle af skur'),
-  (12, 'WATER_BOARD', 1, 'Vand bræt på vindskeder'),
+  (10, 'SHED_SIDE_CLADDING_NOGGING', 2, 'Løsholter i siderne af skur'),
+  (11, 'SHED_GABLE_CLADDING_NOGGING', 2, 'Løsholter i gavle af skur'),
+  (12, 'WATER_BOARD', 1, 'Vandbræt på vindskeder'),
   (13, 'GABLE_CLADDING', 1, 'Beklædning af gavle 1 på 2'),
   (14, 'SHED_CLADDING', 1, 'Beklædning af skur 1 på 2'),
   (15, 'SHED_DOOR_NOGGING', 3, 'Til z på bagside af dør'),
@@ -205,5 +210,9 @@ INSERT INTO roles (employee, role) VALUES
   (1, 'HEAD_OF_CENTER'),
   (1, 'HEAD_OF_MATERIALS'),
   (1, 'SALESMAN');
+
+INSERT INTO sheds (id, depth, cladding, flooring) VALUES (1, 200, 1, 1);
+INSERT INTO `fog`.`orders` (`customer`, `width`, `length`, `height`, `roofing`, `slope`, `rafters`, `active`, `shed`)
+VALUES ('1', '420', '780', '300', '1', '25', '1', b'1', '1');
 
 SET SQL_SAFE_UPDATES = 1;

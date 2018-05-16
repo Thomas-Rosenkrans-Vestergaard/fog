@@ -42,9 +42,14 @@ public class CarportSkeletonConstructor extends DrawingUtilities implements Skel
     private Component shedCladding;
 
     /**
-     * The wood used to support the cladding used on the shed.
+     * The wood used to support the cladding used on the shed sides.
      */
-    private Component shedCladdingNogging;
+    private Component shedSideCladdingNogging;
+
+    /**
+     * The wood used to support the cladding used on the shed gable.
+     */
+    private Component shedGableCladdingNogging;
 
     /**
      * The wood used to support the cladding used to construct the door to the shed.
@@ -75,7 +80,8 @@ public class CarportSkeletonConstructor extends DrawingUtilities implements Skel
 
         this.post = components.from("POST");
         this.strap = components.from("STRAPS_GARAGE");
-        this.shedCladdingNogging = components.from("SHED_CLADDING_NOGGING");
+        this.shedSideCladdingNogging = components.from("SHED_SIDE_CLADDING_NOGGING");
+        this.shedGableCladdingNogging = components.from("SHED_GABLE_CLADDING_NOGGING");
         this.shedCladding = components.from("SHED_CLADDING");
         this.shedDoorNogging = components.from("SHED_DOOR_NOGGING");
 
@@ -85,7 +91,6 @@ public class CarportSkeletonConstructor extends DrawingUtilities implements Skel
 
         straps(specification);
         posts(specification);
-        calculateMaterials(specification);
 
         return new DefaultSkeletonConstructionSummary(
                 materials,
@@ -132,14 +137,14 @@ public class CarportSkeletonConstructor extends DrawingUtilities implements Skel
         int  bottomRow       = topRow + this.width - thickness;
         int  height          = mm(specification.getHeight());
         int  numberOfColumns = Math.max(2, 1 + specification.getLength() / 200);
-        int  shedDepth       = mm(shed.getDepth());
 
         materials.add(post.getMaterial(), numberOfColumns * 2, post.getNotes());
 
         numberOfColumns -= 1;
 
         if (shed != null) {
-            int xStart = x - shedDepth - thickness;
+            int shedDepth = mm(shed.getDepth());
+            int xStart    = x - shedDepth - thickness;
             shed(shed, xStart);
             placePostColumn(thickness, height, x, topRow, bottomRow);
             x = xStart;
@@ -204,6 +209,9 @@ public class CarportSkeletonConstructor extends DrawingUtilities implements Skel
             rect(sideDocument, claddingWidth, height, x + offset, PADDING + 195);
         }
 
+        materials.add(shedSideCladdingNogging.getMaterial(), -1, shedSideCladdingNogging.getNotes());
+        materials.add(shedGableCladdingNogging.getMaterial(), -1, shedGableCladdingNogging.getNotes());
+        materials.add(shedDoorNogging.getMaterial(), 1, shedDoorNogging.getNotes());
         materials.add(materialCladding, numberOfSideBoards * 2 + numberOfEndBoards * 2, shedCladding.getNotes());
     }
 
@@ -236,19 +244,5 @@ public class CarportSkeletonConstructor extends DrawingUtilities implements Skel
         filledRect(sideDocument, thickness, height + 195, x, PADDING);
         filledRect(aerialDocument, thickness, thickness, x, topRow);
         filledRect(aerialDocument, thickness, thickness, x, bottomRow);
-    }
-
-    /**
-     * Constructs the material list of the construction of the garage skeleton.
-     *
-     * @param specification The specifications that the skeleton must satisfy.
-     * @return The resulting material list.
-     */
-    private Materials calculateMaterials(ConstructionSpecification specification)
-    {
-        materials.add(shedCladdingNogging.getMaterial(), 1, shedCladdingNogging.getNotes());
-        materials.add(shedDoorNogging.getMaterial(), 20, shedDoorNogging.getNotes());
-
-        return materials;
     }
 }
