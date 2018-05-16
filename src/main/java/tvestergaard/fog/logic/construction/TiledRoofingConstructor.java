@@ -23,7 +23,6 @@ public class TiledRoofingConstructor extends DrawingUtilities implements Roofing
 
     private Document skeletonView;
     private Document tiledView;
-    private Document gableView;
 
     protected int length;
     protected int outerLength;
@@ -50,7 +49,6 @@ public class TiledRoofingConstructor extends DrawingUtilities implements Roofing
         Materials materials = calculateMaterials(specification, components);
         skeletonView = createDocument(this.outerLength + PADDING * 2, this.outerWidth + PADDING * 2);
         tiledView = createDocument(this.outerLength + PADDING * 2, this.outerWidth + PADDING * 2);
-        gableView = createDocument(this.outerWidth + PADDING * 2, specification.getHeight() * 10 + calculateRoofHeight(specification));
 
         copy(skeletonConstructionSummary.getAerialView().getDocument(), skeletonView);
 
@@ -64,8 +62,7 @@ public class TiledRoofingConstructor extends DrawingUtilities implements Roofing
 
         return new DefaultRoofingConstructionSummary(materials,
                 new DocumentConstructionDrawing(skeletonView),
-                new DocumentConstructionDrawing(tiledView),
-                new DocumentConstructionDrawing(gableView));
+                new DocumentConstructionDrawing(tiledView));
     }
 
     private int calculateRoofHeight(ConstructionSpecification specification)

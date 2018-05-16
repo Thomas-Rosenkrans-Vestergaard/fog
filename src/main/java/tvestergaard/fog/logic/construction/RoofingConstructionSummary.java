@@ -25,13 +25,6 @@ public interface RoofingConstructionSummary
     ConstructionDrawing getAerialTiledView();
 
     /**
-     * Returns the drawing of the roofing from the perspective of the gable.
-     *
-     * @return The drawing of the roofing from the perspective of the gable.
-     */
-    ConstructionDrawing getGableView();
-
-    /**
      * Returns the total price of the construction.
      *
      * @return The total price of the construction.

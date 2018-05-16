@@ -19,27 +19,19 @@ public class DefaultRoofingConstructionSummary implements RoofingConstructionSum
     private final ConstructionDrawing aerialTiledView;
 
     /**
-     * The drawing of the roofing from the perspective of the gable.
-     */
-    private final ConstructionDrawing gableView;
-
-    /**
      * Creates a new {@link DefaultRoofingConstructionSummary}.
      *
      * @param materials          The materials needed to construct the roofing.
      * @param aerialSkeletonView The drawing of the aerial view of the roofing skeleton.
      * @param aerialTiledView    The drawing of the aerial view of the tiled roofing.
-     * @param gableView          The drawing of the roofing from the perspective of the gable.
      */
     public DefaultRoofingConstructionSummary(Materials materials,
                                              ConstructionDrawing aerialSkeletonView,
-                                             ConstructionDrawing aerialTiledView,
-                                             ConstructionDrawing gableView)
+                                             ConstructionDrawing aerialTiledView)
     {
         this.materials = materials;
         this.aerialSkeletonView = aerialSkeletonView;
         this.aerialTiledView = aerialTiledView;
-        this.gableView = gableView;
     }
 
     /**
@@ -70,15 +62,5 @@ public class DefaultRoofingConstructionSummary implements RoofingConstructionSum
     @Override public ConstructionDrawing getAerialTiledView()
     {
         return aerialTiledView;
-    }
-
-    /**
-     * Returns the drawing of the roofing from the perspective of the gable.
-     *
-     * @return The drawing of the roofing from the perspective of the gable.
-     */
-    @Override public ConstructionDrawing getGableView()
-    {
-        return gableView;
     }
 }
