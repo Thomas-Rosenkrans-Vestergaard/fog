@@ -58,7 +58,7 @@ public class PurchaseServlet extends HttpServlet
         req.setAttribute("navigation", "purchases");
         req.setAttribute("customer", customer);
         req.setAttribute("purchase", purchase);
-        req.setAttribute("constructionSummary", summary);
+        req.setAttribute("summary", summary);
         req.getRequestDispatcher("/WEB-INF/purchase.jsp").forward(req, resp);
     }
 }

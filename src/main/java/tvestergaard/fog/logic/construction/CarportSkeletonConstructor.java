@@ -25,16 +25,17 @@ public class CarportSkeletonConstructor extends DrawingUtilities implements Skel
      * The amount of padding on the sides of the drawing.
      */
     private static final int PADDING = 1000;
-
     /**
      * The posts used to support the garage.
      */
     private Component post;
+    private int       postThickness;
 
     /**
      * The straps that supports the roof.
      */
     private Component strap;
+    private int       strapWidth;
 
     /**
      * The wood used to clad the shed.
@@ -73,21 +74,23 @@ public class CarportSkeletonConstructor extends DrawingUtilities implements Skel
     @Override public SkeletonConstructionSummary construct(ConstructionSpecification specification, ComponentMap components)
     {
         this.length = mm(specification.getLength());
-        this.outerLength = length + END_OVERHANG_MM * 2;
+        outerLength = length + END_OVERHANG_MM * 2;
         this.width = mm(specification.getWidth());
-        this.outerWidth = width + SIDE_OVERHANG_MM * 2;
+        outerWidth = width + SIDE_OVERHANG_MM * 2;
         this.height = mm(specification.getHeight());
 
         this.post = components.from("POST");
+        this.postThickness = this.post.getMaterial().getAttribute("THICKNESS_MM").getInt();
         this.strap = components.from("STRAPS_GARAGE");
+        this.strapWidth = strap.getMaterial().getAttribute("WIDTH_MM").getInt();
         this.shedSideCladdingNogging = components.from("SHED_SIDE_CLADDING_NOGGING");
         this.shedGableCladdingNogging = components.from("SHED_GABLE_CLADDING_NOGGING");
         this.shedCladding = components.from("SHED_CLADDING");
         this.shedDoorNogging = components.from("SHED_DOOR_NOGGING");
 
         materials = new MutableMaterials();
-        aerialDocument = createDocument(this.outerLength + PADDING * 2, this.outerWidth + PADDING * 2);
-        sideDocument = createDocument(this.outerLength + PADDING * 2, height + 195 + PADDING * 2);
+        aerialDocument = createDocument(outerLength + PADDING * 2, outerWidth + PADDING * 2);
+        sideDocument = createDocument(outerLength + PADDING * 2, height + strapWidth + PADDING * 2);
 
         straps(specification);
         posts(specification);
@@ -106,21 +109,20 @@ public class CarportSkeletonConstructor extends DrawingUtilities implements Skel
     private void straps(ConstructionSpecification specification)
     {
         Material material = strap.getMaterial();
-
         materials.add(material, 2, strap.getNotes());
 
-        int thickness = material.getAttribute("THICKNESS_MM").getInt();
-        int width     = material.getAttribute("WIDTH_MM").getInt();
+        int strapThickness = material.getAttribute("THICKNESS_MM").getInt();
+        int strapWidth     = material.getAttribute("WIDTH_MM").getInt();
 
-        rect(sideDocument, this.outerLength, width, PADDING, PADDING);
-        rect(aerialDocument, this.outerLength, thickness, PADDING, PADDING + SIDE_OVERHANG_MM);
-        rect(aerialDocument, this.outerLength, thickness, PADDING, this.width + PADDING + SIDE_OVERHANG_MM - 97 / 2);
+        rect(sideDocument, outerLength, strapWidth, PADDING, PADDING);
+        rect(aerialDocument, outerLength, strapThickness, PADDING, PADDING + SIDE_OVERHANG_MM);
+        rect(aerialDocument, outerLength, strapThickness, PADDING, width + PADDING + SIDE_OVERHANG_MM - postThickness / 2);
 
-        ruler(HORIZONTAL, this.outerLength, PADDING, this.outerWidth + PADDING + PADDING / 2, formatCM(outerLength / 10));
+        ruler(HORIZONTAL, outerLength, PADDING, outerWidth + PADDING + PADDING / 2, formatCM(outerLength / 10));
         ruler(HORIZONTAL, END_OVERHANG_MM, PADDING, PADDING / 2, formatCM(END_OVERHANG_MM / 10));
         ruler(HORIZONTAL, END_OVERHANG_MM, PADDING + outerLength - END_OVERHANG_MM, PADDING / 2, formatCM(END_OVERHANG_MM / 10));
 
-        ruler(aerialDocument, VERTICAL, this.width, PADDING / 2, PADDING + SIDE_OVERHANG_MM, formatCM(specification.getWidth()));
+        ruler(aerialDocument, VERTICAL, width, PADDING / 2, PADDING + SIDE_OVERHANG_MM, formatCM(specification.getWidth()));
     }
 
     /**
@@ -132,7 +134,7 @@ public class CarportSkeletonConstructor extends DrawingUtilities implements Skel
     {
         Shed shed            = specification.getShed();
         int  thickness       = post.getMaterial().getAttribute("THICKNESS_MM").getInt();
-        int  x               = this.outerLength + PADDING - END_OVERHANG_MM - thickness;
+        int  x               = outerLength + PADDING - END_OVERHANG_MM - thickness;
         int  topRow          = PADDING + SIDE_OVERHANG_MM;
         int  bottomRow       = topRow + this.width - thickness;
         int  height          = mm(specification.getHeight());
@@ -164,7 +166,7 @@ public class CarportSkeletonConstructor extends DrawingUtilities implements Skel
                     formatCM((columnDistance - thickness) / 10));
         }
 
-        ruler(sideDocument, VERTICAL, height, PADDING / 2, PADDING + 195, formatCM(specification.getHeight()));
+        ruler(sideDocument, VERTICAL, height, PADDING / 2, PADDING + strapWidth, formatCM(specification.getHeight()));
     }
 
     /**
@@ -179,7 +181,6 @@ public class CarportSkeletonConstructor extends DrawingUtilities implements Skel
         int      claddingThickness = materialCladding.getAttribute("THICKNESS_MM").getInt();
         int      claddingWidth     = materialCladding.getAttribute("WIDTH_MM").getInt();
         int      shedDepth         = mm(shed.getDepth());
-        int      postThickness     = 97;
         int      space             = claddingWidth - (claddingWidth / 5 * 2);
         int      every             = claddingWidth + space;
         int      overlap           = (claddingWidth - space) / 2;
@@ -187,7 +188,7 @@ public class CarportSkeletonConstructor extends DrawingUtilities implements Skel
 
         int numberOfEndBoards = (int) Math.ceil((double) (width - postThickness * 2) / every) - 1;
         int leftColumn        = xStart;
-        int rightColumn       = xStart + shedDepth + 97 * 2 - claddingThickness;
+        int rightColumn       = xStart + shedDepth + postThickness * 2 - claddingThickness;
         for (int endBoard = 0; endBoard < numberOfEndBoards; endBoard++) {
             int y = PADDING + SIDE_OVERHANG_MM + postThickness + (endBoard * every);
             rect(aerialDocument, claddingThickness, claddingWidth, leftColumn, y);
@@ -205,12 +206,12 @@ public class CarportSkeletonConstructor extends DrawingUtilities implements Skel
             rect(aerialDocument, claddingWidth, claddingThickness, x + offset, topRow + claddingThickness);
             rect(aerialDocument, claddingWidth, claddingThickness, x, botRow);
             rect(aerialDocument, claddingWidth, claddingThickness, x + offset, botRow - claddingThickness);
-            rect(sideDocument, claddingWidth, height, x, PADDING + 195);
-            rect(sideDocument, claddingWidth, height, x + offset, PADDING + 195);
+            rect(sideDocument, claddingWidth, height, x, PADDING + strapWidth);
+            rect(sideDocument, claddingWidth, height, x + offset, PADDING + strapWidth);
         }
 
-        materials.add(shedSideCladdingNogging.getMaterial(), -1, shedSideCladdingNogging.getNotes());
-        materials.add(shedGableCladdingNogging.getMaterial(), -1, shedGableCladdingNogging.getNotes());
+        materials.add(shedSideCladdingNogging.getMaterial(), 0, shedSideCladdingNogging.getNotes());
+        materials.add(shedGableCladdingNogging.getMaterial(), 0, shedGableCladdingNogging.getNotes());
         materials.add(shedDoorNogging.getMaterial(), 1, shedDoorNogging.getNotes());
         materials.add(materialCladding, numberOfSideBoards * 2 + numberOfEndBoards * 2, shedCladding.getNotes());
     }
@@ -241,7 +242,7 @@ public class CarportSkeletonConstructor extends DrawingUtilities implements Skel
      */
     private void placePostColumn(int thickness, int height, int x, int topRow, int bottomRow)
     {
-        filledRect(sideDocument, thickness, height + 195, x, PADDING);
+        filledRect(sideDocument, thickness, height + strapWidth, x, PADDING);
         filledRect(aerialDocument, thickness, thickness, x, topRow);
         filledRect(aerialDocument, thickness, thickness, x, bottomRow);
     }

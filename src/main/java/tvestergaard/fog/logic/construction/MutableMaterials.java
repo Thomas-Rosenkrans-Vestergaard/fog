@@ -104,7 +104,11 @@ public class MutableMaterials implements Materials
          */
         public int getTotal()
         {
-            return amount / material.getUnit() * material.getPrice();
+            int unit = material.getUnit();
+            if (amount % unit == 0)
+                return amount / unit * material.getPrice();
+
+            return (amount / unit + 1) * material.getPrice();
         }
 
         @Override public String toString()

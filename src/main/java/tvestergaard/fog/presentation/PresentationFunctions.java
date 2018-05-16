@@ -66,9 +66,11 @@ public class PresentationFunctions
         int dkk   = (priceInCents - cents) / 100;
 
         if (cents == 0)
-            return Integer.toString(dkk);
+            return Integer.toString(dkk) + " kr.";
 
-        return dkk + "." + (cents < 9 ? "0" + cents : cents) + " kr.";
+        String result = dkk + "." + (cents < 9 ? "0" + cents : cents) + " kr.";
+
+        return result;
     }
 
     private static Map<CustomerError, String> customerErrors;

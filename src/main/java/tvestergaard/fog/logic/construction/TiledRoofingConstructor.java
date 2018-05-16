@@ -52,21 +52,26 @@ public class TiledRoofingConstructor extends DrawingUtilities implements Roofing
 
         copy(skeletonConstructionSummary.getAerialView().getDocument(), skeletonView);
 
-        rafters(specification);
+        rafters();
         laths();
-        sides(specification);
+        sides();
 
         copy(skeletonView, tiledView);
-        tiles(specification, components);
-        ends(specification);
+        tiles();
+        ends();
 
         return new DefaultRoofingConstructionSummary(materials,
                 new DocumentConstructionDrawing(skeletonView),
                 new DocumentConstructionDrawing(tiledView));
     }
 
-    private void tiles(ConstructionSpecification specification, ComponentMap components)
+    /**
+     * Draws and adds to the material list, the tiles needed to cover the tiled roofing.
+     */
+    private void tiles()
     {
+
+
         int tileHeight      = 420;
         int tileWidth       = 330;
         int ridgeTileLength = 420;
@@ -133,9 +138,6 @@ public class TiledRoofingConstructor extends DrawingUtilities implements Roofing
         return materials;
     }
 
-    /**
-     * Draws the laths, and adds the materials needed to construct the laths to the material list.
-     */
     private void laths()
     {
         int thickness     = 73;
@@ -151,7 +153,7 @@ public class TiledRoofingConstructor extends DrawingUtilities implements Roofing
             rect(skeletonView, this.outerLength, thickness, PADDING, mid + i * lathDistance);
     }
 
-    private void sides(ConstructionSpecification specification)
+    private void sides()
     {
         int thickness = 20;
 
@@ -159,7 +161,7 @@ public class TiledRoofingConstructor extends DrawingUtilities implements Roofing
         filledRect(skeletonView, this.outerLength, thickness, PADDING, PADDING + this.outerWidth);
     }
 
-    private void ends(ConstructionSpecification specification)
+    private void ends()
     {
         int thickness = 45;
 
@@ -174,7 +176,7 @@ public class TiledRoofingConstructor extends DrawingUtilities implements Roofing
         filledRect(tiledView, thickness, 20, this.outerLength + PADDING - thickness, PADDING + this.outerWidth / 2);
     }
 
-    private void rafters(ConstructionSpecification specification)
+    private void rafters()
     {
         int thickness       = 45;
         int numberOfRafters = this.outerLength / 1000;

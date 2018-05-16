@@ -178,3 +178,11 @@ svg {
     width: 100%;
     height: auto;
 }
+
+.drawing-title {
+    text-align: center;
+}
+
+td.bold {
+    font-weight: bold;
+}
