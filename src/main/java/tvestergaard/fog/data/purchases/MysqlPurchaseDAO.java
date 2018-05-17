@@ -53,7 +53,7 @@ public class MysqlPurchaseDAO extends AbstractMysqlDAO implements PurchaseDAO
                 "(SELECT count(offers.id) FROM offers WHERE offers.order = o.id AND offers.status = 'OPEN') as `o.open_offers`, " +
                 "(SELECT GROUP_CONCAT(roles.role SEPARATOR ',') FROM roles WHERE employee = o_emp.id) as `o_emp.roles`, " +
                 "(SELECT GROUP_CONCAT(roles.role SEPARATOR ',') FROM roles WHERE employee = c_emp.id) as `c_emp.roles`, " +
-                "CONCAT_WS('.', c_emp.name, c_emp.username, customers.name, customers.email, roofings.name, claddings.name, floorings.name, o_emp.name, o_emp.username) as search " +
+                "CONCAT_WS('.', c_emp.name, c_emp.username, customers.name, customers.email, roofings.name, claddings.name, floorings.name, o_emp.name, o_emp.username, offers.price) as `purchases.search` " +
                 "FROM purchases " +
                 "INNER JOIN bom ON purchases.bom = bom.id " +
                 "INNER JOIN employees c_emp ON purchases.employee = c_emp.id " +

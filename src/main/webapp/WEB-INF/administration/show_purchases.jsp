@@ -18,11 +18,13 @@
             porttitor, facilisis luctus, metus</p>
     </div>
 </div>
+<%@ include file="../includes/table_controls.jspf" %>
 <div class="row">
     <div class="col s12">
         <table class="highlight">
             <thead>
             <th>Tilbud</th>
+            <th>Kunde</th>
             <th>Medarbejder</th>
             <th>Købspris</th>
             <th>Oprettet</th>
@@ -33,7 +35,11 @@
                     <c:set var="offer" value="${purchase.getOffer()}"/>
                     <c:set var="order" value="${offer.getOrder()}"/>
                     <c:set var="employee" value="${offer.getEmployee()}"/>
+                    <c:set var="customer" value="${order.getCustomer()}"/>
                     <td><a href="offers?action=update&id=${offer.getId()}">Tilbud</a></td>
+                    <td><a
+                            href="customers?action=update&id=${customer.getId()}"><c:out
+                            value="${customer.getName()}"/></a></td>
                     <td><a href="employees?action=update&id=${employee.getId()}"><c:out
                             value="${employee.getName()}"/></a></td>
                     <td>${f:formatPrice(offer.getPrice())}</td>

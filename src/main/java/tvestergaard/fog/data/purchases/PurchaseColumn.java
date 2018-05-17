@@ -29,6 +29,9 @@ public enum PurchaseColumn implements Column<PurchaseColumn>, MysqlColumn
      */
     @Override public boolean useBacktick()
     {
+        if (this == SEARCH)
+            return true;
+
         return false;
     }
 }
