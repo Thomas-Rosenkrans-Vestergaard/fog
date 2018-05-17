@@ -34,11 +34,19 @@
                 <tr style="cursor:pointer"
                     onclick="location.href ='orders?action=update&id=${order.getId()}'">
                     <td>${order.getId()}</td>
-                    <td><c:out value="${order.getCustomer().getName()}"/></td>
+                    <c:set value="${order.getCustomer()}" var="customer"/>
+                    <td>
+                        <a
+                                href="customers?action=update&id=${customer.getId()}"><c:out
+                                value="${customer.getName()}"/></a>
+                    </td>
                     <td>${order.getWidth()}</td>
                     <td>${order.getLength()}</td>
                     <td>${order.getHeight()}</td>
-                    <td><c:out value="${order.getRoofing().getName()}"/></td>
+                    <c:set var="roofing" value="${order.getRoofing()}"/>
+                    <td>
+                        <a href="roofings?action=update&id=${roofing.getId()}"><c:out value="${roofing.getName()}"/>
+                        </a></td>
                     <td>${order.getSlope()}</td>
                     <td>${order.getRafterChoice()}</td>
                     <td>${f:formatDatetime(order.getCreatedAt())}</td>
