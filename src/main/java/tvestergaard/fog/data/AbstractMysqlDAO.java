@@ -387,6 +387,7 @@ public abstract class AbstractMysqlDAO
                 shed,
                 resultSet.getBoolean(table + ".active"),
                 resultSet.getInt(table + ".offers"),
+                resultSet.getInt(table + ".open_offers"),
                 resultSet.getTimestamp(table + ".created_at").toLocalDateTime()
         );
     }

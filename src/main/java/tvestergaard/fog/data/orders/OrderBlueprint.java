@@ -28,8 +28,7 @@ public interface OrderBlueprint
                                ShedBlueprint shedBlueprint)
     {
         return new OrderRecord(-1, customer, null, width, length, height, roofing, null, slope, rafterChoice,
-                shedBlueprint, null, null, active, -1,
-                null);
+                shedBlueprint, null, null, active, -1, -1, null);
     }
 
     /**

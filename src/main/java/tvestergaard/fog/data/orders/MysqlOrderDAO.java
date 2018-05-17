@@ -52,6 +52,7 @@ public class MysqlOrderDAO extends AbstractMysqlDAO implements OrderDAO
         final List<Order> orders = new ArrayList<>();
         final String SQL = generator.generate(
                 "SELECT *, (SELECT count(*) FROM offers WHERE `order` = o.id) AS `o.offers`, " +
+                        "(SELECT count(offers.id) FROM offers WHERE offers.order = o.id AND offers.status = 'OPEN') as `o.open_offers`, " +
                         "CONCAT_WS('.', customers.name, customers.email, roofings.name, claddings.name, floorings.name, " +
                         "o.width, o.height, o.length, o.rafters) as `o.search` " +
                         "FROM orders o " +
@@ -242,7 +243,7 @@ public class MysqlOrderDAO extends AbstractMysqlDAO implements OrderDAO
     {
         final String SQL = "SELECT count(" +
                 "(SELECT orders.id FROM orders LEFT JOIN offers ON orders.id = offers.order " +
-                "WHERE orders.active = b'1' && offers.id IS NULL)) as count";
+                "WHERE orders.active = b'1' && offers.id IS NULL)) AS count";
         try (PreparedStatement statement = getConnection().prepareStatement(SQL)) {
             ResultSet resultSet = statement.executeQuery();
             resultSet.first();

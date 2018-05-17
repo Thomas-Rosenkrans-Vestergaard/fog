@@ -68,7 +68,8 @@ public class OrderRecord implements Order
     /**
      * The number of offers that have been made regarding this order.
      */
-    private int numberOfOffers;
+    private final int numberOfOffers;
+    private final int numberOfOpenOffers;
 
     /**
      * The moment when the order was placed.
@@ -108,6 +109,7 @@ public class OrderRecord implements Order
                        Shed shed,
                        boolean active,
                        int numberOfOffers,
+                       int numberOfOpenOffers,
                        LocalDateTime createdAt)
     {
         this.id = id;
@@ -124,6 +126,7 @@ public class OrderRecord implements Order
         this.shedUpdater = shedUpdater;
         this.shed = shed;
         this.numberOfOffers = numberOfOffers;
+        this.numberOfOpenOffers = numberOfOpenOffers;
         this.active = active;
         this.createdAt = createdAt;
     }
@@ -342,6 +345,16 @@ public class OrderRecord implements Order
     @Override public int getNumberOfOffers()
     {
         return numberOfOffers;
+    }
+
+    /**
+     * Returns the number of open offers regarding the order.
+     *
+     * @return The number of open offers regarding the order.
+     */
+    @Override public int getNumberOfOpenOffers()
+    {
+        return numberOfOpenOffers;
     }
 
     /**

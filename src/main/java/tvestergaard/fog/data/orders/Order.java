@@ -32,9 +32,16 @@ public interface Order extends OrderUpdater
     /**
      * Returns the number of offers that have been made regarding this order.
      *
-     * @return The number of offsets that have been made regarding this order.
+     * @return The number of offers that have been made regarding this order.
      */
     int getNumberOfOffers();
+
+    /**
+     * Returns the number of open offers regarding the order.
+     *
+     * @return The number of open offers regarding the order.
+     */
+    int getNumberOfOpenOffers();
 
     /**
      * Returns a {@code LocalDateTime} representing the moment in time when the customer placed the {@link Order}.

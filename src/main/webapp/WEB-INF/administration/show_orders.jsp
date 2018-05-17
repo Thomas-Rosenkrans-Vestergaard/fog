@@ -31,7 +31,9 @@
             </thead>
             <tbody>
             <c:forEach items="${orders}" var="order">
-                <tr style="cursor:pointer;" onclick="location.href = 'orders?action=update&id=${order.getId()}'">
+                <tr class="${order.getNumberOfOpenOffers() == 0 && order.isActive() ? 'important' : ''}"
+                    style="cursor:pointer"
+                    onclick="location.href ='orders?action=update&id=${order.getId()}'">
                     <td>${order.getId()}</td>
                     <td><c:out value="${order.getCustomer().getName()}"/></td>
                     <td>${order.getWidth()}</td>

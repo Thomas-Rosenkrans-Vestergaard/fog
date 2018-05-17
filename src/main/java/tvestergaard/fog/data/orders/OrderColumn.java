@@ -16,7 +16,8 @@ public enum OrderColumn implements Column<OrderColumn>, MysqlColumn
     SLOPE,
     RAFTERS,
     ACTIVE,
-    SEARCH;
+    SEARCH,
+    OPEN_OFFERS;
 
     /**
      * Returns the name of the column in MySQL.
@@ -37,7 +38,7 @@ public enum OrderColumn implements Column<OrderColumn>, MysqlColumn
     @Override
     public boolean useBacktick()
     {
-        if (this == SEARCH)
+        if (this == SEARCH || this == OPEN_OFFERS)
             return true;
 
         return false;

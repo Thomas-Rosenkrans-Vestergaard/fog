@@ -30,7 +30,7 @@ public interface OrderUpdater extends OrderBlueprint
                              ShedUpdater shedUpdater)
     {
         return new OrderRecord(id, customer, null, width, length, height, roofing, null, slope, rafterChoice,
-                shedUpdater, shedUpdater, null, active, -1,
+                shedUpdater, shedUpdater, null, active, -1, -1,
                 null);
     }
 

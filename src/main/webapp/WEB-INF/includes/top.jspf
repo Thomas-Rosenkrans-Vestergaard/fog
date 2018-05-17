@@ -97,6 +97,9 @@
         <li class="${"administration_offers".equals(navigation) ? 'active' : '' }">
             <a href="${context}/administration/offers">Tilbud</a>
         </li>
+        <li class="${"administration_purchases".equals(navigation) ? 'active' : '' }">
+            <a href="${context}/administration_purchases">Køb</a>
+        </li>
         <script>
             function updateNewOrdersCounter() {
 

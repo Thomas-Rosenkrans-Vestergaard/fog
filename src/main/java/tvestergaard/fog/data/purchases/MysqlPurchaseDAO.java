@@ -50,6 +50,7 @@ public class MysqlPurchaseDAO extends AbstractMysqlDAO implements PurchaseDAO
     {
         final List<Purchase> purchases = new ArrayList<>();
         final String SQL = generator.generate("SELECT *, (SELECT count(*) FROM offers WHERE `order` = o.id) AS `o.offers`, " +
+                "(SELECT count(offers.id) FROM offers WHERE offers.order = o.id AND offers.status = 'OPEN') as `o.open_offers`, " +
                 "(SELECT GROUP_CONCAT(roles.role SEPARATOR ',') FROM roles WHERE employee = o_emp.id) as `o_emp.roles`, " +
                 "(SELECT GROUP_CONCAT(roles.role SEPARATOR ',') FROM roles WHERE employee = c_emp.id) as `c_emp.roles`, " +
                 "CONCAT_WS('.', c_emp.name, c_emp.username, customers.name, customers.email, roofings.name, claddings.name, floorings.name, o_emp.name, o_emp.username) as search " +

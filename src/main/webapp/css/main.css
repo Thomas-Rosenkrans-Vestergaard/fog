@@ -219,3 +219,7 @@ a:hover {
 table table td {
     padding: 0px;
 }
+
+tr.important {
+    border: 1px solid orangered;
+}
