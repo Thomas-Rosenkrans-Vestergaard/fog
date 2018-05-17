@@ -1,8 +1,8 @@
 package tvestergaard.fog.data.purchases;
 
-import tvestergaard.fog.data.bom.Bom;
 import tvestergaard.fog.data.employees.Employee;
 import tvestergaard.fog.data.offers.Offer;
+import tvestergaard.fog.data.purchases.bom.Bom;
 
 import java.time.LocalDateTime;
 
@@ -31,12 +31,7 @@ public interface Purchase extends PurchaseBlueprint
      */
     Employee getEmployee();
 
-    /**
-     * Returns the bill of materials described by the purchase.
-     *
-     * @return The bill of materials described by the purchase.
-     */
-    Bom getBOM();
+    Bom getBom();
 
     /**
      * Returns the moment in time when the purchase was created.

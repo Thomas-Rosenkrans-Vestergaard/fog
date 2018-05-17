@@ -12,10 +12,16 @@ import tvestergaard.fog.data.purchases.Purchase;
 import tvestergaard.fog.data.purchases.PurchaseBlueprint;
 import tvestergaard.fog.data.purchases.PurchaseColumn;
 import tvestergaard.fog.data.purchases.PurchaseDAO;
+import tvestergaard.fog.data.purchases.bom.BomBlueprint;
+import tvestergaard.fog.data.purchases.bom.BomLineBlueprint;
 import tvestergaard.fog.logic.ApplicationException;
+import tvestergaard.fog.logic.construction.ConstructionFacade;
+import tvestergaard.fog.logic.construction.GarageConstructionSummary;
+import tvestergaard.fog.logic.construction.MaterialLine;
 import tvestergaard.fog.logic.customers.InactiveCustomerException;
 import tvestergaard.fog.logic.employees.InsufficientPermissionsException;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static tvestergaard.fog.data.constraints.Constraint.eq;
@@ -41,17 +47,24 @@ public class PurchaseFacade
     private final EmployeeDAO employeeDAO;
 
     /**
+     * The construction facade that constructs the purchased garage.
+     */
+    private final ConstructionFacade constructionFacade;
+
+    /**
      * Creates a new {@link PurchaseFacade}.
      *
-     * @param purchaseDAO The purchase dao to use to access the purchases in the application.
-     * @param offerDAO    The offer dao used to access the offers in the application.
-     * @param employeeDAO The employee dao used to access the employees in the application.
+     * @param purchaseDAO        The purchase dao to use to access the purchases in the application.
+     * @param offerDAO           The offer dao used to access the offers in the application.
+     * @param employeeDAO        The employee dao used to access the employees in the application.
+     * @param constructionFacade The construction facade that constructs the purchased garage.
      */
-    public PurchaseFacade(PurchaseDAO purchaseDAO, OfferDAO offerDAO, EmployeeDAO employeeDAO)
+    public PurchaseFacade(PurchaseDAO purchaseDAO, OfferDAO offerDAO, EmployeeDAO employeeDAO, ConstructionFacade constructionFacade)
     {
         this.purchaseDAO = purchaseDAO;
         this.offerDAO = offerDAO;
         this.employeeDAO = employeeDAO;
+        this.constructionFacade = constructionFacade;
     }
 
     /**
@@ -109,7 +122,14 @@ public class PurchaseFacade
             if (!offer.getOrder().getCustomer().isActive())
                 throw new InactiveCustomerException();
 
-            return purchaseDAO.create(PurchaseBlueprint.from(offerId, employeeId, null));
+            GarageConstructionSummary constructionSummary = constructionFacade.construct(offer.getOrder());
+            List<BomLineBlueprint>    lineBlueprints      = new ArrayList<>();
+            for (MaterialLine line : constructionSummary.getSkeletonConstructionSummary().getMaterials().getLines())
+                lineBlueprints.add(BomLineBlueprint.from(line.getMaterial().getId(), line.getAmount(), line.getNotes()));
+            for (MaterialLine line : constructionSummary.getRoofingConstructionSummary().getMaterials().getLines())
+                lineBlueprints.add(BomLineBlueprint.from(line.getMaterial().getId(), line.getAmount(), line.getNotes()));
+
+            return purchaseDAO.create(PurchaseBlueprint.from(offerId, employeeId, BomBlueprint.from(lineBlueprints)));
 
         } catch (DataAccessException e) {
             throw new ApplicationException(e);

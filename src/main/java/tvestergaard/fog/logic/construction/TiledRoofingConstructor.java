@@ -246,7 +246,7 @@ public class TiledRoofingConstructor extends DrawingUtilities implements Roofing
 //        int plankLength = material.getAttribute("LENGTH_MM").getInt();
 //        int plankWidth  = material.getAttribute("WIDTH_MM").getInt();
 
-        materials.add(material, /*roofHeightMM * roofWidthMM / (plankLength * plankWidth) * 2*/ -1, component.getNotes());
+        materials.add(material, /*roofHeightMM * roofWidthMM / (plankLength * plankWidth) * 2*/ 0, component.getNotes());
     }
 
     /**

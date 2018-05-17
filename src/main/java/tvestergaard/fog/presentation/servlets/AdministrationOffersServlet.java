@@ -130,12 +130,10 @@ public class AdministrationOffersServlet extends AdministrationServlet
             try {
                 offerFacade.create(order, authentication.getEmployee().getId(), price);
                 response.sendRedirect("offers");
+                return;
             } catch (OfferValidatorException e) {
                 for (OfferError error : e.getErrors())
                     notifications.error(errors.get(error));
-
-                response.sendRedirect("?action=create");
-                return;
             } catch (UnknownOrderException e) {
                 notifications.error("Ukendt order.");
             } catch (InactiveCustomerException e) {

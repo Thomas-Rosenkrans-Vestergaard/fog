@@ -1,9 +1,9 @@
 package tvestergaard.fog.data.purchases;
 
-import tvestergaard.fog.data.bom.Bom;
-import tvestergaard.fog.data.bom.BomBlueprint;
 import tvestergaard.fog.data.employees.Employee;
 import tvestergaard.fog.data.offers.Offer;
+import tvestergaard.fog.data.purchases.bom.Bom;
+import tvestergaard.fog.data.purchases.bom.BomBlueprint;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
@@ -37,19 +37,11 @@ public class PurchaseRecord implements Purchase
     private final Employee employee;
 
     /**
-     * The blueprint specifying bill of materials described by the purchase.
-     */
-    private final BomBlueprint bomBlueprint;
-
-    /**
-     * The bill of materials described by the purchase.
-     */
-    private final Bom bom;
-
-    /**
      * The moment in time when the purchase was created.
      */
     private final LocalDateTime createdAt;
+    private       BomBlueprint  bomBlueprint;
+    private       Bom           bom;
 
     /**
      * Creates a new {@link PurchaseRecord}.
@@ -59,7 +51,6 @@ public class PurchaseRecord implements Purchase
      * @param offer      The offer that was accepted.
      * @param employeeId The id of the employee who created the purchase.
      * @param employee   The employee who created the purchase.
-     * @param bom        The bill of materials described by the purchase.
      * @param createdAt  The moment in time when the purchase was created.
      */
     public PurchaseRecord(int id, int offerId, Offer offer, int employeeId, Employee employee, BomBlueprint bomBlueprint, Bom bom, LocalDateTime createdAt)
@@ -124,24 +115,14 @@ public class PurchaseRecord implements Purchase
         return employee;
     }
 
-    /**
-     * Returns the bill of materials described by the purchase.
-     *
-     * @return The bill of materials described by the purchase.
-     */
-    @Override public Bom getBOM()
-    {
-        return bom;
-    }
-
-    /**
-     * Returns a blueprint of the the bill of materials within the purchase.
-     *
-     * @return a blueprint of the The bill of materials within the purchase.
-     */
     @Override public BomBlueprint getBomBlueprint()
     {
-        return bomBlueprint;
+        return this.bomBlueprint;
+    }
+
+    public Bom getBom()
+    {
+        return this.bom;
     }
 
     /**
@@ -165,12 +146,11 @@ public class PurchaseRecord implements Purchase
                 Objects.equals(getOffer(), that.getOffer()) &&
                 Objects.equals(getEmployee(), that.getEmployee()) &&
                 Objects.equals(getBomBlueprint(), that.getBomBlueprint()) &&
-                Objects.equals(bom, that.getBOM()) &&
                 Objects.equals(getCreatedAt(), that.getCreatedAt());
     }
 
     @Override public int hashCode()
     {
-        return Objects.hash(getId(), getOfferId(), getOffer(), getEmployeeId(), getEmployee(), getBomBlueprint(), bom, getCreatedAt());
+        return Objects.hash(getId(), getOfferId(), getOffer(), getEmployeeId(), getEmployee(), getBomBlueprint(), getCreatedAt());
     }
 }

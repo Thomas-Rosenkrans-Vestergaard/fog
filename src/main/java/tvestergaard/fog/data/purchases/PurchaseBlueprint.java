@@ -1,6 +1,6 @@
 package tvestergaard.fog.data.purchases;
 
-import tvestergaard.fog.data.bom.BomBlueprint;
+import tvestergaard.fog.data.purchases.bom.BomBlueprint;
 
 public interface PurchaseBlueprint
 {
@@ -9,6 +9,8 @@ public interface PurchaseBlueprint
     {
         return new PurchaseRecord(-1, offerId, null, employeeId, null, bomBlueprint, null, null);
     }
+
+    BomBlueprint getBomBlueprint();
 
     /**
      * Returns the id of the offer that was accepted.
@@ -23,11 +25,4 @@ public interface PurchaseBlueprint
      * @return The id of the employee who created the purchase.
      */
     int getEmployeeId();
-
-    /**
-     * Returns a blueprint of the the bill of materials within the purchase.
-     *
-     * @return a blueprint of the The bill of materials within the purchase.
-     */
-    BomBlueprint getBomBlueprint();
 }

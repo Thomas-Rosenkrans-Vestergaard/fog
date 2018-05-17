@@ -14,26 +14,6 @@
 </div>
 <div class="row">
     <div class="col s12">
-        <form method="post">
-            <input type="hidden" name="order" value="${order.getId()}">
-            <div class="row">
-                <div class="col s12 input-field">
-                    <input type="number" name="price" id="price" step="1" min="1">
-                    <label for="price">Tilbud pris</label>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col s12">
-                    <button class="btn-large waves-effect waves-light" type="submit" name="action">
-                        Opret<i class="material-icons right">send</i>
-                    </button>
-                </div>
-            </div>
-        </form>
-    </div>
-</div>
-<div class="row">
-    <div class="col s12">
         <h3>ORDREINFORMATION</h3>
     </div>
 </div>
@@ -41,6 +21,8 @@
     <div class="col s12">
         <table>
             <tbody>
+            <c:set var="offer" value="${purchase.getOffer()}"/>
+            <c:set var="order" value="${offer.getOrder()}"/>
             <tr>
                 <th>ID</th>
                 <td>${order.getId()}</td>

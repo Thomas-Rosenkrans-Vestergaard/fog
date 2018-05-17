@@ -70,7 +70,7 @@ public class Facades
     public static final OrderFacade        orderFacade        = new OrderFacade(new OrderPlacer(orderDAO, customerDAO, mailer), orderDAO);
     public static final RoofingFacade      roofingFacade      = new RoofingFacade(roofingDAO);
     public static final OfferFacade        offerFacade        = new OfferFacade(offerDAO, orderDAO, employeeDAO, mailer, tokenIssuer);
-    public static final PurchaseFacade     purchaseFacade     = new PurchaseFacade(purchaseDAO, offerDAO, employeeDAO);
-    public static final ModelFacade        skeletonFacade     = new ModelFacade(modelDAO);
     public static final ConstructionFacade constructionFacade = new ConstructionFacade(modelDAO, roofingDAO);
+    public static final PurchaseFacade     purchaseFacade     = new PurchaseFacade(purchaseDAO, offerDAO, employeeDAO, constructionFacade);
+    public static final ModelFacade        skeletonFacade     = new ModelFacade(modelDAO);
 }
