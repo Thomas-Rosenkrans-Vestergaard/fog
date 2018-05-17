@@ -80,16 +80,16 @@
         <% } %>
 
 
+        <li>
+            <div class="divider"></div>
+        </li>
+        <li><a class="subheader">Medarbejder</a></li>
         <%
             Employee employee = (Employee) session.getAttribute("employee");
 
             if (employee != null) {
 
         %>
-        <li>
-            <div class="divider"></div>
-        </li>
-        <li><a class="subheader">Medarbejder</a></li>
         <li class="${"administration_orders".equals(navigation) ? 'active' : '' }">
             <a href="${context}/administration/orders"><span id="new-orders-counter">0</span> Ordre</a>
         </li>
@@ -134,6 +134,8 @@
             <a href="${context}/administration/materials">Materialer</a></li>
         <li><a href="${context}/administration/logout">Log ud</a></li>
         <% } %>
+        <% } else { %>
+        <li><a href="${context}/administration/authenticate">Log ind</a></li>
         <% } %>
     </div>
 </ul>
