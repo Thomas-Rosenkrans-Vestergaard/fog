@@ -19,13 +19,15 @@ public class TableControls<C extends Enum<C> & Column<C>>
     private final Class<C>           columns;
     private final Parameters         parameters;
     private final C                  searchColumn;
+    private final Constraints<C>     def;
 
-    public TableControls(HttpServletRequest request, Class<C> columns, C searchColumn)
+    public TableControls(HttpServletRequest request, Class<C> columns, C searchColumn, Constraints<C> def)
     {
         this.request = request;
         this.columns = columns;
         this.parameters = new Parameters(request);
         this.searchColumn = searchColumn;
+        this.def = def;
 
         request.setAttribute("orderings", EnumSet.allOf(OrderDirection.class));
         request.setAttribute("columns", EnumSet.allOf(columns));
@@ -34,10 +36,15 @@ public class TableControls<C extends Enum<C> & Column<C>>
         request.setAttribute("sort_direction", request.getParameter("sort_direction"));
     }
 
+    public TableControls(HttpServletRequest request, Class<C> columns, C searchColumn)
+    {
+        this(request, columns, searchColumn, null);
+    }
+
     public Constraints<C> constraints()
     {
         if (!parameters.isPresent("search"))
-            return null;
+            return def;
 
         String         searchValue   = parameters.value("search_value");
         C              sortColumn    = parameters.getEnum("sort_column", columns);

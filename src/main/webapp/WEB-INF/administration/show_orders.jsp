@@ -31,8 +31,7 @@
             </thead>
             <tbody>
             <c:forEach items="${orders}" var="order">
-                <tr class="${order.getNumberOfOpenOffers() == 0 && order.isActive() ? 'important' : ''}"
-                    style="cursor:pointer"
+                <tr style="cursor:pointer"
                     onclick="location.href ='orders?action=update&id=${order.getId()}'">
                     <td>${order.getId()}</td>
                     <td><c:out value="${order.getCustomer().getName()}"/></td>
@@ -66,6 +65,9 @@
                                 </tbody>
                             </table>
                         </td>
+                    </c:if>
+                    <c:if test="${order.getNumberOfOpenOffers() == 0 && order.isActive()}">
+                        <td><i style="color:#0D47A1" class="material-icons small">new_releases</i></td>
                     </c:if>
                 </tr>
             </c:forEach>

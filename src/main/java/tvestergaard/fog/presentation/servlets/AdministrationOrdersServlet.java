@@ -1,5 +1,6 @@
 package tvestergaard.fog.presentation.servlets;
 
+import tvestergaard.fog.data.constraints.Constraints;
 import tvestergaard.fog.data.employees.Employee;
 import tvestergaard.fog.data.employees.Role;
 import tvestergaard.fog.data.orders.*;
@@ -24,6 +25,8 @@ import java.util.Map;
 
 import static tvestergaard.fog.data.constraints.Constraint.eq;
 import static tvestergaard.fog.data.constraints.Constraint.where;
+import static tvestergaard.fog.data.constraints.OrderDirection.ASC;
+import static tvestergaard.fog.data.constraints.OrderDirection.DESC;
 import static tvestergaard.fog.data.orders.OrderColumn.ID;
 import static tvestergaard.fog.logic.orders.OrderError.*;
 import static tvestergaard.fog.presentation.PresentationFunctions.notifications;
@@ -67,9 +70,12 @@ public class AdministrationOrdersServlet extends AdministrationServlet
     {
         @Override public void dispatch(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
         {
-            TableControls<OrderColumn> controls = new TableControls<>(request, OrderColumn.class, OrderColumn.SEARCH);
+            Constraints<OrderColumn> defaultConstraints = new Constraints<>();
+            defaultConstraints.order(OrderColumn.ACTIVE, DESC);
+            defaultConstraints.order(OrderColumn.OPEN_OFFERS, ASC);
+            TableControls<OrderColumn> controls = new TableControls<>(request, OrderColumn.class, OrderColumn.SEARCH, defaultConstraints);
             notifications(request);
-            request.setAttribute("title", "Ordree");
+            request.setAttribute("title", "Ordre");
             request.setAttribute("orders", orderFacade.get(controls.constraints()));
             request.getRequestDispatcher("/WEB-INF/administration/show_orders.jsp").forward(request, response);
         }
