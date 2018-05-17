@@ -19,7 +19,7 @@
             <div class="row">
                 <div class="col s12 input-field">
                     <input type="text" name="number" id="number" data-length="12" class="input-length validate"
-                           value="${material.getNumber()}" required>
+                           value="${material.getNumber()}" readonly required>
                     <label for="number">Nummer</label>
                 </div>
             </div>
