@@ -22,8 +22,8 @@
             </thead>
             <tbody>
             <c:forEach items="${models}" var="model">
-                <tr onclick="location.href = '?action=update&id=${model.getId()}'">
-                    <td><c:out value="${model.getId()}"/></td>
+                <tr>
+                    <td><a href="?action=update&id=${model.getId()}">${model.getId()}</a></td>
                     <td><c:out value="${model.getName()}"/></td>
                 </tr>
             </c:forEach>

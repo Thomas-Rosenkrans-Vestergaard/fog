@@ -141,10 +141,6 @@ hr {
     margin-right: 10px;
 }
 
-.administration-table tbody tr {
-    cursor: pointer;
-}
-
 #new-orders-counter {
     display: none;
 }

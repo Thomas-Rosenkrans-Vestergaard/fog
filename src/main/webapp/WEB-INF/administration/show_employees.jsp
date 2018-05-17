@@ -30,8 +30,8 @@
             </thead>
             <tbody>
             <c:forEach items="${employees}" var="employee">
-                <tr onclick="location.href = '?action=update&id=${employee.getId()}'">
-                    <td>${employee.getId()}</td>
+                <tr>
+                    <td><a href="?action=update&id=${employee.getId()}">${employee.getId()}</a></td>
                     <td><c:out value="${employee.getName()}"/></td>
                     <td><c:out value="${employee.getUsername()}"/></td>
                     <td><c:out value="${f:formatBoolean(employee.isActive())}"/></td>

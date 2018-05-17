@@ -44,6 +44,7 @@
     <div class="col s12">
         <table class="highlight administration-table">
             <thead>
+            <th>ID</th>
             <th>Nummer</th>
             <th>Beskrivelse</th>
             <th class="short">Pris</th>
@@ -53,7 +54,8 @@
             </thead>
             <tbody>
             <c:forEach items="${materials}" var="material">
-                <tr onclick="location.href = '?action=update&id=${material.getId()}'">
+                <tr>
+                    <td><a href="?action=update&id=${material.getId()}">${material.getId()}</a></td>
                     <td><c:out value="${material.getNumber()}"/></td>
                     <td><c:out value="${material.getDescription()}"/></td>
                     <td><c:out value="${f:formatPrice(material.getPrice())}"/></td>

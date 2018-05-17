@@ -31,13 +31,11 @@
             </thead>
             <tbody>
             <c:forEach items="${orders}" var="order">
-                <tr style="cursor:pointer"
-                    onclick="location.href ='orders?action=update&id=${order.getId()}'">
-                    <td>${order.getId()}</td>
+                <tr>
+                    <td><a href="?action=update&id=${order.getId()}">${order.getId()}</a></td>
                     <c:set value="${order.getCustomer()}" var="customer"/>
                     <td>
-                        <a
-                                href="customers?action=update&id=${customer.getId()}"><c:out
+                        <a href="customers?action=update&id=${customer.getId()}"><c:out
                                 value="${customer.getName()}"/></a>
                     </td>
                     <td>${order.getWidth()}</td>
@@ -55,8 +53,7 @@
                     </c:if>
                     <c:if test="${order.getShed() != null}">
                         <td>
-                            <table>
-                                <thead>
+                            <table class="inner-table">
                                 <tbody>
                                 <tr>
                                     <th>Dybde</th>

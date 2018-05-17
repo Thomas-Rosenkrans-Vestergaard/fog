@@ -42,12 +42,12 @@
             <th>Navn</th>
             <th>Beskrivelse</th>
             <th class="short">Aktiv</th>
-            <th>Tagtype</th>
+            <th>Type</th>
             </thead>
             <tbody>
             <c:forEach items="${roofings}" var="roofing">
-                <tr onclick="location.href = '?action=update&id=${roofing.getId()}'">
-                    <td>${roofing.getId()}</td>
+                <tr>
+                    <td><a href="?action=update&id=${roofing.getId()}">${roofing.getId()}</a></td>
                     <td><c:out value="${roofing.getName()}"/></td>
                     <td><c:out value="${roofing.getDescription()}"/></td>
                     <td><c:out value="${f:formatBoolean(roofing.isActive())}"/></td>

@@ -30,8 +30,8 @@
             <c:forEach items="${offers}" var="offer">
                 <c:set var="order" value="${offer.getOrder()}"/>
                 <c:set var="employee" value="${offer.getEmployee()}"/>
-                <tr onclick="location.href = '?action=update&id=${order.getId()}'">
-                    <td>${order.getId()}</td>
+                <tr>
+                    <td><a href="?action=update&id=${offer.getId()}">${offer.getId()}</a></td>
                     <td>
                         <a href="customers?action=update&id=${order.getCustomer().getId()}">
                             <c:out value="${order.getCustomer().getName()}"/>

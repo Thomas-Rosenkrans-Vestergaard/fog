@@ -28,8 +28,8 @@
             </thead>
             <tbody>
             <c:forEach items="${floorings}" var="flooring">
-                <tr onclick="location.href = '?action=update&id=${flooring.getId()}'">
-                    <td>${flooring.getId()}</td>
+                <tr>
+                    <td><a href="?action=update&id=${flooring.getId()}">${flooring.getId()}</a></td>
                     <td><c:out value="${flooring.getName()}"/></td>
                     <td><c:out value="${flooring.getDescription()}"/></td>
                     <td><c:out value="${f:formatBoolean(flooring.isActive())}"/></td>

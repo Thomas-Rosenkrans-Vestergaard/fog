@@ -27,12 +27,11 @@
             <th class="short">Aktiv</th>
             </thead>
             <tbody>
-            <c:forEach items="${claddings}" var="claddingId">
-                <tr onclick="location.href = '?action=update&id=${claddingId.getId()}'">
-                    <td>${claddingId.getId()}</td>
-                    <td><c:out value="${claddingId.getName()}"/></td>
-                    <td><c:out value="${claddingId.getDescription()}"/></td>
-                    <td><c:out value="${f:formatBoolean(claddingId.isActive())}"/></td>
+            <c:forEach items="${claddings}" var="cladding">
+                <td><a href="?action=update&id=${cladding.getId()}">${cladding.getId()}</a></td>
+                <td><c:out value="${cladding.getName()}"/></td>
+                <td><c:out value="${cladding.getDescription()}"/></td>
+                <td><c:out value="${f:formatBoolean(cladding.isActive())}"/></td>
                 </tr>
             </c:forEach>
             </tbody>

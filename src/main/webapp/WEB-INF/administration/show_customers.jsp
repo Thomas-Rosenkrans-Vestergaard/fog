@@ -28,8 +28,8 @@
             </thead>
             <tbody>
             <c:forEach items="${customers}" var="customer">
-                <tr onclick="location.href = '?action=update&id=${customer.getId()}'">
-                    <td>${customer.getId()}</td>
+                <tr>
+                    <td><a href="?action=update&id=${customer.getId()}">${cladding.getId()}</a></td>
                     <td><c:out value="${customer.getName()}"/></td>
                     <td><c:out value="${customer.getAddress()}"/></td>
                     <td><c:out value="${customer.getEmail()}"/></td>
