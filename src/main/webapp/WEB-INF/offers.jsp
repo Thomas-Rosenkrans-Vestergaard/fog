@@ -35,19 +35,17 @@
                     <th>${offer.getStatus()}</th>
                     <td>${f:formatDatetime(offer.getCreatedAt())}</td>
                     <c:if test="${offer.isOpen()}">
-                        <td>
-                            <form method="post">
+                        <td style="max-width: 100px">
+                            <form method="post" style="display:inline-block">
                                 <input type="hidden" name="offer" value="${offer.getId()}">
-                                <button class="btn-large waves-effect waves-light" type="submit" name="action"
-                                        value="accept">Acceptér<i class="material-icons right">check</i>
+                                <button class="btn-floating waves-effect waves-light" type="submit" name="action"
+                                        value="accept"><i class="material-icons right">check</i>
                                 </button>
                             </form>
-                        </td>
-                        <td>
-                            <form method="post">
+                            <form method="post" style="display:inline-block;margin-left: 20px">
                                 <input type="hidden" name="offer" value="${offer.getId()}">
-                                <button class="btn-large waves-effect waves-light" type="submit" name="action"
-                                        value="reject">Afvis<i class="material-icons right">clear</i>
+                                <button class="btn-floating waves-effect waves-light" type="submit" name="action"
+                                        value="reject"><i class="material-icons right">clear</i>
                                 </button>
                             </form>
                         </td>
