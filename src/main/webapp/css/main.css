@@ -215,3 +215,7 @@ a:hover {
 #slide-out a:hover {
     text-decoration: none;
 }
+
+table table td {
+    padding: 0px;
+}
