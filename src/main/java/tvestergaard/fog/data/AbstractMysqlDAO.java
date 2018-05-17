@@ -221,6 +221,7 @@ public abstract class AbstractMysqlDAO
                 resultSet.getString(table + ".description"),
                 resultSet.getInt(table + ".price"),
                 resultSet.getInt(table + ".unit"),
+                resultSet.getBoolean(table + ".active"),
                 resultSet.getInt(categoryTable + ".id"),
                 createCategory(categoryTable, resultSet),
                 new HashSet<>()
@@ -235,6 +236,7 @@ public abstract class AbstractMysqlDAO
                 resultSet.getString(table + ".description"),
                 resultSet.getInt(table + ".price"),
                 resultSet.getInt(table + ".unit"),
+                resultSet.getBoolean(table + ".active"),
                 resultSet.getInt(categoryTable + ".id"),
                 createCategory(categoryTable, resultSet),
                 createAttributeSet(attributesDefinition, attributeValues, attributes)

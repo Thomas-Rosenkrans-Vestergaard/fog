@@ -172,10 +172,17 @@ public class MysqlMaterialDAO extends AbstractMysqlDAO implements MaterialDAO
     @Override public Material update(MaterialUpdater updater) throws DataAccessException
     {
         try {
-            final String SQL = "INSERT INTO materials (`number`, description, price, unit, category) " +
-                    "VALUES (?, ?, ?, ?, ?)";
+
             Connection connection = getConnection();
-            try (PreparedStatement statement = connection.prepareStatement(SQL, Statement.RETURN_GENERATED_KEYS)) {
+
+            String deactivateSQL = "UPDATE materials SET active = b'0' WHERE number = ?";
+            try (PreparedStatement deactivateStatement = connection.prepareStatement(deactivateSQL)) {
+                deactivateStatement.setString(1, updater.getNumber());
+                deactivateStatement.executeUpdate();
+            }
+
+            String insert = "INSERT INTO materials (`number`, description, price, unit, category) VALUES (?, ?, ?, ?, ?)";
+            try (PreparedStatement statement = connection.prepareStatement(insert, Statement.RETURN_GENERATED_KEYS)) {
                 statement.setString(1, updater.getNumber());
                 statement.setString(2, updater.getDescription());
                 statement.setInt(3, updater.getPrice());

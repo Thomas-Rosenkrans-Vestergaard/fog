@@ -20,7 +20,7 @@ public interface MaterialBlueprint
      */
     static MaterialBlueprint from(String number, String description, int price, int unit, int category, Set<AttributeValue> attributes)
     {
-        return new MaterialRecord(-1, number, description, price, unit, category, null, attributes);
+        return new MaterialRecord(-1, number, description, price, unit, false, category, null, attributes);
     }
 
     /**

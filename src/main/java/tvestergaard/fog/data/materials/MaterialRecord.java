@@ -35,13 +35,24 @@ public class MaterialRecord implements Material
      */
     private int unit;
 
+    /**
+     * The id of the category the material belongs to.
+     */
     private final int categoryId;
+
+    /**
+     * Whether or not the material is currently active in construction.
+     */
+    private final boolean active;
 
     /**
      * The category the material belongs to.
      */
     private final Category category;
 
+    /**
+     * The attributes assigned to the material.
+     */
     private final HashMap<String, AttributeValue> attributes = new HashMap<>();
 
     /**
@@ -52,17 +63,20 @@ public class MaterialRecord implements Material
      * @param description The material description to specify in the updater.
      * @param price       The price of the material.
      * @param unit        The type of unit the material is in.
+     * @param active      Whether or not the material is currently active in construction.
      * @param categoryId  The id of the category the material belongs to.
      * @param category    The category the material belongs to.
      * @param attributes  The attribute to add to the material.
      */
-    public MaterialRecord(int id, String number, String description, int price, int unit, int categoryId, Category category, Set<AttributeValue> attributes)
+    public MaterialRecord(int id, String number, String description, int price, int unit, boolean active,
+                          int categoryId, Category category, Set<AttributeValue> attributes)
     {
         this.id = id;
         this.number = number;
         this.description = description;
         this.price = price;
         this.unit = unit;
+        this.active = active;
         this.categoryId = categoryId;
         this.category = category;
         for (AttributeValue attribute : attributes)
@@ -147,6 +161,16 @@ public class MaterialRecord implements Material
     @Override public void setUnit(int unit)
     {
         this.unit = unit;
+    }
+
+    /**
+     * Checks if the material is currently active.
+     *
+     * @return {@code true} if the material is currently active. Or {@code false} or has been replaced with a newer version.
+     */
+    @Override public boolean isActive()
+    {
+        return active;
     }
 
     /**

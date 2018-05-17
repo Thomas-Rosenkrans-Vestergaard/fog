@@ -21,7 +21,7 @@ public interface MaterialUpdater extends MaterialBlueprint
      */
     static MaterialUpdater from(int id, String number, String description, int price, int unit, int category, Set<AttributeValue> attributes)
     {
-        return new MaterialRecord(id, number, description, price, unit, category, null, attributes);
+        return new MaterialRecord(id, number, description, price, unit, true, category, null, attributes);
     }
 
     /**
