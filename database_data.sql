@@ -1,5 +1,3 @@
-CREATE DATABASE  IF NOT EXISTS `fog` /*!40100 DEFAULT CHARACTER SET utf8 COLLATE utf8_bin */;
-USE `fog`;
 -- MySQL dump 10.13  Distrib 5.7.17, for Win64 (x86_64)
 --
 -- Host: 127.0.0.1    Database: fog
@@ -43,7 +41,7 @@ UNLOCK TABLES;
 
 LOCK TABLES `bom` WRITE;
 /*!40000 ALTER TABLE `bom` DISABLE KEYS */;
-INSERT INTO `bom` VALUES (32);
+INSERT INTO `bom` VALUES (32),(35),(38),(39);
 /*!40000 ALTER TABLE `bom` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -53,7 +51,7 @@ UNLOCK TABLES;
 
 LOCK TABLES `bom_lines` WRITE;
 /*!40000 ALTER TABLE `bom_lines` DISABLE KEYS */;
-INSERT INTO `bom_lines` VALUES (23,32,11,2,'Remme i sider, sadles ned i stolper Carport del'),(24,32,10,8,'Stolper nedgraves 90 cm. i jord + skråstiver'),(25,32,12,0,'Løsholter i siderne af skur'),(26,32,12,0,'Løsholter i gavle af skur'),(27,32,8,1,'Til z på bagside af dør'),(28,32,6,76,'Beklædning af skur 1 på 2'),(29,32,1,288,'Monteres på taglægter'),(30,32,2,19,'Monteres på toplægte med medfølgende beslag se tagstens vejledning'),(31,32,4,19,'Til	montering af rygsten'),(32,32,3,9,'Monteres på toppen af spæret (til toplægte)'),(33,32,5,180,'Til	montering af tagsten, alle ydersten + hver anden fastgøres'),(34,32,6,0,'Beklædning af gavle 1 på 2'),(35,32,25,2,'Vindskeder på rejsning'),(36,32,25,2,'Vindskeder på rejsning');
+INSERT INTO `bom_lines` VALUES (23,32,11,2,'Remme i sider, sadles ned i stolper Carport del'),(24,32,10,8,'Stolper nedgraves 90 cm. i jord + skråstiver'),(25,32,12,0,'Løsholter i siderne af skur'),(26,32,12,0,'Løsholter i gavle af skur'),(27,32,8,1,'Til z på bagside af dør'),(28,32,6,76,'Beklædning af skur 1 på 2'),(29,32,1,288,'Monteres på taglægter'),(30,32,2,19,'Monteres på toplægte med medfølgende beslag se tagstens vejledning'),(31,32,4,19,'Til	montering af rygsten'),(32,32,3,9,'Monteres på toppen af spæret (til toplægte)'),(33,32,5,180,'Til	montering af tagsten, alle ydersten + hver anden fastgøres'),(34,32,6,0,'Beklædning af gavle 1 på 2'),(35,32,25,2,'Vindskeder på rejsning'),(36,32,25,2,'Vindskeder på rejsning'),(65,35,11,2,'Remme i sider, sadles ned i stolper Carport del'),(66,35,10,8,'Stolper nedgraves 90 cm. i jord + skråstiver'),(67,35,12,0,'Løsholter i siderne af skur'),(68,35,12,0,'Løsholter i gavle af skur'),(69,35,8,1,'Til z på bagside af dør'),(70,35,6,76,'Beklædning af skur 1 på 2'),(71,35,26,288,'Monteres på taglægter'),(72,35,34,19,'Monteres på toplægte med medfølgende beslag se tagstens vejledning'),(73,35,4,19,'Til	montering af rygsten'),(74,35,3,9,'Monteres på toppen af spæret (til toplægte)'),(75,35,5,180,'Til	montering af tagsten, alle ydersten + hver anden fastgøres'),(76,35,6,0,'Beklædning af gavle 1 på 2'),(77,35,25,2,'Vindskeder på rejsning'),(78,35,25,2,'Vindskeder på rejsning'),(107,38,11,2,'Remme i sider, sadles ned i stolper Carport del'),(108,38,10,8,'Stolper nedgraves 90 cm. i jord + skråstiver'),(109,38,12,0,'Løsholter i siderne af skur'),(110,38,12,0,'Løsholter i gavle af skur'),(111,38,8,1,'Til z på bagside af dør'),(112,38,6,76,'Beklædning af skur 1 på 2'),(113,38,26,288,'Monteres på taglægter'),(114,38,34,19,'Monteres på toplægte med medfølgende beslag se tagstens vejledning'),(115,38,4,19,'Til	montering af rygsten'),(116,38,3,9,'Monteres på toppen af spæret (til toplægte)'),(117,38,5,180,'Til	montering af tagsten, alle ydersten + hver anden fastgøres'),(118,38,6,0,'Beklædning af gavle 1 på 2'),(119,38,25,2,'Vindskeder på rejsning'),(120,38,25,2,'Vindskeder på rejsning'),(121,39,11,2,'Remme i sider, sadles ned i stolper Carport del'),(122,39,10,4,'Stolper nedgraves 90 cm. i jord + skråstiver'),(123,39,12,0,'Løsholter i siderne af skur'),(124,39,12,0,'Løsholter i gavle af skur'),(125,39,8,1,'Til z på bagside af dør'),(126,39,6,40,'Beklædning af skur 1 på 2'),(127,39,1,64,'Monteres på taglægter'),(128,39,2,6,'Monteres på toplægte med medfølgende beslag se tagstens vejledning'),(129,39,4,6,'Til	montering af rygsten'),(130,39,3,3,'Monteres på toppen af spæret (til toplægte)'),(131,39,5,48,'Til	montering af tagsten, alle ydersten + hver anden fastgøres'),(132,39,6,0,'Beklædning af gavle 1 på 2'),(133,39,25,2,'Vindskeder på rejsning'),(134,39,25,2,'Vindskeder på rejsning');
 /*!40000 ALTER TABLE `bom_lines` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -173,7 +171,7 @@ UNLOCK TABLES;
 
 LOCK TABLES `offers` WRITE;
 /*!40000 ALTER TABLE `offers` DISABLE KEYS */;
-INSERT INTO `offers` VALUES (2,15,1,20000,'REJECTED','2018-05-16 23:08:46'),(3,15,1,2000000,'ACCEPTED','2018-05-16 23:12:18'),(4,16,1,1000000,'OPEN','2018-05-17 07:57:45');
+INSERT INTO `offers` VALUES (2,15,1,20000,'REJECTED','2018-05-16 23:08:46'),(3,15,1,2000000,'ACCEPTED','2018-05-16 23:12:18'),(4,16,1,1000000,'ACCEPTED','2018-05-17 07:57:45'),(5,17,1,10000,'ACCEPTED','2018-05-17 12:10:45'),(6,17,1,12000,'REJECTED','2018-05-17 12:11:32');
 /*!40000 ALTER TABLE `offers` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -183,7 +181,7 @@ UNLOCK TABLES;
 
 LOCK TABLES `orders` WRITE;
 /*!40000 ALTER TABLE `orders` DISABLE KEYS */;
-INSERT INTO `orders` VALUES (15,1,420,780,300,1,25,1,'',1,'2018-05-16 14:02:17'),(16,1,420,780,300,2,25,0,'',3,'2018-05-17 07:45:20');
+INSERT INTO `orders` VALUES (15,1,420,780,300,1,25,1,'\0',1,'2018-05-16 14:02:17'),(16,1,420,780,300,2,25,0,'\0',3,'2018-05-17 07:45:20'),(17,1,240,240,180,1,25,0,'\0',4,'2018-05-17 12:08:04'),(18,1,240,240,180,1,25,0,'',NULL,'2018-05-17 14:17:32');
 /*!40000 ALTER TABLE `orders` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -193,7 +191,7 @@ UNLOCK TABLES;
 
 LOCK TABLES `purchases` WRITE;
 /*!40000 ALTER TABLE `purchases` DISABLE KEYS */;
-INSERT INTO `purchases` VALUES (17,3,1,32,'2018-05-17 06:47:29');
+INSERT INTO `purchases` VALUES (17,3,1,32,'2018-05-17 06:47:29'),(21,4,1,38,'2018-05-17 12:06:56'),(22,5,1,39,'2018-05-17 12:12:10');
 /*!40000 ALTER TABLE `purchases` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -243,7 +241,7 @@ UNLOCK TABLES;
 
 LOCK TABLES `sheds` WRITE;
 /*!40000 ALTER TABLE `sheds` DISABLE KEYS */;
-INSERT INTO `sheds` VALUES (1,200,1,1),(3,200,1,1);
+INSERT INTO `sheds` VALUES (1,200,1,1),(3,200,1,1),(4,100,1,1);
 /*!40000 ALTER TABLE `sheds` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -253,7 +251,7 @@ UNLOCK TABLES;
 
 LOCK TABLES `tokens` WRITE;
 /*!40000 ALTER TABLE `tokens` DISABLE KEYS */;
-INSERT INTO `tokens` VALUES (1,1,'$2a$10$txIrDL1wpCWYPLtRK8r9/Ofq5.SSVy12N.8mw7uqxN0vj3WUhFeJq','2018-05-16 23:12:19','OFFER_EMAIL'),(2,1,'$2a$10$rxnqFn.qABsJTF2ALPFEteOyRMwedwktCn8gfggnIBhxFVz58oE.a','2018-05-17 07:57:45','OFFER_EMAIL');
+INSERT INTO `tokens` VALUES (1,1,'$2a$10$txIrDL1wpCWYPLtRK8r9/Ofq5.SSVy12N.8mw7uqxN0vj3WUhFeJq','2018-05-16 23:12:19','OFFER_EMAIL'),(2,1,'$2a$10$rxnqFn.qABsJTF2ALPFEteOyRMwedwktCn8gfggnIBhxFVz58oE.a','2018-05-17 07:57:45','OFFER_EMAIL'),(3,1,'$2a$10$YQVzcKVHKOjFBvPkDF09A.Nawy8TJmCjlq8c0P8n1WahQH/jX4Yiy','2018-05-17 12:10:45','OFFER_EMAIL'),(4,1,'$2a$10$j7Z.N71Xi/vE6NcaEYfWRuUz3h9Pm54oP5J8mAqDdp8XgsYKzxmoO','2018-05-17 12:11:32','OFFER_EMAIL');
 /*!40000 ALTER TABLE `tokens` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -266,4 +264,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-05-17 10:06:28
+-- Dump completed on 2018-05-17 16:37:08

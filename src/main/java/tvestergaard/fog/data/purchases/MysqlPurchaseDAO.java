@@ -129,6 +129,13 @@ public class MysqlPurchaseDAO extends AbstractMysqlDAO implements PurchaseDAO
                     }
                 }
 
+                String orderSQL = "UPDATE orders SET active = b'0' WHERE orders.id = " +
+                        "(SELECT offers.order FROM offers WHERE offers.id = ?)";
+                try (PreparedStatement orderStatement = connection.prepareStatement(orderSQL)) {
+                    orderStatement.setInt(1, blueprint.getOfferId());
+                    orderStatement.executeUpdate();
+                }
+
                 String closeSQL = "UPDATE offers SET status = 'REJECTED' WHERE `order` = " +
                         "(SELECT `order` FROM (SELECT * FROM offers) o WHERE o.id = ?)";
                 try (PreparedStatement closeStatement = connection.prepareStatement(closeSQL)) {
