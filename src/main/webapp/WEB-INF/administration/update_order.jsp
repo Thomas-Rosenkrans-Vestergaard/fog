@@ -5,13 +5,15 @@
         <h2><span class="focus">Opdatér ordre</span></h2>
     </div>
 </div>
-<div class="row">
-    <div class="col s12">
-        <a href="offers?action=create&order=${order.getId()}" class="waves-effect waves-light btn">
-            <i class="material-icons right">add</i>OPRET TILBUD
-        </a>
+<c:if test="${order.isActive()}">
+    <div class="row">
+        <div class="col s12">
+            <a href="offers?action=create&order=${order.getId()}" class="waves-effect waves-light btn">
+                <i class="material-icons right">add</i>OPRET TILBUD
+            </a>
+        </div>
     </div>
-</div>
+</c:if>
 <div class="row">
     <div class="col s12">
         <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Nulla non lectus sed nisl molestie malesuada.
