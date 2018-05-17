@@ -3,7 +3,7 @@ package tvestergaard.fog.data.employees;
 import com.mysql.cj.jdbc.MysqlDataSource;
 import tvestergaard.fog.data.AbstractMysqlDAO;
 import tvestergaard.fog.data.MysqlDataAccessException;
-import tvestergaard.fog.data.constraints.Constraint;
+import tvestergaard.fog.data.constraints.Constraints;
 import tvestergaard.fog.data.constraints.StatementBinder;
 import tvestergaard.fog.data.constraints.StatementGenerator;
 
@@ -11,19 +11,20 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import static tvestergaard.fog.data.constraints.Constraint.*;
+import static tvestergaard.fog.data.constraints.Constraint.eq;
+import static tvestergaard.fog.data.constraints.Constraint.where;
 import static tvestergaard.fog.data.employees.EmployeeColumn.ID;
 
 public class MysqlEmployeeDAO extends AbstractMysqlDAO implements EmployeeDAO
 {
 
     /**
-     * The generator used to generate SQL for the {@link Constraint}s provided to this DAO.
+     * The generator used to generate SQL for the constraints provided to this DAO.
      */
     private final StatementGenerator<EmployeeColumn> generator = new StatementGenerator();
 
     /**
-     * The binder used to bind prepared variables for the {@link Constraint}s provided to this DAO.
+     * The binder used to bind prepared variables for the constraints provided to this DAO.
      */
     private final StatementBinder<EmployeeColumn> binder = new StatementBinder();
 
@@ -44,7 +45,7 @@ public class MysqlEmployeeDAO extends AbstractMysqlDAO implements EmployeeDAO
      * @return The resulting employees.
      * @throws MysqlDataAccessException When a data storage exception occurs while performing the operation.
      */
-    @Override public List<Employee> get(Constraint<EmployeeColumn>... constraints) throws MysqlDataAccessException
+    @Override public List<Employee> get(Constraints<EmployeeColumn> constraints) throws MysqlDataAccessException
     {
         final List<Employee> employees = new ArrayList<>();
         final String SQL = generator.generate(
@@ -70,9 +71,9 @@ public class MysqlEmployeeDAO extends AbstractMysqlDAO implements EmployeeDAO
      * the provided constraints.
      * @throws MysqlDataAccessException When a data storage exception occurs while performing the operation.
      */
-    @Override public Employee first(Constraint<EmployeeColumn>... constraints) throws MysqlDataAccessException
+    @Override public Employee first(Constraints<EmployeeColumn> constraints) throws MysqlDataAccessException
     {
-        List<Employee> employees = get(append(constraints, limit(1)));
+        List<Employee> employees = get(constraints.limit(1));
 
         return employees.isEmpty() ? null : employees.get(0);
     }

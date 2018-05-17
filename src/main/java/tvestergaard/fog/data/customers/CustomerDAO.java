@@ -1,7 +1,7 @@
 package tvestergaard.fog.data.customers;
 
 import tvestergaard.fog.data.DataAccessException;
-import tvestergaard.fog.data.constraints.Constraint;
+import tvestergaard.fog.data.constraints.Constraints;
 
 import java.util.List;
 
@@ -15,7 +15,7 @@ public interface CustomerDAO
      * @return The resulting customers.
      * @throws DataAccessException When a data storage exception occurs while performing the operation.
      */
-    List<Customer> get(Constraint<CustomerColumn>... constraints) throws DataAccessException;
+    List<Customer> get(Constraints<CustomerColumn> constraints) throws DataAccessException;
 
     /**
      * Returns the first customer matching the provided constraints.
@@ -25,7 +25,7 @@ public interface CustomerDAO
      * the provided constraints.
      * @throws DataAccessException When a data storage exception occurs while performing the operation.
      */
-    Customer first(Constraint<CustomerColumn>... constraints) throws DataAccessException;
+    Customer first(Constraints<CustomerColumn> constraints) throws DataAccessException;
 
     /**
      * Inserts a new customer into the data storage.

@@ -2,7 +2,7 @@ package tvestergaard.fog.logic.claddings;
 
 import tvestergaard.fog.data.DataAccessException;
 import tvestergaard.fog.data.cladding.*;
-import tvestergaard.fog.data.constraints.Constraint;
+import tvestergaard.fog.data.constraints.Constraints;
 import tvestergaard.fog.logic.ApplicationException;
 
 import java.util.List;
@@ -35,13 +35,28 @@ public class CladdingFacade
      * Returns the claddings in the data storage. The results can be constrained using the provided constraints.
      *
      * @param constraints The constraints that modify the resulting list.
-     * @return The complete list of the claddings in the data storage.
+     * @return The list of the claddings in the data storage.
      * @throws ApplicationException When an exception occurs while performing the operation.
      */
-    public List<Cladding> get(Constraint<CladdingColumn>... constraints)
+    public List<Cladding> get(Constraints<CladdingColumn> constraints)
     {
         try {
             return dao.get(constraints);
+        } catch (DataAccessException e) {
+            throw new ApplicationException(e);
+        }
+    }
+
+    /**
+     * Returns all the claddings in the data storage.
+     *
+     * @return The complete list of the claddings in the data storage.
+     * @throws ApplicationException When an exception occurs while performing the operation.
+     */
+    public List<Cladding> get()
+    {
+        try {
+            return dao.get(null);
         } catch (DataAccessException e) {
             throw new ApplicationException(e);
         }
@@ -55,7 +70,7 @@ public class CladdingFacade
      * the provided constraints.
      * @throws ApplicationException When an exception occurs while performing the operation.
      */
-    public Cladding first(Constraint<CladdingColumn>... constraints)
+    public Cladding first(Constraints<CladdingColumn> constraints)
     {
         try {
             return dao.first(constraints);

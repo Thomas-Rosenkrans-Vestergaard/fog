@@ -3,7 +3,7 @@ package tvestergaard.fog.data.constraints;
 /**
  * Represents a unary OR operator.
  */
-public class UnaryOrCondition<C extends Enum<C>> implements WhereCondition<C>
+public class UnaryOrCondition<C extends Column<C>> implements WhereCondition<C>
 {
 
     /**

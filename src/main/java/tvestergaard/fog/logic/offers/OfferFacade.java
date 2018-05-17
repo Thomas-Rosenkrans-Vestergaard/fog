@@ -1,7 +1,7 @@
 package tvestergaard.fog.logic.offers;
 
 import tvestergaard.fog.data.DataAccessException;
-import tvestergaard.fog.data.constraints.Constraint;
+import tvestergaard.fog.data.constraints.Constraints;
 import tvestergaard.fog.data.employees.Employee;
 import tvestergaard.fog.data.employees.EmployeeColumn;
 import tvestergaard.fog.data.employees.EmployeeDAO;
@@ -92,10 +92,25 @@ public class OfferFacade
      * @return The resulting offers.
      * @throws ApplicationException When a data storage exception occurs while performing the operation.
      */
-    public List<Offer> get(Constraint<OfferColumn>... constraints)
+    public List<Offer> get(Constraints<OfferColumn> constraints)
     {
         try {
             return offerDAO.get(constraints);
+        } catch (DataAccessException e) {
+            throw new ApplicationException(e);
+        }
+    }
+
+    /**
+     * Returns the offers in the data storage.
+     *
+     * @return The resulting offers.
+     * @throws ApplicationException When a data storage exception occurs while performing the operation.
+     */
+    public List<Offer> get()
+    {
+        try {
+            return offerDAO.get(null);
         } catch (DataAccessException e) {
             throw new ApplicationException(e);
         }
@@ -125,7 +140,7 @@ public class OfferFacade
      * the provided constraints.
      * @throws ApplicationException When a data storage exception occurs while performing the operation.
      */
-    public Offer first(Constraint<OfferColumn>... constraints)
+    public Offer first(Constraints<OfferColumn> constraints)
     {
         try {
             return offerDAO.first(constraints);

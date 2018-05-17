@@ -1,7 +1,7 @@
 package tvestergaard.fog.logic.purchases;
 
 import tvestergaard.fog.data.DataAccessException;
-import tvestergaard.fog.data.constraints.Constraint;
+import tvestergaard.fog.data.constraints.Constraints;
 import tvestergaard.fog.data.employees.Employee;
 import tvestergaard.fog.data.employees.EmployeeColumn;
 import tvestergaard.fog.data.employees.EmployeeDAO;
@@ -74,10 +74,25 @@ public class PurchaseFacade
      * @return The resulting purchases.
      * @throws ApplicationException When a data storage exception occurs while performing the operation.
      */
-    public List<Purchase> get(Constraint<PurchaseColumn>... constraints)
+    public List<Purchase> get(Constraints<PurchaseColumn> constraints)
     {
         try {
             return purchaseDAO.get(constraints);
+        } catch (DataAccessException e) {
+            throw new ApplicationException(e);
+        }
+    }
+
+    /**
+     * Returns the purchases in the data storage.
+     *
+     * @return The resulting purchases.
+     * @throws ApplicationException When a data storage exception occurs while performing the operation.
+     */
+    public List<Purchase> get()
+    {
+        try {
+            return purchaseDAO.get(null);
         } catch (DataAccessException e) {
             throw new ApplicationException(e);
         }
@@ -91,7 +106,7 @@ public class PurchaseFacade
      * the provided constraints.
      * @throws ApplicationException When a data storage exception occurs while performing the operation.
      */
-    public Purchase first(Constraint<PurchaseColumn>... constraints)
+    public Purchase first(Constraints<PurchaseColumn> constraints)
     {
         try {
             return purchaseDAO.first(constraints);

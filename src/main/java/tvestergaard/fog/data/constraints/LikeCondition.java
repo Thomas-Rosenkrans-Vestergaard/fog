@@ -3,7 +3,7 @@ package tvestergaard.fog.data.constraints;
 /**
  * Represents the LIKE operator from SQL.
  */
-public class LikeCondition<C extends Enum<C>> implements WhereCondition<C>
+public class LikeCondition<C extends Column<C>> implements WhereCondition<C>
 {
 
     /**

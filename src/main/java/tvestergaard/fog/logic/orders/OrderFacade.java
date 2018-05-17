@@ -1,7 +1,7 @@
 package tvestergaard.fog.logic.orders;
 
 import tvestergaard.fog.data.DataAccessException;
-import tvestergaard.fog.data.constraints.Constraint;
+import tvestergaard.fog.data.constraints.Constraints;
 import tvestergaard.fog.data.customers.UnknownCustomerException;
 import tvestergaard.fog.data.orders.*;
 import tvestergaard.fog.logic.ApplicationException;
@@ -48,10 +48,25 @@ public class OrderFacade
      * @return The resulting orders.
      * @throws ApplicationException When an exception occurs while performing the operation.
      */
-    public List<Order> get(Constraint<OrderColumn>... constraints)
+    public List<Order> get(Constraints<OrderColumn> constraints)
     {
         try {
             return dao.get(constraints);
+        } catch (DataAccessException e) {
+            throw new ApplicationException(e);
+        }
+    }
+
+    /**
+     * Returns the orders in the data storage.
+     *
+     * @return The resulting orders.
+     * @throws ApplicationException When an exception occurs while performing the operation.
+     */
+    public List<Order> get()
+    {
+        try {
+            return dao.get(null);
         } catch (DataAccessException e) {
             throw new ApplicationException(e);
         }
@@ -65,7 +80,7 @@ public class OrderFacade
      * provided constraints.
      * @throws ApplicationException When an exception occurs while performing the operation.
      */
-    public Order first(Constraint<OrderColumn>... constraints)
+    public Order first(Constraints<OrderColumn> constraints)
     {
         try {
             return dao.first(constraints);

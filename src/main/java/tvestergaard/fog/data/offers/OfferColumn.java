@@ -1,8 +1,9 @@
 package tvestergaard.fog.data.offers;
 
+import tvestergaard.fog.data.constraints.Column;
 import tvestergaard.fog.data.constraints.MysqlColumn;
 
-public enum OfferColumn implements MysqlColumn
+public enum OfferColumn implements Column<OfferColumn>, MysqlColumn
 {
 
     ID,

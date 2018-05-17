@@ -3,7 +3,7 @@ package tvestergaard.fog.data.offers;
 import com.mysql.cj.jdbc.MysqlDataSource;
 import tvestergaard.fog.data.AbstractMysqlDAO;
 import tvestergaard.fog.data.MysqlDataAccessException;
-import tvestergaard.fog.data.constraints.Constraint;
+import tvestergaard.fog.data.constraints.Constraints;
 import tvestergaard.fog.data.constraints.StatementBinder;
 import tvestergaard.fog.data.constraints.StatementGenerator;
 import tvestergaard.fog.data.purchases.PurchaseBlueprint;
@@ -13,7 +13,8 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import static tvestergaard.fog.data.constraints.Constraint.*;
+import static tvestergaard.fog.data.constraints.Constraint.eq;
+import static tvestergaard.fog.data.constraints.Constraint.where;
 import static tvestergaard.fog.data.offers.OfferColumn.ORDER;
 
 public class MysqlOfferDAO extends AbstractMysqlDAO implements OfferDAO
@@ -46,7 +47,7 @@ public class MysqlOfferDAO extends AbstractMysqlDAO implements OfferDAO
      * @return The resulting offers.
      * @throws MysqlDataAccessException When a data storage exception occurs while performing the operation.
      */
-    @Override public List<Offer> get(Constraint<OfferColumn>... constraints) throws MysqlDataAccessException
+    @Override public List<Offer> get(Constraints<OfferColumn> constraints) throws MysqlDataAccessException
     {
         final List<Offer> offers = new ArrayList<>();
         final String SQL = generator.generate(
@@ -92,9 +93,9 @@ public class MysqlOfferDAO extends AbstractMysqlDAO implements OfferDAO
      * the provided constraints.
      * @throws MysqlDataAccessException When a data storage exception occurs while performing the operation.
      */
-    @Override public Offer first(Constraint<OfferColumn>... constraints) throws MysqlDataAccessException
+    @Override public Offer first(Constraints<OfferColumn> constraints) throws MysqlDataAccessException
     {
-        List<Offer> offers = get(append(constraints, limit(1)));
+        List<Offer> offers = get(constraints.limit(1));
 
         return offers.isEmpty() ? null : offers.get(0);
     }

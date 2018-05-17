@@ -4,7 +4,7 @@ import tvestergaard.fog.data.DataAccessException;
 import tvestergaard.fog.data.components.Component;
 import tvestergaard.fog.data.components.ComponentDefinition;
 import tvestergaard.fog.data.components.ComponentReference;
-import tvestergaard.fog.data.constraints.Constraint;
+import tvestergaard.fog.data.constraints.Constraints;
 
 import java.util.List;
 
@@ -18,7 +18,7 @@ public interface RoofingDAO
      * @return The complete list of the roofings in the data storage.
      * @throws DataAccessException When a data storage exception occurs while performing the operation.
      */
-    List<Roofing> get(Constraint<RoofingColumn>... constraints) throws DataAccessException;
+    List<Roofing> get(Constraints<RoofingColumn> constraints) throws DataAccessException;
 
     /**
      * Returns the first roofing matching the provided constraints.
@@ -28,7 +28,7 @@ public interface RoofingDAO
      * provided constraints.
      * @throws DataAccessException When a data storage exception occurs while performing the operation.
      */
-    Roofing first(Constraint<RoofingColumn>... constraints) throws DataAccessException;
+    Roofing first(Constraints<RoofingColumn> constraints) throws DataAccessException;
 
     /**
      * Inserts a new roofing into the data storage.

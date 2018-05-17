@@ -1,111 +1,48 @@
 package tvestergaard.fog.data.constraints;
 
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
-/**
- * Generated a prepared statement from the provided {@link Constraint}s.
- */
-public class StatementGenerator<T extends Enum<T> & MysqlColumn>
+public class StatementGenerator<C extends Column<C> & MysqlColumn>
 {
 
-    /**
-     * Contains the ordering of contains.
-     *
-     * @see StatementGenerator#sort(Constraint[])
-     */
-    private final java.util.Map<Class<? extends Constraint>, Integer> constraintOrder = new HashMap<>();
-
-    public StatementGenerator()
-    {
-        constraintOrder.put(WhereConstraint.class, 0);
-        constraintOrder.put(OrderConstraint.class, 1);
-        constraintOrder.put(LimitConstraint.class, 2);
-        constraintOrder.put(OffsetConstraint.class, 4);
-    }
-
-    /**
-     * Generates the SQL representing the provided {@link Constraint}s. Returns the generated SQL appended to the
-     * provided {@code statement}.
-     *
-     * @param statement   The base statement.
-     * @param constraints The constraints to generate into SQL.
-     * @return The SQL representing the provided {@link Constraint}s appended to the provided {@code statement}.
-     */
-    public String generate(String statement, Constraint<T>... constraints)
+    public String generate(String statement, Constraints<C> constraints)
     {
         return statement + generate(constraints);
     }
 
-    /**
-     * Generates and returns the SQL representing the provided {@link Constraint}s.
-     *
-     * @param constraints The constraints to generate into SQL.
-     * @return The SQL representing the provided {@link Constraint}s.
-     */
-    public String generate(Constraint<T>... constraints)
+    public String generate(Constraints<C> constraints)
     {
+        if (constraints == null)
+            return "";
+
         StringBuilder builder = new StringBuilder("");
-        sort(constraints);
-        for (Constraint constraint : constraints)
-            appendConstraintSQL(builder, constraint);
+
+        appendWhereConstraintSQL(builder, constraints.getWhereConditions());
+        appendGroupByConstraintSQL(builder, constraints.getGroupConstraint());
+        appendHavingConstraintSQL(builder, constraints.getHavingConditions());
+        appendOrderConstraintSQL(builder, constraints.getOrderColumns(), constraints.getOrderSQL());
+        appendLimitConstraint(builder, constraints.getLimitConstraint());
+        appendOffsetConstraint(builder, constraints.getOffsetConstraint());
 
         return builder.toString();
     }
 
-    /**
-     * Sorts the provided {@link Constraint}s, so they appear in the order required by SQL.
-     *
-     * @param constraints The constraints to sort. Mutates the provided array.
-     */
-    private void sort(Constraint<T>[] constraints)
+    private void appendWhereConstraintSQL(StringBuilder builder, List<WhereCondition<C>> conditions)
     {
-        Arrays.sort(constraints, Comparator.comparingInt(c -> constraintOrder.get(c.getClass())));
-    }
-
-    /**
-     * Appends the SQL, needed to represent the provided {@link Constraint}, to the provided {@code StringBuilder}.
-     *
-     * @param builder    The {@code StringBuilder} to append the SQL to.
-     * @param constraint The {@link Constraint} to append the SQL representation of.
-     */
-    private void appendConstraintSQL(StringBuilder builder, Constraint<T> constraint)
-    {
-        if (constraint instanceof WhereConstraint) {
-            appendWhereConstraintSQL(builder, (WhereConstraint) constraint);
-            return;
-        }
-
-        if (constraint instanceof OrderConstraint) {
-            appendOrderConstraintSQL(builder, (OrderConstraint) constraint);
-            return;
-        }
-
-        if (constraint instanceof LimitConstraint) {
-            appendLimitConstraint(builder, (LimitConstraint) constraint);
-            return;
-        }
-
-        if (constraint instanceof OffsetConstraint) {
-            appendOffsetConstraint(builder, (OffsetConstraint) constraint);
-            return;
-        }
-    }
-
-    /**
-     * Appends the SQL, needed to represent the provided {@link WhereConstraint}, to the provided {@code
-     * StringBuilder}.
-     *
-     * @param builder    The {@code StringBuilder} to append the SQL to.
-     * @param constraint The {@link Constraint} to append the SQL representation of.
-     */
-    private void appendWhereConstraintSQL(StringBuilder builder, WhereConstraint<T> constraint)
-    {
-        WhereCondition[] conditions = constraint.getConditions();
-        if (conditions.length > 0) {
+        if (conditions != null && conditions.size() > 0) {
             builder.append(" WHERE");
-            for (WhereCondition condition : constraint.getConditions())
+            for (WhereCondition condition : conditions)
+                appendWhereConditionSQL(builder, condition);
+        }
+    }
+
+    private void appendHavingConstraintSQL(StringBuilder builder, List<WhereCondition<C>> conditions)
+    {
+        if (conditions != null && conditions.size() > 0) {
+            builder.append(" HAVING");
+            for (WhereCondition condition : conditions)
                 appendWhereConditionSQL(builder, condition);
         }
     }
@@ -116,7 +53,7 @@ public class StatementGenerator<T extends Enum<T> & MysqlColumn>
      * @param builder   The {@code StringBuilder} to append the SQL to.
      * @param condition The {@link WhereCondition} to append the SQL representation of.
      */
-    private void appendWhereConditionSQL(StringBuilder builder, WhereCondition<T> condition)
+    private void appendWhereConditionSQL(StringBuilder builder, WhereCondition<C> condition)
     {
         if (condition instanceof BinaryAndCondition) {
             builder.append(' ');
@@ -166,7 +103,7 @@ public class StatementGenerator<T extends Enum<T> & MysqlColumn>
         }
     }
 
-    private void appendNotConditionSQL(StringBuilder builder, NotCondition<T> condition)
+    private void appendNotConditionSQL(StringBuilder builder, NotCondition<C> condition)
     {
         builder.append(' ');
         if (condition.column.useBacktick())
@@ -177,7 +114,7 @@ public class StatementGenerator<T extends Enum<T> & MysqlColumn>
         builder.append(" != ?");
     }
 
-    private void appendEqualsConditionSQL(StringBuilder builder, EqualsCondition<T> condition)
+    private void appendEqualsConditionSQL(StringBuilder builder, EqualsCondition<C> condition)
     {
         builder.append(' ');
         if (condition.column.useBacktick())
@@ -188,7 +125,7 @@ public class StatementGenerator<T extends Enum<T> & MysqlColumn>
         builder.append(" = ?");
     }
 
-    private void appendLikeConditionSQL(StringBuilder builder, LikeCondition<T> condition)
+    private void appendLikeConditionSQL(StringBuilder builder, LikeCondition<C> condition)
     {
         builder.append(' ');
         if (condition.column.useBacktick())
@@ -199,46 +136,61 @@ public class StatementGenerator<T extends Enum<T> & MysqlColumn>
         builder.append(" LIKE ?");
     }
 
-    /**
-     * Appends the SQL, needed to represent the provided {@link OrderConstraint}, to the provided {@code
-     * StringBuilder}.
-     *
-     * @param builder    The {@code StringBuilder} to append the SQL to.
-     * @param constraint The {@link OrderConstraint} to append the SQL representation of.
-     */
-    private void appendOrderConstraintSQL(StringBuilder builder, OrderConstraint<T> constraint)
+    private void appendGroupByConstraintSQL(StringBuilder builder, List<C> groupConstraint)
     {
-        builder.append(" ORDER BY ");
-        if (constraint.getColumn().useBacktick())
-            builder.append('`');
-        builder.append(constraint.getColumn().getMysqlName());
-        if (constraint.getColumn().useBacktick())
-            builder.append('`');
+        if (groupConstraint != null && groupConstraint.size() > 0) {
+            builder.append(" GROUP BY ");
+            Iterator<C> it = groupConstraint.iterator();
+            appendColumn(builder, it.next());
+            while (it.hasNext()) {
+                builder.append(", ");
+                appendColumn(builder, it.next());
+            }
+        }
+    }
+
+    private void appendColumn(StringBuilder builder, C column)
+    {
         builder.append(' ');
-        builder.append(constraint.getDirection());
+        if (column.useBacktick())
+            builder.append('`');
+        builder.append(column.getMysqlName());
+        if (column.useBacktick())
+            builder.append('`');
     }
 
-    /**
-     * Appends the SQL, needed to represent the provided {@link LimitConstraint}, to the provided {@code
-     * StringBuilder}.
-     *
-     * @param builder    The {@code StringBuilder} to append the SQL to.
-     * @param constraint The {@link LimitConstraint} to append the SQL representation of.
-     */
-    private void appendLimitConstraint(StringBuilder builder, LimitConstraint<T> constraint)
+    private void appendOrderConstraintSQL(StringBuilder builder, Map<C, OrderDirection> orderColumns, List<String> orderSQL)
     {
-        builder.append(" LIMIT ?");
+        if ((orderColumns != null && orderColumns.size() > 0) || (orderSQL != null && orderSQL.size() > 0))
+            builder.append(" ORDER BY");
+        if (orderColumns != null && orderColumns.size() > 0)
+            for (Map.Entry<C, OrderDirection> orderColumn : orderColumns.entrySet())
+                appendOrderColumnSQL(builder, orderColumn.getKey(), orderColumn.getValue());
+
+        if (orderSQL != null && orderSQL.size() > 0) {
+            for (String sql : orderSQL) {
+                builder.append(' ');
+                builder.append(sql.trim());
+            }
+        }
     }
 
-    /**
-     * Appends the SQL, needed to represent the provided {@link OffsetConstraint}, to the provided {@code
-     * StringBuilder}.
-     *
-     * @param builder    The {@code StringBuilder} to append the SQL to.
-     * @param constraint The {@link OffsetConstraint} to append the SQL representation of.
-     */
-    private void appendOffsetConstraint(StringBuilder builder, OffsetConstraint<T> constraint)
+    private void appendOrderColumnSQL(StringBuilder builder, C column, OrderDirection direction)
     {
-        builder.append(" OFFSET ?");
+        appendColumn(builder, column);
+        builder.append(" ");
+        builder.append(direction.name());
+    }
+
+    private void appendLimitConstraint(StringBuilder builder, int limit)
+    {
+        if (limit >= 0)
+            builder.append(" LIMIT ?");
+    }
+
+    private void appendOffsetConstraint(StringBuilder builder, int offset)
+    {
+        if (offset >= 0)
+            builder.append(" OFFSET ?");
     }
 }

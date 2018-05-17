@@ -3,7 +3,7 @@ package tvestergaard.fog.data.cladding;
 import com.mysql.cj.jdbc.MysqlDataSource;
 import tvestergaard.fog.data.AbstractMysqlDAO;
 import tvestergaard.fog.data.MysqlDataAccessException;
-import tvestergaard.fog.data.constraints.Constraint;
+import tvestergaard.fog.data.constraints.Constraints;
 import tvestergaard.fog.data.constraints.StatementBinder;
 import tvestergaard.fog.data.constraints.StatementGenerator;
 
@@ -11,21 +11,18 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import static tvestergaard.fog.data.constraints.Constraint.append;
-import static tvestergaard.fog.data.constraints.Constraint.limit;
-
 public class MysqlCladdingDAO extends AbstractMysqlDAO implements CladdingDAO
 {
 
     /**
-     * The generator used to create SQL for the constraints provided to this DAO.
+     * The generator used to generate SQL for the constraints provided to this DAO.
      */
-    private final StatementGenerator generator = new StatementGenerator();
+    private final StatementGenerator<CladdingColumn> generator = new StatementGenerator();
 
     /**
      * The binder used to bind prepared variables for the constraints provided to this DAO.
      */
-    private final StatementBinder binder = new StatementBinder();
+    private final StatementBinder<CladdingColumn> binder = new StatementBinder();
 
     /**
      * Creates a new {@link MysqlCladdingDAO}.
@@ -45,7 +42,7 @@ public class MysqlCladdingDAO extends AbstractMysqlDAO implements CladdingDAO
      * @throws MysqlDataAccessException When a data storage exception occurs while performing the operation.
      */
     @Override
-    public List<Cladding> get(Constraint<CladdingColumn>... constraints) throws MysqlDataAccessException
+    public List<Cladding> get(Constraints<CladdingColumn> constraints) throws MysqlDataAccessException
     {
         final List<Cladding> floors = new ArrayList<>();
         final String         SQL    = generator.generate("SELECT * FROM claddings", constraints);
@@ -70,9 +67,9 @@ public class MysqlCladdingDAO extends AbstractMysqlDAO implements CladdingDAO
      * @throws MysqlDataAccessException When a data storage exception occurs while performing the operation.
      */
     @Override
-    public Cladding first(Constraint<CladdingColumn>... constraints) throws MysqlDataAccessException
+    public Cladding first(Constraints<CladdingColumn> constraints) throws MysqlDataAccessException
     {
-        List<Cladding> claddings = get(append(constraints, limit(1)));
+        List<Cladding> claddings = get(constraints.limit(1));
 
         return claddings.isEmpty() ? null : claddings.get(0);
     }

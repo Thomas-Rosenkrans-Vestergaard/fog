@@ -1,8 +1,9 @@
 package tvestergaard.fog.data.flooring;
 
+import tvestergaard.fog.data.constraints.Column;
 import tvestergaard.fog.data.constraints.MysqlColumn;
 
-public enum FlooringColumn implements MysqlColumn
+public enum FlooringColumn implements Column<FlooringColumn>, MysqlColumn
 {
 
     ID,

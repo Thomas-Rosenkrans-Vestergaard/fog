@@ -1,7 +1,7 @@
 package tvestergaard.fog.data.cladding;
 
 import tvestergaard.fog.data.DataAccessException;
-import tvestergaard.fog.data.constraints.Constraint;
+import tvestergaard.fog.data.constraints.Constraints;
 
 import java.util.List;
 
@@ -15,7 +15,7 @@ public interface CladdingDAO
      * @return The complete list of the claddings in the data storage.
      * @throws DataAccessException When a data storage exception occurs while performing the operation.
      */
-    List<Cladding> get(Constraint<CladdingColumn>... constraints) throws DataAccessException;
+    List<Cladding> get(Constraints<CladdingColumn> constraints) throws DataAccessException;
 
     /**
      * Returns the first cladding matching the provided constraints.
@@ -25,7 +25,7 @@ public interface CladdingDAO
      * the provided constraints.
      * @throws DataAccessException When a data storage exception occurs while performing the operation.
      */
-    Cladding first(Constraint<CladdingColumn>... constraints) throws DataAccessException;
+    Cladding first(Constraints<CladdingColumn> constraints) throws DataAccessException;
 
     /**
      * Inserts a new cladding into the data storage.

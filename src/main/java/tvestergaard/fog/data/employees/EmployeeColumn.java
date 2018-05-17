@@ -1,8 +1,9 @@
 package tvestergaard.fog.data.employees;
 
+import tvestergaard.fog.data.constraints.Column;
 import tvestergaard.fog.data.constraints.MysqlColumn;
 
-public enum EmployeeColumn implements MysqlColumn
+public enum EmployeeColumn implements Column<EmployeeColumn>, MysqlColumn
 {
     ID,
     NAME,

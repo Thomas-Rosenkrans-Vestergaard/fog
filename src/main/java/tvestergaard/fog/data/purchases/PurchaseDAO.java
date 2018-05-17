@@ -1,7 +1,7 @@
 package tvestergaard.fog.data.purchases;
 
 import tvestergaard.fog.data.DataAccessException;
-import tvestergaard.fog.data.constraints.Constraint;
+import tvestergaard.fog.data.constraints.Constraints;
 
 import java.util.List;
 
@@ -15,7 +15,7 @@ public interface PurchaseDAO
      * @return The resulting purchases.
      * @throws DataAccessException When a data storage exception occurs while performing the operation.
      */
-    List<Purchase> get(Constraint<PurchaseColumn>... constraints) throws DataAccessException;
+    List<Purchase> get(Constraints<PurchaseColumn> constraints) throws DataAccessException;
 
     /**
      * Returns the first purchase matching the provided constraints.
@@ -25,7 +25,7 @@ public interface PurchaseDAO
      * the provided constraints.
      * @throws DataAccessException When a data storage exception occurs while performing the operation.
      */
-    Purchase first(Constraint<PurchaseColumn>... constraints) throws DataAccessException;
+    Purchase first(Constraints<PurchaseColumn> constraints) throws DataAccessException;
 
     /**
      * Inserts a new purchase into the data storage.

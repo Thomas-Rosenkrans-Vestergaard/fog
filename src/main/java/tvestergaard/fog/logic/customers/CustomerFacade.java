@@ -1,7 +1,7 @@
 package tvestergaard.fog.logic.customers;
 
 import tvestergaard.fog.data.DataAccessException;
-import tvestergaard.fog.data.constraints.Constraint;
+import tvestergaard.fog.data.constraints.Constraints;
 import tvestergaard.fog.data.customers.Customer;
 import tvestergaard.fog.data.customers.CustomerColumn;
 import tvestergaard.fog.data.customers.CustomerDAO;
@@ -71,10 +71,25 @@ public class CustomerFacade
      * @return The resulting customers.
      * @throws ApplicationException When an exception occurs while performing the operation.
      */
-    public List<Customer> get(Constraint<CustomerColumn>... constraints)
+    public List<Customer> get(Constraints<CustomerColumn> constraints)
     {
         try {
             return customerDAO.get(constraints);
+        } catch (DataAccessException e) {
+            throw new ApplicationException(e);
+        }
+    }
+
+    /**
+     * Returns the customers in the application.
+     *
+     * @return The resulting customers.
+     * @throws ApplicationException When an exception occurs while performing the operation.
+     */
+    public List<Customer> get()
+    {
+        try {
+            return customerDAO.get(null);
         } catch (DataAccessException e) {
             throw new ApplicationException(e);
         }
@@ -88,7 +103,7 @@ public class CustomerFacade
      * the provided constraints.
      * @throws ApplicationException When an exception occurs while performing the operation.
      */
-    public Customer first(Constraint<CustomerColumn>... constraints)
+    public Customer first(Constraints<CustomerColumn> constraints)
     {
         try {
             return customerDAO.first(constraints);

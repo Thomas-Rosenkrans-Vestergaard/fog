@@ -1,8 +1,9 @@
 package tvestergaard.fog.data.customers;
 
+import tvestergaard.fog.data.constraints.Column;
 import tvestergaard.fog.data.constraints.MysqlColumn;
 
-public enum CustomerColumn implements MysqlColumn
+public enum CustomerColumn implements Column<CustomerColumn>, MysqlColumn
 {
 
     ID,

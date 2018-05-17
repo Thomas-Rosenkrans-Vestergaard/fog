@@ -1,8 +1,9 @@
 package tvestergaard.fog.data.orders;
 
+import tvestergaard.fog.data.constraints.Column;
 import tvestergaard.fog.data.constraints.MysqlColumn;
 
-public enum OrderColumn implements MysqlColumn
+public enum OrderColumn implements Column<OrderColumn>, MysqlColumn
 {
 
     ID,

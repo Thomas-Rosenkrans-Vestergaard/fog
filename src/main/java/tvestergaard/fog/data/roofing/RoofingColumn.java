@@ -1,8 +1,9 @@
 package tvestergaard.fog.data.roofing;
 
+import tvestergaard.fog.data.constraints.Column;
 import tvestergaard.fog.data.constraints.MysqlColumn;
 
-public enum RoofingColumn implements MysqlColumn
+public enum RoofingColumn implements Column<RoofingColumn>, MysqlColumn
 {
 
     ID,

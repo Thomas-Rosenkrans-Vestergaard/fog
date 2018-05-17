@@ -1,8 +1,9 @@
 package tvestergaard.fog.data.cladding;
 
+import tvestergaard.fog.data.constraints.Column;
 import tvestergaard.fog.data.constraints.MysqlColumn;
 
-public enum CladdingColumn implements MysqlColumn
+public enum CladdingColumn implements Column<CladdingColumn>, MysqlColumn
 {
 
     ID,

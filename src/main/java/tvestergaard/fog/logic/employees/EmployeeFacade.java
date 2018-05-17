@@ -2,7 +2,7 @@ package tvestergaard.fog.logic.employees;
 
 import org.mindrot.jbcrypt.BCrypt;
 import tvestergaard.fog.data.DataAccessException;
-import tvestergaard.fog.data.constraints.Constraint;
+import tvestergaard.fog.data.constraints.Constraints;
 import tvestergaard.fog.data.employees.*;
 import tvestergaard.fog.logic.ApplicationException;
 
@@ -48,10 +48,25 @@ public class EmployeeFacade
      * @return The resulting employees.
      * @throws ApplicationException When an exception occurs while performing the operation.
      */
-    public List<Employee> get(Constraint<EmployeeColumn>... constraints)
+    public List<Employee> get(Constraints<EmployeeColumn> constraints)
     {
         try {
             return employeeDAO.get(constraints);
+        } catch (DataAccessException e) {
+            throw new ApplicationException(e);
+        }
+    }
+
+    /**
+     * Returns the employees in the application.
+     *
+     * @return The resulting employees.
+     * @throws ApplicationException When an exception occurs while performing the operation.
+     */
+    public List<Employee> get()
+    {
+        try {
+            return employeeDAO.get(null);
         } catch (DataAccessException e) {
             throw new ApplicationException(e);
         }
@@ -65,7 +80,7 @@ public class EmployeeFacade
      * the provided constraints.
      * @throws ApplicationException When an exception occurs while performing the operation.
      */
-    public Employee first(Constraint<EmployeeColumn>... constraints)
+    public Employee first(Constraints<EmployeeColumn> constraints)
     {
         try {
             return employeeDAO.first(constraints);

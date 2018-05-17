@@ -1,7 +1,7 @@
 package tvestergaard.fog.data.flooring;
 
 import tvestergaard.fog.data.DataAccessException;
-import tvestergaard.fog.data.constraints.Constraint;
+import tvestergaard.fog.data.constraints.Constraints;
 
 import java.util.List;
 
@@ -15,7 +15,7 @@ public interface FlooringDAO
      * @return The resulting floorings.
      * @throws DataAccessException When a data storage exception occurs while performing the operation.
      */
-    List<Flooring> get(Constraint<FlooringColumn>... constraints) throws DataAccessException;
+    List<Flooring> get(Constraints<FlooringColumn> constraints) throws DataAccessException;
 
     /**
      * Returns the first flooring matching the provided constraints.
@@ -25,7 +25,7 @@ public interface FlooringDAO
      * the provided constraints.
      * @throws DataAccessException When a data storage exception occurs while performing the operation.
      */
-    Flooring first(Constraint<FlooringColumn>... constraints) throws DataAccessException;
+    Flooring first(Constraints<FlooringColumn> constraints) throws DataAccessException;
 
     /**
      * Inserts a new flooring into the data storage.

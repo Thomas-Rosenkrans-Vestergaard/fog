@@ -1,7 +1,7 @@
 package tvestergaard.fog.data.employees;
 
 import tvestergaard.fog.data.DataAccessException;
-import tvestergaard.fog.data.constraints.Constraint;
+import tvestergaard.fog.data.constraints.Constraints;
 
 import java.util.List;
 
@@ -15,7 +15,7 @@ public interface EmployeeDAO
      * @return The resulting employees.
      * @throws DataAccessException When a data storage exception occurs while performing the operation.
      */
-    List<Employee> get(Constraint<EmployeeColumn>... constraints) throws DataAccessException;
+    List<Employee> get(Constraints<EmployeeColumn> constraints) throws DataAccessException;
 
     /**
      * Returns the first employee matching the provided constraints.
@@ -25,7 +25,7 @@ public interface EmployeeDAO
      * the provided constraints.
      * @throws DataAccessException When a data storage exception occurs while performing the operation.
      */
-    Employee first(Constraint<EmployeeColumn>... constraints) throws DataAccessException;
+    Employee first(Constraints<EmployeeColumn> constraints) throws DataAccessException;
 
     /**
      * Inserts a new employee into the data storage.

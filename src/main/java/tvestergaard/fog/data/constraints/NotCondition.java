@@ -1,6 +1,6 @@
 package tvestergaard.fog.data.constraints;
 
-public class NotCondition<C extends Enum<C>> implements WhereCondition<C>
+public class NotCondition<C extends Column<C>> implements WhereCondition<C>
 {
 
     /**

@@ -7,7 +7,7 @@ import tvestergaard.fog.data.MysqlDataAccessException;
 import tvestergaard.fog.data.components.Component;
 import tvestergaard.fog.data.components.ComponentDefinition;
 import tvestergaard.fog.data.components.ComponentReference;
-import tvestergaard.fog.data.constraints.Constraint;
+import tvestergaard.fog.data.constraints.Constraints;
 import tvestergaard.fog.data.constraints.StatementBinder;
 import tvestergaard.fog.data.constraints.StatementGenerator;
 
@@ -19,7 +19,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static java.sql.Statement.RETURN_GENERATED_KEYS;
-import static tvestergaard.fog.data.constraints.Constraint.*;
+import static tvestergaard.fog.data.constraints.Constraint.eq;
+import static tvestergaard.fog.data.constraints.Constraint.where;
 import static tvestergaard.fog.data.roofing.RoofingColumn.ID;
 
 public class MysqlRoofingDAO extends AbstractMysqlDAO implements RoofingDAO
@@ -53,7 +54,7 @@ public class MysqlRoofingDAO extends AbstractMysqlDAO implements RoofingDAO
      * @throws MysqlDataAccessException When a data storage exception occurs while performing the operation.
      */
     @Override
-    public List<Roofing> get(Constraint<RoofingColumn>... constraints) throws MysqlDataAccessException
+    public List<Roofing> get(Constraints<RoofingColumn> constraints) throws MysqlDataAccessException
     {
         final List<Roofing> roofings = new ArrayList<>();
         final String        SQL      = generator.generate("SELECT * FROM roofings", constraints);
@@ -78,9 +79,9 @@ public class MysqlRoofingDAO extends AbstractMysqlDAO implements RoofingDAO
      * @throws MysqlDataAccessException When a data storage exception occurs while performing the operation.
      */
     @Override
-    public Roofing first(Constraint<RoofingColumn>... constraints) throws MysqlDataAccessException
+    public Roofing first(Constraints<RoofingColumn> constraints) throws MysqlDataAccessException
     {
-        List<Roofing> roofings = get(append(constraints, limit(1)));
+        List<Roofing> roofings = get(constraints.limit(1));
 
         return roofings.isEmpty() ? null : roofings.get(0);
     }

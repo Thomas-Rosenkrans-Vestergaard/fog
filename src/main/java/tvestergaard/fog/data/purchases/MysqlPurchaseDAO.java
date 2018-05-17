@@ -3,7 +3,7 @@ package tvestergaard.fog.data.purchases;
 import com.mysql.cj.jdbc.MysqlDataSource;
 import tvestergaard.fog.data.AbstractMysqlDAO;
 import tvestergaard.fog.data.MysqlDataAccessException;
-import tvestergaard.fog.data.constraints.Constraint;
+import tvestergaard.fog.data.constraints.Constraints;
 import tvestergaard.fog.data.constraints.StatementBinder;
 import tvestergaard.fog.data.constraints.StatementGenerator;
 import tvestergaard.fog.data.purchases.bom.BomLineBlueprint;
@@ -13,7 +13,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static java.sql.Statement.RETURN_GENERATED_KEYS;
-import static tvestergaard.fog.data.constraints.Constraint.*;
+import static tvestergaard.fog.data.constraints.Constraint.eq;
+import static tvestergaard.fog.data.constraints.Constraint.where;
 
 public class MysqlPurchaseDAO extends AbstractMysqlDAO implements PurchaseDAO
 {
@@ -45,7 +46,7 @@ public class MysqlPurchaseDAO extends AbstractMysqlDAO implements PurchaseDAO
      * @return The resulting purchases.
      * @throws MysqlDataAccessException When a data storage exception occurs while performing the operation.
      */
-    @Override public List<Purchase> get(Constraint<PurchaseColumn>... constraints) throws MysqlDataAccessException
+    @Override public List<Purchase> get(Constraints<PurchaseColumn> constraints) throws MysqlDataAccessException
     {
         final List<Purchase> purchases = new ArrayList<>();
         final String SQL = generator.generate("SELECT *, (SELECT count(*) FROM offers WHERE `order` = o.id) AS `o.offers`, " +
@@ -90,9 +91,9 @@ public class MysqlPurchaseDAO extends AbstractMysqlDAO implements PurchaseDAO
      * the provided constraints.
      * @throws MysqlDataAccessException When a data storage exception occurs while performing the operation.
      */
-    @Override public Purchase first(Constraint<PurchaseColumn>... constraints) throws MysqlDataAccessException
+    @Override public Purchase first(Constraints<PurchaseColumn> constraints) throws MysqlDataAccessException
     {
-        List<Purchase> purchases = get(append(constraints, limit(1)));
+        List<Purchase> purchases = get(constraints.limit(1));
 
         return purchases.isEmpty() ? null : purchases.get(0);
     }

@@ -1,7 +1,7 @@
 package tvestergaard.fog.data.offers;
 
 import tvestergaard.fog.data.DataAccessException;
-import tvestergaard.fog.data.constraints.Constraint;
+import tvestergaard.fog.data.constraints.Constraints;
 import tvestergaard.fog.data.purchases.PurchaseBlueprint;
 
 import java.util.List;
@@ -16,7 +16,7 @@ public interface OfferDAO
      * @return The resulting offers.
      * @throws DataAccessException When a data storage exception occurs while performing the operation.
      */
-    List<Offer> get(Constraint<OfferColumn>... constraints) throws DataAccessException;
+    List<Offer> get(Constraints<OfferColumn> constraints) throws DataAccessException;
 
     /**
      * Returns the offers issued to the order with the provided id.
@@ -35,7 +35,7 @@ public interface OfferDAO
      * the provided constraints.
      * @throws DataAccessException When a data storage exception occurs while performing the operation.
      */
-    Offer first(Constraint<OfferColumn>... constraints) throws DataAccessException;
+    Offer first(Constraints<OfferColumn> constraints) throws DataAccessException;
 
     /**
      * Inserts a new offer into the data storage.

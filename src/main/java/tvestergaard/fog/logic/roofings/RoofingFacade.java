@@ -4,7 +4,7 @@ import tvestergaard.fog.data.DataAccessException;
 import tvestergaard.fog.data.components.Component;
 import tvestergaard.fog.data.components.ComponentDefinition;
 import tvestergaard.fog.data.components.ComponentReference;
-import tvestergaard.fog.data.constraints.Constraint;
+import tvestergaard.fog.data.constraints.Constraints;
 import tvestergaard.fog.data.roofing.*;
 import tvestergaard.fog.logic.ApplicationException;
 
@@ -38,13 +38,28 @@ public class RoofingFacade
      * Returns the roofings in the data storage. The results can be constrained using the provided constraints.
      *
      * @param constraints The constraints that modify the resulting list.
-     * @return The complete list of the roofings in the data storage.
+     * @return The list of the roofings in the data storage.
      * @throws ApplicationException When an exception occurs while performing the operation.
      */
-    public List<Roofing> get(Constraint<RoofingColumn>... constraints)
+    public List<Roofing> get(Constraints<RoofingColumn> constraints)
     {
         try {
             return dao.get(constraints);
+        } catch (DataAccessException e) {
+            throw new ApplicationException(e);
+        }
+    }
+
+    /**
+     * Returns the roofings in the data storage.
+     *
+     * @return The list of the roofings in the data storage.
+     * @throws ApplicationException When an exception occurs while performing the operation.
+     */
+    public List<Roofing> get()
+    {
+        try {
+            return dao.get(null);
         } catch (DataAccessException e) {
             throw new ApplicationException(e);
         }
@@ -58,7 +73,7 @@ public class RoofingFacade
      * provided constraints.
      * @throws ApplicationException When an exception occurs while performing the operation.
      */
-    public Roofing first(Constraint<RoofingColumn>... constraints)
+    public Roofing first(Constraints<RoofingColumn> constraints)
     {
         try {
             return dao.first(constraints);

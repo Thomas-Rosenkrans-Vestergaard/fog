@@ -1,7 +1,7 @@
 package tvestergaard.fog.data.orders;
 
 import tvestergaard.fog.data.DataAccessException;
-import tvestergaard.fog.data.constraints.Constraint;
+import tvestergaard.fog.data.constraints.Constraints;
 
 import java.util.List;
 
@@ -15,7 +15,7 @@ public interface OrderDAO
      * @return The resulting orders.
      * @throws DataAccessException When a data storage exception occurs while performing the operation.
      */
-    List<Order> get(Constraint<OrderColumn>... constraints) throws DataAccessException;
+    List<Order> get(Constraints<OrderColumn> constraints) throws DataAccessException;
 
     /**
      * Returns the first order matching the provided constraints.
@@ -25,7 +25,7 @@ public interface OrderDAO
      * provided constraints.
      * @throws DataAccessException When a data storage exception occurs while performing the operation.
      */
-    Order first(Constraint<OrderColumn>... constraints) throws DataAccessException;
+    Order first(Constraints<OrderColumn> constraints) throws DataAccessException;
 
     /**
      * Inserts a new order into data storage.

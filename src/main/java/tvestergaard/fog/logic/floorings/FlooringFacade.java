@@ -1,7 +1,7 @@
 package tvestergaard.fog.logic.floorings;
 
 import tvestergaard.fog.data.DataAccessException;
-import tvestergaard.fog.data.constraints.Constraint;
+import tvestergaard.fog.data.constraints.Constraints;
 import tvestergaard.fog.data.flooring.*;
 import tvestergaard.fog.logic.ApplicationException;
 
@@ -35,13 +35,28 @@ public class FlooringFacade
      * Returns the floorings in the data storage. The results can be constrained using the provided constraints.
      *
      * @param constraints The constraints that modify the resulting list.
-     * @return The complete list of the floorings in the data storage.
+     * @return The list of the floorings in the data storage.
      * @throws ApplicationException When an exception occurs while performing the operation.
      */
-    public List<Flooring> get(Constraint<FlooringColumn>... constraints)
+    public List<Flooring> get(Constraints<FlooringColumn> constraints)
     {
         try {
             return dao.get(constraints);
+        } catch (DataAccessException e) {
+            throw new ApplicationException(e);
+        }
+    }
+
+    /**
+     * Returns the floorings in the data storage.
+     *
+     * @return The list of the floorings in the data storage.
+     * @throws ApplicationException When an exception occurs while performing the operation.
+     */
+    public List<Flooring> get()
+    {
+        try {
+            return dao.get(null);
         } catch (DataAccessException e) {
             throw new ApplicationException(e);
         }
@@ -55,7 +70,7 @@ public class FlooringFacade
      * the provided constraints.
      * @throws ApplicationException When an exception occurs while performing the operation.
      */
-    public Flooring first(Constraint<FlooringColumn>... constraints)
+    public Flooring first(Constraints<FlooringColumn> constraints)
     {
         try {
             return dao.first(constraints);

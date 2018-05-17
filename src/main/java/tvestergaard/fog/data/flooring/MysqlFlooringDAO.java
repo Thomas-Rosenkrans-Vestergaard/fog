@@ -4,16 +4,13 @@ import com.mysql.cj.jdbc.MysqlDataSource;
 import tvestergaard.fog.data.AbstractMysqlDAO;
 import tvestergaard.fog.data.DataAccessException;
 import tvestergaard.fog.data.MysqlDataAccessException;
-import tvestergaard.fog.data.constraints.Constraint;
+import tvestergaard.fog.data.constraints.Constraints;
 import tvestergaard.fog.data.constraints.StatementBinder;
 import tvestergaard.fog.data.constraints.StatementGenerator;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-
-import static tvestergaard.fog.data.constraints.Constraint.append;
-import static tvestergaard.fog.data.constraints.Constraint.limit;
 
 public class MysqlFlooringDAO extends AbstractMysqlDAO implements FlooringDAO
 {
@@ -46,7 +43,7 @@ public class MysqlFlooringDAO extends AbstractMysqlDAO implements FlooringDAO
      * @throws MysqlDataAccessException When a data storage exception occurs while performing the operation.
      */
     @Override
-    public List<Flooring> get(Constraint<FlooringColumn>... constraints) throws MysqlDataAccessException
+    public List<Flooring> get(Constraints<FlooringColumn> constraints) throws MysqlDataAccessException
     {
         final List<Flooring> floors = new ArrayList<>();
         final String         SQL    = generator.generate("SELECT * FROM floorings", constraints);
@@ -71,9 +68,9 @@ public class MysqlFlooringDAO extends AbstractMysqlDAO implements FlooringDAO
      * @throws MysqlDataAccessException When a data storage exception occurs while performing the operation.
      */
     @Override
-    public Flooring first(Constraint<FlooringColumn>... constraints) throws MysqlDataAccessException
+    public Flooring first(Constraints<FlooringColumn> constraints) throws MysqlDataAccessException
     {
-        List<Flooring> floorings = get(append(constraints, limit(1)));
+        List<Flooring> floorings = get(constraints.limit(1));
 
         return floorings.isEmpty() ? null : floorings.get(0);
     }
