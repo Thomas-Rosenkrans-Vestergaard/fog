@@ -1,5 +1,7 @@
 SET SQL_SAFE_UPDATES = 0;
 
+DELETE FROM bom_lines;
+DELETE FROM bom;
 DELETE FROM purchases;
 DELETE FROM offers;
 DELETE FROM orders;
@@ -17,6 +19,7 @@ DELETE FROM component_definitions;
 DELETE FROM categories;
 DELETE FROM materials;
 DELETE FROM roofings;
+DELETE FROM tokens;
 DELETE FROM customers;
 DELETE FROM roles;
 DELETE FROM employees;

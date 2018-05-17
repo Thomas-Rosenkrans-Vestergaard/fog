@@ -49,6 +49,7 @@
             <th class="short">Pris</th>
             <th class="short">Enhed</th>
             <th class="short">Kategori</th>
+            <th class="short">Aktiv</th>
             </thead>
             <tbody>
             <c:forEach items="${materials}" var="material">
@@ -58,6 +59,7 @@
                     <td><c:out value="${f:formatPrice(material.getPrice())}"/></td>
                     <td><c:out value="${material.getUnit()}"/></td>
                     <td><c:out value="${material.getCategory().getName()}"/></td>
+                    <td>${f:formatBoolean(material.isActive())}</td>
                 </tr>
             </c:forEach>
             </tbody>
