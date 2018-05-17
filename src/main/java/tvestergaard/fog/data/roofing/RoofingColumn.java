@@ -11,7 +11,8 @@ public enum RoofingColumn implements Column<RoofingColumn>, MysqlColumn
     DESCRIPTION,
     MINIMUM_SLOPE,
     MAXIMUM_SLOPE,
-    ACTIVE;
+    ACTIVE,
+    SEARCH;
 
     /**
      * Returns the name of the column in MySQL.

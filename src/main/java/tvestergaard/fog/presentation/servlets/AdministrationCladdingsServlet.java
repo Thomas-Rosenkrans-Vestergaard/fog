@@ -62,7 +62,7 @@ public class AdministrationCladdingsServlet extends AdministrationServlet
     {
         @Override public void dispatch(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
         {
-            TableControls<CladdingColumn> controls = new TableControls<>(request, CladdingColumn.class, facade.size());
+            TableControls<CladdingColumn> controls = new TableControls<>(request, CladdingColumn.class, CladdingColumn.SEARCH);
             notifications(request);
             request.setAttribute("title", "Beklædninger");
             request.setAttribute("claddings", facade.get(controls.constraints()));

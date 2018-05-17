@@ -151,7 +151,8 @@ public class CarportSkeletonConstructor extends DrawingUtilities implements Skel
             placePostColumn(thickness, height, x, topRow, bottomRow);
             x = xStart;
             placePostColumn(thickness, height, x, topRow, bottomRow);
-            numberOfColumns -= 1;
+            if (numberOfColumns > 1)
+                numberOfColumns -= 1;
             placePostColumn(thickness, height, x, topRow, bottomRow);
             ruler(HORIZONTAL, shedDepth, x + thickness, PADDING / 2, formatCM(shedDepth / 10));
         }

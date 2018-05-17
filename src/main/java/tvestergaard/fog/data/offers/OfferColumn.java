@@ -11,8 +11,8 @@ public enum OfferColumn implements Column<OfferColumn>, MysqlColumn
     EMPLOYEE,
     PRICE,
     STATUS,
-    CREATED_AT;
-
+    CREATED_AT,
+    SEARCH;
 
     /**
      * Returns the name of the column in MySQL.
@@ -31,6 +31,9 @@ public enum OfferColumn implements Column<OfferColumn>, MysqlColumn
      */
     @Override public boolean useBacktick()
     {
+        if (this == SEARCH)
+            return true;
+
         return false;
     }
 }

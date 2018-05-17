@@ -9,7 +9,8 @@ public enum PurchaseColumn implements Column<PurchaseColumn>, MysqlColumn
     OFFER,
     EMPLOYEE,
     BOM,
-    CREATED_AT;
+    CREATED_AT,
+    SEARCH;
 
     /**
      * Returns the name of the column in MySQL.

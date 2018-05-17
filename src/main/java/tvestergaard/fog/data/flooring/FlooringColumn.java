@@ -9,7 +9,8 @@ public enum FlooringColumn implements Column<FlooringColumn>, MysqlColumn
     ID,
     NAME,
     DESCRIPTION,
-    ACTIVE;
+    ACTIVE,
+    SEARCH;
 
     /**
      * Returns the name of the column in MySQL.

@@ -15,11 +15,11 @@
 </div>
 <%@ include file="../includes/administration_controls.jspf" %>
 <div class="row">
-    <div class="col s12">
+    <div class="col s12 no-padding">
         <form method="get">
             <input type="hidden" name="action" value="create">
             <div class="row">
-                <div class="col s6">
+                <div class="col s6 input-field">
                     <select name="category" id="category">
                         <c:forEach items="${categories}" var="category">
                             <option value="${category.getId()}"><c:out value="${category.getName()}"/></option>

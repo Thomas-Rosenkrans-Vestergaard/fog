@@ -2,6 +2,7 @@ package tvestergaard.fog.logic.materials;
 
 import com.google.common.collect.Multimap;
 import tvestergaard.fog.data.DataAccessException;
+import tvestergaard.fog.data.constraints.Constraints;
 import tvestergaard.fog.data.materials.*;
 import tvestergaard.fog.data.materials.attributes.AttributeDefinition;
 import tvestergaard.fog.data.materials.attributes.AttributeValue;
@@ -36,13 +37,29 @@ public class MaterialFacade
     /**
      * Returns the materials in the data storage. The results can be constrained using the provided constraints.
      *
-     * @return The complete list of the materials in the data storage.
+     * @param constraints The constraints that restrict the results returned from the query.
+     * @return The list of the materials in the data storage.
+     * @throws ApplicationException When a data storage exception occurs while performing the operation.
+     */
+    public List<Material> get(Constraints<MaterialColumn> constraints)
+    {
+        try {
+            return dao.get(constraints);
+        } catch (DataAccessException e) {
+            throw new ApplicationException(e);
+        }
+    }
+
+    /**
+     * Returns the materials in the data storage.
+     *
+     * @return The list of the materials in the data storage.
      * @throws ApplicationException When a data storage exception occurs while performing the operation.
      */
     public List<Material> get()
     {
         try {
-            return dao.get();
+            return dao.get(null);
         } catch (DataAccessException e) {
             throw new ApplicationException(e);
         }

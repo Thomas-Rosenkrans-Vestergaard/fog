@@ -52,20 +52,21 @@ public class MysqlOfferDAO extends AbstractMysqlDAO implements OfferDAO
         final List<Offer> offers = new ArrayList<>();
         final String SQL = generator.generate(
                 "SELECT *, (SELECT count(*) FROM offers WHERE `order` = o.id) AS `o.offers`, " +
-                        "(SELECT GROUP_CONCAT(roles.role SEPARATOR ',') FROM roles WHERE employee = employees.id) as `employees.roles` " +
+                        "(SELECT GROUP_CONCAT(roles.role SEPARATOR ',') FROM roles WHERE employee = employees.id) as `employees.roles`, " +
+                        "CONCAT_WS('.', customers.name, roofings.name, employees.name, employees.username, claddings.name, offers.status) as `offers.search` " +
                         "FROM offers " +
                         "INNER JOIN orders o ON offers.order = o.id " +
                         "INNER JOIN customers ON o.customer = customers.id " +
                         "INNER JOIN roofings ON o.roofing = roofings.id " +
                         "LEFT  JOIN sheds ON sheds.id = o.shed " +
-                        "LEFT  JOIN claddings s_cladding ON sheds.cladding = s_cladding.id " +
+                        "LEFT  JOIN claddings ON sheds.cladding = claddings.id " +
                         "LEFT  JOIN floorings ON sheds.flooring = floorings.id " +
                         "INNER JOIN employees ON offers.employee = employees.id", constraints);
         try (PreparedStatement statement = getConnection().prepareStatement(SQL)) {
             binder.bind(statement, constraints);
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next())
-                offers.add(createOffer(resultSet, "offers", "o", "customers", "roofings", "sheds", "s_cladding", "floorings", "employees"));
+                offers.add(createOffer(resultSet, "offers", "o", "customers", "roofings", "sheds", "claddings", "floorings", "employees"));
 
             return offers;
         } catch (SQLException e) {

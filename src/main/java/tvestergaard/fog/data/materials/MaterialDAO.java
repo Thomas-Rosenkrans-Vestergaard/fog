@@ -2,6 +2,7 @@ package tvestergaard.fog.data.materials;
 
 import com.google.common.collect.Multimap;
 import tvestergaard.fog.data.DataAccessException;
+import tvestergaard.fog.data.constraints.Constraints;
 import tvestergaard.fog.data.materials.attributes.AttributeDefinition;
 
 import java.util.List;
@@ -13,10 +14,11 @@ public interface MaterialDAO
     /**
      * Returns the materials in the data storage. The results can be constrained using the provided constraints.
      *
+     * @param constraints The constraints that restrict the results returned from the query.
      * @return The complete list of the materials in the data storage.
      * @throws DataAccessException When a data storage exception occurs while performing the operation.
      */
-    List<Material> get() throws DataAccessException;
+    List<Material> get(Constraints<MaterialColumn> constraints) throws DataAccessException;
 
     /**
      * Returns the material with the provided id.

@@ -51,7 +51,8 @@ public class MysqlPurchaseDAO extends AbstractMysqlDAO implements PurchaseDAO
         final List<Purchase> purchases = new ArrayList<>();
         final String SQL = generator.generate("SELECT *, (SELECT count(*) FROM offers WHERE `order` = o.id) AS `o.offers`, " +
                 "(SELECT GROUP_CONCAT(roles.role SEPARATOR ',') FROM roles WHERE employee = o_emp.id) as `o_emp.roles`, " +
-                "(SELECT GROUP_CONCAT(roles.role SEPARATOR ',') FROM roles WHERE employee = c_emp.id) as `c_emp.roles` " +
+                "(SELECT GROUP_CONCAT(roles.role SEPARATOR ',') FROM roles WHERE employee = c_emp.id) as `c_emp.roles`, " +
+                "CONCAT_WS('.', c_emp.name, c_emp.username, customers.name, customers.email, roofings.name, claddings.name, floorings.name, o_emp.name, o_emp.username) as search " +
                 "FROM purchases " +
                 "INNER JOIN bom ON purchases.bom = bom.id " +
                 "INNER JOIN employees c_emp ON purchases.employee = c_emp.id " +
@@ -60,7 +61,7 @@ public class MysqlPurchaseDAO extends AbstractMysqlDAO implements PurchaseDAO
                 "INNER JOIN customers ON o.customer = customers.id " +
                 "INNER JOIN roofings ON o.roofing = roofings.id " +
                 "LEFT  JOIN sheds ON o.shed = sheds.id " +
-                "LEFT  JOIN claddings s_cladding ON sheds.cladding = s_cladding.id " +
+                "LEFT  JOIN claddings ON sheds.cladding = claddings.id " +
                 "LEFT  JOIN floorings ON sheds.flooring = floorings.id " +
                 "INNER JOIN employees o_emp ON offers.employee = o_emp.id", constraints);
         try (PreparedStatement statement = getConnection().prepareStatement(SQL)) {
@@ -74,7 +75,7 @@ public class MysqlPurchaseDAO extends AbstractMysqlDAO implements PurchaseDAO
             try (PreparedStatement bomStatement = getConnection().prepareStatement(bomSQL)) {
                 while (resultSet.next()) {
                     bomStatement.setInt(1, resultSet.getInt("bom.id"));
-                    purchases.add(createPurchase(resultSet, "purchases", "c_emp", "offers", "o", "customers", "roofings", "sheds", "s_cladding", "floorings", "o_emp", bomStatement.executeQuery(), "bom", "bom_lines"));
+                    purchases.add(createPurchase(resultSet, "purchases", "c_emp", "offers", "o", "customers", "roofings", "sheds", "claddings", "floorings", "o_emp", bomStatement.executeQuery(), "bom", "bom_lines"));
                 }
             }
             return purchases;
@@ -128,7 +129,8 @@ public class MysqlPurchaseDAO extends AbstractMysqlDAO implements PurchaseDAO
                     }
                 }
 
-                String closeSQL = "UPDATE offers SET status = 'REJECTED' WHERE `order` = (SELECT `order` FROM offers WHERE id = ?)";
+                String closeSQL = "UPDATE offers SET status = 'REJECTED' WHERE `order` = " +
+                        "(SELECT `order` FROM (SELECT * FROM offers) o WHERE o.id = ?)";
                 try (PreparedStatement closeStatement = connection.prepareStatement(closeSQL)) {
                     closeStatement.setInt(1, blueprint.getOfferId());
                     closeStatement.executeUpdate();

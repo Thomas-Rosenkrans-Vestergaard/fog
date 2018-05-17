@@ -69,7 +69,7 @@ public class AdministrationRoofingsServlet extends AdministrationServlet
     {
         @Override public void dispatch(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
         {
-            TableControls<RoofingColumn> controls = new TableControls<>(request, RoofingColumn.class, roofingFacade.size());
+            TableControls<RoofingColumn> controls = new TableControls<>(request, RoofingColumn.class, RoofingColumn.SEARCH);
             notifications(request);
             request.setAttribute("title", "Tage");
             request.setAttribute("roofings", roofingFacade.get(controls.constraints()));

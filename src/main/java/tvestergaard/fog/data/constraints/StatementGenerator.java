@@ -161,16 +161,24 @@ public class StatementGenerator<C extends Column<C> & MysqlColumn>
 
     private void appendOrderConstraintSQL(StringBuilder builder, Map<C, OrderDirection> orderColumns, List<String> orderSQL)
     {
+        boolean first = true;
+
         if ((orderColumns != null && orderColumns.size() > 0) || (orderSQL != null && orderSQL.size() > 0))
-            builder.append(" ORDER BY");
+            builder.append(" ORDER BY ");
         if (orderColumns != null && orderColumns.size() > 0)
-            for (Map.Entry<C, OrderDirection> orderColumn : orderColumns.entrySet())
+            for (Map.Entry<C, OrderDirection> orderColumn : orderColumns.entrySet()) {
+                if (!first)
+                    builder.append(',');
                 appendOrderColumnSQL(builder, orderColumn.getKey(), orderColumn.getValue());
+                first = false;
+            }
 
         if (orderSQL != null && orderSQL.size() > 0) {
             for (String sql : orderSQL) {
-                builder.append(' ');
+                if (!first)
+                    builder.append(", ");
                 builder.append(sql.trim());
+                first = false;
             }
         }
     }

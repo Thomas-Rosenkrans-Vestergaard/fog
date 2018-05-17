@@ -13,7 +13,8 @@ public enum CustomerColumn implements Column<CustomerColumn>, MysqlColumn
     PHONE,
     PASSWORD,
     ACTIVE,
-    CREATED_AT;
+    CREATED_AT,
+    SEARCH;
 
     /**
      * Returns the name of the column in MySQL.

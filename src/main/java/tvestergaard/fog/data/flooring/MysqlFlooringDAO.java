@@ -46,7 +46,8 @@ public class MysqlFlooringDAO extends AbstractMysqlDAO implements FlooringDAO
     public List<Flooring> get(Constraints<FlooringColumn> constraints) throws MysqlDataAccessException
     {
         final List<Flooring> floors = new ArrayList<>();
-        final String         SQL    = generator.generate("SELECT * FROM floorings", constraints);
+        final String SQL = generator.generate(
+                "SELECT *, CONCAT_WS('.', name, description) as search FROM floorings", constraints);
         try (java.sql.PreparedStatement statement = getConnection().prepareStatement(SQL)) {
             binder.bind(statement, constraints);
             ResultSet resultSet = statement.executeQuery();

@@ -1,8 +1,9 @@
 package tvestergaard.fog.data.materials;
 
+import tvestergaard.fog.data.constraints.Column;
 import tvestergaard.fog.data.constraints.MysqlColumn;
 
-public enum MaterialColumn implements MysqlColumn
+public enum MaterialColumn implements Column<MaterialColumn>, MysqlColumn
 {
 
     ID,
@@ -11,8 +12,8 @@ public enum MaterialColumn implements MysqlColumn
     PRICE,
     UNIT,
     CATEGORY,
-    CREATED_AT;
-
+    CREATED_AT,
+    SEARCH;
 
     /**
      * Returns the name of the column in MySQL.
@@ -31,6 +32,9 @@ public enum MaterialColumn implements MysqlColumn
      */
     @Override public boolean useBacktick()
     {
+        if (this == SEARCH)
+            return true;
+
         return false;
     }
 }

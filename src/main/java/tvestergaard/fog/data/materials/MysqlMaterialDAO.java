@@ -6,6 +6,9 @@ import com.mysql.cj.jdbc.MysqlDataSource;
 import tvestergaard.fog.data.AbstractMysqlDAO;
 import tvestergaard.fog.data.DataAccessException;
 import tvestergaard.fog.data.MysqlDataAccessException;
+import tvestergaard.fog.data.constraints.Constraints;
+import tvestergaard.fog.data.constraints.StatementBinder;
+import tvestergaard.fog.data.constraints.StatementGenerator;
 import tvestergaard.fog.data.materials.attributes.AttributeDefinition;
 import tvestergaard.fog.data.materials.attributes.AttributeValue;
 
@@ -17,6 +20,16 @@ import java.util.Set;
 
 public class MysqlMaterialDAO extends AbstractMysqlDAO implements MaterialDAO
 {
+
+    /**
+     * The generator used to generate SQL for the constraints provided to this DAO.
+     */
+    private final StatementGenerator<MaterialColumn> generator = new StatementGenerator();
+
+    /**
+     * The binder used to bind prepared variables for the constraints provided to this DAO.
+     */
+    private final StatementBinder<MaterialColumn> binder = new StatementBinder();
 
     /**
      * Creates a new {@link MysqlMaterialDAO}.
@@ -31,17 +44,24 @@ public class MysqlMaterialDAO extends AbstractMysqlDAO implements MaterialDAO
     /**
      * Returns the materials in the data storage. The results can be constrained using the provided constraints.
      *
+     * @param constraints The constraints that modify the results from the query.
      * @return The complete list of the materials in the data storage.
-     * @throws DataAccessException When a data storage exception occurs while performing the operation.
+     * @throws MysqlDataAccessException When a data storage exception occurs while performing the operation.
      */
-    @Override public List<Material> get() throws DataAccessException
+    @Override public List<Material> get(Constraints<MaterialColumn> constraints) throws MysqlDataAccessException
     {
+        constraints = constraints == null ? new Constraints<>() : constraints;
+        constraints.groupBy(MaterialColumn.NUMBER);
+        constraints.order("max(materials.id) DESC");
+
         final List<Material> materials = new ArrayList<>();
-        final String SQL = "SELECT * FROM materials " +
-                "INNER JOIN categories ON materials.category = categories.id " +
-                "GROUP BY materials.number " +
-                "ORDER BY max(materials.id) DESC";
+
+        final String SQL = generator.generate(
+                "SELECT *, " +
+                        "CONCAT_WS('.', materials.number, materials.description, materials.price, materials.unit, categories.name) as `materials.search` " +
+                        "FROM materials INNER JOIN categories ON materials.category = categories.id", constraints);
         try (PreparedStatement statement = getConnection().prepareStatement(SQL)) {
+            binder.bind(statement, constraints);
             ResultSet resultSet = statement.executeQuery();
             String attributeSQL = "SELECT * FROM attribute_definitions ad " +
                     "INNER JOIN attribute_values av ON ad.id = av.attribute " +

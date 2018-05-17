@@ -15,7 +15,8 @@ public enum OrderColumn implements Column<OrderColumn>, MysqlColumn
     ROOFING,
     SLOPE,
     RAFTERS,
-    ACTIVE;
+    ACTIVE,
+    SEARCH;
 
     /**
      * Returns the name of the column in MySQL.
@@ -36,6 +37,9 @@ public enum OrderColumn implements Column<OrderColumn>, MysqlColumn
     @Override
     public boolean useBacktick()
     {
+        if (this == SEARCH)
+            return true;
+
         return false;
     }
 }

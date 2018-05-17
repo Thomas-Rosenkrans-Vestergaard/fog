@@ -10,7 +10,8 @@ public enum EmployeeColumn implements Column<EmployeeColumn>, MysqlColumn
     USERNAME,
     PASSWORD,
     ACTIVE,
-    CREATED_AT;
+    CREATED_AT,
+    SEARCH;
 
     /**
      * Returns the name of the column in MySQL.

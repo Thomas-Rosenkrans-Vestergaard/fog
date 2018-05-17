@@ -3,6 +3,7 @@ package tvestergaard.fog.presentation.servlets;
 import tvestergaard.fog.data.employees.Employee;
 import tvestergaard.fog.data.employees.Role;
 import tvestergaard.fog.data.materials.Material;
+import tvestergaard.fog.data.materials.MaterialColumn;
 import tvestergaard.fog.data.materials.attributes.AttributeDefinition;
 import tvestergaard.fog.data.materials.attributes.AttributeValue;
 import tvestergaard.fog.data.materials.attributes.DataType;
@@ -66,9 +67,11 @@ public class AdministrationMaterialsServlet extends AdministrationServlet
     {
         @Override public void dispatch(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
         {
+            TableControls<MaterialColumn> controls = new TableControls<>(request, MaterialColumn.class, MaterialColumn.SEARCH);
+
             notifications(request);
             request.setAttribute("title", "Materialee");
-            request.setAttribute("materials", facade.get());
+            request.setAttribute("materials", facade.get(controls.constraints()));
             request.setAttribute("categories", facade.getCategories());
             request.getRequestDispatcher("/WEB-INF/administration/show_materials.jsp").forward(request, response);
         }

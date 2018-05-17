@@ -9,7 +9,8 @@ public enum CladdingColumn implements Column<CladdingColumn>, MysqlColumn
     ID,
     NAME,
     DESCRIPTION,
-    ACTIVE;
+    ACTIVE,
+    SEARCH;
 
     /**
      * Returns the name of the column in MySQL.

@@ -61,7 +61,7 @@ public class AdministrationCustomersServlet extends AdministrationServlet
     {
         @Override public void dispatch(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
         {
-            TableControls<CustomerColumn> controls = new TableControls<>(request, CustomerColumn.class, facade.size());
+            TableControls<CustomerColumn> controls = new TableControls<>(request, CustomerColumn.class, CustomerColumn.SEARCH);
             notifications(request);
             request.setAttribute("title", "Kunder");
             request.setAttribute("customers", facade.get(controls.constraints()));
