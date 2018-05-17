@@ -9,13 +9,14 @@
     <form method="post" class="col s12">
         <div class="row">
             <div class="col s12 input-field">
-                <input type="text" name="name" id="name" data-length="255" class="validate" required>
+                <input type="text" name="name" id="name" data-length="255" class="input-length validate" required>
                 <label for="name">Navn</label>
             </div>
         </div>
         <div class="row">
             <div class="col s12 input-field">
-                <input type="text" name="username" id="username" data-length="255" class="validate" required>
+                <input type="text" name="username" id="username" data-length="255" class="input-length validate"
+                       required>
                 <label for="username">Brugernavn</label>
             </div>
         </div>
@@ -54,12 +55,6 @@
                 </button>
             </div>
         </div>
-        <script>
-            $(document).ready(function () {
-                $('input#name, input#username').characterCounter();
-                $('select').material_select();
-            });
-        </script>
     </form>
 </div>
 <%@ include file="../includes/bottom.jspf" %>

@@ -17,28 +17,28 @@
         <input type="hidden" value="${customer.getId()}" name="id">
         <div class="row">
             <div class="col s12 input-field">
-                <input type="text" name="name" id="name" data-length="255" class="validate"
+                <input type="text" name="name" id="name" data-length="255" class="input-length validate"
                        value="${customer.getName()}" required>
                 <label for="name">Navn</label>
             </div>
         </div>
         <div class="row">
             <div class="col s12 input-field">
-                <input type="text" name="address" id="address" data-length="255" class="validate"
+                <input type="text" name="address" id="address" data-length="255" class="input-length validate"
                        value="${customer.getAddress()}" required>
                 <label for="address">Adresse</label>
             </div>
         </div>
         <div class="row">
             <div class="col s12 input-field">
-                <input type="email" name="email" id="email" data-length="255" class="validate"
+                <input type="email" name="email" id="email" data-length="255" class="input-length validate"
                        value="${customer.getEmail()}" required>
                 <label for="email">Email</label>
             </div>
         </div>
         <div class="row">
             <div class="col s12 input-field">
-                <input type="text" name="phone" id="phone" data-length="30" class="validate"
+                <input type="text" name="phone" id="phone" data-length="30" class="input-length validate"
                        value="${customer.getPhone()}" required>
                 <label for="phone">Telefon</label>
             </div>
@@ -62,12 +62,6 @@
                 </button>
             </div>
         </div>
-        <script>
-            $(document).ready(function () {
-                $('select').material_select();
-                $('input#name, input#address, input#email, input#phone').characterCounter();
-            });
-        </script>
     </form>
 </div>
 <%@ include file="../includes/bottom.jspf" %>

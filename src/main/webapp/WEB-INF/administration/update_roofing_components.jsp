@@ -18,7 +18,7 @@
             <div class="row">
                 <div class="col s12 input-field">
 
-                    <input type="text" class="component_notes" data-length="255"
+                    <input type="text" class="input-field component_notes" data-length="255"
                            name="component_notes_${definition.getIdentifier()}"
                            id="component_${definition.getIdentifier()}"
                            value="${definition.getNotes()}">
@@ -34,10 +34,5 @@
                 </button>
             </div>
         </div>
-        <script>
-            $(document).ready(function () {
-                $('select').material_select();
-            });
-        </script>
     </form>
 </div>

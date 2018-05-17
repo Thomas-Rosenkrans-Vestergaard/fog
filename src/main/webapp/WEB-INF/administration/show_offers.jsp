@@ -13,20 +13,15 @@
             reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus asperiores repellat.</p>
     </div>
 </div>
-<%@ include file="../includes/administration_controls.jspf" %>
+<%@ include file="../includes/table_controls.jspf" %>
 <div class="row">
     <div class="col s12">
         <table class="highlight administration-table">
             <thead>
             <th class="short">ID</th>
             <th>Kunde</th>
-            <th class="short">Bredde</th>
-            <th class="short">Længde</th>
-            <th class="short">Højde</th>
-            <th>Tag</th>
-            <th>Hældning</th>
-            <th>Spær</th>
-            <th>Redskabsskur</th>
+            <th>Ordre</th>
+            <th>Status</th>
             <th>Oprettet</th>
             <th>Medarbejder</th>
             <th>Tilbud pris</th>
@@ -42,17 +37,10 @@
                             <c:out value="${order.getCustomer().getName()}"/>
                         </a>
                     </td>
-                    <td>${order.getWidth()}</td>
-                    <td>${order.getLength()}</td>
-                    <td>${order.getHeight()}</td>
                     <td>
-                        <a href="roofings?action=update&id=${order.getRoofing().getId()}">
-                            <c:out value="${order.getRoofing().getName()}"/>
-                        </a>
+                        <a href="orders?action=update&id=${order.getId()}">Ordre</a>
                     </td>
-                    <td>${order.getSlope()}</td>
-                    <td>${order.getRafterChoice()}</td>
-                    <td><a href="${order.getShed().getId()}"><c:out value="${order.getRoofing().getId()}"/></a></td>
+                    <td><c:out value="${offer.getStatus().name()}"/></td>
                     <td>${f:formatDatetime(order.getCreatedAt())}</td>
                     <td>
                         <a href="employees?action=update&id=${employee.getId()}">

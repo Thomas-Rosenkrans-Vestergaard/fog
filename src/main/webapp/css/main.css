@@ -186,3 +186,32 @@ svg {
 td.bold {
     font-weight: bold;
 }
+
+.table-controls {
+    padding: 20px 0 10px 0;
+}
+
+.table-controls button {
+    display: block;
+    width: 100%;
+}
+
+button {
+    background: #0D47A1 !important;
+}
+
+table thead {
+    background: #eee;
+}
+
+a {
+    color: #0089ec;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+#slide-out a:hover {
+    text-decoration: none;
+}

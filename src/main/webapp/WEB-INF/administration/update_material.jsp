@@ -18,14 +18,15 @@
             <input type="hidden" name="category" value="${material.getCategoryId()}">
             <div class="row">
                 <div class="col s12 input-field">
-                    <input type="text" name="number" id="number" data-length="12" class="validate"
+                    <input type="text" name="number" id="number" data-length="12" class="input-length validate"
                            value="${material.getNumber()}" required>
                     <label for="number">Nummer</label>
                 </div>
             </div>
             <div class="row">
                 <div class="input-field col s12">
-                <textarea id="description" name="description" data-length="255" class="materialize-textarea validate"
+                <textarea id="description" name="description" data-length="255"
+                          class="materialize-textarea input-length validate"
                           required>${material.getDescription()}</textarea>
                     <label for="description">Beskrivelse</label>
                 </div>
@@ -69,12 +70,6 @@
                     </button>
                 </div>
             </div>
-            <script>
-                $(document).ready(function () {
-                    $('input#name').characterCounter();
-                    $('select').material_select();
-                });
-            </script>
         </form>
     </div>
 </div>

@@ -24,7 +24,8 @@
     <form method="post" class="col s12">
         <div class="row">
             <div class="col s12 input-field">
-                <input type="text" name="name" id="name" data-length="255" class="validate" value="${roofing.getName()}"
+                <input type="text" name="name" id="name" data-length="255" class="input-length validate"
+                       value="${roofing.getName()}"
                        required>
                 <label for="name">Navn</label>
             </div>
@@ -77,12 +78,6 @@
                 </button>
             </div>
         </div>
-        <script>
-            $(document).ready(function () {
-                $('input#name').characterCounter();
-                $('select').material_select();
-            });
-        </script>
     </form>
 </div>
 <%@ include file="../includes/bottom.jspf" %>

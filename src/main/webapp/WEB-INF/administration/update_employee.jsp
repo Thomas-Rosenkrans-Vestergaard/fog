@@ -17,14 +17,14 @@
         <input type="hidden" value="${employee.getId()}" name="id">
         <div class="row">
             <div class="col s12 input-field">
-                <input type="text" name="name" id="name" data-length="255" class="validate"
+                <input type="text" name="name" id="name" data-length="255" class="input-length validate"
                        value="${employee.getName()}" required>
                 <label for="name">Navn</label>
             </div>
         </div>
         <div class="row">
             <div class="col s12 input-field">
-                <input type="text" name="username" id="username" data-length="255" class="validate"
+                <input type="text" name="username" id="username" data-length="255" class="input-length validate"
                        value="${employee.getUsername()}" required>
                 <label for="username">Username</label>
             </div>
@@ -88,12 +88,6 @@
                 </button>
             </div>
         </div>
-        <script>
-            $(document).ready(function () {
-                $('select').material_select();
-                $('input#name, input#address, input#email, input#phone').characterCounter();
-            });
-        </script>
     </form>
 </div>
 <%@ include file="../includes/bottom.jspf" %>

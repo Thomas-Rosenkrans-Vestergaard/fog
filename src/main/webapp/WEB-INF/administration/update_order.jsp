@@ -225,8 +225,6 @@
         </div>
         <script>
             $(document).ready(function () {
-                $('input#name').characterCounter();
-                $('select').material_select();
 
                 function updateShedInputs() {
                     if ($('input#shed').is(':checked')) {

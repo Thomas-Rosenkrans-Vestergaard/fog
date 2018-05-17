@@ -8,12 +8,9 @@
 <div class="row">
     <div class="col s12">
         <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Nulla non lectus sed nisl molestie malesuada.
-            Mauris dolor felis, sagittis at, luctus sed, aliquam non, tellus. Vivamus luctus egestas leo. Sed elit dui,
-            pellentesque a, faucibus vel, interdum nec, diam. Itaque earum rerum hic tenetur a sapiente delectus, ut aut
-            reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus asperiores repellat.</p>
+            Mauris dolor felis, sagittis at, luctus sed, aliquam non, tellus.</p>
     </div>
 </div>
-<%@ include file="../includes/administration_controls.jspf" %>
 <div class="row">
     <div class="col s12 no-padding">
         <form method="get">
@@ -34,9 +31,15 @@
         </form>
     </div>
 </div>
-<script>
-    $('select').material_select();
-</script>
+<div class="row">
+    <div class="col s12">
+        <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Nulla non lectus sed nisl molestie malesuada.
+            Mauris dolor felis, sagittis at, luctus sed, aliquam non, tellus. Vivamus luctus egestas leo. Sed elit dui,
+            pellentesque a, faucibus vel, interdum nec, diam. Itaque earum rerum hic tenetur a sapiente delectus, ut aut
+            reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus asperiores repellat.</p>
+    </div>
+</div>
+<%@ include file="../includes/table_controls.jspf" %>
 <div class="row">
     <div class="col s12">
         <table class="highlight administration-table">

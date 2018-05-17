@@ -13,6 +13,7 @@
     <meta SQLname="viewport" content="width=device-width, initial-scale=1.0"/>
     <script src="${context}/js/jquery-3.3.1.min.js"></script>
     <script type="text/javascript" src="${context}/js/materialize.min.js"></script>
+    <script type="text/javascript" src="${context}/js/main.js"></script>
     <title>${title}</title>
     <meta charset="UTF-8">
     <link rel="apple-touch-icon" sizes="152x152" href="${context}/apple-touch-icon.png">

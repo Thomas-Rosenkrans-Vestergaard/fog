@@ -211,7 +211,7 @@
             </div>
             <div class="row">
                 <div class="col s12 input-field">
-                    <input type="email" name="customer-email" id="customer-email" data-length="255" class="validate"
+                    <input type="email" name="customer-email" id="customer-email" class="validate"
                            required>
                     <label for="customer-email">Email</label>
                 </div>
@@ -233,8 +233,6 @@
     </form>
 </div>
 <script>
-    $('select').material_select();
-
     $(document).ready(function () {
         function updateShedInputs() {
             if ($('input#shed').is(':checked')) {
@@ -249,8 +247,6 @@
         }
 
         updateShedInputs();
-        $('select').material_select();
-        $('input#customer-name, input#customer-mail, input#customer-telephone').characterCounter();
         $('input#shed').on('change', function (input) {
             updateShedInputs();
         });
