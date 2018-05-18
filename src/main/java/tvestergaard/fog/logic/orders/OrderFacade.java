@@ -179,19 +179,4 @@ public class OrderFacade
             throw new ApplicationException(e);
         }
     }
-
-    /**
-     * Returns the number of orders in the data storage.
-     *
-     * @return The number of orders in the data storage.
-     * @throws ApplicationException When a data storage exception occurs while performing the operation.
-     */
-    public int size() throws ApplicationException
-    {
-        try {
-            return dao.size();
-        } catch (DataAccessException e) {
-            throw new ApplicationException(e);
-        }
-    }
 }

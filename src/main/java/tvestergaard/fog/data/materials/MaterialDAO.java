@@ -72,12 +72,4 @@ public interface MaterialDAO
      * @throws DataAccessException When a data storage exception occurs while performing the operation.
      */
     Multimap<Integer, SimpleMaterial> getByCategory(int... categories) throws DataAccessException;
-
-    /**
-     * Returns the number of materials in the data storage.
-     *
-     * @return The number of materials in the data storage.
-     * @throws DataAccessException When a data storage exception occurs while performing the operation.
-     */
-    int size() throws DataAccessException;
 }

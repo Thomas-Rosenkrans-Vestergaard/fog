@@ -44,12 +44,4 @@ public interface EmployeeDAO
      * @throws DataAccessException When a data storage exception occurs while performing the operation.
      */
     boolean update(EmployeeUpdater updater) throws DataAccessException;
-
-    /**
-     * Returns the number of employees in the data storage.
-     *
-     * @return The number of employees in the data storage.
-     * @throws DataAccessException When a data storage exception occurs while performing the operation.
-     */
-    int size() throws DataAccessException;
 }

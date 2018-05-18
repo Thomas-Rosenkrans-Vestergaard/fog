@@ -44,12 +44,4 @@ public interface FlooringDAO
      * @throws DataAccessException When a data storage exception occurs while performing the operation.
      */
     boolean update(FlooringUpdater updater) throws DataAccessException;
-
-    /**
-     * Returns the number of floorings in the data storage.
-     *
-     * @return The number of floorings in the data storage.
-     * @throws DataAccessException When a data storage exception occurs while performing the operation.
-     */
-    int size() throws DataAccessException;
 }

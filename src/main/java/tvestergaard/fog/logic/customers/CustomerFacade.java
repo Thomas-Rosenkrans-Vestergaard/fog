@@ -239,19 +239,4 @@ public class CustomerFacade
             throw new ApplicationException(e);
         }
     }
-
-    /**
-     * Returns the number of customers in the data storage.
-     *
-     * @return The number of customers in the data storage.
-     * @throws ApplicationException When a data storage exception occurs while performing the operation.
-     */
-    public int size() throws ApplicationException
-    {
-        try {
-            return customerDAO.size();
-        } catch (DataAccessException e) {
-            throw new ApplicationException(e);
-        }
-    }
 }

@@ -150,19 +150,4 @@ public class PurchaseFacade
             throw new ApplicationException(e);
         }
     }
-
-    /**
-     * Returns the number of purchases in the data storage.
-     *
-     * @return The number of purchases in the data storage.
-     * @throws ApplicationException When a data storage exception occurs while performing the operation.
-     */
-    public int size() throws ApplicationException
-    {
-        try {
-            return purchaseDAO.size();
-        } catch (DataAccessException e) {
-            throw new ApplicationException(e);
-        }
-    }
 }
