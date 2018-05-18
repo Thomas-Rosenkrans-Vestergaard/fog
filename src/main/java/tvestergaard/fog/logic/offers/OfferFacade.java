@@ -20,7 +20,8 @@ import tvestergaard.fog.logic.employees.InactiveEmployeeException;
 import tvestergaard.fog.logic.employees.InsufficientPermissionsException;
 import tvestergaard.fog.logic.employees.UnknownEmployeeException;
 import tvestergaard.fog.logic.orders.UnknownOrderException;
-import tvestergaard.fog.logic.tokens.TokenIssuer;
+import tvestergaard.fog.logic.tokens.*;
+import tvestergaard.fog.presentation.servlets.Facades;
 
 import java.util.List;
 import java.util.Set;
@@ -63,26 +64,34 @@ public class OfferFacade
     private final TokenIssuer tokenIssuer;
 
     /**
+     * The object responsible for authenticating one-time tokens for the offer email sent to customers.
+     */
+    private final TokenAuthenticator tokenAuthenticator;
+
+    /**
      * Creates a new {@link OfferFacade}.
      *
-     * @param offerDAO    The offer dao used to access the data storage in the application.
-     * @param orderDAO    The order dao used to validate the customers to issue offers to.
-     * @param employeeDAO The employee dao used to validate the employees issuing offers.
-     * @param mailer      The object responsible for sending offer notification emails to customers.
-     * @param tokenIssuer The object responsible for creating one-time tokens for the offer email sent to customers.
+     * @param offerDAO           The offer dao used to access the data storage in the application.
+     * @param orderDAO           The order dao used to validate the customers to issue offers to.
+     * @param employeeDAO        The employee dao used to validate the employees issuing offers.
+     * @param mailer             The object responsible for sending offer notification emails to customers.
+     * @param tokenIssuer        The object responsible for creating one-time tokens for the offer email sent to customers.
+     * @param tokenAuthenticator The object responsible for authenticating one-time tokens for the offer email sent to customers.
      */
     public OfferFacade(
             OfferDAO offerDAO,
             OrderDAO orderDAO,
             EmployeeDAO employeeDAO,
             ApplicationMailer mailer,
-            TokenIssuer tokenIssuer)
+            TokenIssuer tokenIssuer,
+            TokenAuthenticator tokenAuthenticator)
     {
         this.offerDAO = offerDAO;
         this.orderDAO = orderDAO;
         this.employeeDAO = employeeDAO;
         this.mailer = mailer;
         this.tokenIssuer = tokenIssuer;
+        this.tokenAuthenticator = tokenAuthenticator;
     }
 
     /**
@@ -226,6 +235,66 @@ public class OfferFacade
                 throw new OfferNotOpenException();
 
             offerDAO.reject(offerId);
+        } catch (DataAccessException e) {
+            throw new ApplicationException(e);
+        }
+    }
+
+    /**
+     * Rejects the offer using the provided token.
+     *
+     * @param offer       The if of the offer being rejected.
+     * @param tokenId     The token id to use when rejecting the offer.
+     * @param tokenSecret The token secret to use when rejecting the offer.
+     * @throws ApplicationException    When some data storage exception occurs.
+     * @throws ExpiredTokenException   When the provided token has expired.
+     * @throws IncorrectTokenException When the provided token is invalid.
+     * @throws OfferNotOpenException   When the offer is not in an open state, and can therefor not be rejected.
+     * @throws UnknownOfferException   WHen the provided offer id is unknown to the application.
+     */
+    public void reject(int offer, int tokenId, String tokenSecret) throws ExpiredTokenException,
+                                                                          IncorrectTokenException,
+                                                                          OfferNotOpenException,
+                                                                          UnknownOfferException
+    {
+        try {
+            if (!tokenAuthenticator.authenticate(new TokenPair(tokenId, tokenSecret), TokenUse.OFFER_EMAIL))
+                throw new IncorrectTokenException();
+
+            reject(offer);
+
+        } catch (DataAccessException e) {
+            throw new ApplicationException(e);
+        }
+    }
+
+    /**
+     * Accepts the offer using the provided token.
+     *
+     * @param offer       The if of the offer being accepted.
+     * @param tokenId     The token id to use when accepting the offer.
+     * @param tokenSecret The token secret to use when accepting the offer.
+     * @throws ApplicationException             When some data storage exception occurs.
+     * @throws ExpiredTokenException            When the provided token has expired.
+     * @throws IncorrectTokenException          When the provided token is invalid.
+     * @throws OfferNotOpenException            When the offer is not in an open state, and can therefor not be accepted.
+     * @throws InsufficientPermissionsException When the employee who created the offer is no longer a salesman.l
+     * @throws UnknownOfferException            WHen the provided offer id is unknown to the application.
+     * @throws InactiveCustomerException        When the customer accepting the offer, is not active.
+     */
+    public void accept(int offer, int tokenId, String tokenSecret) throws ExpiredTokenException,
+                                                                          IncorrectTokenException,
+                                                                          InsufficientPermissionsException,
+                                                                          OfferNotOpenException,
+                                                                          UnknownOfferException,
+                                                                          InactiveCustomerException
+    {
+        try {
+            if (!tokenAuthenticator.authenticate(new TokenPair(tokenId, tokenSecret), TokenUse.OFFER_EMAIL))
+                throw new IncorrectTokenException();
+
+            Facades.purchaseFacade.create(offer);
+
         } catch (DataAccessException e) {
             throw new ApplicationException(e);
         }

@@ -234,7 +234,7 @@ public class CustomerFacade
     public void resetPassword(int tokenId, String tokenSecret, String newPassword) throws IncorrectTokenException, ExpiredTokenException
     {
         try {
-            passwordResetter.reset(new TokenSecret(tokenId, tokenSecret), newPassword);
+            passwordResetter.reset(new TokenPair(tokenId, tokenSecret), newPassword);
         } catch (DataAccessException e) {
             throw new ApplicationException(e);
         }

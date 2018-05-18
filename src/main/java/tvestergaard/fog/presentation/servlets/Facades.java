@@ -38,6 +38,7 @@ import tvestergaard.fog.logic.orders.OrderFacade;
 import tvestergaard.fog.logic.orders.OrderPlacer;
 import tvestergaard.fog.logic.purchases.PurchaseFacade;
 import tvestergaard.fog.logic.roofings.RoofingFacade;
+import tvestergaard.fog.logic.tokens.TokenAuthenticator;
 import tvestergaard.fog.logic.tokens.TokenGenerator;
 import tvestergaard.fog.logic.tokens.TokenIssuer;
 
@@ -60,7 +61,8 @@ public class Facades
     private static final ModelDAO        modelDAO    = new MysqlModelDAO(source);
 
 
-    private static final TokenIssuer tokenIssuer = new TokenIssuer(tokenDAO, new TokenGenerator());
+    private static final TokenIssuer        tokenIssuer        = new TokenIssuer(tokenDAO, new TokenGenerator());
+    private static final TokenAuthenticator tokenAuthenticator = new TokenAuthenticator(tokenDAO, 24);
 
     public static final CladdingFacade     claddingFacade     = new CladdingFacade(claddingDAO);
     public static final CustomerFacade     customerFacade     = new CustomerFacade(customerDAO, tokenDAO);
@@ -69,7 +71,7 @@ public class Facades
     public static final MaterialFacade     materialFacade     = new MaterialFacade(materialDAO);
     public static final OrderFacade        orderFacade        = new OrderFacade(new OrderPlacer(orderDAO, customerDAO, mailer), orderDAO);
     public static final RoofingFacade      roofingFacade      = new RoofingFacade(roofingDAO);
-    public static final OfferFacade        offerFacade        = new OfferFacade(offerDAO, orderDAO, employeeDAO, mailer, tokenIssuer);
+    public static final OfferFacade        offerFacade        = new OfferFacade(offerDAO, orderDAO, employeeDAO, mailer, tokenIssuer, tokenAuthenticator);
     public static final ConstructionFacade constructionFacade = new ConstructionFacade(modelDAO, roofingDAO);
     public static final PurchaseFacade     purchaseFacade     = new PurchaseFacade(purchaseDAO, offerDAO, employeeDAO, constructionFacade);
     public static final ModelFacade        skeletonFacade     = new ModelFacade(modelDAO);

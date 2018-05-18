@@ -1,6 +1,6 @@
 package tvestergaard.fog.logic.tokens;
 
-public class TokenSecret
+public class TokenPair
 {
 
     /**
@@ -14,12 +14,12 @@ public class TokenSecret
     public final String secret;
 
     /**
-     * Creates a new {@link TokenSecret}.
+     * Creates a new {@link TokenPair}.
      *
      * @param id     The unique identifier of the token.
      * @param secret The secret password needed to authenticate the token.
      */
-    public TokenSecret(int id, String secret)
+    public TokenPair(int id, String secret)
     {
         this.id = id;
         this.secret = secret;

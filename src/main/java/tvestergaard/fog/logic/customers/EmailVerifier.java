@@ -51,7 +51,7 @@ public class EmailVerifier
      */
     public void challenge(Customer customer) throws DataAccessException
     {
-        TokenSecret       secret = tokenIssuer.issue(customer, TokenUse.EMAIL_VERIFICATION);
+        TokenPair         secret = tokenIssuer.issue(customer, TokenUse.EMAIL_VERIFICATION);
         RegistrationEmail email  = new RegistrationEmail(customer, secret);
         mailer.send(email);
     }
@@ -67,7 +67,7 @@ public class EmailVerifier
      */
     public void confirm(int id, String token) throws DataAccessException, IncorrectTokenException, ExpiredTokenException
     {
-        if (!tokenAuthenticator.authenticate(new TokenSecret(id, token), TokenUse.EMAIL_VERIFICATION)) {
+        if (!tokenAuthenticator.authenticate(new TokenPair(id, token), TokenUse.EMAIL_VERIFICATION)) {
             throw new IncorrectTokenException();
         }
 

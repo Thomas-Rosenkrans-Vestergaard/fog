@@ -86,7 +86,8 @@ public class OffersServlet extends HttpServlet
         try {
 
             if ("accept".equals(action)) {
-                purchaseFacade.create(offer.getId(), offer.getEmployeeId());
+                purchaseFacade.create(offer.getId());
+                notifications.success("Tilbudet blev accepteret.");
                 resp.sendRedirect("purchases");
                 return;
             }

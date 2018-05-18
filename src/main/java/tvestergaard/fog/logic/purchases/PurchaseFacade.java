@@ -3,7 +3,6 @@ package tvestergaard.fog.logic.purchases;
 import tvestergaard.fog.data.DataAccessException;
 import tvestergaard.fog.data.constraints.Constraints;
 import tvestergaard.fog.data.employees.Employee;
-import tvestergaard.fog.data.employees.EmployeeColumn;
 import tvestergaard.fog.data.employees.EmployeeDAO;
 import tvestergaard.fog.data.employees.Role;
 import tvestergaard.fog.data.offers.Offer;
@@ -20,6 +19,8 @@ import tvestergaard.fog.logic.construction.GarageConstructionSummary;
 import tvestergaard.fog.logic.construction.MaterialLine;
 import tvestergaard.fog.logic.customers.InactiveCustomerException;
 import tvestergaard.fog.logic.employees.InsufficientPermissionsException;
+import tvestergaard.fog.logic.offers.OfferNotOpenException;
+import tvestergaard.fog.logic.offers.UnknownOfferException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -118,24 +119,32 @@ public class PurchaseFacade
     /**
      * Creates a new purchase from the offer with the provided id.
      *
-     * @param offerId    The id of the offer from which to create the purchase.
-     * @param employeeId The id of the employee creating the purchase.
+     * @param offerId The id of the offer from which to create the purchase.
      * @return An entity representing the new purchase.
      * @throws InactiveCustomerException        When the customer that the offer was issued to is inactive, and can therefor
      *                                          not create purchases.
      * @throws InsufficientPermissionsException When the employee attempting to create the purchase, is not a member of
      *                                          role {@link Role#SALESMAN}.
+     * @throws UnknownOfferException            When the provided offer id is unknown to the application.
+     * @throws OfferNotOpenException            When the offer is not open, and a purchase cannot be created from it.
      */
-    public Purchase create(int offerId, int employeeId) throws InactiveCustomerException, InsufficientPermissionsException
+    public Purchase create(int offerId) throws InactiveCustomerException,
+                                               InsufficientPermissionsException,
+                                               UnknownOfferException,
+                                               OfferNotOpenException
     {
         try {
-            Employee employee = employeeDAO.first(where(eq(EmployeeColumn.ID, employeeId)));
-            if (!employee.is(Role.SALESMAN))
-                throw new InsufficientPermissionsException(Role.SALESMAN);
-
             Offer offer = offerDAO.first(where(eq(ID, offerId)));
+            if (offer == null)
+                throw new UnknownOfferException();
+            if (!offer.isOpen())
+                throw new OfferNotOpenException();
             if (!offer.getOrder().getCustomer().isActive())
                 throw new InactiveCustomerException();
+
+            Employee employee = offer.getEmployee();
+            if (!employee.is(Role.SALESMAN))
+                throw new InsufficientPermissionsException(Role.SALESMAN);
 
             GarageConstructionSummary constructionSummary = constructionFacade.construct(offer.getOrder());
             List<BomLineBlueprint>    lineBlueprints      = new ArrayList<>();
@@ -144,7 +153,7 @@ public class PurchaseFacade
             for (MaterialLine line : constructionSummary.getRoofingConstructionSummary().getMaterials().getLines())
                 lineBlueprints.add(BomLineBlueprint.from(line.getMaterial().getId(), line.getAmount(), line.getNotes()));
 
-            return purchaseDAO.create(PurchaseBlueprint.from(offerId, employeeId, BomBlueprint.from(lineBlueprints)));
+            return purchaseDAO.create(PurchaseBlueprint.from(offerId, offer.getEmployeeId(), BomBlueprint.from(lineBlueprints)));
 
         } catch (DataAccessException e) {
             throw new ApplicationException(e);

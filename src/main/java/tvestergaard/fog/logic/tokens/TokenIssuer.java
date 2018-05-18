@@ -43,11 +43,11 @@ public class TokenIssuer
      * @return TokenSecret representing the newly created token.
      * @throws DataAccessException When a data storage exception occurs during the operation.
      */
-    public TokenSecret issue(Customer customer, TokenUse use) throws DataAccessException
+    public TokenPair issue(Customer customer, TokenUse use) throws DataAccessException
     {
         String secret = tokenGenerator.generate();
         Token  token  = tokenDAO.create(customer.getId(), hash(secret), use);
-        return new TokenSecret(token.getId(), secret);
+        return new TokenPair(token.getId(), secret);
     }
 
     /**

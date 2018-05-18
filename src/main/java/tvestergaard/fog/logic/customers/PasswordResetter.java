@@ -72,7 +72,7 @@ public class PasswordResetter
         if (!customer.isActive())
             throw new InactiveCustomerException();
 
-        TokenSecret      secret     = tokenIssuer.issue(customer, PASSWORD_RESET);
+        TokenPair        secret     = tokenIssuer.issue(customer, PASSWORD_RESET);
         ApplicationEmail resetEmail = new PasswordResetEmail(customer, secret);
         mailer.send(resetEmail);
     }
@@ -86,9 +86,9 @@ public class PasswordResetter
      * @throws IncorrectTokenException When the provided token credentials are incorrect.
      * @throws ExpiredTokenException   When the provided token exists, but have expired.
      */
-    public void reset(TokenSecret tokenSecret, String newPassword) throws DataAccessException,
-                                                                          IncorrectTokenException,
-                                                                          ExpiredTokenException
+    public void reset(TokenPair tokenSecret, String newPassword) throws DataAccessException,
+                                                                        IncorrectTokenException,
+                                                                        ExpiredTokenException
     {
         if (!tokenAuthenticator.authenticate(tokenSecret, PASSWORD_RESET))
             throw new IncorrectTokenException();

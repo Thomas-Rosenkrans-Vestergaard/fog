@@ -4,7 +4,7 @@ import org.simplejavamail.email.Email;
 import org.simplejavamail.email.EmailBuilder;
 import tvestergaard.fog.data.customers.Customer;
 import tvestergaard.fog.logic.email.ApplicationEmail;
-import tvestergaard.fog.logic.tokens.TokenSecret;
+import tvestergaard.fog.logic.tokens.TokenPair;
 
 public class RegistrationEmail implements ApplicationEmail
 {
@@ -17,7 +17,7 @@ public class RegistrationEmail implements ApplicationEmail
     /**
      * The secret component of the token.
      */
-    private final TokenSecret secret;
+    private final TokenPair secret;
 
     /**
      * Creates a new {@link RegistrationEmail}.
@@ -25,7 +25,7 @@ public class RegistrationEmail implements ApplicationEmail
      * @param customer The customer to send the registration confirmation email to.
      * @param secret   The token secret to send in the email.
      */
-    public RegistrationEmail(Customer customer, TokenSecret secret)
+    public RegistrationEmail(Customer customer, TokenPair secret)
     {
         this.customer = customer;
         this.secret = secret;
