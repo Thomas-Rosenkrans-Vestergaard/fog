@@ -1,11 +1,9 @@
 package tvestergaard.fog.logic.customers;
 
+import org.mindrot.jbcrypt.BCrypt;
 import tvestergaard.fog.data.DataAccessException;
 import tvestergaard.fog.data.constraints.Constraints;
-import tvestergaard.fog.data.customers.Customer;
-import tvestergaard.fog.data.customers.CustomerColumn;
-import tvestergaard.fog.data.customers.CustomerDAO;
-import tvestergaard.fog.data.customers.CustomerUpdater;
+import tvestergaard.fog.data.customers.*;
 import tvestergaard.fog.data.tokens.TokenDAO;
 import tvestergaard.fog.logic.ApplicationException;
 import tvestergaard.fog.logic.email.ApplicationMailer;
@@ -14,6 +12,10 @@ import tvestergaard.fog.logic.tokens.*;
 
 import java.util.List;
 import java.util.Set;
+
+import static tvestergaard.fog.data.constraints.Constraint.eq;
+import static tvestergaard.fog.data.constraints.Constraint.where;
+import static tvestergaard.fog.data.customers.CustomerColumn.ID;
 
 public class CustomerFacade
 {
@@ -145,12 +147,12 @@ public class CustomerFacade
      * @throws CustomerValidatorException When the provided customer information is considered invalid.
      */
     public boolean update(int id,
-                          String name,
-                          String address,
-                          String email,
-                          String phone,
-                          String password,
-                          boolean active) throws CustomerValidatorException
+            String name,
+            String address,
+            String email,
+            String phone,
+            String password,
+            boolean active) throws CustomerValidatorException
     {
         try {
             CustomerUpdater    updater = CustomerUpdater.from(id, name, address, email, phone, password, active);
@@ -238,5 +240,56 @@ public class CustomerFacade
         } catch (DataAccessException e) {
             throw new ApplicationException(e);
         }
+    }
+
+    /**
+     * Updates the password of the customer with the provided id.
+     *
+     * @param customerId  The id of the customer to update the password of.
+     * @param oldPassword The old password.
+     * @param newPassword The new password.
+     * @throws ApplicationException     When a data storage exception occurs.
+     * @throws UnknownCustomerException When the customer is unknown to the application.
+     * @throws AuthenticationException  When the provided old password does not match the current password of the customer.
+     */
+    public void updatePassword(int customerId, String oldPassword, String newPassword) throws ApplicationException,
+            UnknownCustomerException,
+            AuthenticationException
+    {
+        try {
+            Customer customer = customerDAO.first(where(eq(ID, customerId)));
+            if (customer == null)
+                throw new UnknownCustomerException();
+            if (!check(customer.getPassword(), oldPassword))
+                throw new AuthenticationException();
+
+            customer.setPassword(hash(newPassword));
+            customerDAO.update(customer);
+        } catch (DataAccessException e) {
+            throw new ApplicationException(e);
+        }
+    }
+
+    /**
+     * Returns the hash of the provided password using bcrypt.
+     *
+     * @param password The password to hash.
+     * @return The hash of the provided password using bcrypt.
+     */
+    private String hash(String password)
+    {
+        return BCrypt.hashpw(password, BCrypt.gensalt());
+    }
+
+    /**
+     * Checks if the provided password matches the provided hash.
+     *
+     * @param hash     The hash.
+     * @param password The password to check against the password.
+     * @return {@code true} if the provided password matches the provided hash.
+     */
+    private boolean check(String hash, String password)
+    {
+        return BCrypt.checkpw(password, hash);
     }
 }
