@@ -88,14 +88,14 @@ public class AdministrationPurchases extends AdministrationServlet
                 return;
             }
 
-            GarageConstructionSummary summary = constructionFacade.construct(purchase.getOffer().getOrder());
+          //  GarageConstructionSummary summary = constructionFacade.construct(purchase.getOffer().getOrder());
 
             req.setAttribute("context", "..");
             req.setAttribute("title", "Køb");
             req.setAttribute("navigation", "administration_purchases");
             req.setAttribute("purchase", purchase);
-            req.setAttribute("summary", summary);
-            req.getRequestDispatcher("/WEB-INF/update_.jsp").forward(req, resp);
+//            req.setAttribute("summary", summary);
+//            req.getRequestDispatcher("/WEB-INF/update_.jsp").forward(req, resp);
         }
     }
 }
