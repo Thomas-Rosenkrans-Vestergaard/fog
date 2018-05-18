@@ -5,6 +5,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import tvestergaard.fog.data.TestDataSource;
+import tvestergaard.fog.data.constraints.OrderDirection;
 
 import java.sql.Connection;
 import java.util.HashSet;
@@ -60,7 +61,7 @@ public class MysqlEmployeeDAOTest
     @Test
     public void get() throws Exception
     {
-        List<Employee> employees = dao.get();
+        List<Employee> employees = dao.get(null);
 
         assertEquals(5, employees.size());
         assertEquals(employee1, employees.get(0));
@@ -95,7 +96,7 @@ public class MysqlEmployeeDAOTest
     @Test
     public void getOrderBy() throws Exception
     {
-        List<Employee> employees = dao.get(order(EmployeeColumn.NAME, desc()));
+        List<Employee> employees = dao.get(order(EmployeeColumn.NAME, OrderDirection.DESC));
 
         assertEquals(5, employees.size());
         assertEquals(employee5, employees.get(0));
@@ -108,7 +109,7 @@ public class MysqlEmployeeDAOTest
     @Test
     public void getLimit() throws Exception
     {
-        List<Employee> employees = dao.get(limit(2));
+        List<Employee> employees = dao.get(limit(EmployeeColumn.class, 2));
 
         assertEquals(2, employees.size());
         assertEquals(employee1, employees.get(0));
@@ -118,7 +119,7 @@ public class MysqlEmployeeDAOTest
     @Test
     public void getOffset() throws Exception
     {
-        List<Employee> employees = dao.get(limit(2), offset(1));
+        List<Employee> employees = dao.get(limit(EmployeeColumn.class, 2).offset(1));
 
         assertEquals(employee2, employees.get(0));
         assertEquals(employee3, employees.get(1));

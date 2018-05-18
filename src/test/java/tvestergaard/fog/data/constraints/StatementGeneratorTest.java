@@ -4,12 +4,12 @@ import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 import static tvestergaard.fog.data.constraints.Constraint.*;
-import static tvestergaard.fog.data.constraints.TestEnum.*;
+import static tvestergaard.fog.data.constraints.TestColumn.*;
 
 public class StatementGeneratorTest
 {
 
-    private StatementGenerator<TestEnum> generator = new StatementGenerator();
+    private StatementGenerator<TestColumn> generator = new StatementGenerator();
 
     @Test
     public void whereEquals() throws Exception
@@ -66,7 +66,7 @@ public class StatementGeneratorTest
     public void orderDesc() throws Exception
     {
         String expected = "ORDER BY `column_two` DESC";
-        String actual   = generator.generate(order(COLUMN_TWO, desc()));
+        String actual   = generator.generate(order(COLUMN_TWO, OrderDirection.DESC));
         assertEquals(clean(expected), clean(actual));
     }
 
@@ -74,7 +74,7 @@ public class StatementGeneratorTest
     public void orderAsc() throws Exception
     {
         String expected = "ORDER BY `column_three` ASC";
-        String actual   = generator.generate(order(COLUMN_THREE, asc()));
+        String actual   = generator.generate(order(COLUMN_THREE, OrderDirection.ASC));
         assertEquals(clean(expected), clean(actual));
     }
 
@@ -82,7 +82,7 @@ public class StatementGeneratorTest
     public void limit() throws Exception
     {
         String expected = "LIMIT ?";
-        String actual   = generator.generate(Constraint.limit(5));
+        String actual   = generator.generate(Constraint.limit(TestColumn.class, 5));
         assertEquals(clean(expected), clean(actual));
     }
 
@@ -90,7 +90,7 @@ public class StatementGeneratorTest
     public void offset() throws Exception
     {
         String expected = "OFFSET ?";
-        String actual   = generator.generate(Constraint.offset(1));
+        String actual   = generator.generate(Constraint.offset(TestColumn.class, 1));
         assertEquals(clean(expected), clean(actual));
     }
 
@@ -98,7 +98,7 @@ public class StatementGeneratorTest
     public void generateLimitOffset() throws Exception
     {
         String expected = "LIMIT?OFFSET?";
-        String actual   = generator.generate(Constraint.limit(10), Constraint.offset(20));
+        String actual   = generator.generate(Constraint.limit(TestColumn.class, 10).offset(20));
         assertEquals(clean(expected), clean(actual));
     }
 
@@ -107,10 +107,7 @@ public class StatementGeneratorTest
     {
         String expected = "WHERE `column_one` = ? ORDER BY `column_two` DESC LIMIT ? OFFSET ?";
         String actual = generator.generate(
-                order(COLUMN_TWO, desc()),
-                Constraint.limit(1),
-                where(eq(COLUMN_ONE, "")),
-                Constraint.offset(5));
+                order(COLUMN_TWO, OrderDirection.DESC).limit(1).where(eq(COLUMN_ONE, null)).offset(5));
 
         assertEquals(clean(expected), clean(actual));
     }

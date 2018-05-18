@@ -19,6 +19,7 @@ import tvestergaard.fog.data.roofing.RoofingBlueprint;
 import tvestergaard.fog.data.roofing.RoofingType;
 
 import java.sql.Connection;
+import java.util.ArrayList;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -37,10 +38,9 @@ public class MysqlOrderDAOTest
     private static Customer customer1;
     private static Customer customer2;
     private static Cladding cladding1;
-    private static Cladding cladding2;
     private static Roofing  roofing1;
     private static Roofing  roofing2;
-    private static Shed     shed1;
+    private static Flooring flooring1;
 
     private Order order1;
     private Order order2;
@@ -52,20 +52,19 @@ public class MysqlOrderDAOTest
         customer2 = customerDAO.create(CustomerBlueprint.from("name2", "address2", "email2", "phone2", "password2", false));
 
         cladding1 = claddingDAO.create(CladdingBlueprint.from("name1", "description1", true));
-        cladding2 = claddingDAO.create(CladdingBlueprint.from("name2", "description2", false));
 
-        roofing1 = roofingDAO.create(RoofingBlueprint.from("name1", "description1", true, RoofingType.TILED));
-        roofing2 = roofingDAO.create(RoofingBlueprint.from("name2", "description2", false, RoofingType.TILED));
+        roofing1 = roofingDAO.create(RoofingBlueprint.from("name1", "description1", true, RoofingType.TILED), new ArrayList<>());
+        roofing2 = roofingDAO.create(RoofingBlueprint.from("name2", "description2", false, RoofingType.TILED), new ArrayList<>());
 
-        Flooring flooring = flooringDAO.create(FlooringBlueprint.from("name1", "description1", true));
-        shed1 = new ShedRecord(0, 1, 2, cladding1.getId(), cladding1, flooring.getId(), flooring);
+        flooring1 = flooringDAO.create(FlooringBlueprint.from("name1", "description1", true));
     }
 
     @Before
     public void setUp() throws Exception
     {
-        this.order1 = dao.create(OrderBlueprint.from(customer1.getId(), cladding1.getId(), 1, 2, 3, roofing1.getId(), 6, RafterChoice.PREBUILT, shed1));
-        this.order2 = dao.create(OrderBlueprint.from(customer2.getId(), cladding2.getId(), 10, 11, 12, roofing2.getId(), 34, RafterChoice.BUILD_SELF, null));
+        ShedBlueprint shedBlueprint = ShedBlueprint.from(10, cladding1.getId(), flooring1.getId());
+        this.order1 = dao.create(OrderBlueprint.from(customer1.getId(), 1, 2, 3, roofing1.getId(), 6, RafterChoice.PREBUILT, true, shedBlueprint));
+        this.order2 = dao.create(OrderBlueprint.from(customer2.getId(), 10, 11, 12, roofing2.getId(), 34, RafterChoice.BUILD_SELF, false, null));
     }
 
     @After
@@ -73,8 +72,8 @@ public class MysqlOrderDAOTest
     {
         Connection connection = TestDataSource.getSource().getConnection();
 
-        connection.createStatement().executeUpdate("DELETE FROM sheds");
         connection.createStatement().executeUpdate("DELETE FROM orders");
+        connection.createStatement().executeUpdate("DELETE FROM sheds");
     }
 
     @AfterClass
@@ -89,33 +88,32 @@ public class MysqlOrderDAOTest
     @Test
     public void create() throws Exception
     {
-        Customer     expectedCustomer = customer1;
-        Cladding     expectedCladding = cladding2;
-        int          expectedWidth    = 5;
-        int          expectedLength   = 10;
-        int          expectedHeight   = 15;
-        Roofing      expectedRoofing  = roofing2;
-        int          expectedSlope    = 20;
-        RafterChoice expectedRafters  = RafterChoice.BUILD_SELF;
-        Shed         expectedShed     = shed1;
+        Customer      expectedCustomer = customer1;
+        int           expectedWidth    = 5;
+        int           expectedLength   = 10;
+        int           expectedHeight   = 15;
+        Roofing       expectedRoofing  = roofing2;
+        int           expectedSlope    = 20;
+        RafterChoice  expectedRafters  = RafterChoice.BUILD_SELF;
+        boolean       expectedActive   = true;
+        ShedBlueprint expectedShed     = ShedBlueprint.from(200, cladding1.getId(), flooring1.getId());
 
-        Order actual = dao.create(OrderBlueprint.from(expectedCustomer.getId(), expectedCladding.getId(), expectedWidth, expectedLength,
-                expectedHeight, expectedRoofing.getId(), expectedSlope, expectedRafters, shed1));
+        Order actual = dao.create(OrderBlueprint.from(expectedCustomer.getId(), expectedWidth, expectedLength,
+                expectedHeight, expectedRoofing.getId(), expectedSlope, expectedRafters, expectedActive, null));
 
         assertEquals(expectedCustomer, actual.getCustomer());
-        assertEquals(expectedCladding, actual.getCladding());
         assertEquals(expectedWidth, actual.getWidth());
         assertEquals(expectedLength, actual.getLength());
         assertEquals(expectedHeight, actual.getHeight());
         assertEquals(expectedRoofing, actual.getRoofing());
         assertEquals(expectedSlope, actual.getSlope());
         assertEquals(expectedRafters, actual.getRafterChoice());
-        assertEquals(expectedShed.getWidth(), actual.getShedBlueprint().getWidth());
-        assertEquals(expectedShed.getDepth(), actual.getShedBlueprint().getDepth());
-        assertEquals(expectedShed.getCladding(), actual.getShedBlueprint().getCladding());
-        assertEquals(expectedShed.getFlooring(), actual.getShedBlueprint().getFlooring());
+        assertEquals(expectedShed.getDepth(), actual.getShed().getDepth());
+        assertEquals(cladding1, actual.getShed().getCladding());
+        assertEquals(flooring1, actual.getShed().getFlooring());
         assertTrue(actual.isActive());
         assertEquals(0, actual.getNumberOfOffers());
+        assertEquals(0, actual.getNumberOfOpenOffers());
     }
 
     @Test
@@ -135,7 +133,7 @@ public class MysqlOrderDAOTest
     public void getNumberOfNewOrders() throws Exception
     {
         assertEquals(2, dao.getNumberOfNewOrders());
-        dao.create(OrderBlueprint.from(customer1.getId(), cladding1.getId(), 1, 2, 3, roofing1.getId(), 4, RafterChoice.BUILD_SELF, null));
+        dao.create(OrderBlueprint.from(customer1.getId(), 1, 2, 3, roofing1.getId(), 4, RafterChoice.BUILD_SELF, true, null));
         assertEquals(3, dao.getNumberOfNewOrders());
     }
 }

@@ -11,17 +11,17 @@ public class LikeConditionTest
     @Test
     public void getColumn() throws Exception
     {
-        LikeCondition<TestEnum> condition = new LikeCondition(TestEnum.COLUMN_TWO, null);
+        LikeCondition<TestColumn> condition = new LikeCondition(TestColumn.COLUMN_TWO, null);
 
-        assertSame(TestEnum.COLUMN_TWO, condition.column);
-        assertSame(TestEnum.COLUMN_TWO, condition.getColumn());
+        assertSame(TestColumn.COLUMN_TWO, condition.column);
+        assertSame(TestColumn.COLUMN_TWO, condition.getColumn());
     }
 
     @Test
     public void getOperand() throws Exception
     {
-        String                  operand   = "some_string_like";
-        LikeCondition<TestEnum> condition = new LikeCondition(TestEnum.COLUMN_TWO, operand);
+        String                    operand   = "some_string_like";
+        LikeCondition<TestColumn> condition = new LikeCondition(TestColumn.COLUMN_TWO, operand);
 
         assertEquals(operand, condition.operand);
         assertEquals(operand, condition.getOperand());

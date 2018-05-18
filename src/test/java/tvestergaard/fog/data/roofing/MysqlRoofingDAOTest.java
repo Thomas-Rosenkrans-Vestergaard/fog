@@ -5,8 +5,10 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import tvestergaard.fog.data.TestDataSource;
+import tvestergaard.fog.data.constraints.OrderDirection;
 
 import java.sql.Connection;
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.Assert.*;
@@ -30,11 +32,11 @@ public class MysqlRoofingDAOTest
     @Before
     public void createData() throws Exception
     {
-        roofing1 = dao.create(RoofingBlueprint.from("name1", "description1", true, RoofingType.TILED));
-        roofing2 = dao.create(RoofingBlueprint.from("name2", "description2", false, RoofingType.TILED));
-        roofing3 = dao.create(RoofingBlueprint.from("name3", "description3", true, RoofingType.TILED));
-        roofing4 = dao.create(RoofingBlueprint.from("name4", "description4", false, RoofingType.TILED));
-        roofing5 = dao.create(RoofingBlueprint.from("name5", "description5", true, RoofingType.TILED));
+        roofing1 = dao.create(RoofingBlueprint.from("name1", "description1", true, RoofingType.TILED), new ArrayList<>());
+        roofing2 = dao.create(RoofingBlueprint.from("name2", "description2", false, RoofingType.TILED), new ArrayList<>());
+        roofing3 = dao.create(RoofingBlueprint.from("name3", "description3", true, RoofingType.TILED), new ArrayList<>());
+        roofing4 = dao.create(RoofingBlueprint.from("name4", "description4", false, RoofingType.TILED), new ArrayList<>());
+        roofing5 = dao.create(RoofingBlueprint.from("name5", "description5", true, RoofingType.TILED), new ArrayList<>());
     }
 
     @After
@@ -51,7 +53,7 @@ public class MysqlRoofingDAOTest
     @Test
     public void get() throws Exception
     {
-        List<Roofing> roofings = dao.get();
+        List<Roofing> roofings = dao.get(null);
 
         assertEquals(5, roofings.size());
         assertEquals(roofing1, roofings.get(0));
@@ -86,7 +88,7 @@ public class MysqlRoofingDAOTest
     @Test
     public void getOrderBy() throws Exception
     {
-        List<Roofing> roofings = dao.get(order(RoofingColumn.NAME, desc()));
+        List<Roofing> roofings = dao.get(order(RoofingColumn.NAME, OrderDirection.DESC));
 
         assertEquals(5, roofings.size());
         assertEquals(roofing5, roofings.get(0));
@@ -99,7 +101,7 @@ public class MysqlRoofingDAOTest
     @Test
     public void getLimit() throws Exception
     {
-        List<Roofing> roofings = dao.get(limit(2));
+        List<Roofing> roofings = dao.get(limit(RoofingColumn.class, 2));
 
         assertEquals(2, roofings.size());
         assertEquals(roofing1, roofings.get(0));
@@ -109,7 +111,7 @@ public class MysqlRoofingDAOTest
     @Test
     public void getOffset() throws Exception
     {
-        List<Roofing> roofings = dao.get(limit(2), offset(1));
+        List<Roofing> roofings = dao.get(limit(RoofingColumn.class, 2).offset(1));
 
         assertEquals(roofing2, roofings.get(0));
         assertEquals(roofing3, roofings.get(1));
@@ -129,7 +131,7 @@ public class MysqlRoofingDAOTest
         String           description = "some_random_description";
         boolean          active      = false;
         RoofingBlueprint blueprint   = RoofingBlueprint.from(name, description, active, RoofingType.TILED);
-        Roofing          actual      = dao.create(blueprint);
+        Roofing          actual      = dao.create(blueprint, new ArrayList<>());
         assertEquals(name, actual.getName());
         assertEquals(description, actual.getDescription());
         assertEquals(active, actual.isActive());
@@ -143,7 +145,7 @@ public class MysqlRoofingDAOTest
         roofing1.setDescription(randomString());
         roofing1.setActive(true);
 
-        assertTrue(dao.update(roofing1));
+        assertTrue(dao.update(roofing1, new ArrayList<>()));
 
         List<Roofing> actual = dao.get(where(eq(ID, roofing1.getId())));
         assertEquals(roofing1, actual.get(0));

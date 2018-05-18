@@ -5,6 +5,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import tvestergaard.fog.data.TestDataSource;
+import tvestergaard.fog.data.constraints.OrderDirection;
 
 import java.sql.Connection;
 import java.util.List;
@@ -46,7 +47,7 @@ public class MysqlFlooringDAOTest
     @Test
     public void get() throws Exception
     {
-        List<Flooring> floorings = dao.get();
+        List<Flooring> floorings = dao.get(null);
 
         assertEquals(5, floorings.size());
         assertEquals(flooring1, floorings.get(0));
@@ -81,7 +82,7 @@ public class MysqlFlooringDAOTest
     @Test
     public void getOrderBy() throws Exception
     {
-        List<Flooring> floorings = dao.get(order(NAME, desc()));
+        List<Flooring> floorings = dao.get(order(NAME, OrderDirection.DESC));
 
         assertEquals(5, floorings.size());
         assertEquals(flooring5, floorings.get(0));
@@ -94,7 +95,7 @@ public class MysqlFlooringDAOTest
     @Test
     public void getLimit() throws Exception
     {
-        List<Flooring> floorings = dao.get(limit(2));
+        List<Flooring> floorings = dao.get(limit(FlooringColumn.class, 2));
 
         assertEquals(2, floorings.size());
         assertEquals(flooring1, floorings.get(0));
@@ -104,7 +105,7 @@ public class MysqlFlooringDAOTest
     @Test
     public void getOffset() throws Exception
     {
-        List<Flooring> floorings = dao.get(limit(2), offset(1));
+        List<Flooring> floorings = dao.get(limit(FlooringColumn.class, 2).offset(1));
 
         assertEquals(flooring2, floorings.get(0));
         assertEquals(flooring3, floorings.get(1));

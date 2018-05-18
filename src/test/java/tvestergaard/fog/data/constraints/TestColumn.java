@@ -1,6 +1,6 @@
 package tvestergaard.fog.data.constraints;
 
-public enum TestEnum implements MysqlColumn
+public enum TestColumn implements Column<TestColumn>, MysqlColumn
 {
     COLUMN_ONE("column_one"),
     COLUMN_TWO("column_two"),
@@ -8,7 +8,7 @@ public enum TestEnum implements MysqlColumn
 
     private final String mysqlColumn;
 
-    TestEnum(String mysqlColumn)
+    TestColumn(String mysqlColumn)
     {
         this.mysqlColumn = mysqlColumn;
     }

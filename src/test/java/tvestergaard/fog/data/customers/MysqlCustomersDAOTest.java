@@ -5,6 +5,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import tvestergaard.fog.data.TestDataSource;
+import tvestergaard.fog.data.constraints.OrderDirection;
 
 import java.sql.Connection;
 import java.util.List;
@@ -47,7 +48,7 @@ public class MysqlCustomersDAOTest
     @Test
     public void get() throws Exception
     {
-        List<Customer> customers = dao.get();
+        List<Customer> customers = dao.get(null);
 
         assertEquals(5, customers.size());
         assertEquals(customer1, customers.get(0));
@@ -82,7 +83,7 @@ public class MysqlCustomersDAOTest
     @Test
     public void getOrderBy() throws Exception
     {
-        List<Customer> customers = dao.get(order(CustomerColumn.NAME, desc()));
+        List<Customer> customers = dao.get(order(CustomerColumn.NAME, OrderDirection.DESC));
 
         assertEquals(5, customers.size());
         assertEquals(customer5, customers.get(0));
@@ -95,7 +96,7 @@ public class MysqlCustomersDAOTest
     @Test
     public void getLimit() throws Exception
     {
-        List<Customer> customers = dao.get(limit(2));
+        List<Customer> customers = dao.get(limit(CustomerColumn.class, 2));
 
         assertEquals(2, customers.size());
         assertEquals(customer1, customers.get(0));
@@ -105,7 +106,7 @@ public class MysqlCustomersDAOTest
     @Test
     public void getOffset() throws Exception
     {
-        List<Customer> customers = dao.get(limit(2), offset(1));
+        List<Customer> customers = dao.get(limit(CustomerColumn.class, 2).offset(1));
 
         assertEquals(customer2, customers.get(0));
         assertEquals(customer3, customers.get(1));

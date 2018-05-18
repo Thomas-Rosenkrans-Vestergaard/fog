@@ -5,12 +5,14 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import tvestergaard.fog.data.TestDataSource;
+import tvestergaard.fog.data.constraints.OrderDirection;
 
 import java.sql.Connection;
 import java.util.List;
 
 import static org.junit.Assert.*;
-import static tvestergaard.fog.Helpers.*;
+import static tvestergaard.fog.Helpers.randomBoolean;
+import static tvestergaard.fog.Helpers.randomString;
 import static tvestergaard.fog.data.cladding.CladdingColumn.ID;
 import static tvestergaard.fog.data.cladding.CladdingColumn.NAME;
 import static tvestergaard.fog.data.constraints.Constraint.*;
@@ -47,7 +49,7 @@ public class MysqlCladdingDAOTest
     @Test
     public void get() throws Exception
     {
-        List<Cladding> claddings = dao.get();
+        List<Cladding> claddings = dao.get(null);
 
         assertEquals(5, claddings.size());
         assertEquals(cladding1, claddings.get(0));
@@ -81,7 +83,7 @@ public class MysqlCladdingDAOTest
     @Test
     public void getOrderBy() throws Exception
     {
-        List<Cladding> claddings = dao.get(order(ID, desc()));
+        List<Cladding> claddings = dao.get(order(ID, OrderDirection.DESC));
 
         assertEquals(5, claddings.size());
         assertEquals(cladding5, claddings.get(0));
@@ -94,7 +96,7 @@ public class MysqlCladdingDAOTest
     @Test
     public void getLimit() throws Exception
     {
-        List<Cladding> claddings = dao.get(limit(2));
+        List<Cladding> claddings = dao.get(limit(CladdingColumn.class, 2));
 
         assertEquals(2, claddings.size());
         assertEquals(cladding1, claddings.get(0));
@@ -104,7 +106,7 @@ public class MysqlCladdingDAOTest
     @Test
     public void getOffset() throws Exception
     {
-        List<Cladding> claddings = dao.get(limit(2), offset(1));
+        List<Cladding> claddings = dao.get(limit(CladdingColumn.class, 2));
 
         assertEquals(cladding2, claddings.get(0));
         assertEquals(cladding3, claddings.get(1));
@@ -120,10 +122,10 @@ public class MysqlCladdingDAOTest
     @Test
     public void create() throws Exception
     {
-        String   name                = randomString();
-        String   description         = randomString();
-        boolean  active              = randomBoolean();
-        Cladding actual              = dao.create(CladdingBlueprint.from(name, description, active));
+        String   name        = randomString();
+        String   description = randomString();
+        boolean  active      = randomBoolean();
+        Cladding actual      = dao.create(CladdingBlueprint.from(name, description, active));
         assertEquals(name, actual.getName());
         assertEquals(description, actual.getDescription());
         assertEquals(active, actual.isActive());

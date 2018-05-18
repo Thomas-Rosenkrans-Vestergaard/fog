@@ -31,6 +31,20 @@ public interface Constraint
         return constraints;
     }
 
+    public static <C extends Column<C>> Constraints<C> limit(Class<C> type, int limit)
+    {
+        Constraints<C> constraints = new Constraints<>();
+        constraints.limit(limit);
+        return constraints;
+    }
+
+    public static <C extends Column<C>> Constraints<C> offset(Class<C> type, int offset)
+    {
+        Constraints<C> constraints = new Constraints<>();
+        constraints.offset(offset);
+        return constraints;
+    }
+
     /**
      * Creates a new {@link EqualsCondition}.
      *

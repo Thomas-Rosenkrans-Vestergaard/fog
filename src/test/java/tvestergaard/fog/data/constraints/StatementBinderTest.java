@@ -43,7 +43,7 @@ public class StatementBinderTest
     {
         Connection        c         = source.getConnection();
         PreparedStatement statement = c.prepareStatement("SELECT * FROM `binder-test` WHERE `name` = ?");
-        binder.bind(statement, where(eq(TestEnum.COLUMN_ONE, "nameC")));
+        binder.bind(statement, where(eq(TestColumn.COLUMN_ONE, "nameC")));
         ResultSet resultSet = statement.executeQuery();
         assertTrue(resultSet.next());
         assertEquals(2, resultSet.getInt("id"));
@@ -56,7 +56,7 @@ public class StatementBinderTest
     {
         Connection        c         = source.getConnection();
         PreparedStatement statement = c.prepareStatement("SELECT * FROM `binder-test` WHERE `name` LIKE ?");
-        binder.bind(statement, where(eq(TestEnum.COLUMN_ONE, "name%")));
+        binder.bind(statement, where(eq(TestColumn.COLUMN_ONE, "name%")));
         ResultSet resultSet = statement.executeQuery();
         assertTrue(resultSet.next());
         assertEquals(0, resultSet.getInt("id"));

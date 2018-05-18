@@ -10,8 +10,8 @@ public class BinaryAndConditionTest
     @Test
     public void getLeft() throws Exception
     {
-        BinaryAndCondition<TestEnum> left      = new BinaryAndCondition<>(null, null);
-        BinaryAndCondition<TestEnum> condition = new BinaryAndCondition<>(left, null);
+        BinaryAndCondition<TestColumn> left      = new BinaryAndCondition<>(null, null);
+        BinaryAndCondition<TestColumn> condition = new BinaryAndCondition<>(left, null);
 
         assertSame(left, condition.left);
         assertSame(left, condition.getLeft());
@@ -20,8 +20,8 @@ public class BinaryAndConditionTest
     @Test
     public void getRight() throws Exception
     {
-        BinaryAndCondition<TestEnum> right     = new BinaryAndCondition(null, null);
-        BinaryAndCondition<TestEnum> condition = new BinaryAndCondition(null, right);
+        BinaryAndCondition<TestColumn> right     = new BinaryAndCondition(null, null);
+        BinaryAndCondition<TestColumn> condition = new BinaryAndCondition(null, right);
 
         assertSame(right, condition.right);
         assertSame(right, condition.getRight());
