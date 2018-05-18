@@ -38,7 +38,7 @@
                         </a>
                     </td>
                     <td>
-                        <a href="orders?action=update&id=${order.getId()}">Ordre</a>
+                        <a href="orders?action=update&id=${order.getId()}">${order.getId()}</a>
                     </td>
                     <td><c:out value="${offer.getStatus().name()}"/></td>
                     <td>${f:formatDatetime(order.getCreatedAt())}</td>

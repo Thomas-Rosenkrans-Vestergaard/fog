@@ -185,7 +185,12 @@ public class StatementGenerator<C extends Column<C> & MysqlColumn>
 
     private void appendOrderColumnSQL(StringBuilder builder, C column, OrderDirection direction)
     {
-        appendColumn(builder, column);
+        builder.append(' ');
+        if (column.useBacktick())
+            builder.append('`');
+        builder.append(column.getOrderColumn());
+        if (column.useBacktick())
+            builder.append('`');
         builder.append(" ");
         builder.append(direction.name());
     }

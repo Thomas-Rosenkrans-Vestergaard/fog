@@ -9,8 +9,6 @@ public enum RoofingColumn implements Column<RoofingColumn>, MysqlColumn
     ID,
     NAME,
     DESCRIPTION,
-    MINIMUM_SLOPE,
-    MAXIMUM_SLOPE,
     ACTIVE,
     SEARCH;
 

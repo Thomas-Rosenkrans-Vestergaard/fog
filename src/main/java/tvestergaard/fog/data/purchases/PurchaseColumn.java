@@ -23,6 +23,22 @@ public enum PurchaseColumn implements Column<PurchaseColumn>, MysqlColumn
     }
 
     /**
+     * Returns the column, that should be used in ORDER BY clauses. Used to order when using foreign keys.
+     *
+     * @return The column, that should be used in ORDER BY clauses.
+     */
+    @Override public String getOrderColumn()
+    {
+        if (this == OFFER)
+            return "offers.id";
+
+        if (this == EMPLOYEE)
+            return "p_emp.id";
+
+        return getMysqlName();
+    }
+
+    /**
      * Whether or not the generator should use backtick (`) on the column name.
      *
      * @return {@code true} if the generator should use backtick (`) on the column name.

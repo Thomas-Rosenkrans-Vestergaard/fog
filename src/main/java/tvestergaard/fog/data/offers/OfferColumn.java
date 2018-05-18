@@ -25,6 +25,22 @@ public enum OfferColumn implements Column<OfferColumn>, MysqlColumn
     }
 
     /**
+     * Returns the column, that should be used in ORDER BY clauses. Used to order when using foreign keys.
+     *
+     * @return The column, that should be used in ORDER BY clauses.
+     */
+    @Override public String getOrderColumn()
+    {
+        if(this == ORDER)
+            return "o.id";
+
+        if(this == EMPLOYEE)
+            return "employees.name";
+
+        return getMysqlName();
+    }
+
+    /**
      * Whether or not the generator should use backtick (`) on the column name.
      *
      * @return {@code true} if the generator should use backtick (`) on the column name.

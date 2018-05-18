@@ -52,11 +52,11 @@ public class MysqlPurchaseDAO extends AbstractMysqlDAO implements PurchaseDAO
         final String SQL = generator.generate("SELECT *, (SELECT count(*) FROM offers WHERE `order` = o.id) AS `o.offers`, " +
                 "(SELECT count(offers.id) FROM offers WHERE offers.order = o.id AND offers.status = 'OPEN') as `o.open_offers`, " +
                 "(SELECT GROUP_CONCAT(roles.role SEPARATOR ',') FROM roles WHERE employee = o_emp.id) as `o_emp.roles`, " +
-                "(SELECT GROUP_CONCAT(roles.role SEPARATOR ',') FROM roles WHERE employee = c_emp.id) as `c_emp.roles`, " +
-                "CONCAT_WS('.', c_emp.name, c_emp.username, customers.name, customers.email, roofings.name, claddings.name, floorings.name, o_emp.name, o_emp.username, offers.price) as `purchases.search` " +
+                "(SELECT GROUP_CONCAT(roles.role SEPARATOR ',') FROM roles WHERE employee = p_emp.id) as `p_emp.roles`, " +
+                "CONCAT_WS('.', p_emp.name, p_emp.username, customers.name, customers.email, roofings.name, claddings.name, floorings.name, o_emp.name, o_emp.username, offers.price) as `purchases.search` " +
                 "FROM purchases " +
                 "INNER JOIN bom ON purchases.bom = bom.id " +
-                "INNER JOIN employees c_emp ON purchases.employee = c_emp.id " +
+                "INNER JOIN employees p_emp ON purchases.employee = p_emp.id " +
                 "INNER JOIN offers ON purchases.offer = offers.id " +
                 "INNER JOIN orders o ON offers.order = o.id " +
                 "INNER JOIN customers ON o.customer = customers.id " +
@@ -76,7 +76,7 @@ public class MysqlPurchaseDAO extends AbstractMysqlDAO implements PurchaseDAO
             try (PreparedStatement bomStatement = getConnection().prepareStatement(bomSQL)) {
                 while (resultSet.next()) {
                     bomStatement.setInt(1, resultSet.getInt("bom.id"));
-                    purchases.add(createPurchase(resultSet, "purchases", "c_emp", "offers", "o", "customers", "roofings", "sheds", "claddings", "floorings", "o_emp", bomStatement.executeQuery(), "bom", "bom_lines"));
+                    purchases.add(createPurchase(resultSet, "purchases", "p_emp", "offers", "o", "customers", "roofings", "sheds", "claddings", "floorings", "o_emp", bomStatement.executeQuery(), "bom", "bom_lines"));
                 }
             }
             return purchases;
