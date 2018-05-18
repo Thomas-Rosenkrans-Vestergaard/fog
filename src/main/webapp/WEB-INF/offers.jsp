@@ -25,7 +25,7 @@
             <th>Tilbudspris</th>
             <th>Status</th>
             <th>Oprettet</th>
-            <th style="width: 100px">Aktioner</th>
+            <th style="width: 120px">Aktioner</th>
             </thead>
             <tbody>
             <c:forEach items="${offers}" var="offer">
@@ -50,6 +50,9 @@
                                 </button>
                             </form>
                         </td>
+                    </c:if>
+                    <c:if test="${!offer.isOpen()}">
+                        <td></td>
                     </c:if>
                 </tr>
             </c:forEach>
