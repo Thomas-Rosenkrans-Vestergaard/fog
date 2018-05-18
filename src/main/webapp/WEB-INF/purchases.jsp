@@ -19,7 +19,7 @@
 </div>
 <div class="row">
     <div class="col s12">
-        <table class="highlight">
+        <table class="bordered highlight">
             <thead>
             <th>Tilbud</th>
             <th>Medarbejder</th>

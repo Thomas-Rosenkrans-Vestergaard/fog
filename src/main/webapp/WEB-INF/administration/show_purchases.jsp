@@ -21,7 +21,7 @@
 <%@ include file="../includes/table_controls.jspf" %>
 <div class="row">
     <div class="col s12">
-        <table class="highlight">
+        <table class="bordered highlight">
             <thead>
             <th>ID</th>
             <th>Tilbud</th>

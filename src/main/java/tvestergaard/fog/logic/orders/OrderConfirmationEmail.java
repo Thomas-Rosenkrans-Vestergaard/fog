@@ -45,3 +45,4 @@ public class OrderConfirmationEmail implements ApplicationEmail
         return builder.toString();
     }
 }
+

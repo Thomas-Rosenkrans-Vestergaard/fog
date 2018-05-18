@@ -19,7 +19,7 @@
 </div>
 <div class="row">
     <div class="col s12">
-        <table>
+        <table class="bordered highlight">
             <tbody>
             <c:set var="offer" value="${purchase.getOffer()}"/>
             <c:set var="order" value="${offer.getOrder()}"/>
@@ -133,7 +133,7 @@
 <div class="row">
     <div class="col s12">
         <table>
-            <table class="highlight">
+            <table class="bordered highlight">
                 <thead>
                 <th>Materiale</th>
                 <th>Mængde</th>

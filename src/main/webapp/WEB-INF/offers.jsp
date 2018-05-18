@@ -19,12 +19,13 @@
 </div>
 <div class="row">
     <div class="col s12">
-        <table class="highlight">
+        <table class="bordered highlight">
             <thead>
             <th>Ordre</th>
             <th>Tilbudspris</th>
             <th>Status</th>
             <th>Oprettet</th>
+            <th style="width: 100px">Aktioner</th>
             </thead>
             <tbody>
             <c:forEach items="${offers}" var="offer">
@@ -35,7 +36,7 @@
                     <th>${offer.getStatus()}</th>
                     <td>${f:formatDatetime(offer.getCreatedAt())}</td>
                     <c:if test="${offer.isOpen()}">
-                        <td style="max-width: 100px">
+                        <td>
                             <form method="post" style="display:inline-block">
                                 <input type="hidden" name="offer" value="${offer.getId()}">
                                 <button class="btn-floating waves-effect waves-light" type="submit" name="action"

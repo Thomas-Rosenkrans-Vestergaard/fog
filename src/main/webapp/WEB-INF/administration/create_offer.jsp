@@ -151,7 +151,7 @@
 <div class="row">
     <div class="col s12">
         <table>
-            <table class="highlight">
+            <table class="bordered highlight">
                 <thead>
                 <th>Materiale</th>
                 <th>Mængde</th>
