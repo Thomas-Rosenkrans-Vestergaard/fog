@@ -106,7 +106,7 @@ public class MysqlCladdingDAOTest
     @Test
     public void getOffset() throws Exception
     {
-        List<Cladding> claddings = dao.get(limit(CladdingColumn.class, 2));
+        List<Cladding> claddings = dao.get(limit(CladdingColumn.class, 2).offset(1));
 
         assertEquals(cladding2, claddings.get(0));
         assertEquals(cladding3, claddings.get(1));

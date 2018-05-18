@@ -241,9 +241,8 @@ public class MysqlOrderDAO extends AbstractMysqlDAO implements OrderDAO
      */
     @Override public int getNumberOfNewOrders() throws MysqlDataAccessException
     {
-        final String SQL = "SELECT count(" +
-                "(SELECT orders.id FROM orders LEFT JOIN offers ON orders.id = offers.order " +
-                "WHERE orders.active = b'1' && offers.id IS NULL)) AS count";
+        final String SQL = "SELECT count(orders.id) as count FROM orders LEFT JOIN offers ON orders.id = offers.order " +
+                "WHERE orders.active = b'1' && offers.id IS NULL";
         try (PreparedStatement statement = getConnection().prepareStatement(SQL)) {
             ResultSet resultSet = statement.executeQuery();
             resultSet.first();
