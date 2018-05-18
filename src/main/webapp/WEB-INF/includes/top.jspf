@@ -56,7 +56,6 @@
         <li class="${"purchases".equals(navigation) ? 'active' : '' }"><a href="${context}/purchases">Mine køb</a></li>
         <li class="${"update_password".equals(nagivation) ? 'active' : ''}"><a href="${context}/update-password">Opdater adgangskode</a></li>
         <li><a href="${context}/logout">Log ud</a></li>
-
         <script>
             function updateNewOffersCounter() {
 
