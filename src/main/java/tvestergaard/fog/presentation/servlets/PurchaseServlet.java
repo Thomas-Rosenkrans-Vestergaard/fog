@@ -28,7 +28,8 @@ public class PurchaseServlet extends HttpServlet
     private final PurchaseFacade     purchaseFacade     = Facades.purchaseFacade;
     private final ConstructionFacade constructionFacade = Facades.constructionFacade;
 
-    @Override protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException
     {
         Authentication authentication = new Authentication(req);
         if (authentication.redirect(resp))
@@ -47,6 +48,12 @@ public class PurchaseServlet extends HttpServlet
 
         if (purchase == null) {
             notifications.error("No purchase with provided id.");
+            resp.sendRedirect("purchases");
+            return;
+        }
+
+        if (purchase.getOffer().getOrder().getCustomer().getId() != customer.getId()) {
+            notifications.error("Købet tilhører ikke dig.");
             resp.sendRedirect("purchases");
             return;
         }
