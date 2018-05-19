@@ -21,6 +21,7 @@
     <div class="col s12">
         <table class="bordered highlight">
             <thead>
+            <th>Detaljer</th>
             <th>Tilbud</th>
             <th>Medarbejder</th>
             <th>Købspris</th>
@@ -28,10 +29,11 @@
             </thead>
             <tbody>
             <c:forEach items="${purchases}" var="purchase">
-                <tr onclick="location.href = 'purchase?id=${purchase.getId()}'" style="cursor:pointer">
+                <tr>
                     <c:set var="offer" value="${purchase.getOffer()}"/>
                     <c:set var="order" value="${offer.getOrder()}"/>
                     <c:set var="employee" value="${offer.getEmployee()}"/>
+                    <td><a href="purchase?id=${purchase.getId()}">Se detaljer</a></td>
                     <td><a href="offer?id=${offer.getId()}">Tilbud</a></td>
                     <td><c:out value="${employee.getName()}"/></td>
                     <td>${f:formatPrice(offer.getPrice())}</td>

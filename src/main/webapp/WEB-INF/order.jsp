@@ -2,7 +2,7 @@
 <%@ include file="includes/top.jspf" %>
 <div class="row">
     <div class="col s12">
-        <h2>Mine ordre</h2>
+        <h2>${f:formatDatetime(order.getCreatedAt())}</h2>
     </div>
 </div>
 <div class="row">
@@ -12,14 +12,12 @@
             semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo. Quisque sit amet est et sapien
             ullamcorper pharetra. Vestibulum erat wisi, condimentum sed, commodo vitae, ornare sit amet, wisi. Aenean
             fermentum, elit eget tincidunt condimentum, eros ipsum rutrum orci, sagittis tempus lacus enim ac dui. Donec
-            non enim in turpis pulvinar facilisis. Ut felis. Praesent dapibus, neque id cursus faucibus, tortor neque
-            egestas augue, eu vulputate magna eros eu erat. Aliquam erat volutpat. Nam dui mi, tincidunt quis, accumsan
-            porttitor, facilisis luctus, metus</p>
+            non enim in turpis pulvinar facilisis.</p>
     </div>
 </div>
 <div class="row">
     <div class="col s12">
-        <table>
+        <table class="bordered highlight">
             <tbody>
             <tr>
                 <th>ID</th>

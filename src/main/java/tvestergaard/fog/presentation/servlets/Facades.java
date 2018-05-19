@@ -20,6 +20,8 @@ import tvestergaard.fog.data.orders.MysqlOrderDAO;
 import tvestergaard.fog.data.orders.OrderDAO;
 import tvestergaard.fog.data.purchases.MysqlPurchaseDAO;
 import tvestergaard.fog.data.purchases.PurchaseDAO;
+import tvestergaard.fog.data.purchases.bom.BomDAO;
+import tvestergaard.fog.data.purchases.bom.MysqlBomDAO;
 import tvestergaard.fog.data.roofing.MysqlRoofingDAO;
 import tvestergaard.fog.data.roofing.RoofingDAO;
 import tvestergaard.fog.data.tokens.MysqlTokenDAO;
@@ -59,6 +61,7 @@ public class Facades
     private static final OfferDAO        offerDAO    = new MysqlOfferDAO(source);
     private static final PurchaseDAO     purchaseDAO = new MysqlPurchaseDAO(source);
     private static final ModelDAO        modelDAO    = new MysqlModelDAO(source);
+    private static final BomDAO          bomDAO      = new MysqlBomDAO(source);
 
 
     private static final TokenIssuer        tokenIssuer        = new TokenIssuer(tokenDAO, new TokenGenerator());
@@ -73,6 +76,6 @@ public class Facades
     public static final RoofingFacade      roofingFacade      = new RoofingFacade(roofingDAO);
     public static final OfferFacade        offerFacade        = new OfferFacade(offerDAO, orderDAO, employeeDAO, mailer, tokenIssuer, tokenAuthenticator);
     public static final ConstructionFacade constructionFacade = new ConstructionFacade(modelDAO, roofingDAO);
-    public static final PurchaseFacade     purchaseFacade     = new PurchaseFacade(purchaseDAO, offerDAO, employeeDAO, constructionFacade);
+    public static final PurchaseFacade     purchaseFacade     = new PurchaseFacade(purchaseDAO, offerDAO, bomDAO, constructionFacade);
     public static final ModelFacade        skeletonFacade     = new ModelFacade(modelDAO);
 }

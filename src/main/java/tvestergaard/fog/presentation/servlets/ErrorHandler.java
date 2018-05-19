@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.io.Writer;
 
 @WebServlet(urlPatterns = "/error-handler")
@@ -18,12 +19,14 @@ public class ErrorHandler extends HttpServlet
         Exception exception = (Exception) req.getAttribute("javax.servlet.error.exception");
         Logger.error(exception, "Exception from servlet.");
 
-        Writer writer = resp.getWriter();
+        Writer      writer      = resp.getWriter();
+        PrintWriter printWriter = new PrintWriter(writer);
 
-        resp.setContentType("text/html");
+        resp.setContentType("text");
         resp.setCharacterEncoding("UTF-8");
-
-        writer.append("<p>Der skete en uhånterbar fejl.</p>");
+        writer.write("<pre>");
+        exception.printStackTrace(printWriter);
+        writer.write("</pre>");
         writer.flush();
         writer.close();
     }

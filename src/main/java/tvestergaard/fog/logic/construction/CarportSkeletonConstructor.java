@@ -97,8 +97,8 @@ public class CarportSkeletonConstructor extends DrawingUtilities implements Skel
 
         return new DefaultSkeletonConstructionSummary(
                 materials,
-                new DocumentConstructionDrawing(aerialDocument),
-                new DocumentConstructionDrawing(sideDocument));
+                new DocumentConstructionDrawing("Skelet ovenfra", aerialDocument),
+                new DocumentConstructionDrawing("Skelet fra siden", sideDocument));
     }
 
     /**

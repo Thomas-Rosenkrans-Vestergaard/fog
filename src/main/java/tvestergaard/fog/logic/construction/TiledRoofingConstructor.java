@@ -61,8 +61,8 @@ public class TiledRoofingConstructor extends DrawingUtilities implements Roofing
         ends();
 
         return new DefaultRoofingConstructionSummary(materials,
-                new DocumentConstructionDrawing(skeletonView),
-                new DocumentConstructionDrawing(tiledView));
+                new DocumentConstructionDrawing("Tag skelet", skeletonView),
+                new DocumentConstructionDrawing("Tag tegl", tiledView));
     }
 
     /**

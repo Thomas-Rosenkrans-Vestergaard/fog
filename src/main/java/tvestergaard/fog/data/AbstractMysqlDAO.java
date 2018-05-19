@@ -24,10 +24,10 @@ import tvestergaard.fog.data.offers.OfferStatus;
 import tvestergaard.fog.data.orders.*;
 import tvestergaard.fog.data.purchases.Purchase;
 import tvestergaard.fog.data.purchases.PurchaseRecord;
-import tvestergaard.fog.data.purchases.bom.Bom;
+import tvestergaard.fog.data.purchases.bom.BomDrawing;
+import tvestergaard.fog.data.purchases.bom.BomDrawingRecord;
 import tvestergaard.fog.data.purchases.bom.BomLine;
 import tvestergaard.fog.data.purchases.bom.BomLineRecord;
-import tvestergaard.fog.data.purchases.bom.BomRecord;
 import tvestergaard.fog.data.roofing.Roofing;
 import tvestergaard.fog.data.roofing.RoofingRecord;
 import tvestergaard.fog.data.roofing.RoofingType;
@@ -36,9 +36,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import static tvestergaard.fog.data.materials.attributes.DataType.STRING;
@@ -80,6 +78,19 @@ public abstract class AbstractMysqlDAO
         }
 
         return connection;
+    }
+
+    protected BomLine createBomLine(ResultSet linesResults, String lines, String materials, String categories) throws SQLException
+    {
+
+        SimpleMaterial material = createSimpleMaterial(materials, categories, linesResults);
+
+        return new BomLineRecord(linesResults.getInt(lines + ".id"), material, material.getId(), linesResults.getInt(lines + ".amount"), linesResults.getString(lines + ".notes"));
+    }
+
+    protected BomDrawing createBomDrawing(ResultSet drawingResults, String drawings) throws SQLException
+    {
+        return new BomDrawingRecord(drawingResults.getInt(drawings + ".id"), drawingResults.getString(drawings + ".title"), drawingResults.getString(drawings + ".content"));
     }
 
     /**
@@ -428,22 +439,14 @@ public abstract class AbstractMysqlDAO
                                       String shedTable,
                                       String shedCladdingTable,
                                       String shedFlooringsTable,
-                                      String offerEmployeeTable,
-                                      ResultSet bomResultSet,
-                                      String bomTable,
-                                      String bomLinesTable) throws SQLException
+                                      String offerEmployeeTable) throws SQLException
     {
         Offer offer = createOffer(
                 resultSet, offerTable, orderTable, customerTable, orderRoofingTable, shedTable,
                 shedCladdingTable, shedFlooringsTable, offerEmployeeTable);
-        Employee      employee = createEmployee(purchaseEmployeeTable, resultSet);
-        List<BomLine> lines    = new ArrayList<>();
-        while (bomResultSet.next()) {
-            SimpleMaterial material = createSimpleMaterial("materials", "categories", bomResultSet);
-            lines.add(new BomLineRecord(material, material.getId(), bomResultSet.getInt(bomLinesTable + ".amount"), bomResultSet.getString(bomLinesTable + ".notes")));
-        }
-        Bom bom = new BomRecord(resultSet.getInt(bomTable + ".id"), lines, lines);
+        Employee employee = createEmployee(purchaseEmployeeTable, resultSet);
 
-        return new PurchaseRecord(resultSet.getInt(table + ".id"), offer.getId(), offer, employee.getId(), employee, bom, bom, resultSet.getTimestamp(table + ".created_at").toLocalDateTime());
+        return new PurchaseRecord(resultSet.getInt(table + ".id"), offer.getId(), offer, resultSet.getInt(table + ".bom"),
+                employee.getId(), employee, resultSet.getTimestamp(table + ".created_at").toLocalDateTime());
     }
 }

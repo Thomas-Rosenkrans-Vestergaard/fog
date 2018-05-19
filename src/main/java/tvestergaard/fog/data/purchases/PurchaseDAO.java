@@ -2,6 +2,7 @@ package tvestergaard.fog.data.purchases;
 
 import tvestergaard.fog.data.DataAccessException;
 import tvestergaard.fog.data.constraints.Constraints;
+import tvestergaard.fog.data.purchases.bom.BomBlueprint;
 
 import java.util.List;
 
@@ -31,8 +32,9 @@ public interface PurchaseDAO
      * Inserts a new purchase into the data storage.
      *
      * @param blueprint The purchase blueprint that contains the information necessary to create the purchase.
+     * @param bom       The bill of materials to include with the purchase.
      * @return The purchase instance representing the newly created purchase.
      * @throws DataAccessException When a data storage exception occurs while performing the operation.
      */
-    Purchase create(PurchaseBlueprint blueprint) throws DataAccessException;
+    Purchase create(PurchaseBlueprint blueprint, BomBlueprint bom) throws DataAccessException;
 }

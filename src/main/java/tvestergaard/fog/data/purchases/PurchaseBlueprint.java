@@ -1,16 +1,19 @@
 package tvestergaard.fog.data.purchases;
 
-import tvestergaard.fog.data.purchases.bom.BomBlueprint;
-
 public interface PurchaseBlueprint
 {
 
-    static PurchaseBlueprint from(int offerId, int employeeId, BomBlueprint bomBlueprint)
+    /**
+     * Creates a new {@link PurchaseBlueprint} from the provided information.
+     *
+     * @param offerId    The id of the offer from which to create the purchase.
+     * @param employeeId The id of the employee creating the purchase.
+     * @return The newly created blueprint.
+     */
+    static PurchaseBlueprint from(int offerId, int employeeId)
     {
-        return new PurchaseRecord(-1, offerId, null, employeeId, null, bomBlueprint, null, null);
+        return new PurchaseRecord(-1, offerId, null, -1, employeeId, null, null);
     }
-
-    BomBlueprint getBomBlueprint();
 
     /**
      * Returns the id of the offer that was accepted.

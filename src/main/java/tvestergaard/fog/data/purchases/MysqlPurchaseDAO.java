@@ -6,6 +6,8 @@ import tvestergaard.fog.data.MysqlDataAccessException;
 import tvestergaard.fog.data.constraints.Constraints;
 import tvestergaard.fog.data.constraints.StatementBinder;
 import tvestergaard.fog.data.constraints.StatementGenerator;
+import tvestergaard.fog.data.purchases.bom.BomBlueprint;
+import tvestergaard.fog.data.purchases.bom.BomDrawingBlueprint;
 import tvestergaard.fog.data.purchases.bom.BomLineBlueprint;
 
 import java.sql.*;
@@ -68,17 +70,9 @@ public class MysqlPurchaseDAO extends AbstractMysqlDAO implements PurchaseDAO
         try (PreparedStatement statement = getConnection().prepareStatement(SQL)) {
             binder.bind(statement, constraints);
             ResultSet resultSet = statement.executeQuery();
-            String bomSQL = "SELECT * FROM bom " +
-                    "INNER JOIN bom_lines ON bom.id = bom_lines.bom " +
-                    "INNER JOIN materials ON materials.id = bom_lines.material " +
-                    "INNER JOIN categories ON materials.category = categories.id " +
-                    "WHERE bom.id = ?";
-            try (PreparedStatement bomStatement = getConnection().prepareStatement(bomSQL)) {
-                while (resultSet.next()) {
-                    bomStatement.setInt(1, resultSet.getInt("bom.id"));
-                    purchases.add(createPurchase(resultSet, "purchases", "p_emp", "offers", "o", "customers", "roofings", "sheds", "claddings", "floorings", "o_emp", bomStatement.executeQuery(), "bom", "bom_lines"));
-                }
-            }
+            while (resultSet.next())
+                purchases.add(createPurchase(resultSet, "purchases", "p_emp", "offers", "o", "customers", "roofings",
+                        "sheds", "claddings", "floorings", "o_emp"));
             return purchases;
         } catch (SQLException e) {
             throw new MysqlDataAccessException(e);
@@ -104,10 +98,11 @@ public class MysqlPurchaseDAO extends AbstractMysqlDAO implements PurchaseDAO
      * Inserts a new purchase into the data storage.
      *
      * @param blueprint The purchase blueprint that contains the information necessary to create the purchase.
+     * @param bom       The bill of materials to include with the purchase.
      * @return The purchase instance representing the newly created purchase.
      * @throws MysqlDataAccessException When a data storage exception occurs while performing the operation.
      */
-    @Override public Purchase create(PurchaseBlueprint blueprint) throws MysqlDataAccessException
+    @Override public Purchase create(PurchaseBlueprint blueprint, BomBlueprint bom) throws MysqlDataAccessException
     {
 
         try {
@@ -118,15 +113,26 @@ public class MysqlPurchaseDAO extends AbstractMysqlDAO implements PurchaseDAO
                 createStatement.executeUpdate();
                 ResultSet bomGenerated = createStatement.getGeneratedKeys();
                 bomGenerated.first();
+                int bomId = bomGenerated.getInt(1);
 
                 String createLineSQL = "INSERT INTO bom_lines (bom, material, amount, notes) VALUES (?,?,?,?)";
                 try (PreparedStatement createLineStatement = connection.prepareStatement(createLineSQL)) {
-                    createLineStatement.setInt(1, bomGenerated.getInt(1));
-                    for (BomLineBlueprint line : blueprint.getBomBlueprint().getBlueprintLines()) {
+                    createLineStatement.setInt(1, bomId);
+                    for (BomLineBlueprint line : bom.getBlueprintLines()) {
                         createLineStatement.setInt(2, line.getMaterialId());
                         createLineStatement.setInt(3, line.getAmount());
                         createLineStatement.setString(4, line.getNotes());
                         createLineStatement.executeUpdate();
+                    }
+                }
+
+                String drawingSQL = "INSERT INTO bom_drawings (bom, title, content) VALUES (?, ?, ?)";
+                try (PreparedStatement drawingStatement = connection.prepareStatement(drawingSQL)) {
+                    drawingStatement.setInt(1, bomId);
+                    for (BomDrawingBlueprint drawingBlueprint : bom.getBlueprintDrawings()) {
+                        drawingStatement.setString(2, drawingBlueprint.getTitle());
+                        drawingStatement.setString(3, drawingBlueprint.getContent());
+                        drawingStatement.executeUpdate();
                     }
                 }
 

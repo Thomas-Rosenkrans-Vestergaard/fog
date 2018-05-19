@@ -3,7 +3,7 @@ package tvestergaard.fog.presentation.servlets;
 import tvestergaard.fog.data.employees.Employee;
 import tvestergaard.fog.data.purchases.Purchase;
 import tvestergaard.fog.data.purchases.PurchaseColumn;
-import tvestergaard.fog.logic.construction.GarageConstructionSummary;
+import tvestergaard.fog.data.purchases.bom.Bom;
 import tvestergaard.fog.logic.purchases.PurchaseFacade;
 import tvestergaard.fog.presentation.Notifications;
 import tvestergaard.fog.presentation.Parameters;
@@ -29,7 +29,7 @@ public class AdministrationPurchases extends AdministrationServlet
     public AdministrationPurchases()
     {
         dispatcher.get(null, new ShowTableCommand());
-        dispatcher.get("update", new ShowPurchaseCommand());
+        dispatcher.get("show", new ShowPurchaseCommand());
     }
 
     @Override
@@ -88,14 +88,14 @@ public class AdministrationPurchases extends AdministrationServlet
                 return;
             }
 
-          //  GarageConstructionSummary summary = constructionFacade.construct(purchase.getOffer().getOrder());
+            Bom bom = purchaseFacade.getBom(purchase.getBomId());
 
             req.setAttribute("context", "..");
             req.setAttribute("title", "Køb");
             req.setAttribute("navigation", "administration_purchases");
             req.setAttribute("purchase", purchase);
-//            req.setAttribute("summary", summary);
-//            req.getRequestDispatcher("/WEB-INF/update_.jsp").forward(req, resp);
+            req.setAttribute("bom", bom);
+            req.getRequestDispatcher("/WEB-INF/administration/show_purchase.jsp").forward(req, resp);
         }
     }
 }

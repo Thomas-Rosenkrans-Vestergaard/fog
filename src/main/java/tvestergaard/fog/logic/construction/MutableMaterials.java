@@ -97,20 +97,6 @@ public class MutableMaterials implements Materials
             return notes;
         }
 
-        /**
-         * Returns the cost of the line. Taking into consideration the unit size and price of the material.
-         *
-         * @return The cost of the line.
-         */
-        public int getTotal()
-        {
-            int unit = material.getUnit();
-            if (amount % unit == 0)
-                return amount / unit * material.getPrice();
-
-            return (amount / unit + 1) * material.getPrice();
-        }
-
         @Override public String toString()
         {
             return "DefaultMaterialLine{" +

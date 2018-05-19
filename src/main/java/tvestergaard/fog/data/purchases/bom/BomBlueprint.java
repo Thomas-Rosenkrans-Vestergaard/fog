@@ -5,9 +5,9 @@ import java.util.List;
 public interface BomBlueprint
 {
 
-    static BomBlueprint from(List<? extends BomLineBlueprint> lineBlueprints)
+    static BomBlueprint from(List<BomLineBlueprint> lines, List<BomDrawingBlueprint> drawings)
     {
-        return new BomRecord(-1, null, lineBlueprints);
+        return new BomRecord(-1, null, lines, null, drawings);
     }
 
     /**
@@ -16,4 +16,6 @@ public interface BomBlueprint
      * @return The lines on the bom specified by the blueprint.
      */
     List<? extends BomLineBlueprint> getBlueprintLines();
+
+    List<? extends BomDrawingBlueprint> getBlueprintDrawings();
 }

@@ -12,6 +12,11 @@ public class DocumentConstructionDrawing implements ConstructionDrawing
 {
 
     /**
+     * The title of the construction drawing.
+     */
+    private final String title;
+
+    /**
      * The document of the svg drawing.
      */
     private final Document document;
@@ -19,11 +24,23 @@ public class DocumentConstructionDrawing implements ConstructionDrawing
     /**
      * Creates a new {@link DocumentConstructionDrawing}.
      *
+     * @param title    The title of the document.
      * @param document The document containing the svg directives.
      */
-    public DocumentConstructionDrawing(Document document)
+    public DocumentConstructionDrawing(String title, Document document)
     {
+        this.title = title;
         this.document = document;
+    }
+
+    /**
+     * Returns the title of the drawing.
+     *
+     * @return The title of the drawing.
+     */
+    @Override public String getTitle()
+    {
+        return title;
     }
 
     /**

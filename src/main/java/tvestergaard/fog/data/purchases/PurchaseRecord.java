@@ -2,8 +2,6 @@ package tvestergaard.fog.data.purchases;
 
 import tvestergaard.fog.data.employees.Employee;
 import tvestergaard.fog.data.offers.Offer;
-import tvestergaard.fog.data.purchases.bom.Bom;
-import tvestergaard.fog.data.purchases.bom.BomBlueprint;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
@@ -37,11 +35,14 @@ public class PurchaseRecord implements Purchase
     private final Employee employee;
 
     /**
+     * The id of the bom.
+     */
+    private final int bomId;
+
+    /**
      * The moment in time when the purchase was created.
      */
     private final LocalDateTime createdAt;
-    private       BomBlueprint  bomBlueprint;
-    private       Bom           bom;
 
     /**
      * Creates a new {@link PurchaseRecord}.
@@ -49,20 +50,20 @@ public class PurchaseRecord implements Purchase
      * @param id         The unique identifier of the purchase.
      * @param offerId    The id of the offer that was accepted.
      * @param offer      The offer that was accepted.
+     * @param bomId      The id of the bom.
      * @param employeeId The id of the employee who created the purchase.
      * @param employee   The employee who created the purchase.
      * @param createdAt  The moment in time when the purchase was created.
      */
-    public PurchaseRecord(int id, int offerId, Offer offer, int employeeId, Employee employee, BomBlueprint bomBlueprint, Bom bom, LocalDateTime createdAt)
+    public PurchaseRecord(int id, int offerId, Offer offer, int bomId, int employeeId, Employee employee, LocalDateTime createdAt)
     {
         this.id = id;
         this.offerId = offerId;
         this.offer = offer;
         this.employeeId = employeeId;
         this.employee = employee;
-        this.bomBlueprint = bomBlueprint;
-        this.bom = bom;
         this.createdAt = createdAt;
+        this.bomId = bomId;
     }
 
     /**
@@ -96,6 +97,16 @@ public class PurchaseRecord implements Purchase
     }
 
     /**
+     * Returns the id of the bom.
+     *
+     * @return The id of the bom.
+     */
+    @Override public int getBomId()
+    {
+        return bomId;
+    }
+
+    /**
      * Returns the id of the employee who created the purchase.
      *
      * @return The id of the employee who created the purchase.
@@ -113,16 +124,6 @@ public class PurchaseRecord implements Purchase
     @Override public Employee getEmployee()
     {
         return employee;
-    }
-
-    @Override public BomBlueprint getBomBlueprint()
-    {
-        return this.bomBlueprint;
-    }
-
-    public Bom getBom()
-    {
-        return this.bom;
     }
 
     /**
@@ -145,12 +146,11 @@ public class PurchaseRecord implements Purchase
                 getEmployeeId() == that.getEmployeeId() &&
                 Objects.equals(getOffer(), that.getOffer()) &&
                 Objects.equals(getEmployee(), that.getEmployee()) &&
-                Objects.equals(getBomBlueprint(), that.getBomBlueprint()) &&
                 Objects.equals(getCreatedAt(), that.getCreatedAt());
     }
 
     @Override public int hashCode()
     {
-        return Objects.hash(getId(), getOfferId(), getOffer(), getEmployeeId(), getEmployee(), getBomBlueprint(), getCreatedAt());
+        return Objects.hash(getId(), getOfferId(), getOffer(), getEmployeeId(), getEmployee(), getCreatedAt());
     }
 }

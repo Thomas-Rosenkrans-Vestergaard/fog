@@ -6,6 +6,13 @@ public interface ConstructionDrawing
 {
 
     /**
+     * Returns the title of the drawing.
+     *
+     * @return The title of the drawing.
+     */
+    String getTitle();
+
+    /**
      * Returns the document containing the svg contents.
      *
      * @return The document containing the svg contents.

@@ -31,5 +31,14 @@ public interface MaterialLine
      *
      * @return The cost of the line.
      */
-    int getTotal();
+    default int getTotal()
+    {
+        int      amount   = getAmount();
+        Material material = getMaterial();
+        int      unit     = material.getUnit();
+        if (amount % unit == 0)
+            return amount / unit * material.getPrice();
+
+        return (amount / unit + 1) * material.getPrice();
+    }
 }

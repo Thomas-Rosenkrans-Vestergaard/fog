@@ -6,6 +6,11 @@ public class BomLineRecord implements BomLine
 {
 
     /**
+     * The id of the bom line.
+     */
+    private final int id;
+
+    /**
      * The material in the bom line.
      */
     private final SimpleMaterial material;
@@ -28,17 +33,29 @@ public class BomLineRecord implements BomLine
     /**
      * Creates a new {@link BomLineRecord}.
      *
+     * @param id         The id of the bom line.
      * @param material   The material in the bom line.
      * @param materialId The id of the material in the bom line.
      * @param amount     The amount of material needed.
      * @param notes      The help notes on the component.
      */
-    public BomLineRecord(SimpleMaterial material, int materialId, int amount, String notes)
+    public BomLineRecord(int id, SimpleMaterial material, int materialId, int amount, String notes)
     {
+        this.id = id;
         this.material = material;
         this.materialId = materialId;
         this.amount = amount;
         this.notes = notes;
+    }
+
+    /**
+     * Returns the id of the bom line.
+     *
+     * @return The id of the bom line.
+     */
+    @Override public int getId()
+    {
+        return id;
     }
 
     /**

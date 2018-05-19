@@ -2,8 +2,8 @@ package tvestergaard.fog.presentation.servlets;
 
 import tvestergaard.fog.data.customers.Customer;
 import tvestergaard.fog.data.purchases.Purchase;
+import tvestergaard.fog.data.purchases.bom.Bom;
 import tvestergaard.fog.logic.construction.ConstructionFacade;
-import tvestergaard.fog.logic.construction.GarageConstructionSummary;
 import tvestergaard.fog.logic.purchases.PurchaseFacade;
 import tvestergaard.fog.presentation.Authentication;
 import tvestergaard.fog.presentation.Notifications;
@@ -58,14 +58,14 @@ public class PurchaseServlet extends HttpServlet
             return;
         }
 
-        GarageConstructionSummary summary = constructionFacade.construct(purchase.getOffer().getOrder());
+        Bom bom = purchaseFacade.getBom(purchase.getBomId());
 
         req.setAttribute("context", ".");
         req.setAttribute("title", "Mine køb");
         req.setAttribute("navigation", "purchases");
         req.setAttribute("customer", customer);
         req.setAttribute("purchase", purchase);
-        req.setAttribute("summary", summary);
+        req.setAttribute("bom", bom);
         req.getRequestDispatcher("/WEB-INF/purchase.jsp").forward(req, resp);
     }
 }

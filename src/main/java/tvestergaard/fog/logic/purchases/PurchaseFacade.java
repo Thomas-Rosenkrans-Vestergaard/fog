@@ -3,7 +3,6 @@ package tvestergaard.fog.logic.purchases;
 import tvestergaard.fog.data.DataAccessException;
 import tvestergaard.fog.data.constraints.Constraints;
 import tvestergaard.fog.data.employees.Employee;
-import tvestergaard.fog.data.employees.EmployeeDAO;
 import tvestergaard.fog.data.employees.Role;
 import tvestergaard.fog.data.offers.Offer;
 import tvestergaard.fog.data.offers.OfferDAO;
@@ -11,8 +10,7 @@ import tvestergaard.fog.data.purchases.Purchase;
 import tvestergaard.fog.data.purchases.PurchaseBlueprint;
 import tvestergaard.fog.data.purchases.PurchaseColumn;
 import tvestergaard.fog.data.purchases.PurchaseDAO;
-import tvestergaard.fog.data.purchases.bom.BomBlueprint;
-import tvestergaard.fog.data.purchases.bom.BomLineBlueprint;
+import tvestergaard.fog.data.purchases.bom.*;
 import tvestergaard.fog.logic.ApplicationException;
 import tvestergaard.fog.logic.construction.ConstructionFacade;
 import tvestergaard.fog.logic.construction.GarageConstructionSummary;
@@ -38,14 +36,14 @@ public class PurchaseFacade
     private final PurchaseDAO purchaseDAO;
 
     /**
+     * The dao used to access bills of materials in data storage.
+     */
+    private final BomDAO bomDAO;
+
+    /**
      * The offer dao used to access the offers in the application.
      */
     private final OfferDAO offerDAO;
-
-    /**
-     * The employee dao used to access the employees in the application.
-     */
-    private final EmployeeDAO employeeDAO;
 
     /**
      * The construction facade that constructs the purchased garage.
@@ -57,14 +55,14 @@ public class PurchaseFacade
      *
      * @param purchaseDAO        The purchase dao to use to access the purchases in the application.
      * @param offerDAO           The offer dao used to access the offers in the application.
-     * @param employeeDAO        The employee dao used to access the employees in the application.
+     * @param bomDAO             The dao used to access bills of materials in data storage.
      * @param constructionFacade The construction facade that constructs the purchased garage.
      */
-    public PurchaseFacade(PurchaseDAO purchaseDAO, OfferDAO offerDAO, EmployeeDAO employeeDAO, ConstructionFacade constructionFacade)
+    public PurchaseFacade(PurchaseDAO purchaseDAO, OfferDAO offerDAO, BomDAO bomDAO, ConstructionFacade constructionFacade)
     {
         this.purchaseDAO = purchaseDAO;
         this.offerDAO = offerDAO;
-        this.employeeDAO = employeeDAO;
+        this.bomDAO = bomDAO;
         this.constructionFacade = constructionFacade;
     }
 
@@ -153,8 +151,30 @@ public class PurchaseFacade
             for (MaterialLine line : constructionSummary.getRoofingConstructionSummary().getMaterials().getLines())
                 lineBlueprints.add(BomLineBlueprint.from(line.getMaterial().getId(), line.getAmount(), line.getNotes()));
 
-            return purchaseDAO.create(PurchaseBlueprint.from(offerId, offer.getEmployeeId(), BomBlueprint.from(lineBlueprints)));
+            List<BomDrawingBlueprint> drawings = new ArrayList<>();
+            drawings.add(BomDrawing.from(constructionSummary.getSkeletonConstructionSummary().getAerialView()));
+            drawings.add(BomDrawing.from(constructionSummary.getSkeletonConstructionSummary().getSideView()));
+            drawings.add(BomDrawing.from(constructionSummary.getRoofingConstructionSummary().getAerialSkeletonView()));
+            drawings.add(BomDrawing.from(constructionSummary.getRoofingConstructionSummary().getAerialTiledView()));
 
+            return purchaseDAO.create(PurchaseBlueprint.from(offerId, offer.getEmployeeId()), BomBlueprint.from(lineBlueprints, drawings));
+
+        } catch (DataAccessException e) {
+            throw new ApplicationException(e);
+        }
+    }
+
+    /**
+     * Returns the bom with the provided id.
+     *
+     * @param id The id of the bom to retrieve.
+     * @return The bom instance representing the retrieved bom. {@code null} in case no bom with the provided id exists.
+     * @throws ApplicationException When a data storage exception occurs while performing the operation.
+     */
+    public Bom getBom(int id)
+    {
+        try {
+            return bomDAO.get(id);
         } catch (DataAccessException e) {
             throw new ApplicationException(e);
         }

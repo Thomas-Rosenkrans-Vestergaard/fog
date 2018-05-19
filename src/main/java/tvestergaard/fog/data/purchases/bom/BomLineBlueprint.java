@@ -5,7 +5,7 @@ public interface BomLineBlueprint
 
     static BomLineBlueprint from(int materialId, int amount, String notes)
     {
-        return new BomLineRecord(null, materialId, amount, notes);
+        return new BomLineRecord(-1, null, materialId, amount, notes);
     }
 
     /**

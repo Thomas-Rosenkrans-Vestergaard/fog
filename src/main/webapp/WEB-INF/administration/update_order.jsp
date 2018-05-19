@@ -8,7 +8,7 @@
 <c:if test="${order.isActive()}">
     <div class="row">
         <div class="col s12">
-            <a href="offers?action=create&order=${order.getId()}" class="waves-effect waves-light btn">
+            <a href="offers?action=create&order=${order.getId()}" class="btn-large">
                 <i class="material-icons right">add</i>OPRET TILBUD
             </a>
         </div>

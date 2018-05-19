@@ -13,9 +13,16 @@ public interface Bom extends BomBlueprint
     int getId();
 
     /**
-     * Returns the lines on the bom specified by the blueprint.
+     * Returns the lines in the bom.
      *
-     * @return The lines on the bom specified by the blueprint.
+     * @return The lines in the bom.
      */
     List<BomLine> getLines();
+
+    /**
+     * Returns the drawings in the bom.
+     *
+     * @return The drawings in the bom.
+     */
+    List<BomDrawing> getDrawings();
 }
