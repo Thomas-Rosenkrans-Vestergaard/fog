@@ -47,7 +47,7 @@
                     </c:if>
                     <c:if test="${order.getShed() != null}">
                         <td>
-                            <table>
+                            <table class="inner-table">
                                 <thead>
                                 <tbody>
                                 <tr>

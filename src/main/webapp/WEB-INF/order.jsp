@@ -82,4 +82,61 @@
         </table>
     </div>
 </div>
+<div class="row">
+    <div class="col s12">
+        <h3>Tilbud</h3>
+    </div>
+</div>
+<div class="row">
+    <div class="col s12">
+        <p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum
+            tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas
+            semper. Aenean ultricies mi vitae est.</p>
+    </div>
+</div>
+<div class="row">
+    <div class="col s12">
+        <table class="bordered highlight">
+            <thead>
+            <th>Tilbudspris</th>
+            <th>Status</th>
+            <th>Oprettet</th>
+            <th style="width: 120px">Aktioner</th>
+            </thead>
+            <tbody>
+            <c:if test="${offers.isEmpty()}">
+                <tr>
+                    <td colspan="4">Ingen tilbud for denne ordre</td>
+                </tr>
+            </c:if>
+            <c:forEach items="${offers}" var="offer">
+                <tr>
+                    <td>${f:formatPrice(offer.getPrice())}</td>
+                    <th>${offer.getStatus()}</th>
+                    <td>${f:formatDatetime(offer.getCreatedAt())}</td>
+                    <c:if test="${offer.isOpen()}">
+                        <td>
+                            <form action="orders" method="post" style="display:inline-block">
+                                <input type="hidden" name="offer" value="${offer.getId()}">
+                                <button class="btn-floating waves-effect waves-light" type="submit" name="action"
+                                        value="accept"><i class="material-icons right">check</i>
+                                </button>
+                            </form>
+                            <form action="orders" method="post" style="display:inline-block;margin-left: 20px">
+                                <input type="hidden" name="offer" value="${offer.getId()}">
+                                <button class="btn-floating waves-effect waves-light" type="submit" name="action"
+                                        value="reject"><i class="material-icons right">clear</i>
+                                </button>
+                            </form>
+                        </td>
+                    </c:if>
+                    <c:if test="${!offer.isOpen()}">
+                        <td></td>
+                    </c:if>
+                </tr>
+            </c:forEach>
+            </tbody>
+        </table>
+    </div>
+</div>
 <%@ include file="includes/bottom.jspf" %>

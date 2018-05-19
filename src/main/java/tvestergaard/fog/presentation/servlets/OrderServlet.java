@@ -1,7 +1,9 @@
 package tvestergaard.fog.presentation.servlets;
 
 import tvestergaard.fog.data.customers.Customer;
+import tvestergaard.fog.data.offers.OfferColumn;
 import tvestergaard.fog.data.orders.Order;
+import tvestergaard.fog.logic.offers.OfferFacade;
 import tvestergaard.fog.logic.orders.OrderFacade;
 import tvestergaard.fog.presentation.Authentication;
 import tvestergaard.fog.presentation.Notifications;
@@ -24,6 +26,7 @@ public class OrderServlet extends HttpServlet
 {
 
     private final OrderFacade orderFacade = Facades.orderFacade;
+    private final OfferFacade offerFacade = Facades.offerFacade;
 
     @Override protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException
     {
@@ -59,6 +62,7 @@ public class OrderServlet extends HttpServlet
         req.setAttribute("title", "Mine ordre");
         req.setAttribute("navigation", "orders");
         req.setAttribute("order", order);
+        req.setAttribute("offers", offerFacade.get(where(eq(OfferColumn.ORDER, order.getId()))));
         req.getRequestDispatcher("/WEB-INF/order.jsp").forward(req, resp);
     }
 }
