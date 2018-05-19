@@ -32,6 +32,7 @@ import java.util.Map;
 
 import static tvestergaard.fog.data.constraints.Constraint.eq;
 import static tvestergaard.fog.data.constraints.Constraint.where;
+import static tvestergaard.fog.presentation.PresentationFunctions.csrf;
 import static tvestergaard.fog.presentation.PresentationFunctions.notifications;
 
 @WebServlet(urlPatterns = "/administration/offers")
@@ -72,6 +73,7 @@ public class AdministrationOffersServlet extends AdministrationServlet
             notifications(request);
             request.setAttribute("title", "Tilbud");
             request.setAttribute("offers", offerFacade.get(controls.constraints()));
+            request.setAttribute("csrf", csrf(request));
             request.getRequestDispatcher("/WEB-INF/administration/show_offers.jsp").forward(request, response);
         }
     }
@@ -106,6 +108,7 @@ public class AdministrationOffersServlet extends AdministrationServlet
             request.setAttribute("title", "Opret tilbud");
             request.setAttribute("order", order);
             request.setAttribute("summary", summary);
+            request.setAttribute("csrf", csrf(request));
             request.getRequestDispatcher("/WEB-INF/administration/create_offer.jsp").forward(request, response);
         }
     }
@@ -130,6 +133,7 @@ public class AdministrationOffersServlet extends AdministrationServlet
             int price = parameters.getInt("price");
             try {
                 offerFacade.create(order, authentication.getEmployee().getId(), price);
+                notifications.success("Tilbudet blev oprettet.");
                 response.sendRedirect("offers");
                 return;
             } catch (OfferValidatorException e) {

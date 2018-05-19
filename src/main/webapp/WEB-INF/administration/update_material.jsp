@@ -15,6 +15,7 @@
 <div class="row">
     <div class="col s12">
         <form method="post">
+            ${csrf}
             <input type="hidden" name="category" value="${material.getCategoryId()}">
             <div class="row">
                 <div class="col s12 input-field">

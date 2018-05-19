@@ -13,7 +13,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+import static tvestergaard.fog.presentation.PresentationFunctions.csrf;
 import static tvestergaard.fog.presentation.PresentationFunctions.notifications;
+import static tvestergaard.fog.presentation.PresentationFunctions.vefiry;
 
 @WebServlet(urlPatterns = "/reset-password")
 public class ResetPasswordServlet extends HttpServlet
@@ -44,6 +46,7 @@ public class ResetPasswordServlet extends HttpServlet
         req.setAttribute("title", "Gensæt adgangskode");
         req.setAttribute("tokenId", parameters.getInt("tokenId"));
         req.setAttribute("tokenSecret", parameters.value("tokenSecret"));
+        req.setAttribute("csrf", csrf(req));
         req.getRequestDispatcher("/WEB-INF/reset-password.jsp").forward(req, resp);
     }
 
@@ -59,6 +62,11 @@ public class ResetPasswordServlet extends HttpServlet
     {
         Parameters    parameters    = new Parameters(req);
         Notifications notifications = notifications(req);
+
+        if (!vefiry(req)) {
+            resp.sendRedirect("reset-password");
+            return;
+        }
 
         if (!parameters.isInt("tokenId") || !parameters.isPresent("tokenSecret") || !parameters.isPresent("password")) {
             notifications.error("Incomplete form post.");

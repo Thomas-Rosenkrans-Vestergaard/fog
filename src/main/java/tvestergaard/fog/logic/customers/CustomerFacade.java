@@ -7,7 +7,6 @@ import tvestergaard.fog.data.customers.*;
 import tvestergaard.fog.data.tokens.TokenDAO;
 import tvestergaard.fog.logic.ApplicationException;
 import tvestergaard.fog.logic.email.ApplicationMailer;
-import tvestergaard.fog.logic.email.SimpleJavaMailer;
 import tvestergaard.fog.logic.tokens.*;
 
 import java.util.List;
@@ -51,12 +50,11 @@ public class CustomerFacade
      * @param customerDAO The {@link CustomerDAO} used to access and make changes to the data storage used by the
      *                    application.
      */
-    public CustomerFacade(CustomerDAO customerDAO, TokenDAO tokenDAO)
+    public CustomerFacade(CustomerDAO customerDAO, TokenDAO tokenDAO, ApplicationMailer mailer)
     {
         this.customerDAO = customerDAO;
         this.validator = new CustomerValidator(customerDAO);
 
-        ApplicationMailer  mailer             = new SimpleJavaMailer();
         TokenGenerator     tokenGenerator     = new TokenGenerator();
         TokenIssuer        tokenIssuer        = new TokenIssuer(tokenDAO, tokenGenerator);
         TokenAuthenticator tokenAuthenticator = new TokenAuthenticator(tokenDAO, 24);
@@ -147,12 +145,12 @@ public class CustomerFacade
      * @throws CustomerValidatorException When the provided customer information is considered invalid.
      */
     public boolean update(int id,
-            String name,
-            String address,
-            String email,
-            String phone,
-            String password,
-            boolean active) throws CustomerValidatorException
+                          String name,
+                          String address,
+                          String email,
+                          String phone,
+                          String password,
+                          boolean active) throws CustomerValidatorException
     {
         try {
             CustomerUpdater    updater = CustomerUpdater.from(id, name, address, email, phone, password, active);
@@ -253,8 +251,8 @@ public class CustomerFacade
      * @throws AuthenticationException  When the provided old password does not match the current password of the customer.
      */
     public void updatePassword(int customerId, String oldPassword, String newPassword) throws ApplicationException,
-            UnknownCustomerException,
-            AuthenticationException
+                                                                                              UnknownCustomerException,
+                                                                                              AuthenticationException
     {
         try {
             Customer customer = customerDAO.first(where(eq(ID, customerId)));

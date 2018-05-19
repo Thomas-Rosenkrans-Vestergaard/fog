@@ -20,6 +20,7 @@
 <div class="row">
     <div class="col s12 no-padding">
         <form method="post">
+            ${csrf}
             <div class="row">
                 <input type="hidden" name="id" value="${customer.getId()}">
                 <div class="input-field col s12 l10">

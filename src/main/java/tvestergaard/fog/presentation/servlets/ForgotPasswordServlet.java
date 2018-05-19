@@ -13,7 +13,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+import static tvestergaard.fog.presentation.PresentationFunctions.csrf;
 import static tvestergaard.fog.presentation.PresentationFunctions.notifications;
+import static tvestergaard.fog.presentation.PresentationFunctions.vefiry;
 
 @WebServlet(urlPatterns = "/forgot-password")
 public class ForgotPasswordServlet extends HttpServlet
@@ -33,6 +35,7 @@ public class ForgotPasswordServlet extends HttpServlet
     {
         req.setAttribute("context", ".");
         req.setAttribute("title", "Glemt password");
+        req.setAttribute("csrf", csrf(req));
         req.setAttribute("navigation", "forgot-password");
         req.getRequestDispatcher("/WEB-INF/forgot-password.jsp").forward(req, resp);
     }
@@ -49,6 +52,11 @@ public class ForgotPasswordServlet extends HttpServlet
     {
         Parameters    parameters    = new Parameters(req);
         Notifications notifications = notifications(req);
+
+        if (!vefiry(req)) {
+            resp.sendRedirect("forgot-password");
+            return;
+        }
 
         if (!parameters.isPresent("email")) {
             notifications.error("Manglende email adresse.");

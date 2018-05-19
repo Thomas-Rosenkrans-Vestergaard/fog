@@ -117,12 +117,14 @@
                     <c:if test="${offer.isOpen()}">
                         <td>
                             <form action="orders" method="post" style="display:inline-block">
+                                    ${csrf}
                                 <input type="hidden" name="offer" value="${offer.getId()}">
                                 <button class="btn-floating waves-effect waves-light" type="submit" name="action"
                                         value="accept"><i class="material-icons right">check</i>
                                 </button>
                             </form>
                             <form action="orders" method="post" style="display:inline-block;margin-left: 20px">
+                                    ${csrf}
                                 <input type="hidden" name="offer" value="${offer.getId()}">
                                 <button class="btn-floating waves-effect waves-light" type="submit" name="action"
                                         value="reject"><i class="material-icons right">clear</i>

@@ -65,6 +65,7 @@
 </div>
 <div class="row">
     <form method="post" class="col s12">
+        ${csrf}
         <input type="hidden" value="${order.getId()}" name="id">
         <div class="row">
             <div class="input-field col s12">

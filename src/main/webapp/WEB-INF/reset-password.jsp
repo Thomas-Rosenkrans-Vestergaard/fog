@@ -19,6 +19,7 @@
 </div>
 <div class="row">
     <div class="col s12 no-padding">
+        ${csrf}
         <form method="post">
             <div class="row">
                 <input type="hidden" name="tokenId" value="${id}">

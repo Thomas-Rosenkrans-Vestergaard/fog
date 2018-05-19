@@ -15,7 +15,7 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.net.URLDecoder;
 
-import static tvestergaard.fog.presentation.PresentationFunctions.notifications;
+import static tvestergaard.fog.presentation.PresentationFunctions.*;
 
 @WebServlet(urlPatterns = "/authenticate")
 public class AuthenticationServlet extends HttpServlet
@@ -36,6 +36,8 @@ public class AuthenticationServlet extends HttpServlet
         req.setAttribute("context", ".");
         req.setAttribute("title", "Log ind");
         req.setAttribute("navigation", "authenticate");
+        req.setAttribute("csrf", csrf(req));
+        req.setAttribute("csrf", csrf(req));
         req.getRequestDispatcher("/WEB-INF/authenticate.jsp").forward(req, resp);
     }
 
@@ -51,6 +53,11 @@ public class AuthenticationServlet extends HttpServlet
     {
         Parameters    parameters    = new Parameters(req);
         Notifications notifications = notifications(req);
+
+        if (!vefiry(req)) {
+            resp.sendRedirect("authenticate");
+            return;
+        }
 
         if (!parameters.isPresent("email") || !parameters.isPresent("password")) {
             notifications.error("Incomplete form post.");

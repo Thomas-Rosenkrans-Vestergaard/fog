@@ -23,6 +23,7 @@ import static tvestergaard.fog.data.cladding.CladdingColumn.ID;
 import static tvestergaard.fog.data.constraints.Constraint.eq;
 import static tvestergaard.fog.data.constraints.Constraint.where;
 import static tvestergaard.fog.logic.claddings.CladdingError.*;
+import static tvestergaard.fog.presentation.PresentationFunctions.csrf;
 import static tvestergaard.fog.presentation.PresentationFunctions.notifications;
 
 @WebServlet(urlPatterns = "/administration/claddings")
@@ -92,6 +93,7 @@ public class AdministrationCladdingsServlet extends AdministrationServlet
 
             request.setAttribute("title", "Opdater beklædning");
             request.setAttribute("cladding", cladding);
+            request.setAttribute("csrf", csrf(request));
             request.getRequestDispatcher("/WEB-INF/administration/update_cladding.jsp").forward(request, response);
         }
     }
@@ -137,6 +139,7 @@ public class AdministrationCladdingsServlet extends AdministrationServlet
         {
             notifications(request);
             request.setAttribute("title", "Opret beklædning");
+            request.setAttribute("csrf", csrf(request));
             request.getRequestDispatcher("/WEB-INF/administration/create_cladding.jsp").forward(request, response);
         }
     }

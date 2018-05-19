@@ -19,6 +19,7 @@
 </div>
 <div class="row">
     <form class="col s12 no-padding" method="post">
+        ${csrf}
         <div class="row">
             <div class="col s12">
                 <h5>Konstruktion</h5>

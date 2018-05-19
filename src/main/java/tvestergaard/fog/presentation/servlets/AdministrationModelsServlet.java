@@ -21,6 +21,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import static tvestergaard.fog.presentation.PresentationFunctions.csrf;
 import static tvestergaard.fog.presentation.PresentationFunctions.notifications;
 
 @WebServlet("/administration/models")
@@ -92,6 +93,7 @@ public class AdministrationModelsServlet extends AdministrationServlet
             request.setAttribute("model", model);
             request.setAttribute("components", components);
             request.setAttribute("materials", materialFacade.getByCategory(categories).asMap());
+            request.setAttribute("csrf", csrf(request));
             request.getRequestDispatcher("/WEB-INF/administration/update_model.jsp").forward(request, response);
         }
     }
@@ -159,6 +161,7 @@ public class AdministrationModelsServlet extends AdministrationServlet
 
             request.setAttribute("title", "Opdater model componenter");
             request.setAttribute("definitions", modelFacade.getComponentDefinitions(parameters.getInt("model")));
+            request.setAttribute("csrf", csrf(request));
             request.getRequestDispatcher("/WEB-INF/administration/update_model_components.jsp").forward(request, response);
         }
     }

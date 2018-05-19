@@ -26,6 +26,7 @@ import java.util.Map;
 import java.util.Set;
 
 import static tvestergaard.fog.logic.materials.MaterialError.*;
+import static tvestergaard.fog.presentation.PresentationFunctions.csrf;
 import static tvestergaard.fog.presentation.PresentationFunctions.notifications;
 
 @WebServlet(urlPatterns = "/administration/materials")
@@ -94,6 +95,7 @@ public class AdministrationMaterialsServlet extends AdministrationServlet
             request.setAttribute("title", "Opret materiale");
             request.setAttribute("category", parameters.getInt("category"));
             request.setAttribute("attributes", facade.getAttributesFor(parameters.getInt("category")));
+            request.setAttribute("csrf", csrf(request));
             request.getRequestDispatcher("/WEB-INF/administration/create_material.jsp").forward(request, response);
         }
     }
@@ -174,6 +176,7 @@ public class AdministrationMaterialsServlet extends AdministrationServlet
 
             request.setAttribute("title", "Opdater materiale");
             request.setAttribute("material", material);
+            request.setAttribute("csrf", csrf(request));
             request.getRequestDispatcher("/WEB-INF/administration/update_material.jsp").forward(request, response);
         }
     }

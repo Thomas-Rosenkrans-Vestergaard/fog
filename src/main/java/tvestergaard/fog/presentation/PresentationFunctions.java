@@ -93,4 +93,64 @@ public class PresentationFunctions
 
         return customerErrors.get(error);
     }
+
+    /**
+     * Creates and returns a html input containing a generated token.
+     *
+     * @param request
+     * @return
+     */
+    public static String csrf(HttpServletRequest request)
+    {
+        HttpSession session = request.getSession();
+
+        CsrfProtector protector = (CsrfProtector) session.getAttribute("csrf");
+
+        if (protector == null) {
+            protector = new CsrfProtector(20, 10);
+            session.setAttribute("csrf", protector);
+        }
+
+        String token = protector.generate();
+
+        return String.format("<input type='hidden' name='csrf' value='%s'/>", token);
+    }
+
+    /**
+     * Verifies a sent csrf protected token.
+     *
+     * @param request
+     * @return
+     */
+    public static boolean vefiry(HttpServletRequest request)
+    {
+        String sentToken = request.getParameter("csrf");
+
+        if (sentToken == null) {
+            onCsrfError(request);
+            return false;
+        }
+
+
+        HttpSession session = request.getSession();
+
+        CsrfProtector protector = (CsrfProtector) session.getAttribute("csrf");
+        if (protector == null) {
+            onCsrfError(request);
+            return false;
+        }
+
+        if (!protector.verify(sentToken)) {
+            onCsrfError(request);
+            return false;
+        }
+
+        return true;
+    }
+
+    private static void onCsrfError(HttpServletRequest request)
+    {
+        Notifications notifications = notifications(request);
+        notifications.error("CSRF fejl.");
+    }
 }

@@ -23,7 +23,9 @@ import static tvestergaard.fog.data.constraints.Constraint.eq;
 import static tvestergaard.fog.data.constraints.Constraint.where;
 import static tvestergaard.fog.data.offers.OfferColumn.ID;
 import static tvestergaard.fog.data.orders.OrderColumn.CUSTOMER;
+import static tvestergaard.fog.presentation.PresentationFunctions.csrf;
 import static tvestergaard.fog.presentation.PresentationFunctions.notifications;
+import static tvestergaard.fog.presentation.PresentationFunctions.vefiry;
 
 @WebServlet(urlPatterns = "/offers")
 public class OffersServlet extends HttpServlet
@@ -52,6 +54,7 @@ public class OffersServlet extends HttpServlet
         req.setAttribute("context", ".");
         req.setAttribute("title", "Mine ordre");
         req.setAttribute("navigation", "offers");
+        req.setAttribute("csrf", csrf(req));
         req.setAttribute("customer", customer);
         req.setAttribute("offers", offerFacade.get(where(eq(CUSTOMER, customer.getId()))));
         req.getRequestDispatcher("/WEB-INF/offers.jsp").forward(req, resp);
@@ -63,6 +66,11 @@ public class OffersServlet extends HttpServlet
         Authentication authentication = new Authentication(req);
         if (authentication.redirect(resp))
             return;
+
+        if (!vefiry(req)) {
+            resp.sendRedirect("offers");
+            return;
+        }
 
         String action = req.getParameter("action");
 

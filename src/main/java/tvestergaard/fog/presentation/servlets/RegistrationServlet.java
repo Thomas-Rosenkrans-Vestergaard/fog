@@ -15,8 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
-import static tvestergaard.fog.presentation.PresentationFunctions.getError;
-import static tvestergaard.fog.presentation.PresentationFunctions.notifications;
+import static tvestergaard.fog.presentation.PresentationFunctions.*;
 
 @WebServlet(urlPatterns = "/registration")
 public class RegistrationServlet extends HttpServlet
@@ -37,6 +36,7 @@ public class RegistrationServlet extends HttpServlet
         req.setAttribute("context", ".");
         req.setAttribute("title", "Registrer");
         req.setAttribute("navigation", "registration");
+        req.setAttribute("csrf", csrf(req));
         req.getRequestDispatcher("/WEB-INF/registration.jsp").forward(req, resp);
     }
 
@@ -52,6 +52,11 @@ public class RegistrationServlet extends HttpServlet
     {
         Parameters    parameters    = new Parameters(req);
         Notifications notifications = notifications(req);
+
+        if (!vefiry(req)) {
+            resp.sendRedirect("registration");
+            return;
+        }
 
         if (!parameters.isPresent("name") ||
                 !parameters.isPresent("address") ||

@@ -34,7 +34,9 @@ import java.io.IOException;
 
 import static tvestergaard.fog.data.constraints.Constraint.eq;
 import static tvestergaard.fog.data.constraints.Constraint.where;
+import static tvestergaard.fog.presentation.PresentationFunctions.csrf;
 import static tvestergaard.fog.presentation.PresentationFunctions.notifications;
+import static tvestergaard.fog.presentation.PresentationFunctions.vefiry;
 
 @WebServlet(urlPatterns = {"/place-order", ""})
 public class PlaceOrderServlet extends HttpServlet
@@ -61,6 +63,7 @@ public class PlaceOrderServlet extends HttpServlet
 
         req.setAttribute("context", ".");
         req.setAttribute("title", "Placér ordre");
+        req.setAttribute("csrf", csrf(req));
         req.setAttribute("navigation", "place-order");
         req.setAttribute("roofings", roofingsFacade.get(where(eq(RoofingColumn.ACTIVE, true))));
         req.setAttribute("floorings", flooringsFacade.get(where(eq(FlooringColumn.ACTIVE, true))));
@@ -85,6 +88,11 @@ public class PlaceOrderServlet extends HttpServlet
         Notifications  notifications  = notifications(req);
         Parameters     parameters     = new Parameters(req);
         Authentication authentication = new Authentication(req);
+
+        if (!vefiry(req)) {
+            resp.sendRedirect("place-order");
+            return;
+        }
 
         if (!parameters.isInt("width") ||
                 !parameters.isInt("length") ||

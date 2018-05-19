@@ -23,6 +23,7 @@ import static tvestergaard.fog.data.constraints.Constraint.eq;
 import static tvestergaard.fog.data.constraints.Constraint.where;
 import static tvestergaard.fog.data.flooring.FlooringColumn.ID;
 import static tvestergaard.fog.logic.floorings.FlooringError.*;
+import static tvestergaard.fog.presentation.PresentationFunctions.csrf;
 import static tvestergaard.fog.presentation.PresentationFunctions.notifications;
 
 @WebServlet(urlPatterns = "/administration/floorings")
@@ -91,6 +92,7 @@ public class AdministrationFlooringsServlet extends AdministrationServlet
             }
 
             request.setAttribute("title", "Opdater gulv");
+            request.setAttribute("csrf", csrf(request));
             request.setAttribute("flooring", flooring);
             request.getRequestDispatcher("/WEB-INF/administration/update_flooring.jsp").forward(request, response);
         }
@@ -138,6 +140,7 @@ public class AdministrationFlooringsServlet extends AdministrationServlet
         {
             notifications(request);
             request.setAttribute("title", "Opret gulv");
+            request.setAttribute("csrf", csrf(request));
             request.getRequestDispatcher("/WEB-INF/administration/create_flooring.jsp").forward(request, response);
         }
     }

@@ -15,6 +15,7 @@
 </div>
 <div class="row">
     <form method="post" class="col s12 no-padding">
+        ${csrf}
         <div class="row">
             <div class="col s12 input-field">
                 <input type="text" name="name" id="name" data-length="255" class="input-length validate" required>

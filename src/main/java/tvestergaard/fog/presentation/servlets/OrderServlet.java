@@ -19,6 +19,7 @@ import java.io.IOException;
 import static tvestergaard.fog.data.constraints.Constraint.eq;
 import static tvestergaard.fog.data.constraints.Constraint.where;
 import static tvestergaard.fog.data.orders.OrderColumn.ID;
+import static tvestergaard.fog.presentation.PresentationFunctions.csrf;
 import static tvestergaard.fog.presentation.PresentationFunctions.notifications;
 
 @WebServlet(urlPatterns = "/order")
@@ -61,6 +62,7 @@ public class OrderServlet extends HttpServlet
         req.setAttribute("context", ".");
         req.setAttribute("title", "Mine ordre");
         req.setAttribute("navigation", "orders");
+        req.setAttribute("csrf", csrf(req));
         req.setAttribute("order", order);
         req.setAttribute("offers", offerFacade.get(where(eq(OfferColumn.ORDER, order.getId()))));
         req.getRequestDispatcher("/WEB-INF/order.jsp").forward(req, resp);

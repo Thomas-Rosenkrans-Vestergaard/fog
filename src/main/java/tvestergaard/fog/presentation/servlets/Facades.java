@@ -31,6 +31,7 @@ import tvestergaard.fog.logic.claddings.CladdingFacade;
 import tvestergaard.fog.logic.construction.ConstructionFacade;
 import tvestergaard.fog.logic.customers.CustomerFacade;
 import tvestergaard.fog.logic.email.ApplicationMailer;
+import tvestergaard.fog.logic.email.CurrentEmailTemplate;
 import tvestergaard.fog.logic.email.SimpleJavaMailer;
 import tvestergaard.fog.logic.employees.EmployeeFacade;
 import tvestergaard.fog.logic.floorings.FlooringFacade;
@@ -47,7 +48,7 @@ import tvestergaard.fog.logic.tokens.TokenIssuer;
 public class Facades
 {
 
-    private static final ApplicationMailer mailer = new SimpleJavaMailer();
+    private static final ApplicationMailer mailer = new SimpleJavaMailer(new CurrentEmailTemplate());
 
     private static final MysqlDataSource source      = ProductionDataSource.getSource();
     private static final CladdingDAO     claddingDAO = new MysqlCladdingDAO(source);
@@ -68,7 +69,7 @@ public class Facades
     private static final TokenAuthenticator tokenAuthenticator = new TokenAuthenticator(tokenDAO, 24);
 
     public static final CladdingFacade     claddingFacade     = new CladdingFacade(claddingDAO);
-    public static final CustomerFacade     customerFacade     = new CustomerFacade(customerDAO, tokenDAO);
+    public static final CustomerFacade     customerFacade     = new CustomerFacade(customerDAO, tokenDAO, mailer);
     public static final EmployeeFacade     employeeFacade     = new EmployeeFacade(employeeDAO);
     public static final FlooringFacade     flooringFacade     = new FlooringFacade(flooringDAO);
     public static final MaterialFacade     materialFacade     = new MaterialFacade(materialDAO);

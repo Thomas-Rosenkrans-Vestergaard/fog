@@ -22,6 +22,7 @@ import static tvestergaard.fog.data.cladding.CladdingColumn.ID;
 import static tvestergaard.fog.data.constraints.Constraint.eq;
 import static tvestergaard.fog.data.constraints.Constraint.where;
 import static tvestergaard.fog.logic.customers.CustomerError.*;
+import static tvestergaard.fog.presentation.PresentationFunctions.csrf;
 import static tvestergaard.fog.presentation.PresentationFunctions.notifications;
 
 @WebServlet(urlPatterns = "/administration/customers")
@@ -90,6 +91,7 @@ public class AdministrationCustomersServlet extends AdministrationServlet
             }
 
             request.setAttribute("title", "Opdater kunder");
+            request.setAttribute("csrf", csrf(request));
             request.setAttribute("customer", customer);
             request.getRequestDispatcher("/WEB-INF/administration/update_customer.jsp").forward(request, response);
         }
@@ -139,7 +141,8 @@ public class AdministrationCustomersServlet extends AdministrationServlet
         @Override public void dispatch(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
         {
             notifications(request);
-            request.setAttribute("title", "Opret kund");
+            request.setAttribute("title", "Opret kunde");
+            request.setAttribute("csrf", csrf(request));
             request.getRequestDispatcher("/WEB-INF/administration/create_customer.jsp").forward(request, response);
         }
     }

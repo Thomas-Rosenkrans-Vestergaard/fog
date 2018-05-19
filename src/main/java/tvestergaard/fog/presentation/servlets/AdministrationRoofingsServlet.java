@@ -27,6 +27,7 @@ import static tvestergaard.fog.data.constraints.Constraint.eq;
 import static tvestergaard.fog.data.constraints.Constraint.where;
 import static tvestergaard.fog.data.roofing.RoofingColumn.ID;
 import static tvestergaard.fog.logic.roofings.RoofingError.*;
+import static tvestergaard.fog.presentation.PresentationFunctions.csrf;
 import static tvestergaard.fog.presentation.PresentationFunctions.notifications;
 
 @WebServlet(urlPatterns = "/administration/roofings")
@@ -184,6 +185,7 @@ public class AdministrationRoofingsServlet extends AdministrationServlet
             request.setAttribute("type", request.getParameter("type"));
             request.setAttribute("components", components);
             request.setAttribute("materials", materialFacade.getByCategory(categories).asMap());
+            request.setAttribute("csrf", csrf(request));
             request.getRequestDispatcher("/WEB-INF/administration/create_roofing.jsp").forward(request, response);
         }
     }
@@ -260,6 +262,7 @@ public class AdministrationRoofingsServlet extends AdministrationServlet
 
             request.setAttribute("title", "Opdater roofing componenter");
             request.setAttribute("definitions", roofingFacade.getComponentDefinitions(parameters.getEnum("roofing", RoofingType.class)));
+            request.setAttribute("csrf", csrf(request));
             request.getRequestDispatcher("/WEB-INF/administration/update_roofing_components.jsp").forward(request, response);
         }
     }

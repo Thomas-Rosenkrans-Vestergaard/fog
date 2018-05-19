@@ -11,7 +11,8 @@ public class SimpleJavaMailer implements ApplicationMailer
     /**
      * The simple java mailer that actually sends the email.
      */
-    private final Mailer mailer;
+    private final Mailer        mailer;
+    private final EmailTemplate template;
 
     private static final String HOST = "smtp.gmail.com";
     private static final int    PORT = 587;
@@ -21,9 +22,10 @@ public class SimpleJavaMailer implements ApplicationMailer
     /**
      * Creates a new {@link SimpleJavaMailer}.
      */
-    public SimpleJavaMailer()
+    public SimpleJavaMailer(EmailTemplate template)
     {
         this.mailer = new Mailer(HOST, PORT, USER, PASS, TransportStrategy.SMTP_TLS);
+        this.template = template;
     }
 
     /**
@@ -45,6 +47,6 @@ public class SimpleJavaMailer implements ApplicationMailer
 
     private String createHTML(ApplicationEmail email)
     {
-        return null;
+        return template.render(email.getSubject(), email.getHtmlContents());
     }
 }

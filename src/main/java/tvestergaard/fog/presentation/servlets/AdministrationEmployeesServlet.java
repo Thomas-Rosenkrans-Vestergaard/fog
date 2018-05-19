@@ -23,6 +23,7 @@ import static tvestergaard.fog.data.cladding.CladdingColumn.ID;
 import static tvestergaard.fog.data.constraints.Constraint.eq;
 import static tvestergaard.fog.data.constraints.Constraint.where;
 import static tvestergaard.fog.logic.employees.EmployeeError.*;
+import static tvestergaard.fog.presentation.PresentationFunctions.csrf;
 import static tvestergaard.fog.presentation.PresentationFunctions.notifications;
 
 @WebServlet(urlPatterns = "/administration/employees")
@@ -69,6 +70,7 @@ public class AdministrationEmployeesServlet extends AdministrationServlet
             notifications(request);
             request.setAttribute("title", "Medarbejdere");
             request.setAttribute("employees", facade.get(controls.constraints()));
+            request.setAttribute("csrf", csrf(request));
             request.getRequestDispatcher("/WEB-INF/administration/show_employees.jsp").forward(request, response);
         }
     }
@@ -150,6 +152,7 @@ public class AdministrationEmployeesServlet extends AdministrationServlet
             notifications(request);
             request.setAttribute("title", "Opret medarbejder");
             request.setAttribute("roles", Role.values());
+            request.setAttribute("csrf", csrf(request));
             request.getRequestDispatcher("/WEB-INF/administration/create_employee.jsp").forward(request, response);
         }
     }

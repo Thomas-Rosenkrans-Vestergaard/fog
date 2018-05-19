@@ -14,6 +14,7 @@
 </div>
 <div class="row">
     <form method="post" class="col s12">
+        ${csrf}
         <input type="hidden" value="${flooring.getId()}" name="id">
         <div class="row">
             <div class="col s12 input-field">

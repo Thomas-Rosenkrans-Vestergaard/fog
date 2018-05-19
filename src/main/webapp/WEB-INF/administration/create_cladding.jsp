@@ -7,6 +7,7 @@
 </div>
 <div class="row">
     <form method="post" class="col s12">
+        ${csrf}
         <div class="row">
             <div class="col s12 input-field">
                 <input type="text" name="name" id="name" data-length="255" class="validate" required>

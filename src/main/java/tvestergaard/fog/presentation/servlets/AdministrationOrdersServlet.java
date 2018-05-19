@@ -29,6 +29,7 @@ import static tvestergaard.fog.data.constraints.OrderDirection.ASC;
 import static tvestergaard.fog.data.constraints.OrderDirection.DESC;
 import static tvestergaard.fog.data.orders.OrderColumn.ID;
 import static tvestergaard.fog.logic.orders.OrderError.*;
+import static tvestergaard.fog.presentation.PresentationFunctions.csrf;
 import static tvestergaard.fog.presentation.PresentationFunctions.notifications;
 
 @WebServlet(name = "AdministrationOrders", urlPatterns = "/administration/orders")
@@ -120,6 +121,7 @@ public class AdministrationOrdersServlet extends AdministrationServlet
             request.setAttribute("roofings", roofingFacade.get());
             request.setAttribute("floorings", flooringFacade.get());
             request.setAttribute("offers", offerFacade.get(order.getId()));
+            request.setAttribute("csrf", csrf(request));
             request.getRequestDispatcher("/WEB-INF/administration/update_order.jsp").forward(request, response);
         }
     }

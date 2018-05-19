@@ -14,6 +14,7 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.net.URLDecoder;
 
+import static tvestergaard.fog.presentation.PresentationFunctions.csrf;
 import static tvestergaard.fog.presentation.PresentationFunctions.notifications;
 
 @WebServlet(urlPatterns = "/administration/authenticate")
@@ -34,6 +35,7 @@ public class AdministrationAuthenticationServlet extends AdministrationServlet
     {
         req.setAttribute("title", "Medarbejderlogin");
         req.setAttribute("context", "..");
+        req.setAttribute("token", csrf(req));
         req.getRequestDispatcher("/WEB-INF/administration/authentication.jsp").forward(req, resp);
     }
 

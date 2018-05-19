@@ -16,7 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-import static tvestergaard.fog.presentation.PresentationFunctions.notifications;
+import static tvestergaard.fog.presentation.PresentationFunctions.*;
 
 @WebServlet(urlPatterns = "/update-password")
 public class UpdatePasswordServlet extends HttpServlet
@@ -36,6 +36,7 @@ public class UpdatePasswordServlet extends HttpServlet
         req.setAttribute("nagivation", "update_password");
         req.setAttribute("customer", customer);
         req.setAttribute("context", ".");
+        req.setAttribute("csrf", csrf(req));
         req.getRequestDispatcher("/WEB-INF/update_password.jsp").forward(req, resp);
     }
 
@@ -50,8 +51,14 @@ public class UpdatePasswordServlet extends HttpServlet
         Parameters    parameters    = new Parameters(req);
         Notifications notifications = notifications(req);
 
-        if (!parameters.isInt("id") || !parameters.isPresent("old-password") ||
-            !parameters.isPresent("new-password")) {
+        if (!vefiry(req)) {
+            resp.sendRedirect("update-password");
+            return;
+        }
+
+        if (!parameters.isInt("id") ||
+                !parameters.isPresent("old-password") ||
+                !parameters.isPresent("new-password")) {
             notifications.error("Not enough information.");
             resp.sendRedirect("update-password");
             return;
@@ -65,7 +72,7 @@ public class UpdatePasswordServlet extends HttpServlet
 
         try {
             customerFacade.updatePassword(customer.getId(), parameters.value("old-password"),
-                                          parameters.value("new-password"));
+                    parameters.value("new-password"));
             notifications.success("Din adgangskode blev opdateret.");
             resp.sendRedirect("profile");
             return;

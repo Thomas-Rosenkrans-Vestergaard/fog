@@ -14,6 +14,7 @@
 </div>
 <div class="row">
     <form method="post" class="col s12">
+        ${csrf}
         <c:forEach items="${definitions}" var="definition">
             <div class="row">
                 <div class="col s12 input-field">
