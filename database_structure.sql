@@ -369,16 +369,13 @@ DROP TABLE IF EXISTS `purchases`;
 CREATE TABLE `purchases` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `offer` int(11) unsigned NOT NULL,
-  `employee` int(11) unsigned NOT NULL,
   `bom` int(11) unsigned NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`),
   UNIQUE KEY `offer_UNIQUE` (`offer`),
   KEY `fk_contracts_bom_idx` (`bom`),
-  KEY `fk_contracts_employees_idx` (`employee`),
   CONSTRAINT `fk_contracts_bom` FOREIGN KEY (`bom`) REFERENCES `bom` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `fk_contracts_employees` FOREIGN KEY (`employee`) REFERENCES `employees` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `purchases_ibfk_1` FOREIGN KEY (`offer`) REFERENCES `offers` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -505,4 +502,4 @@ CREATE TABLE `tokens` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-05-19 15:20:29
+-- Dump completed on 2018-05-19 15:24:47

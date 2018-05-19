@@ -33,7 +33,7 @@ public enum PurchaseColumn implements Column<PurchaseColumn>, MysqlColumn
             return "offers.id";
 
         if (this == EMPLOYEE)
-            return "p_emp.id";
+            return "o_emp.id";
 
         return getMysqlName();
     }

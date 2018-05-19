@@ -54,11 +54,9 @@ public class MysqlPurchaseDAO extends AbstractMysqlDAO implements PurchaseDAO
         final String SQL = generator.generate("SELECT *, (SELECT count(*) FROM offers WHERE `order` = o.id) AS `o.offers`, " +
                 "(SELECT count(offers.id) FROM offers WHERE offers.order = o.id AND offers.status = 'OPEN') as `o.open_offers`, " +
                 "(SELECT GROUP_CONCAT(roles.role SEPARATOR ',') FROM roles WHERE employee = o_emp.id) as `o_emp.roles`, " +
-                "(SELECT GROUP_CONCAT(roles.role SEPARATOR ',') FROM roles WHERE employee = p_emp.id) as `p_emp.roles`, " +
-                "CONCAT_WS('.', p_emp.name, p_emp.username, customers.name, customers.email, roofings.name, claddings.name, floorings.name, o_emp.name, o_emp.username, offers.price) as `purchases.search` " +
+                "CONCAT_WS('.', customers.name, customers.email, roofings.name, claddings.name, floorings.name, o_emp.name, o_emp.username, offers.price) as `purchases.search` " +
                 "FROM purchases " +
                 "INNER JOIN bom ON purchases.bom = bom.id " +
-                "INNER JOIN employees p_emp ON purchases.employee = p_emp.id " +
                 "INNER JOIN offers ON purchases.offer = offers.id " +
                 "INNER JOIN orders o ON offers.order = o.id " +
                 "INNER JOIN customers ON o.customer = customers.id " +
@@ -71,7 +69,7 @@ public class MysqlPurchaseDAO extends AbstractMysqlDAO implements PurchaseDAO
             binder.bind(statement, constraints);
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next())
-                purchases.add(createPurchase(resultSet, "purchases", "p_emp", "offers", "o", "customers", "roofings",
+                purchases.add(createPurchase(resultSet, "purchases", "offers", "o", "customers", "roofings",
                         "sheds", "claddings", "floorings", "o_emp"));
             return purchases;
         } catch (SQLException e) {
@@ -156,11 +154,10 @@ public class MysqlPurchaseDAO extends AbstractMysqlDAO implements PurchaseDAO
                     acceptStatement.executeUpdate();
                 }
 
-                final String purchaseSQL = "INSERT INTO purchases (offer, employee, bom) VALUES (?, ?, ?)";
+                final String purchaseSQL = "INSERT INTO purchases (offer, bom) VALUES (?, ?)";
                 try (PreparedStatement statement = connection.prepareStatement(purchaseSQL, RETURN_GENERATED_KEYS)) {
                     statement.setInt(1, blueprint.getOfferId());
-                    statement.setInt(2, blueprint.getEmployeeId());
-                    statement.setInt(3, bomGenerated.getInt(1));
+                    statement.setInt(2, bomGenerated.getInt(1));
                     statement.executeUpdate();
                     ResultSet generated = statement.getGeneratedKeys();
                     generated.first();

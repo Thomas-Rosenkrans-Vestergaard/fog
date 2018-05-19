@@ -431,7 +431,6 @@ public abstract class AbstractMysqlDAO
 
     protected Purchase createPurchase(ResultSet resultSet,
                                       String table,
-                                      String purchaseEmployeeTable,
                                       String offerTable,
                                       String orderTable,
                                       String customerTable,
@@ -444,9 +443,8 @@ public abstract class AbstractMysqlDAO
         Offer offer = createOffer(
                 resultSet, offerTable, orderTable, customerTable, orderRoofingTable, shedTable,
                 shedCladdingTable, shedFlooringsTable, offerEmployeeTable);
-        Employee employee = createEmployee(purchaseEmployeeTable, resultSet);
 
         return new PurchaseRecord(resultSet.getInt(table + ".id"), offer.getId(), offer, resultSet.getInt(table + ".bom"),
-                employee.getId(), employee, resultSet.getTimestamp(table + ".created_at").toLocalDateTime());
+                resultSet.getTimestamp(table + ".created_at").toLocalDateTime());
     }
 }

@@ -157,7 +157,7 @@ public class PurchaseFacade
             drawings.add(BomDrawing.from(constructionSummary.getRoofingConstructionSummary().getAerialSkeletonView()));
             drawings.add(BomDrawing.from(constructionSummary.getRoofingConstructionSummary().getAerialTiledView()));
 
-            return purchaseDAO.create(PurchaseBlueprint.from(offerId, offer.getEmployeeId()), BomBlueprint.from(lineBlueprints, drawings));
+            return purchaseDAO.create(PurchaseBlueprint.from(offerId), BomBlueprint.from(lineBlueprints, drawings));
 
         } catch (DataAccessException e) {
             throw new ApplicationException(e);

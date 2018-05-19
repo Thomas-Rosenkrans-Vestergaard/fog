@@ -1,6 +1,5 @@
 package tvestergaard.fog.data.purchases;
 
-import tvestergaard.fog.data.employees.Employee;
 import tvestergaard.fog.data.offers.Offer;
 
 import java.time.LocalDateTime;
@@ -22,13 +21,6 @@ public interface Purchase extends PurchaseBlueprint
      * @return The offer that was accepted.
      */
     Offer getOffer();
-
-    /**
-     * Returns the employee who created the purchase.
-     *
-     * @return The employee who created the purchase.
-     */
-    Employee getEmployee();
 
     /**
      * Returns the id of the bom.
