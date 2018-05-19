@@ -1,7 +1,6 @@
 package tvestergaard.fog.logic.orders;
 
-import org.simplejavamail.email.Email;
-import org.simplejavamail.email.EmailBuilder;
+import tvestergaard.fog.data.customers.Customer;
 import tvestergaard.fog.data.orders.Order;
 import tvestergaard.fog.logic.email.ApplicationEmail;
 
@@ -24,24 +23,35 @@ public class OrderConfirmationEmail implements ApplicationEmail
     }
 
     /**
-     * Builds the Email instance that can be sent using the SimpleJavaMail library.
+     * Returns the customer to receive the email.
      *
-     * @return The email instance.
+     * @return The customer to receive the email.
      */
-    @Override public Email build()
+    @Override public Customer getRecipient()
     {
-        return new EmailBuilder().to(order.getCustomer().getName(), order.getCustomer().getEmail())
-                                 .from("Fog carporte", "fog.carporte@gmail.com")
-                                 .subject("Vi har modtaget din ordre.")
-                                 .textHTML(generateHTML())
-                                 .build();
+        return order.getCustomer();
     }
 
-    private String generateHTML()
+    /**
+     * Returns the subject of the email.
+     *
+     * @return The subject of the email.
+     */
+    @Override public String getSubject()
+    {
+        return "Din order bliver behandlet.";
+    }
+
+    /**
+     * Returns the html contents of the email.
+     *
+     * @return The html contents of the email.
+     */
+    @Override public String getHtmlContents()
     {
         StringBuilder builder = new StringBuilder();
-        builder.append("<h1>Vi har modtaget din ordre.</h1>");
-
+        builder.append("<p>Vi har modtaget din ordre og behandler den nu.");
+        builder.append("<p>Du kan se din order <a href=''></a></p>");
         return builder.toString();
     }
 }

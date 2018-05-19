@@ -1,14 +1,28 @@
 package tvestergaard.fog.logic.email;
 
-import org.simplejavamail.email.Email;
+import tvestergaard.fog.data.customers.Customer;
 
 public interface ApplicationEmail
 {
 
     /**
-     * Builds the Email instance that can be sent using the SimpleJavaMail library.
+     * Returns the customer to receive the email.
      *
-     * @return The email instance.
+     * @return The customer to receive the email.
      */
-    Email build();
+    Customer getRecipient();
+
+    /**
+     * Returns the subject of the email.
+     *
+     * @return The subject of the email.
+     */
+    String getSubject();
+
+    /**
+     * Returns the html contents of the email.
+     *
+     * @return The html contents of the email.
+     */
+    String getHtmlContents();
 }

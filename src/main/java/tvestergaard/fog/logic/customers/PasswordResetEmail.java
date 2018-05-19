@@ -1,7 +1,5 @@
 package tvestergaard.fog.logic.customers;
 
-import org.simplejavamail.email.Email;
-import org.simplejavamail.email.EmailBuilder;
 import tvestergaard.fog.data.customers.Customer;
 import tvestergaard.fog.logic.email.ApplicationEmail;
 import tvestergaard.fog.logic.tokens.TokenPair;
@@ -32,30 +30,41 @@ public class PasswordResetEmail implements ApplicationEmail
     }
 
     /**
-     * Builds the Email instance that can be sent using the SimpleJavaMail library.
+     * Returns the customer to receive the email.
      *
-     * @return The email instance.
+     * @return The customer to receive the email.
      */
-    @Override public Email build()
+    @Override public Customer getRecipient()
     {
-        return new EmailBuilder()
-                .to(customer.getName(), customer.getEmail())
-                .from("Fog carporte", "fog.carporte@gmail.com")
-                .subject("Glemt adgangskode.")
-                .textHTML(generateHTML())
-                .build();
+        return customer;
     }
 
     /**
-     * Generates the html for the registration confirmation email.
+     * Returns the subject of the email.
      *
-     * @return The html for the registration confirmation email.
+     * @return The subject of the email.
      */
-    private String generateHTML()
+    @Override public String getSubject()
+    {
+        return "Glemt adgangskode";
+    }
+
+    /**
+     * Returns the html contents of the email.
+     *
+     * @return The html contents of the email.
+     */
+    @Override public String getHtmlContents()
     {
         StringBuilder builder = new StringBuilder();
-        builder.append("<h1>Glemt adgangskode.</h1>");
-        builder.append(String.format("/fog/reset-password?tokenId=%d&tokenSecret=%s", token.id, token.secret));
+
+        builder.append("<p>Hvis du ønsker et nyt password, kan du klikke ");
+        builder.append("<a href='http://localhost/fog/reset-password?tokenId=");
+        builder.append(token.id);
+        builder.append("&tokenSecret=");
+        builder.append(token.secret);
+        builder.append("'>");
+        builder.append("her</a>.</p>");
 
         return builder.toString();
     }

@@ -24,13 +24,12 @@ public class StartUp implements ServletContextListener
         String realPath = sce.getServletContext().getRealPath("/");
 
         Configurator.defaultConfig()
-                .writer(new FileWriter(realPath + "log\\log.txt"))
-                .level(Level.WARNING)
-                .activate();
+                    .writer(new FileWriter(realPath + "log\\log.txt"))
+                    .level(Level.WARNING)
+                    .activate();
     }
 
     /**
-
      * Receives notification that the ServletContext is about to be
      * shut down.
      *
