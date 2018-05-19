@@ -108,15 +108,20 @@
         </div>
     </div>
     <div class="row">
-        <c:forEach items="${drawings}" var="drawing">
+        <div class="row">
             <div class="col s12">
-                <h4 class="drawing-title"><c:out value="${drawing.getTitle()}"/></h4>
-                <div>
-                        ${drawing.getContent()}
-                </div>
+                <ul class="tabs">
+                    <c:forEach items="${drawings}" var="drawing">
+                        <li class="tab"><a href="#drawing_${drawing.getId()}">${drawing.getTitle()}</a></li>
+                    </c:forEach>
+                </ul>
             </div>
-        </c:forEach>
+            <c:forEach items="${drawings}" var="drawing">
+                <div id="drawing_${drawing.getId()}" class="col s12">${drawing.getContent()}</div>
+            </c:forEach>
+        </div>
     </div>
+    <script>$('.tabs').tabs();</script>
 </c:if>
 <div class="row">
     <div class="col s12">
