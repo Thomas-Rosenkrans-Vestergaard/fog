@@ -116,25 +116,29 @@
     </div>
 </div>
 <div class="row">
-    <div class="col s12 l6">
-        <h4 class="drawing-title">Skelet ovenfra</h4>
+    <div class="col s12">
+        <ul class="tabs">
+            <li class="tab"><a href="#drawing_1">Skelet ovenfra</a></li>
+            <li class="tab"><a href="#drawing_2">Skelet fra siden</a></li>
+            <li class="tab"><a href="#drawing_3">Skelet ovenfra</a></li>
+            <li class="tab"><a href="#drawing_4">Skelet ovenfra m. tag</a></li>
+        </ul>
+    </div>
+    <div id="drawing_1" class="col s12">
         ${summary.getSkeletonConstructionSummary().getAerialView().getXML()}
     </div>
-    <div class="col s12 l6">
-        <h4 class="drawing-title">Skelet fra siden</h4>
+    <div id="drawing_2" class="col s12">
         ${summary.getSkeletonConstructionSummary().getSideView().getXML()}
     </div>
-</div>
-<div class="row">
-    <div class="col s12 l6">
-        <h4 class="drawing-title">Taget uden tegl</h4>
+    <div id="drawing_3" class="col s12">
         ${summary.getRoofingConstructionSummary().getAerialSkeletonView().getXML()}
     </div>
-    <div class="col s12 l6">
-        <h4 class="drawing-title">Teget med halvt tegl</h4>
+    <div id="drawing_4" class="col s12">
         ${summary.getRoofingConstructionSummary().getAerialTiledView().getXML()}
     </div>
 </div>
+</div>
+<script>$('.tabs').tabs();</script>
 <div class="row">
     <div class="col s12">
         <h3>MATERIALER</h3>
