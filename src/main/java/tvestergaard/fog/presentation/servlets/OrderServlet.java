@@ -1,7 +1,6 @@
 package tvestergaard.fog.presentation.servlets;
 
 import tvestergaard.fog.data.customers.Customer;
-import tvestergaard.fog.data.offers.OfferColumn;
 import tvestergaard.fog.data.orders.Order;
 import tvestergaard.fog.logic.offers.OfferFacade;
 import tvestergaard.fog.logic.orders.OrderFacade;
@@ -18,6 +17,9 @@ import java.io.IOException;
 
 import static tvestergaard.fog.data.constraints.Constraint.eq;
 import static tvestergaard.fog.data.constraints.Constraint.where;
+import static tvestergaard.fog.data.constraints.OrderDirection.DESC;
+import static tvestergaard.fog.data.offers.OfferColumn.CREATED_AT;
+import static tvestergaard.fog.data.offers.OfferColumn.ORDER;
 import static tvestergaard.fog.data.orders.OrderColumn.ID;
 import static tvestergaard.fog.presentation.PresentationFunctions.csrf;
 import static tvestergaard.fog.presentation.PresentationFunctions.notifications;
@@ -64,7 +66,7 @@ public class OrderServlet extends HttpServlet
         req.setAttribute("navigation", "orders");
         req.setAttribute("csrf", csrf(req));
         req.setAttribute("order", order);
-        req.setAttribute("offers", offerFacade.get(where(eq(OfferColumn.ORDER, order.getId()))));
+        req.setAttribute("offers", offerFacade.get(where(eq(ORDER, order.getId())).order(CREATED_AT, DESC)));
         req.getRequestDispatcher("/WEB-INF/order.jsp").forward(req, resp);
     }
 }

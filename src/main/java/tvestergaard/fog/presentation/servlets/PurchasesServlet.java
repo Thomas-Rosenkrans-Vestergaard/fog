@@ -13,6 +13,8 @@ import java.io.IOException;
 
 import static tvestergaard.fog.data.constraints.Constraint.eq;
 import static tvestergaard.fog.data.constraints.Constraint.where;
+import static tvestergaard.fog.data.constraints.OrderDirection.DESC;
+import static tvestergaard.fog.data.offers.OfferColumn.CREATED_AT;
 import static tvestergaard.fog.data.orders.OrderColumn.CUSTOMER;
 
 @WebServlet(urlPatterns = "/purchases")
@@ -41,7 +43,7 @@ public class PurchasesServlet extends HttpServlet
         req.setAttribute("title", "Mine køb");
         req.setAttribute("navigation", "purchases");
         req.setAttribute("customer", customer);
-        req.setAttribute("purchases", purchaseFacade.get(where(eq(CUSTOMER, customer.getId()))));
+        req.setAttribute("purchases", purchaseFacade.get(where(eq(CUSTOMER, customer.getId())).order(CREATED_AT, DESC)));
         req.getRequestDispatcher("/WEB-INF/purchases.jsp").forward(req, resp);
     }
 }

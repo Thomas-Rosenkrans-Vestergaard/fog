@@ -21,11 +21,11 @@ import java.io.IOException;
 
 import static tvestergaard.fog.data.constraints.Constraint.eq;
 import static tvestergaard.fog.data.constraints.Constraint.where;
+import static tvestergaard.fog.data.constraints.OrderDirection.DESC;
+import static tvestergaard.fog.data.offers.OfferColumn.CREATED_AT;
 import static tvestergaard.fog.data.offers.OfferColumn.ID;
 import static tvestergaard.fog.data.orders.OrderColumn.CUSTOMER;
-import static tvestergaard.fog.presentation.PresentationFunctions.csrf;
-import static tvestergaard.fog.presentation.PresentationFunctions.notifications;
-import static tvestergaard.fog.presentation.PresentationFunctions.vefiry;
+import static tvestergaard.fog.presentation.PresentationFunctions.*;
 
 @WebServlet(urlPatterns = "/offers")
 public class OffersServlet extends HttpServlet
@@ -56,7 +56,7 @@ public class OffersServlet extends HttpServlet
         req.setAttribute("navigation", "offers");
         req.setAttribute("csrf", csrf(req));
         req.setAttribute("customer", customer);
-        req.setAttribute("offers", offerFacade.get(where(eq(CUSTOMER, customer.getId()))));
+        req.setAttribute("offers", offerFacade.get(where(eq(CUSTOMER, customer.getId())).order(CREATED_AT, DESC)));
         req.getRequestDispatcher("/WEB-INF/offers.jsp").forward(req, resp);
     }
 
