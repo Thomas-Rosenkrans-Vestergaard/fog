@@ -14,6 +14,7 @@ import tvestergaard.fog.logic.employees.UnknownEmployeeException;
 import tvestergaard.fog.logic.offers.OfferError;
 import tvestergaard.fog.logic.offers.OfferFacade;
 import tvestergaard.fog.logic.offers.OfferValidatorException;
+import tvestergaard.fog.logic.offers.OrderNotActiveException;
 import tvestergaard.fog.logic.orders.OrderFacade;
 import tvestergaard.fog.logic.orders.UnknownOrderException;
 import tvestergaard.fog.presentation.Authentication;
@@ -144,6 +145,8 @@ public class AdministrationOffersServlet extends AdministrationServlet
                 notifications.error("Ukendt medarbejder.");
             } catch (InsufficientPermissionsException e) {
                 notifications.error("Medarbejderen er ikke en salgsperson.");
+            } catch (OrderNotActiveException e) {
+                notifications.error("Ordren er ikke aftiv, og kan derfor ikke modtage tilbud.");
             }
 
             response.sendRedirect("?action=create");

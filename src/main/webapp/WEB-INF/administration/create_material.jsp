@@ -26,7 +26,7 @@
             </div>
             <div class="row">
                 <div class="col s12 input-field">
-                    <input type="number" name="price" id="price" min="0" class="validate" required>
+                    <input type="number" name="price" id="price" min="0" step=".01" class="validate" required>
                     <label for="price">Pris</label>
                 </div>
             </div>

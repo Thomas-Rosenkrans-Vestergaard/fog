@@ -168,6 +168,7 @@ public class OfferFacade
      * @throws ApplicationException             When a data storage exception occurs while performing the operation.
      * @throws OfferValidatorException          When the provided information is somehow invalid.
      * @throws UnknownOrderException            When the provided order id is unknown to the application.
+     * @throws OrderNotActiveException          When the order is not active, and can therefor not be the subject of a new offer.
      * @throws InactiveCustomerException        When the provided customer is inactive, and can therefor not receive new
      *                                          offers.
      * @throws UnknownEmployeeException         When the provided employee id is unknown to the application.
@@ -179,6 +180,7 @@ public class OfferFacade
     public Offer create(int orderId, int employeeId, int price) throws
                                                                 OfferValidatorException,
                                                                 UnknownOrderException,
+                                                                OrderNotActiveException,
                                                                 InactiveCustomerException,
                                                                 UnknownEmployeeException,
                                                                 InactiveEmployeeException,
@@ -193,6 +195,8 @@ public class OfferFacade
             Order order = orderDAO.first(where(eq(ID, orderId)));
             if (order == null)
                 throw new UnknownOrderException();
+            if (!order.isActive())
+                throw new OrderNotActiveException();
             if (!order.getCustomer().isActive())
                 throw new InactiveCustomerException();
 
@@ -216,7 +220,7 @@ public class OfferFacade
     /**
      * Rejects the offer with the provided id.
      * <p>
-     * To accept an offer, use the {@link tvestergaard.fog.logic.purchases.PurchaseFacade#create(int, int)} method,
+     * To accept an offer, use the {@link tvestergaard.fog.logic.purchases.PurchaseFacade#create(int)} method,
      * that will mark the provided offer accepted.
      *
      * @param offerId The id of the offer to mark reject.

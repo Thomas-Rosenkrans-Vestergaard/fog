@@ -5,15 +5,13 @@
         <h2><span class="focus">Opdatér ordre</span></h2>
     </div>
 </div>
-<c:if test="${order.isActive()}">
-    <div class="row">
-        <div class="col s12">
-            <a href="offers?action=create&order=${order.getId()}" class="btn-large">
-                <i class="material-icons right">add</i>OPRET TILBUD
-            </a>
-        </div>
+<div class="row">
+    <div class="col s12">
+        <a href="offers?action=create&order=${order.getId()}" ${order.isActive() ? '' : 'disabled'} class="btn-large">
+            <i class="material-icons right">add</i>OPRET TILBUD
+        </a>
     </div>
-</c:if>
+</div>
 <div class="row">
     <div class="col s12">
         <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Nulla non lectus sed nisl molestie malesuada.
