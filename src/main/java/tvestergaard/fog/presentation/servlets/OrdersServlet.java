@@ -14,7 +14,7 @@ import java.io.IOException;
 import static tvestergaard.fog.data.constraints.Constraint.eq;
 import static tvestergaard.fog.data.constraints.Constraint.where;
 import static tvestergaard.fog.data.constraints.OrderDirection.DESC;
-import static tvestergaard.fog.data.offers.OfferColumn.CREATED_AT;
+import static tvestergaard.fog.data.orders.OrderColumn.CREATED_AT;
 import static tvestergaard.fog.data.orders.OrderColumn.CUSTOMER;
 
 @WebServlet(urlPatterns = "/orders")

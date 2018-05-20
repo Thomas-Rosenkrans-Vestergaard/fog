@@ -3,7 +3,9 @@ package tvestergaard.fog.presentation.servlets;
 import tvestergaard.fog.data.customers.Customer;
 import tvestergaard.fog.data.orders.Order;
 import tvestergaard.fog.logic.offers.OfferFacade;
+import tvestergaard.fog.logic.orders.InactiveOrderException;
 import tvestergaard.fog.logic.orders.OrderFacade;
+import tvestergaard.fog.logic.orders.UnknownOrderException;
 import tvestergaard.fog.presentation.Authentication;
 import tvestergaard.fog.presentation.Notifications;
 import tvestergaard.fog.presentation.Parameters;
@@ -68,5 +70,33 @@ public class OrderServlet extends HttpServlet
         req.setAttribute("order", order);
         req.setAttribute("offers", offerFacade.get(where(eq(ORDER, order.getId())).order(CREATED_AT, DESC)));
         req.getRequestDispatcher("/WEB-INF/order.jsp").forward(req, resp);
+    }
+
+    @Override protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException
+    {
+        Parameters     parameters     = new Parameters(req);
+        Notifications  notifications  = notifications(req);
+        Authentication authentication = new Authentication(req);
+        if (authentication.redirect(resp))
+            return;
+
+        if (!parameters.isInt("id")) {
+            notifications.error("Not enough information");
+            resp.sendRedirect("orders");
+            return;
+        }
+
+        int order = parameters.getInt("id");
+
+        try {
+            orderFacade.cancel(order);
+            notifications.success("Ordren blev aflyst.");
+        } catch (UnknownOrderException e) {
+            notifications.error("Ukendt order.");
+        } catch (InactiveOrderException e) {
+            notifications.error("Ordren er inaktiv, or kan derfor ikke aflyses.");
+        }
+
+        resp.sendRedirect("order?id=" + order);
     }
 }

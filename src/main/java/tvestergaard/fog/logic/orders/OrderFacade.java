@@ -10,6 +10,10 @@ import tvestergaard.fog.logic.customers.InactiveCustomerException;
 import java.util.List;
 import java.util.Set;
 
+import static tvestergaard.fog.data.constraints.Constraint.eq;
+import static tvestergaard.fog.data.constraints.Constraint.where;
+import static tvestergaard.fog.data.orders.OrderColumn.ID;
+
 public class OrderFacade
 {
 
@@ -157,6 +161,7 @@ public class OrderFacade
      * @param rafters     The rafter choice on the order.
      * @param shedUpdater The shed built into the order.
      * @return {@code true} if the order was updated.
+     * @throws ApplicationException    When an exception occurs while performing the operation.
      * @throws OrderValidatorException When the provided information is not valid.
      */
     public boolean update(int id,
@@ -175,6 +180,32 @@ public class OrderFacade
                 throw new OrderValidatorException(reasons);
 
             return dao.update(OrderUpdater.from(id, -1, width, length, height, roofing, slope, rafters, false, shedUpdater, comment));
+        } catch (DataAccessException e) {
+            throw new ApplicationException(e);
+        }
+    }
+
+    /**
+     * Attempts to cancel the order with the provided id.
+     *
+     * @param orderId The id of the order to cancel.
+     * @return {@code true} if the order was canceled.
+     * @throws ApplicationException   When an exception occurs while performing the operation.
+     * @throws UnknownOrderException  When no order with the provided id exists in the application.
+     * @throws InactiveOrderException When the order with the provided id is inactive, and can therefor not be canceled.
+     */
+    public boolean cancel(int orderId) throws UnknownOrderException, InactiveOrderException
+    {
+
+        try {
+            Order order = dao.first(where(eq(ID, orderId)));
+            if (order == null)
+                throw new UnknownOrderException();
+            if (!order.isActive())
+                throw new InactiveOrderException();
+
+            return dao.cancel(orderId);
+
         } catch (DataAccessException e) {
             throw new ApplicationException(e);
         }

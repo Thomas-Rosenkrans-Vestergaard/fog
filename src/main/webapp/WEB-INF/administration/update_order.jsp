@@ -37,9 +37,6 @@
             </tr>
             </thead>
             <tbody>
-            <when tes>
-
-            </when>
             <c:forEach items="${offers}" var="offer">
                 <tr>
                     <td>${f:formatPrice(offer.getPrice())}</td>

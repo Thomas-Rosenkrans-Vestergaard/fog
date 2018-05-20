@@ -17,7 +17,8 @@ public enum OrderColumn implements Column<OrderColumn>, MysqlColumn
     RAFTERS,
     ACTIVE,
     SEARCH,
-    OPEN_OFFERS;
+    OPEN_OFFERS,
+    CREATED_AT;
 
     /**
      * Returns the name of the column in MySQL.

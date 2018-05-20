@@ -7,6 +7,16 @@
 </div>
 <div class="row">
     <div class="col s12">
+        <form method="post">
+            <input type="hidden" name="id" value="${order.getId()}">
+            <button class="btn-large" type="submit" name="action" value="cancel"
+            ${order.isActive() ? '' : 'disabled'}>Aflys
+            </button>
+        </form>
+    </div>
+</div>
+<div class="row">
+    <div class="col s12">
         <p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum
             tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas
             semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo. Quisque sit amet est et sapien
@@ -54,6 +64,10 @@
             <tr>
                 <th>Kommentar</th>
                 <td><c:out value="${order.getComment()}"/></td>
+            </tr>
+            <tr>
+                <th>Aktiv</th>
+                <td>${f:formatBoolean(order.isActive())}</td>
             </tr>
             <tr>
                 <th>Redskabsskur</th>

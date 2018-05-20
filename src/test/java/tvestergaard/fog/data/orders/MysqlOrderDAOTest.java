@@ -63,8 +63,8 @@ public class MysqlOrderDAOTest
     public void setUp() throws Exception
     {
         ShedBlueprint shedBlueprint = ShedBlueprint.from(10, cladding1.getId(), flooring1.getId());
-        this.order1 = dao.create(OrderBlueprint.from(customer1.getId(), 1, 2, 3, roofing1.getId(), 6, RafterChoice.PREBUILT, true, shedBlueprint));
-        this.order2 = dao.create(OrderBlueprint.from(customer2.getId(), 10, 11, 12, roofing2.getId(), 34, RafterChoice.BUILD_SELF, false, null));
+        this.order1 = dao.create(OrderBlueprint.from(customer1.getId(), 1, 2, 3, roofing1.getId(), 6, RafterChoice.PREBUILT, true, shedBlueprint, "Some comment"));
+        this.order2 = dao.create(OrderBlueprint.from(customer2.getId(), 10, 11, 12, roofing2.getId(), 34, RafterChoice.BUILD_SELF, false, null, "Some comment"));
     }
 
     @After
@@ -99,7 +99,7 @@ public class MysqlOrderDAOTest
         ShedBlueprint expectedShed     = ShedBlueprint.from(200, cladding1.getId(), flooring1.getId());
 
         Order actual = dao.create(OrderBlueprint.from(expectedCustomer.getId(), expectedWidth, expectedLength,
-                expectedHeight, expectedRoofing.getId(), expectedSlope, expectedRafters, expectedActive, null));
+                expectedHeight, expectedRoofing.getId(), expectedSlope, expectedRafters, expectedActive, null, "Some comment"));
 
         assertEquals(expectedCustomer, actual.getCustomer());
         assertEquals(expectedWidth, actual.getWidth());
@@ -133,7 +133,7 @@ public class MysqlOrderDAOTest
     public void getNumberOfNewOrders() throws Exception
     {
         assertEquals(2, dao.getNumberOfNewOrders());
-        dao.create(OrderBlueprint.from(customer1.getId(), 1, 2, 3, roofing1.getId(), 4, RafterChoice.BUILD_SELF, true, null));
+        dao.create(OrderBlueprint.from(customer1.getId(), 1, 2, 3, roofing1.getId(), 4, RafterChoice.BUILD_SELF, true, null, "Some comment"));
         assertEquals(3, dao.getNumberOfNewOrders());
     }
 }

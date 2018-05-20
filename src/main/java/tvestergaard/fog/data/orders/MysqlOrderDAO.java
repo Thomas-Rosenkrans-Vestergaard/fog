@@ -173,9 +173,17 @@ public class MysqlOrderDAO extends AbstractMysqlDAO implements OrderDAO
             try (PreparedStatement statement = connection.prepareStatement(sql)) {
                 statement.setInt(1, order);
                 statement.executeUpdate();
-                connection.commit();
-                return true;
             }
+
+            String rejectSQL = "UPDATE offers SET status = 'REJECTED' WHERE `order` = ?";
+            try (PreparedStatement statement = connection.prepareStatement(rejectSQL)) {
+                statement.setInt(1, order);
+                statement.executeUpdate();
+            }
+
+            connection.commit();
+
+            return true;
 
         } catch (SQLException e) {
             throw new MysqlDataAccessException(e);

@@ -37,19 +37,14 @@
         <li class="${"place-order".equals(navigation) ? 'active' : ''}"><a href="${context}/place-order">Placér
             ordre</a>
         </li>
-        <li class="${"registration".equals(navigation) ? 'active' : ''}"><a href="${context}/registration">Registrer</a>
-        </li>
-        <li class="${"authenticate".equals(navigation) ? 'active' : ''}"><a
-                href="${context}/authenticate">Autentificer</a>
-        </li>
-        <%
-            Customer customer = (Customer) session.getAttribute("customer");
-
-            if (customer != null) { %>
         <li>
             <div class="divider"></div>
         </li>
         <li><a class="subheader">Kunde</a></li>
+        <%
+            Customer customer = (Customer) session.getAttribute("customer");
+
+            if (customer != null) { %>
         <li class="${"profile".equals(navigation) ? 'active' : '' }"><a href="${context}/profile">Profil</a></li>
         <li class="${"orders".equals(navigation) ? 'active' : ''}"><a href="${context}/orders">Mine ordre</a></li>
         <li class="${"offers".equals(navigation) ? 'active' : '' }"><a href="${context}/offers"><span
@@ -80,8 +75,13 @@
             });
         </script>
 
+        <% } else { %>
+        <li class="${"registration".equals(navigation) ? 'active' : ''}"><a href="${context}/registration">Registrer</a>
+        </li>
+        <li class="${"authenticate".equals(navigation) ? 'active' : ''}"><a
+                href="${context}/authenticate">Autentificer</a>
+        </li>
         <% } %>
-
 
         <li>
             <div class="divider"></div>
