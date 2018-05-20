@@ -19,7 +19,6 @@
         <table class="bordered highlight administration-table">
             <thead>
             <tr>
-                <th>ID</th>
                 <th>Kunde</th>
                 <th>Ordre</th>
                 <th>Status</th>
