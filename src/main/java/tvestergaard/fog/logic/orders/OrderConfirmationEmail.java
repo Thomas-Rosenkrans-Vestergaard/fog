@@ -2,6 +2,7 @@ package tvestergaard.fog.logic.orders;
 
 import tvestergaard.fog.data.customers.Customer;
 import tvestergaard.fog.data.orders.Order;
+import tvestergaard.fog.logic.WebsiteContext;
 import tvestergaard.fog.logic.email.ApplicationEmail;
 
 public class OrderConfirmationEmail implements ApplicationEmail
@@ -35,9 +36,10 @@ public class OrderConfirmationEmail implements ApplicationEmail
     /**
      * Returns the subject of the email.
      *
+     * @param websiteContext Information about the fog website.
      * @return The subject of the email.
      */
-    @Override public String getSubject()
+    @Override public String getSubject(WebsiteContext websiteContext)
     {
         return "Din order bliver behandlet.";
     }
@@ -45,13 +47,20 @@ public class OrderConfirmationEmail implements ApplicationEmail
     /**
      * Returns the html contents of the email.
      *
+     * @param websiteContext Information about the fog website.
      * @return The html contents of the email.
      */
-    @Override public String getHtmlContents()
+    @Override public String getHtmlContents(WebsiteContext websiteContext)
     {
         StringBuilder builder = new StringBuilder();
+
         builder.append("<p>Vi har modtaget din ordre og behandler den nu.");
-        builder.append("<p>Du kan se din order <a href=''></a></p>");
+        builder.append("<p>Du kan se din order <a target='_blank' href='");
+        builder.append(websiteContext.getBase());
+        builder.append("order?id=");
+        builder.append(order.getId());
+        builder.append("'>her</a></p>");
+
         return builder.toString();
     }
 }

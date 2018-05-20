@@ -1,6 +1,7 @@
 package tvestergaard.fog.logic.customers;
 
 import tvestergaard.fog.data.customers.Customer;
+import tvestergaard.fog.logic.WebsiteContext;
 import tvestergaard.fog.logic.email.ApplicationEmail;
 import tvestergaard.fog.logic.tokens.TokenPair;
 
@@ -42,9 +43,10 @@ public class PasswordResetEmail implements ApplicationEmail
     /**
      * Returns the subject of the email.
      *
+     * @param websiteContext Information about the fog website.
      * @return The subject of the email.
      */
-    @Override public String getSubject()
+    @Override public String getSubject(WebsiteContext websiteContext)
     {
         return "Glemt adgangskode";
     }
@@ -52,14 +54,17 @@ public class PasswordResetEmail implements ApplicationEmail
     /**
      * Returns the html contents of the email.
      *
+     * @param websiteContext Information about the fog website.
      * @return The html contents of the email.
      */
-    @Override public String getHtmlContents()
+    @Override public String getHtmlContents(WebsiteContext websiteContext)
     {
         StringBuilder builder = new StringBuilder();
 
         builder.append("<p>Hvis du ønsker et nyt password, kan du klikke ");
-        builder.append("<a href='http://localhost/fog/reset-password?tokenId=");
+        builder.append("<a href='");
+        builder.append(websiteContext.getBase());
+        builder.append("reset-password?tokenId=");
         builder.append(token.id);
         builder.append("&tokenSecret=");
         builder.append(token.secret);

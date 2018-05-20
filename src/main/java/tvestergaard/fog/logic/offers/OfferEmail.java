@@ -2,6 +2,7 @@ package tvestergaard.fog.logic.offers;
 
 import tvestergaard.fog.data.customers.Customer;
 import tvestergaard.fog.data.offers.Offer;
+import tvestergaard.fog.logic.WebsiteContext;
 import tvestergaard.fog.logic.email.ApplicationEmail;
 import tvestergaard.fog.logic.tokens.TokenPair;
 
@@ -43,9 +44,10 @@ public class OfferEmail implements ApplicationEmail
     /**
      * Returns the subject of the email.
      *
+     * @param websiteContext Information about the fog website.
      * @return The subject of the email.
      */
-    @Override public String getSubject()
+    @Override public String getSubject(WebsiteContext websiteContext)
     {
         return "Du har modtaget et nyt tilbud";
     }
@@ -53,13 +55,15 @@ public class OfferEmail implements ApplicationEmail
     /**
      * Returns the html contents of the email.
      *
+     * @param websiteContext Information about the fog website.
      * @return The html contents of the email.
      */
-    @Override public String getHtmlContents()
+    @Override public String getHtmlContents(WebsiteContext websiteContext)
     {
         StringBuilder builder = new StringBuilder();
-        builder.append("<p>Vi tilbyder prisen: " + offer.getPrice() + " øre</p>");
-        builder.append(String.format("<p>For at accepterer: fog/api?action=accept-offer&offer=%d&tokenId=%d&tokenSecret=%s</p>",
+
+        builder.append("<p>Vi tilbyder prisen: " + formatPrice(offer.getPrice()) + "</p>");
+        builder.append(String.format("<p>For at accepterer: <a href=''>fog/api?action=accept-offer&offer=%d&tokenId=%d&tokenSecret=%s</p>",
                 offer.getId(),
                 tokenSecret.id,
                 tokenSecret.secret));
@@ -69,5 +73,24 @@ public class OfferEmail implements ApplicationEmail
                 tokenSecret.secret));
 
         return builder.toString();
+    }
+
+    /**
+     * Formats the provided price in cents to dollars using a period as the decimal separator.
+     *
+     * @param priceInCents The price in cents.
+     * @return The price in dollars.
+     */
+    public static String formatPrice(int priceInCents)
+    {
+        int cents = priceInCents % 100;
+        int dkk   = (priceInCents - cents) / 100;
+
+        if (cents == 0)
+            return Integer.toString(dkk) + " kr.";
+
+        String result = dkk + "." + (cents < 9 ? "0" + cents : cents) + " kr.";
+
+        return result;
     }
 }
