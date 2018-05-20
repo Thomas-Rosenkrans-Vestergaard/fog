@@ -31,10 +31,19 @@ public interface OrderDAO
      * Inserts a new order into data storage.
      *
      * @param blueprint The order blueprint that contains the information necessary to create the order.
-     * @return The new order.
+     * @return The instance representing the newly created order.
      * @throws DataAccessException When a data storage exception occurs during the operation.
      */
     Order create(OrderBlueprint blueprint) throws DataAccessException;
+
+    /**
+     * Cancels the order with the provided id. The order is then marked inactive.
+     *
+     * @param order The id of the order to cancel.
+     * @return {@code true} if the order was cancelled.
+     * @throws DataAccessException When a data storage exception occurs during the operation.
+     */
+    boolean cancel(int order) throws DataAccessException;
 
     /**
      * Updates the entity in the data storage to match the provided {@code order}.

@@ -28,8 +28,7 @@ public class PurchaseServlet extends HttpServlet
     private final PurchaseFacade     purchaseFacade     = Facades.purchaseFacade;
     private final ConstructionFacade constructionFacade = Facades.constructionFacade;
 
-    @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException
+    @Override protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException
     {
         Authentication authentication = new Authentication(req);
         if (authentication.redirect(resp))

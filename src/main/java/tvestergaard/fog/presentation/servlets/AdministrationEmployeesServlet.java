@@ -63,8 +63,7 @@ public class AdministrationEmployeesServlet extends AdministrationServlet
 
     private class ShowTableCommand implements Command
     {
-        @Override
-        public void dispatch(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
+        @Override public void dispatch(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
         {
             TableControls<EmployeeColumn> controls = new TableControls<>(request, EmployeeColumn.class, EmployeeColumn.SEARCH);
             notifications(request);
@@ -77,8 +76,7 @@ public class AdministrationEmployeesServlet extends AdministrationServlet
 
     class ShowUpdateCommand implements Command
     {
-        @Override
-        public void dispatch(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
+        @Override public void dispatch(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
         {
             Parameters    parameters    = new Parameters(request);
             Notifications notifications = notifications(request);
@@ -105,8 +103,7 @@ public class AdministrationEmployeesServlet extends AdministrationServlet
 
     private class HandleUpdateCommand implements Command
     {
-        @Override
-        public void dispatch(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
+        @Override public void dispatch(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
         {
             Parameters    parameters    = new Parameters(request);
             Notifications notifications = notifications(request);
@@ -146,8 +143,7 @@ public class AdministrationEmployeesServlet extends AdministrationServlet
     private class ShowCreateCommand implements Command
     {
 
-        @Override
-        public void dispatch(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
+        @Override public void dispatch(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
         {
             notifications(request);
             request.setAttribute("title", "Opret medarbejder");
@@ -160,8 +156,7 @@ public class AdministrationEmployeesServlet extends AdministrationServlet
     private class HandleCreateCommand implements Command
     {
 
-        @Override
-        public void dispatch(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
+        @Override public void dispatch(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
         {
             Parameters    parameters    = new Parameters(request);
             Notifications notifications = notifications(request);

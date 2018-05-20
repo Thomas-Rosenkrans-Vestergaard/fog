@@ -136,8 +136,7 @@ public class OrderRecord implements Order
      *
      * @return The unique identifier of the order.
      */
-    @Override
-    public int getId()
+    @Override public int getId()
     {
         return id;
     }
@@ -147,8 +146,7 @@ public class OrderRecord implements Order
      *
      * @return The customer who placed the order.
      */
-    @Override
-    public Customer getCustomer()
+    @Override public Customer getCustomer()
     {
         return customer;
     }
@@ -163,8 +161,7 @@ public class OrderRecord implements Order
      *
      * @return The width of the order.
      */
-    @Override
-    public int getWidth()
+    @Override public int getWidth()
     {
         return width;
     }
@@ -174,8 +171,7 @@ public class OrderRecord implements Order
      *
      * @param width The new width.
      */
-    @Override
-    public void setWidth(int width)
+    @Override public void setWidth(int width)
     {
         this.width = width;
     }
@@ -185,8 +181,7 @@ public class OrderRecord implements Order
      *
      * @return The length of the order.
      */
-    @Override
-    public int getLength()
+    @Override public int getLength()
     {
         return length;
     }
@@ -196,8 +191,7 @@ public class OrderRecord implements Order
      *
      * @param length The new length.
      */
-    @Override
-    public void setLength(int length)
+    @Override public void setLength(int length)
     {
         this.length = length;
     }
@@ -207,8 +201,7 @@ public class OrderRecord implements Order
      *
      * @return The height of the order.
      */
-    @Override
-    public int getHeight()
+    @Override public int getHeight()
     {
         return height;
     }
@@ -218,8 +211,7 @@ public class OrderRecord implements Order
      *
      * @param height The new height.
      */
-    @Override
-    public void setHeight(int height)
+    @Override public void setHeight(int height)
     {
         this.height = height;
     }
@@ -229,8 +221,7 @@ public class OrderRecord implements Order
      *
      * @return The roofing used on the order.
      */
-    @Override
-    public Roofing getRoofing()
+    @Override public Roofing getRoofing()
     {
         return roofing;
     }
@@ -241,23 +232,11 @@ public class OrderRecord implements Order
     }
 
     /**
-     * Sets the roofing used on the order.
-     *
-     * @param roofing The new roofing.
-     */
-    @Override
-    public void setRoofingId(int roofing)
-    {
-        this.roofingId = roofing;
-    }
-
-    /**
      * Returns the slope of the roofing.
      *
      * @return The slope of the roofing.
      */
-    @Override
-    public int getSlope()
+    @Override public int getSlope()
     {
         return slope;
     }
@@ -267,8 +246,7 @@ public class OrderRecord implements Order
      *
      * @param slope The new slope.
      */
-    @Override
-    public void setSlope(int slope)
+    @Override public void setSlope(int slope)
     {
         this.slope = slope;
     }
@@ -278,21 +256,9 @@ public class OrderRecord implements Order
      *
      * @return The choice of rafters made by the customer who placed the order.
      */
-    @Override
-    public RafterChoice getRafterChoice()
+    @Override public RafterChoice getRafterChoice()
     {
         return rafters;
-    }
-
-    /**
-     * Sets the {@link RafterChoice} chosen by the customer who placed the order.
-     *
-     * @param rafters The new {@link RafterChoice}.
-     */
-    @Override
-    public void setRafterChoice(RafterChoice rafters)
-    {
-        this.rafters = rafters;
     }
 
     /**
@@ -300,21 +266,9 @@ public class OrderRecord implements Order
      *
      * @return The shed included in the order.
      */
-    @Override
-    public ShedBlueprint getShedBlueprint()
+    @Override public ShedBlueprint getShedBlueprint()
     {
         return this.shedBlueprint;
-    }
-
-    /**
-     * Sets the shed included in the order. {@code null} means no shed is included.
-     *
-     * @param shed The new shed.
-     */
-    @Override
-    public void setShedBlueprint(ShedBlueprint shed)
-    {
-        this.shedBlueprint = shed;
     }
 
     /**
@@ -372,14 +326,12 @@ public class OrderRecord implements Order
      *
      * @return The {@code LocalDateTime}.
      */
-    @Override
-    public LocalDateTime getCreatedAt()
+    @Override public LocalDateTime getCreatedAt()
     {
         return createdAt;
     }
 
-    @Override
-    public boolean equals(Object o)
+    @Override public boolean equals(Object o)
     {
         if (this == o) return true;
         if (!(o instanceof Order)) return false;
@@ -396,8 +348,7 @@ public class OrderRecord implements Order
                 Objects.equals(getCreatedAt(), that.getCreatedAt());
     }
 
-    @Override
-    public int hashCode()
+    @Override public int hashCode()
     {
         return Objects.hash(getId());
     }

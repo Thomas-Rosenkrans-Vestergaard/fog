@@ -66,8 +66,7 @@ public class AdministrationOffersServlet extends AdministrationServlet
 
     private class ShowTableCommand implements Command
     {
-        @Override
-        public void dispatch(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
+        @Override public void dispatch(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
         {
             TableControls<OfferColumn> controls = new TableControls<>(request, OfferColumn.class, OfferColumn.SEARCH);
             notifications(request);
@@ -84,8 +83,7 @@ public class AdministrationOffersServlet extends AdministrationServlet
         private final OrderFacade        orderFacade        = Facades.orderFacade;
         private final ConstructionFacade constructionFacade = Facades.constructionFacade;
 
-        @Override
-        public void dispatch(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
+        @Override public void dispatch(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
         {
             Parameters    parameters    = new Parameters(request);
             Notifications notifications = notifications(request);
@@ -116,8 +114,7 @@ public class AdministrationOffersServlet extends AdministrationServlet
     private class HandleCreateCommand implements Command
     {
 
-        @Override
-        public void dispatch(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
+        @Override public void dispatch(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
         {
             Authentication authentication = new Authentication(request);
             Notifications  notifications  = notifications(request);

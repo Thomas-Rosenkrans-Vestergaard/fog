@@ -18,8 +18,7 @@ public class HttpServletParameterProvider implements ParameterProvider
      * @param parameterName The name of the parameter to return the value of.
      * @return The value of the parameter. Returns {@code null} if no such parameter exists.
      */
-    @Override
-    public String getParameter(String parameterName)
+    @Override public String getParameter(String parameterName)
     {
         return request.getParameter(parameterName);
     }

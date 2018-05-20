@@ -24,8 +24,7 @@ public class UpdatePasswordServlet extends HttpServlet
 
     private final CustomerFacade customerFacade = Facades.customerFacade;
 
-    @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException
+    @Override protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException
     {
         Authentication authentication = new Authentication(req);
         if (authentication.redirect(resp))
@@ -40,8 +39,7 @@ public class UpdatePasswordServlet extends HttpServlet
         req.getRequestDispatcher("/WEB-INF/update_password.jsp").forward(req, resp);
     }
 
-    @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException
+    @Override protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException
     {
         Authentication authentication = new Authentication(req);
         if (authentication.redirect(resp))

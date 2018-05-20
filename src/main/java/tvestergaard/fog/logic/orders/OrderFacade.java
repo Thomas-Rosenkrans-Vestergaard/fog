@@ -134,7 +134,6 @@ public class OrderFacade
      * @return The number of such orders.
      * @throws ApplicationException When an exception occurs while performing the operation.
      */
-
     public int getNumberOfNewOrders()
     {
         try {
@@ -154,7 +153,6 @@ public class OrderFacade
      * @param roofing     The new roofing of the order.
      * @param slope       The new slope of the roofing on the order.
      * @param rafters     The rafter choice on the order.
-     * @param active      The active status of the order.
      * @param shedUpdater The shed built into the order.
      * @return {@code true} if the order was updated.
      * @throws OrderValidatorException When the provided information is not valid.
@@ -166,7 +164,6 @@ public class OrderFacade
                           int roofing,
                           int slope,
                           RafterChoice rafters,
-                          boolean active,
                           ShedUpdater shedUpdater) throws OrderValidatorException
     {
         try {
@@ -174,7 +171,7 @@ public class OrderFacade
             if (!reasons.isEmpty())
                 throw new OrderValidatorException(reasons);
 
-            return dao.update(OrderUpdater.from(id, -1, width, length, height, roofing, slope, rafters, active, shedUpdater));
+            return dao.update(OrderUpdater.from(id, -1, width, length, height, roofing, slope, rafters, false, shedUpdater));
         } catch (DataAccessException e) {
             throw new ApplicationException(e);
         }

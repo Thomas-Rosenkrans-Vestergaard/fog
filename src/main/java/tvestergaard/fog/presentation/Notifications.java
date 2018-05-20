@@ -89,8 +89,7 @@ public class Notifications implements Iterable<Notification>
      *
      * @return an Iterator.
      */
-    @Override
-    public Iterator<Notification> iterator()
+    @Override public Iterator<Notification> iterator()
     {
         return new NotificationIterator();
     }
@@ -103,8 +102,7 @@ public class Notifications implements Iterable<Notification>
          *
          * @return {@code true} if the iteration has more elements
          */
-        @Override
-        public boolean hasNext()
+        @Override public boolean hasNext()
         {
             return !notifications.isEmpty();
         }
@@ -115,8 +113,7 @@ public class Notifications implements Iterable<Notification>
          * @return the next element in the iteration
          * @throws NoSuchElementException if the iteration has no more elements
          */
-        @Override
-        public Notification next()
+        @Override public Notification next()
         {
             if (notifications.isEmpty())
                 throw new NoSuchElementException();

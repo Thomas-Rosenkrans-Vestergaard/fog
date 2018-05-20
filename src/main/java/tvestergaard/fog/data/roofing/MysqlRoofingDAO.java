@@ -53,8 +53,7 @@ public class MysqlRoofingDAO extends AbstractMysqlDAO implements RoofingDAO
      * @return The resulting roofings.
      * @throws MysqlDataAccessException When a data storage exception occurs while performing the operation.
      */
-    @Override
-    public List<Roofing> get(Constraints<RoofingColumn> constraints) throws MysqlDataAccessException
+    @Override public List<Roofing> get(Constraints<RoofingColumn> constraints) throws MysqlDataAccessException
     {
         final List<Roofing> roofings = new ArrayList<>();
         final String SQL = generator.generate(
@@ -79,8 +78,7 @@ public class MysqlRoofingDAO extends AbstractMysqlDAO implements RoofingDAO
      * provided constraints.
      * @throws MysqlDataAccessException When a data storage exception occurs while performing the operation.
      */
-    @Override
-    public Roofing first(Constraints<RoofingColumn> constraints) throws MysqlDataAccessException
+    @Override public Roofing first(Constraints<RoofingColumn> constraints) throws MysqlDataAccessException
     {
         List<Roofing> roofings = get(constraints.limit(1));
 

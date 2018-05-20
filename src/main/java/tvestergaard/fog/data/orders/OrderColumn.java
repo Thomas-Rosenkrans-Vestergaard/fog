@@ -24,8 +24,7 @@ public enum OrderColumn implements Column<OrderColumn>, MysqlColumn
      *
      * @return The name of the column in MySQL.
      */
-    @Override
-    public String getMysqlName()
+    @Override public String getMysqlName()
     {
         return String.format("o.%s", this.name().toLowerCase());
     }
@@ -48,8 +47,7 @@ public enum OrderColumn implements Column<OrderColumn>, MysqlColumn
      *
      * @return {@code true} if the generator should use backtick (`) on the column name.
      */
-    @Override
-    public boolean useBacktick()
+    @Override public boolean useBacktick()
     {
         if (this == SEARCH || this == OPEN_OFFERS)
             return true;

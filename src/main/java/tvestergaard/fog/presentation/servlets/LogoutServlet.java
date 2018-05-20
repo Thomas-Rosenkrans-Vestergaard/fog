@@ -20,8 +20,7 @@ public class LogoutServlet extends HttpServlet
      * @throws IOException      if an input or output error is detected when the servlet handles the GET request
      * @throws ServletException if the request for the GET could not be handled
      */
-    @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException
+    @Override protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException
     {
         HttpSession session = req.getSession();
         session.setAttribute("customer", null);

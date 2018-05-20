@@ -32,8 +32,7 @@ public class AdministrationPurchases extends AdministrationServlet
         dispatcher.get("show", new ShowPurchaseCommand());
     }
 
-    @Override
-    protected boolean before(HttpServletRequest req, HttpServletResponse resp, Employee employee) throws ServletException, IOException
+    @Override protected boolean before(HttpServletRequest req, HttpServletResponse resp, Employee employee) throws ServletException, IOException
     {
         req.setAttribute("navigation", "administration_purchases");
         return true;
@@ -49,8 +48,7 @@ public class AdministrationPurchases extends AdministrationServlet
          * @param request  The request.
          * @param response The response.
          */
-        @Override
-        public void dispatch(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
+        @Override public void dispatch(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
         {
             TableControls<PurchaseColumn> controls = new TableControls<>(request, PurchaseColumn.class, PurchaseColumn.SEARCH);
             notifications(request);
@@ -69,8 +67,7 @@ public class AdministrationPurchases extends AdministrationServlet
          * @param req  The request.
          * @param resp The response.
          */
-        @Override
-        public void dispatch(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException
+        @Override public void dispatch(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException
         {
             Notifications notifications = notifications(req);
             Parameters    parameters    = new Parameters(req);

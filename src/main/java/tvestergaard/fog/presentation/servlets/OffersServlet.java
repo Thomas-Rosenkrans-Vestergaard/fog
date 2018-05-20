@@ -42,8 +42,7 @@ public class OffersServlet extends HttpServlet
      * @throws IOException      if an input or output error is detected when the servlet handles the GET request
      * @throws ServletException if the request for the GET could not be handled
      */
-    @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException
+    @Override protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException
     {
         Authentication authentication = new Authentication(req);
         if (authentication.redirect(resp))
@@ -60,8 +59,7 @@ public class OffersServlet extends HttpServlet
         req.getRequestDispatcher("/WEB-INF/offers.jsp").forward(req, resp);
     }
 
-    @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException
+    @Override protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException
     {
         Authentication authentication = new Authentication(req);
         if (authentication.redirect(resp))

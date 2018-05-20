@@ -17,8 +17,7 @@ public enum RoofingColumn implements Column<RoofingColumn>, MysqlColumn
      *
      * @return The name of the column in MySQL.
      */
-    @Override
-    public String getMysqlName()
+    @Override public String getMysqlName()
     {
         return this.name().toLowerCase();
     }

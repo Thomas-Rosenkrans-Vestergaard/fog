@@ -42,8 +42,7 @@ public class MysqlFlooringDAO extends AbstractMysqlDAO implements FlooringDAO
      * @return The resulting floorings.
      * @throws MysqlDataAccessException When a data storage exception occurs while performing the operation.
      */
-    @Override
-    public List<Flooring> get(Constraints<FlooringColumn> constraints) throws MysqlDataAccessException
+    @Override public List<Flooring> get(Constraints<FlooringColumn> constraints) throws MysqlDataAccessException
     {
         final List<Flooring> floors = new ArrayList<>();
         final String SQL = generator.generate(
@@ -68,8 +67,7 @@ public class MysqlFlooringDAO extends AbstractMysqlDAO implements FlooringDAO
      * the provided constraints.
      * @throws MysqlDataAccessException When a data storage exception occurs while performing the operation.
      */
-    @Override
-    public Flooring first(Constraints<FlooringColumn> constraints) throws MysqlDataAccessException
+    @Override public Flooring first(Constraints<FlooringColumn> constraints) throws MysqlDataAccessException
     {
         List<Flooring> floorings = get(constraints.limit(1));
 

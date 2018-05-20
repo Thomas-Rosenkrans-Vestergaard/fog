@@ -138,7 +138,6 @@ public class AdministrationOrdersServlet extends AdministrationServlet
                     !parameters.isInt("height") ||
                     !parameters.isInt("roofing") ||
                     !parameters.isInt("slope") ||
-                    !parameters.isBoolean("active") ||
                     !parameters.isEnum("rafters", RafterChoice.class) ||
                     !parameters.isPresent("shed-action")) {
                 notifications.error("The provided data is invalid.");
@@ -176,7 +175,6 @@ public class AdministrationOrdersServlet extends AdministrationServlet
                         parameters.getInt("roofing"),
                         parameters.getInt("slope"),
                         parameters.getEnum("rafters", RafterChoice.class),
-                        parameters.getBoolean("active"),
                         createShed(parameters));
 
                 notifications.success("Ordren blev opdateret.");

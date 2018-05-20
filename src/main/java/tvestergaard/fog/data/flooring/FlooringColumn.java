@@ -17,8 +17,7 @@ public enum FlooringColumn implements Column<FlooringColumn>, MysqlColumn
      *
      * @return The name of the column in MySQL.
      */
-    @Override
-    public String getMysqlName()
+    @Override public String getMysqlName()
     {
         return this.name().toLowerCase();
     }

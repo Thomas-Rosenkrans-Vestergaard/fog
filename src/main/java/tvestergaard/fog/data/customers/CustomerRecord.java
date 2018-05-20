@@ -133,8 +133,7 @@ public class CustomerRecord implements Customer
      *
      * @return The email address of the customer.
      */
-    @Override
-    public String getEmail()
+    @Override public String getEmail()
     {
         return email;
     }
@@ -154,8 +153,7 @@ public class CustomerRecord implements Customer
      *
      * @return The phone number of the customer.
      */
-    @Override
-    public String getPhone()
+    @Override public String getPhone()
     {
         return phone;
     }
@@ -225,14 +223,12 @@ public class CustomerRecord implements Customer
      *
      * @return The {@code LocalDateTime} representing the moment when the customer was created.
      */
-    @Override
-    public LocalDateTime getCreatedAt()
+    @Override public LocalDateTime getCreatedAt()
     {
         return this.createdAt;
     }
 
-    @Override
-    public boolean equals(Object o)
+    @Override public boolean equals(Object o)
     {
         if (this == o) return true;
         if (!(o instanceof Customer)) return false;
@@ -247,8 +243,7 @@ public class CustomerRecord implements Customer
                 Objects.equals(createdAt, that.getCreatedAt());
     }
 
-    @Override
-    public int hashCode()
+    @Override public int hashCode()
     {
         return Objects.hash(getId());
     }

@@ -46,8 +46,7 @@ public class MysqlOrderDAO extends AbstractMysqlDAO implements OrderDAO
      * @return The resulting orders.
      * @throws MysqlDataAccessException When a data storage exception occurs while performing the operation.
      */
-    @Override
-    public List<Order> get(Constraints<OrderColumn> constraints) throws MysqlDataAccessException
+    @Override public List<Order> get(Constraints<OrderColumn> constraints) throws MysqlDataAccessException
     {
         final List<Order> orders = new ArrayList<>();
         final String SQL = generator.generate(
@@ -81,8 +80,7 @@ public class MysqlOrderDAO extends AbstractMysqlDAO implements OrderDAO
      * provided constraints.
      * @throws MysqlDataAccessException When a data storage exception occurs while performing the operation.
      */
-    @Override
-    public Order first(Constraints<OrderColumn> constraints) throws MysqlDataAccessException
+    @Override public Order first(Constraints<OrderColumn> constraints) throws MysqlDataAccessException
     {
         List<Order> orders = get(constraints.limit(1));
 
@@ -150,6 +148,32 @@ public class MysqlOrderDAO extends AbstractMysqlDAO implements OrderDAO
             } catch (SQLException e) {
                 con.rollback();
                 throw e;
+            }
+
+        } catch (SQLException e) {
+            throw new MysqlDataAccessException(e);
+        }
+    }
+
+    /**
+     * Cancels the order with the provided id. The order is then marked inactive.
+     *
+     * @param order The id of the order to cancel.
+     * @return {@code true} if the order was cancelled.
+     * @throws MysqlDataAccessException When a data storage exception occurs during the operation.
+     */
+    @Override public boolean cancel(int order) throws MysqlDataAccessException
+    {
+        try {
+
+            Connection connection = getConnection();
+
+            String sql = "UPDATE orders SET active = b'0' WHERE id = ?";
+            try (PreparedStatement statement = connection.prepareStatement(sql)) {
+                statement.setInt(1, order);
+                statement.executeUpdate();
+                connection.commit();
+                return true;
             }
 
         } catch (SQLException e) {
@@ -241,7 +265,7 @@ public class MysqlOrderDAO extends AbstractMysqlDAO implements OrderDAO
      */
     @Override public int getNumberOfNewOrders() throws MysqlDataAccessException
     {
-        final String SQL = "SELECT count(orders.id) as count FROM orders LEFT JOIN offers ON orders.id = offers.order " +
+        final String SQL = "SELECT count(orders.id) AS count FROM orders LEFT JOIN offers ON orders.id = offers.order " +
                 "WHERE orders.active = b'1' && offers.id IS NULL";
         try (PreparedStatement statement = getConnection().prepareStatement(SQL)) {
             ResultSet resultSet = statement.executeQuery();

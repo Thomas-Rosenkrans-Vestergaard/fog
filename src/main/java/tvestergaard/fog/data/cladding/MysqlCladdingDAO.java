@@ -41,8 +41,7 @@ public class MysqlCladdingDAO extends AbstractMysqlDAO implements CladdingDAO
      * @return The resulting claddings.
      * @throws MysqlDataAccessException When a data storage exception occurs while performing the operation.
      */
-    @Override
-    public List<Cladding> get(Constraints<CladdingColumn> constraints) throws MysqlDataAccessException
+    @Override public List<Cladding> get(Constraints<CladdingColumn> constraints) throws MysqlDataAccessException
     {
         final List<Cladding> floors = new ArrayList<>();
         final String SQL = generator.generate(
@@ -67,8 +66,7 @@ public class MysqlCladdingDAO extends AbstractMysqlDAO implements CladdingDAO
      * the provided constraints.
      * @throws MysqlDataAccessException When a data storage exception occurs while performing the operation.
      */
-    @Override
-    public Cladding first(Constraints<CladdingColumn> constraints) throws MysqlDataAccessException
+    @Override public Cladding first(Constraints<CladdingColumn> constraints) throws MysqlDataAccessException
     {
         List<Cladding> claddings = get(constraints.limit(1));
 

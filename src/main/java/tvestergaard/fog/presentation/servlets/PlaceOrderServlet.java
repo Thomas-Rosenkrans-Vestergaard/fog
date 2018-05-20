@@ -56,8 +56,7 @@ public class PlaceOrderServlet extends HttpServlet
      * @throws IOException      if an input or output error is detected when the servlet handles the GET request
      * @throws ServletException if the request for the GET could not be handled
      */
-    @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException
+    @Override protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException
     {
         Authentication authentication = new Authentication(req);
 
@@ -82,8 +81,7 @@ public class PlaceOrderServlet extends HttpServlet
      * @see ServletOutputStream
      * @see ServletResponse#setContentType
      */
-    @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException
+    @Override protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException
     {
         Notifications  notifications  = notifications(req);
         Parameters     parameters     = new Parameters(req);

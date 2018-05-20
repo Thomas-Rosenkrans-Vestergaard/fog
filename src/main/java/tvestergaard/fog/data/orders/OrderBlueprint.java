@@ -88,13 +88,6 @@ public interface OrderBlueprint
     int getRoofingId();
 
     /**
-     * Sets the id of the roofing used on the order.
-     *
-     * @param roofing The new roofing.
-     */
-    void setRoofingId(int roofing);
-
-    /**
      * Returns the slope of the roofing.
      *
      * @return The slope of the roofing.
@@ -116,23 +109,9 @@ public interface OrderBlueprint
     RafterChoice getRafterChoice();
 
     /**
-     * Sets the rafters chosen by the customer who placed the order.
-     *
-     * @param rafters The new rafters.
-     */
-    void setRafterChoice(RafterChoice rafters);
-
-    /**
      * Returns the shed included in the order. {@code null} means no shed is included.
      *
      * @return The shed included in the order.
      */
     ShedBlueprint getShedBlueprint();
-
-    /**
-     * Sets the shed included in the order. {@code null} means no shed is included.
-     *
-     * @param shedBlueprint The new shed.
-     */
-    void setShedBlueprint(ShedBlueprint shedBlueprint);
 }

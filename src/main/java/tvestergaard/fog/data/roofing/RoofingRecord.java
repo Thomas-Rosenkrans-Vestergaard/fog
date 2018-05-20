@@ -93,8 +93,7 @@ public class RoofingRecord implements Roofing
      *
      * @param description The new description.
      */
-    @Override
-    public void setDescription(String description)
+    @Override public void setDescription(String description)
     {
         this.description = description;
     }
@@ -134,8 +133,7 @@ public class RoofingRecord implements Roofing
      *
      * @param active The new active status.
      */
-    @Override
-    public void setActive(boolean active)
+    @Override public void setActive(boolean active)
     {
         this.active = active;
     }

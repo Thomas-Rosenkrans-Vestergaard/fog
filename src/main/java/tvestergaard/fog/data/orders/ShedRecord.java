@@ -57,8 +57,7 @@ public class ShedRecord implements Shed
      *
      * @return The unique identifier of the shed.
      */
-    @Override
-    public int getId()
+    @Override public int getId()
     {
         return id;
     }
@@ -68,8 +67,7 @@ public class ShedRecord implements Shed
      *
      * @return The depth of the shed.
      */
-    @Override
-    public int getDepth()
+    @Override public int getDepth()
     {
         return depth;
     }
@@ -79,8 +77,7 @@ public class ShedRecord implements Shed
      *
      * @param depth The new depth.
      */
-    @Override
-    public void setDepth(int depth)
+    @Override public void setDepth(int depth)
     {
         this.depth = depth;
     }
@@ -120,8 +117,7 @@ public class ShedRecord implements Shed
      *
      * @return The flooring used on the shed.
      */
-    @Override
-    public Flooring getFlooring()
+    @Override public Flooring getFlooring()
     {
         return flooring;
     }
@@ -141,15 +137,13 @@ public class ShedRecord implements Shed
      *
      * @param flooring The new flooring.
      */
-    @Override
-    public void setFlooringId(int flooring)
+    @Override public void setFlooringId(int flooring)
     {
         this.flooringId = flooring;
     }
 
 
-    @Override
-    public boolean equals(Object o)
+    @Override public boolean equals(Object o)
     {
         if (this == o) return true;
         if (!(o instanceof Shed)) return false;
@@ -160,8 +154,7 @@ public class ShedRecord implements Shed
                 Objects.equals(getFlooring(), that.getFlooring());
     }
 
-    @Override
-    public int hashCode()
+    @Override public int hashCode()
     {
         return Objects.hash(getId());
     }
