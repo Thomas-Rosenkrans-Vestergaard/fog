@@ -14,26 +14,6 @@
 </div>
 <div class="row">
     <div class="col s12">
-        <form method="post">
-            ${csrf}
-            <input type="hidden" name="order" value="${order.getId()}">
-            <div class="row">
-                <div class="col s10 input-field">
-                    <input type="number" class="validate" pattern="^[0-9]+([\,][0-9]{0,2})?$" min="0" name="price"
-                           id="price" required>
-                    <label for="price">Tilbud pris</label>
-                </div>
-                <div class="col s2">
-                    <button class="btn-large waves-effect waves-light" type="submit" name="action">
-                        Opret<i class="material-icons right">send</i>
-                    </button>
-                </div>
-            </div>
-        </form>
-    </div>
-</div>
-<div class="row">
-    <div class="col s12">
         <h3>ORDREINFORMATION</h3>
     </div>
 </div>
@@ -175,7 +155,7 @@
                 </thead>
                 <tbody>
                 <tr>
-                    <td class="bold">Skelet materialer</td>
+                    <td class="bold" colspan="4">Skelet materialer</td>
                 </tr>
                 <c:forEach items="${summary.getSkeletonConstructionSummary().getMaterials().getLines()}"
                            var="line">
@@ -193,7 +173,7 @@
                     <td class="bold">${f:formatPrice(summary.getSkeletonConstructionSummary().getTotal())}</td>
                 </tr>
                 <tr>
-                    <td class="bold">Tag materialer</td>
+                    <td class="bold" colspan="4">Tag materialer</td>
                 </tr>
                 <c:forEach items="${summary.getRoofingConstructionSummary().getMaterials().getLines()}" var="line">
                     <tr>
@@ -218,6 +198,31 @@
                 </tbody>
             </table>
         </table>
+    </div>
+</div>
+<div class="row">
+    <div class="col s12">
+        <p>Opret tilbuddet herunder.</p>
+    </div>
+</div>
+<div class="row">
+    <div class="col s12 no-padding">
+        <form method="post">
+            ${csrf}
+            <input type="hidden" name="order" value="${order.getId()}">
+            <div class="row">
+                <div class="col s10 input-field">
+                    <input type="number" class="validate" pattern="^[0-9]+([\,][0-9]{0,2})?$" min="0" name="price"
+                           id="price" required>
+                    <label for="price">Tilbud pris</label>
+                </div>
+                <div class="col s2">
+                    <button class="btn-large waves-effect waves-light" type="submit" name="action">
+                        Opret<i class="material-icons right">send</i>
+                    </button>
+                </div>
+            </div>
+        </form>
     </div>
 </div>
 <%@ include file="../includes/bottom.jspf" %>

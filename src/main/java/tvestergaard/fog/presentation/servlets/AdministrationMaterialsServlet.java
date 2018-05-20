@@ -71,7 +71,7 @@ public class AdministrationMaterialsServlet extends AdministrationServlet
             TableControls<MaterialColumn> controls = new TableControls<>(request, MaterialColumn.class, MaterialColumn.SEARCH);
 
             notifications(request);
-            request.setAttribute("title", "Materialee");
+            request.setAttribute("title", "Materialer");
             request.setAttribute("materials", materialsFacade.get(controls.constraints()));
             request.setAttribute("categories", materialsFacade.getCategories());
             request.getRequestDispatcher("/WEB-INF/administration/show_materials.jsp").forward(request, response);

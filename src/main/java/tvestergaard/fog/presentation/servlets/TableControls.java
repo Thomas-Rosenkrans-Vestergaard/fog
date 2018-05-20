@@ -13,13 +13,12 @@ import static tvestergaard.fog.data.constraints.Constraint.like;
 public class TableControls<C extends Enum<C> & Column<C>>
 {
 
-    private static final int RECORDS_PER_PAGE = 20;
-
     private final HttpServletRequest request;
     private final Class<C>           columns;
     private final Parameters         parameters;
     private final C                  searchColumn;
     private final Constraints<C>     def;
+    private       int                currentPage;
 
     public TableControls(HttpServletRequest request, Class<C> columns, C searchColumn, Constraints<C> def)
     {
@@ -29,16 +28,23 @@ public class TableControls<C extends Enum<C> & Column<C>>
         this.searchColumn = searchColumn;
         this.def = def;
 
+        this.currentPage = parameters.isInt("page") ? parameters.getInt("page") : 1;
+
+
+        def.limit(20);
+        def.offset((currentPage - 1) * 20);
+
         request.setAttribute("orderings", EnumSet.allOf(OrderDirection.class));
         request.setAttribute("columns", EnumSet.allOf(columns));
-        request.setAttribute("search_value", request.getParameter("search_value"));
-        request.setAttribute("sort_column", request.getParameter("sort_column"));
-        request.setAttribute("sort_direction", request.getParameter("sort_direction"));
+        request.setAttribute("search_value", parameters.value("search_value"));
+        request.setAttribute("sort_column", parameters.value("sort_column"));
+        request.setAttribute("sort_direction", parameters.value("sort_direction"));
+        request.setAttribute("page", currentPage);
     }
 
     public TableControls(HttpServletRequest request, Class<C> columns, C searchColumn)
     {
-        this(request, columns, searchColumn, null);
+        this(request, columns, searchColumn, new Constraints<>());
     }
 
     public Constraints<C> constraints()
@@ -49,9 +55,12 @@ public class TableControls<C extends Enum<C> & Column<C>>
         String         searchValue   = parameters.value("search_value");
         C              sortColumn    = parameters.getEnum("sort_column", columns);
         OrderDirection sortDirection = parameters.getEnum("sort_direction", OrderDirection.class);
+        int            currentPage   = parameters.getInt("page");
 
         return new Constraints<C>()
                 .having(like(searchColumn, '%' + searchValue + '%'))
-                .order(sortColumn, sortDirection);
+                .order(sortColumn, sortDirection)
+                .limit(20)
+                .offset((currentPage - 1) * 20);
     }
 }
