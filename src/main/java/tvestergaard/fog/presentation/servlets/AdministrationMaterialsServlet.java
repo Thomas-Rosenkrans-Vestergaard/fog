@@ -33,8 +33,8 @@ import static tvestergaard.fog.presentation.PresentationFunctions.notifications;
 public class AdministrationMaterialsServlet extends AdministrationServlet
 {
 
-    private final MaterialFacade             facade = Facades.materialFacade;
-    private final Map<MaterialError, String> errors = new HashMap<>();
+    private final MaterialFacade             materialsFacade = Facades.materialFacade;
+    private final Map<MaterialError, String> errors          = new HashMap<>();
 
     public AdministrationMaterialsServlet()
     {
@@ -72,8 +72,8 @@ public class AdministrationMaterialsServlet extends AdministrationServlet
 
             notifications(request);
             request.setAttribute("title", "Materialee");
-            request.setAttribute("materials", facade.get(controls.constraints()));
-            request.setAttribute("categories", facade.getCategories());
+            request.setAttribute("materials", materialsFacade.get(controls.constraints()));
+            request.setAttribute("categories", materialsFacade.getCategories());
             request.getRequestDispatcher("/WEB-INF/administration/show_materials.jsp").forward(request, response);
         }
     }
@@ -94,7 +94,7 @@ public class AdministrationMaterialsServlet extends AdministrationServlet
 
             request.setAttribute("title", "Opret materiale");
             request.setAttribute("category", parameters.getInt("category"));
-            request.setAttribute("attributes", facade.getAttributesFor(parameters.getInt("category")));
+            request.setAttribute("attributes", materialsFacade.getAttributesFor(parameters.getInt("category")));
             request.setAttribute("csrf", csrf(request));
             request.getRequestDispatcher("/WEB-INF/administration/create_material.jsp").forward(request, response);
         }
@@ -118,7 +118,7 @@ public class AdministrationMaterialsServlet extends AdministrationServlet
                 return;
             }
 
-            Set<AttributeDefinition> attributeDefinitions = facade.getAttributesFor(parameters.getInt("category"));
+            Set<AttributeDefinition> attributeDefinitions = materialsFacade.getAttributesFor(parameters.getInt("category"));
             Set<AttributeValue>      attributes           = new HashSet<>();
             for (AttributeDefinition definition : attributeDefinitions) {
                 DataType dataType      = definition.getDataType();
@@ -135,7 +135,7 @@ public class AdministrationMaterialsServlet extends AdministrationServlet
             }
 
             try {
-                Material material = facade.create(
+                Material material = materialsFacade.create(
                         parameters.value("number"),
                         parameters.value("description"),
                         parameters.getInt("price"),
@@ -167,7 +167,7 @@ public class AdministrationMaterialsServlet extends AdministrationServlet
                 return;
             }
 
-            Material material = facade.get(parameters.getInt("id"));
+            Material material = materialsFacade.get(parameters.getInt("id"));
             if (material == null) {
                 notifications.error("Unknown material.");
                 response.sendRedirect("materials");
@@ -198,7 +198,7 @@ public class AdministrationMaterialsServlet extends AdministrationServlet
                 return;
             }
 
-            Set<AttributeDefinition> attributeDefinitions = facade.getAttributesFor(parameters.getInt("category"));
+            Set<AttributeDefinition> attributeDefinitions = materialsFacade.getAttributesFor(parameters.getInt("category"));
             Set<AttributeValue>      attributes           = new HashSet<>();
             for (AttributeDefinition definition : attributeDefinitions) {
                 DataType dataType      = definition.getDataType();
@@ -215,7 +215,7 @@ public class AdministrationMaterialsServlet extends AdministrationServlet
             }
 
             try {
-                Material material = facade.update(
+                Material material = materialsFacade.update(
                         parameters.getInt("id"),
                         parameters.value("number"),
                         parameters.value("description"),

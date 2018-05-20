@@ -11,6 +11,9 @@ import tvestergaard.fog.logic.ApplicationException;
 import java.util.List;
 import java.util.Set;
 
+import static tvestergaard.fog.data.constraints.Constraint.eq;
+import static tvestergaard.fog.data.materials.MaterialColumn.ACTIVE;
+
 public class MaterialFacade
 {
 
@@ -44,6 +47,9 @@ public class MaterialFacade
     public List<Material> get(Constraints<MaterialColumn> constraints)
     {
         try {
+            if (constraints == null)
+                constraints = new Constraints<>();
+            constraints.where(eq(ACTIVE, true));
             return dao.get(constraints);
         } catch (DataAccessException e) {
             throw new ApplicationException(e);

@@ -88,5 +88,12 @@ public class StatementBinder<T extends Column<T> & MysqlColumn>
             statement.setObject(currentParameterIndex++, ((LikeCondition) condition).operand);
             return;
         }
+
+        if (condition instanceof InCondition) {
+            Object[] arguments = ((InCondition) condition).getArguments();
+            for (Object argument : arguments)
+                statement.setObject(currentParameterIndex++, argument);
+            return;
+        }
     }
 }

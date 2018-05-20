@@ -192,8 +192,8 @@ td.bold {
     width: 100%;
 }
 
-button {
-    background: #0D47A1 !important;
+.btn, .btn-large, .btn-floating {
+    background-color: #0D47A1 !important;
 }
 
 a {

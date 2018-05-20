@@ -13,7 +13,8 @@ public enum MaterialColumn implements Column<MaterialColumn>, MysqlColumn
     UNIT,
     CATEGORY,
     CREATED_AT,
-    SEARCH;
+    SEARCH,
+    ACTIVE;
 
     /**
      * Returns the name of the column in MySQL.

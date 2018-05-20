@@ -58,49 +58,76 @@ public class StatementGenerator<C extends Column<C> & MysqlColumn>
         if (condition instanceof BinaryAndCondition) {
             builder.append(' ');
             builder.append('(');
-            appendWhereConditionSQL(builder, ((BinaryAndCondition) condition).left);
+            appendWhereConditionSQL(builder, ((BinaryAndCondition<C>) condition).left);
             builder.append(" AND");
-            appendWhereConditionSQL(builder, ((BinaryAndCondition) condition).right);
+            appendWhereConditionSQL(builder, ((BinaryAndCondition<C>) condition).right);
             builder.append(')');
             return;
         }
 
         if (condition instanceof UnaryAndCondition) {
             builder.append(" AND");
-            appendWhereConditionSQL(builder, ((UnaryAndCondition) condition).operand);
+            appendWhereConditionSQL(builder, ((UnaryAndCondition<C>) condition).operand);
             return;
         }
 
         if (condition instanceof BinaryOrCondition) {
             builder.append(' ');
             builder.append('(');
-            appendWhereConditionSQL(builder, ((BinaryOrCondition) condition).left);
+            appendWhereConditionSQL(builder, ((BinaryOrCondition<C>) condition).left);
             builder.append(" OR");
-            appendWhereConditionSQL(builder, ((BinaryOrCondition) condition).right);
+            appendWhereConditionSQL(builder, ((BinaryOrCondition<C>) condition).right);
             builder.append(')');
             return;
         }
 
         if (condition instanceof UnaryOrCondition) {
             builder.append(" OR");
-            appendWhereConditionSQL(builder, ((UnaryOrCondition) condition).operand);
+            appendWhereConditionSQL(builder, ((UnaryOrCondition<C>) condition).operand);
             return;
         }
 
         if (condition instanceof EqualsCondition) {
-            appendEqualsConditionSQL(builder, (EqualsCondition) condition);
+            appendEqualsConditionSQL(builder, (EqualsCondition<C>) condition);
             return;
         }
 
         if (condition instanceof NotCondition) {
-            appendNotConditionSQL(builder, (NotCondition) condition);
+            appendNotConditionSQL(builder, (NotCondition<C>) condition);
             return;
         }
 
         if (condition instanceof LikeCondition) {
-            appendLikeConditionSQL(builder, (LikeCondition) condition);
+            appendLikeConditionSQL(builder, (LikeCondition<C>) condition);
             return;
         }
+
+        if (condition instanceof InCondition) {
+            appendInConditionSQL(builder, (InCondition<C>) condition);
+            return;
+        }
+    }
+
+    private void appendInConditionSQL(StringBuilder builder, InCondition<C> condition)
+    {
+        builder.append(' ');
+        if (condition.getColumn().useBacktick())
+            builder.append('`');
+        builder.append(condition.getColumn().getMysqlName());
+        if (condition.getColumn().useBacktick())
+            builder.append('`');
+
+        int arguments = condition.getArguments().length;
+
+        builder.append(" IN (");
+        if (arguments > 0)
+            builder.append('?');
+        for (int argument = 1; argument < arguments; argument++) {
+            builder.append(',');
+            builder.append('?');
+        }
+
+        builder.append(')');
     }
 
     private void appendNotConditionSQL(StringBuilder builder, NotCondition<C> condition)

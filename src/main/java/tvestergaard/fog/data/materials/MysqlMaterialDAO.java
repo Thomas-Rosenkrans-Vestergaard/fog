@@ -279,7 +279,7 @@ public class MysqlMaterialDAO extends AbstractMysqlDAO implements MaterialDAO
         Multimap<Integer, SimpleMaterial> map = ArrayListMultimap.create();
         String SQL = "SELECT * FROM materials " +
                 "INNER JOIN categories ON materials.category = categories.id " +
-                "WHERE category IN (" + createIn(categories.length) + ")";
+                "WHERE materials.active = b'1' && category IN (" + createIn(categories.length) + ")";
         try (PreparedStatement statement = getConnection().prepareStatement(SQL)) {
             for (int x = 0; x < categories.length; x++)
                 statement.setInt(x + 1, categories[x]);
