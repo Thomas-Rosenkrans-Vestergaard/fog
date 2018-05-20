@@ -8,7 +8,7 @@
 <div class="row">
     <div class="col 12">
         <a class="btn-large btn-large waves-effect waves-light" href="?action=update_components&model=${model.getId()}">
-            Opdater component definitioner
+            Opdater komponent definitioner
         </a>
     </div>
 </div>
@@ -32,7 +32,7 @@
         </div>
         <div class="row">
             <div class="col s12">
-                <h3>Components</h3>
+                <h3>Komponenter</h3>
             </div>
         </div>
         <c:forEach items="${components}" var="component">

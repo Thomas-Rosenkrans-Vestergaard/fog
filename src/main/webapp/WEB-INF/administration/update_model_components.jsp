@@ -2,7 +2,7 @@
 <%@ include file="../includes/top.jspf" %>
 <div class="row">
     <div class="col s12">
-        <h2><span class="focus">OPDATER MODEL COMPONENTER</span></h2>
+        <h2><span class="focus">OPDATER MODEL KOMPONENTER</span></h2>
     </div>
 </div>
 <div class="row">

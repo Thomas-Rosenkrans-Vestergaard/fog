@@ -41,7 +41,7 @@
         <input type="hidden" name="type" id="type" value="${type}" readonly>
         <div class="row">
             <div class="col s12">
-                <h3>Componenter</h3>
+                <h3>Komponenter</h3>
             </div>
         </div>
         <div class="row">
