@@ -27,7 +27,9 @@
             </div>
             <div class="row">
                 <div class="col s12 input-field">
-                    <input type="number" name="price" id="price" min="0" step=".01" class="validate" required>
+                    <input type="number" class="validate" min="0" name="price" id="price"
+                           pattern="^[0-9]+([\,][0-9]{0,2})?$"
+                           required>
                     <label for="price">Pris</label>
                 </div>
             </div>

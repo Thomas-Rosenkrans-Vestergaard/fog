@@ -19,7 +19,8 @@
             <input type="hidden" name="order" value="${order.getId()}">
             <div class="row">
                 <div class="col s10 input-field">
-                    <input type="number" name="price" id="price" step="1" min="1">
+                    <input type="number"  class="validate" pattern="^[0-9]+([\,][0-9]{0,2})?$" min="0" name="price"
+                           id="price" required>
                     <label for="price">Tilbud pris</label>
                 </div>
                 <div class="col s2">

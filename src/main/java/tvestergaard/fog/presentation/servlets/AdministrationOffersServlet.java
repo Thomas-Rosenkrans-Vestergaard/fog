@@ -123,14 +123,15 @@ public class AdministrationOffersServlet extends AdministrationServlet
             Notifications  notifications  = notifications(request);
             Parameters     parameters     = new Parameters(request);
 
-            if (!parameters.isInt("order") || !parameters.isInt("price")) {
+            if (!parameters.isInt("order") || !parameters.isFloat("price")) {
                 notifications.error("Incorrect form submit");
                 response.sendRedirect("?action=create");
                 return;
             }
 
             int order = parameters.getInt("order");
-            int price = parameters.getInt("price");
+            int price = Math.round(parameters.getFloat("price") * 100);
+
             try {
                 offerFacade.create(order, authentication.getEmployee().getId(), price);
                 notifications.success("Tilbudet blev oprettet.");

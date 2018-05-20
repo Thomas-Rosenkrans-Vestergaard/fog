@@ -110,7 +110,7 @@ public class AdministrationMaterialsServlet extends AdministrationServlet
 
             if (!parameters.isPresent("number") ||
                     !parameters.isPresent("description") ||
-                    !parameters.isPresent("price") ||
+                    !parameters.isFloat("price") ||
                     !parameters.isInt("unit") ||
                     !parameters.isInt("category")) {
                 notifications.error("Cannot format parameters.");
@@ -138,7 +138,7 @@ public class AdministrationMaterialsServlet extends AdministrationServlet
                 Material material = materialsFacade.create(
                         parameters.value("number"),
                         parameters.value("description"),
-                        parameters.getInt("price"),
+                        Math.round(parameters.getFloat("price") * 100),
                         parameters.getInt("unit"),
                         parameters.getInt("category"),
                         attributes);
@@ -190,7 +190,7 @@ public class AdministrationMaterialsServlet extends AdministrationServlet
 
             if (!parameters.isPresent("number") ||
                     !parameters.isPresent("description") ||
-                    !parameters.isPresent("price") ||
+                    !parameters.isFloat("price") ||
                     !parameters.isInt("unit") ||
                     !parameters.isInt("category")) {
                 notifications.error("Cannot format parameters.");
@@ -219,7 +219,7 @@ public class AdministrationMaterialsServlet extends AdministrationServlet
                         parameters.getInt("id"),
                         parameters.value("number"),
                         parameters.value("description"),
-                        parameters.getInt("price"),
+                        Math.round(parameters.getFloat("price") * 100),
                         parameters.getInt("unit"),
                         parameters.getInt("category"),
                         attributes);
