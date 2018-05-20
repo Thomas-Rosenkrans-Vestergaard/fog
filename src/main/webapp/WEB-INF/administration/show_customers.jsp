@@ -18,18 +18,18 @@
     <div class="col s12">
         <table class="bordered highlight administration-table">
             <thead>
-            <th class="short">ID</th>
-            <th>Navn</th>
-            <th>Adresse</th>
-            <th>Email</th>
-            <th>Telefon</th>
-            <th class="short">Aktiv</th>
+            <tr>
+                <th>Navn</th>
+                <th>Adresse</th>
+                <th>Email</th>
+                <th>Telefon</th>
+                <th class="short">Aktiv</th>
+            </tr>
             <th>Oprettet</th>
             </thead>
             <tbody>
             <c:forEach items="${customers}" var="customer">
-                <tr>
-                    <td><a href="?action=update&id=${customer.getId()}">${cladding.getId()}</a></td>
+                <tr data-link="?action=update&id=${customer.getId()}">
                     <td><c:out value="${customer.getName()}"/></td>
                     <td><c:out value="${customer.getAddress()}"/></td>
                     <td><c:out value="${customer.getEmail()}"/></td>

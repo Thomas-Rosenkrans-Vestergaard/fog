@@ -38,16 +38,17 @@
     <div class="col s12">
         <table class="bordered highlight administration-table">
             <thead>
-            <th class="short">ID</th>
-            <th>Navn</th>
-            <th>Beskrivelse</th>
-            <th class="short">Aktiv</th>
-            <th>Type</th>
+            <tr>
+                <th>Navn</th>
+                <th>Beskrivelse</th>
+                <td>Aktiv
+                </th>
+                <th>Type</th>
+            </tr>
             </thead>
             <tbody>
             <c:forEach items="${roofings}" var="roofing">
-                <tr>
-                    <td><a href="?action=update&id=${roofing.getId()}">${roofing.getId()}</a></td>
+                <tr data-link="?action=update&id=${roofing.getId()}">
                     <td><c:out value="${roofing.getName()}"/></td>
                     <td><c:out value="${roofing.getDescription()}"/></td>
                     <td><c:out value="${f:formatBoolean(roofing.isActive())}"/></td>

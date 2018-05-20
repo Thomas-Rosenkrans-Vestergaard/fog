@@ -77,7 +77,6 @@
                 <c:if test="${order.getShed() != null}">
                     <td>
                         <table>
-                            <thead>
                             <tbody>
                             <tr>
                                 <th>Dybde</th>
@@ -116,10 +115,12 @@
     <div class="col s12">
         <table class="bordered highlight">
             <thead>
-            <th>Tilbudspris</th>
-            <th>Status</th>
-            <th>Oprettet</th>
-            <th style="width: 120px">Aktioner</th>
+            <tr>
+                <th>Tilbudspris</th>
+                <th>Status</th>
+                <th>Oprettet</th>
+                <th style="width: 120px">Aktioner</th>
+            </tr>
             </thead>
             <tbody>
             <c:if test="${offers.isEmpty()}">

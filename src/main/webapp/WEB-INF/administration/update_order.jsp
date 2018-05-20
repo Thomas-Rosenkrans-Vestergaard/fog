@@ -27,7 +27,7 @@
 </div>
 <div class="row">
     <div class="col s12">
-        <table>
+        <table class="bordered highlight">
             <thead>
             <tr>
                 <th>Tilbudspris</th>
@@ -38,7 +38,7 @@
             </thead>
             <tbody>
             <c:forEach items="${offers}" var="offer">
-                <tr>
+                <tr data-link="offer?id=${offer.getId()}">
                     <td>${f:formatPrice(offer.getPrice())}</td>
                     <td>${offer.getEmployee().getName()}</td>
                     <td>${offer.getStatus()}</td>

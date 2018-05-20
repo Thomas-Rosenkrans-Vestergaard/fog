@@ -20,4 +20,13 @@ $(document).ready(function () {
         e.preventDefault();
         showTable($(this));
     });
+
+    $('[data-link]').on('click', function (e) {
+        var target = $(e.target)[0].tagName;
+        if (target !== 'TD') {
+            return;
+        }
+
+        location.href = $(this).attr("data-link");
+    });
 });

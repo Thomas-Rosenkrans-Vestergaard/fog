@@ -17,13 +17,13 @@
     <div class="col s12">
         <table class="bordered highlight administration-table">
             <thead>
-            <th class="short">Id</th>
-            <th>Navn</th>
+            <tr>
+                <th>Navn</th>
+            </tr>
             </thead>
             <tbody>
             <c:forEach items="${models}" var="model">
-                <tr>
-                    <td><a href="?action=update&id=${model.getId()}">${model.getId()}</a></td>
+                <tr data-link="?action=update&id=${model.getId()}">
                     <td><c:out value="${model.getName()}"/></td>
                 </tr>
             </c:forEach>

@@ -21,15 +21,15 @@
     <div class="col s12">
         <table class="bordered highlight administration-table">
             <thead>
-            <th class="short">ID</th>
-            <th>Navn</th>
-            <th class="long">Beskrivelse</th>
-            <th class="short">Aktiv</th>
+            <tr>
+                <th>Navn</th>
+                <th>Beskrivelse</th>
+                <th>Aktiv</th>
+            </tr>
             </thead>
             <tbody>
             <c:forEach items="${floorings}" var="flooring">
-                <tr>
-                    <td><a href="?action=update&id=${flooring.getId()}">${flooring.getId()}</a></td>
+                <tr data-link="?action=update&id=${flooring.getId()}">
                     <td><c:out value="${flooring.getName()}"/></td>
                     <td><c:out value="${flooring.getDescription()}"/></td>
                     <td><c:out value="${f:formatBoolean(flooring.isActive())}"/></td>

@@ -23,21 +23,21 @@
     <div class="col s12">
         <table class="bordered highlight">
             <thead>
-            <th>ID</th>
-            <th>Tilbud</th>
-            <th>Kunde</th>
-            <th>Medarbejder</th>
-            <th>Købspris</th>
-            <th>Oprettet</th>
+            <tr>
+                <th>Tilbud</th>
+                <th>Kunde</th>
+                <th>Medarbejder</th>
+                <th>Købspris</th>
+                <th>Oprettet</th>
+            </tr>
             </thead>
             <tbody>
             <c:forEach items="${purchases}" var="purchase">
-                <tr>
+                <tr data-link="?action=show&id=${purchase.getId()}">
                     <c:set var="offer" value="${purchase.getOffer()}"/>
                     <c:set var="order" value="${offer.getOrder()}"/>
                     <c:set var="employee" value="${offer.getEmployee()}"/>
                     <c:set var="customer" value="${order.getCustomer()}"/>
-                    <td><a href="?action=show&id=${purchase.getId()}">${purchase.getId()}</a></td>
                     <td><a href="offers?action=update&id=${offer.getId()}">${offer.getId()}</a></td>
                     <td><a
                             href="customers?action=update&id=${customer.getId()}"><c:out

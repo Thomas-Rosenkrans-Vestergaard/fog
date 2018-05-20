@@ -19,7 +19,7 @@
 </div>
 <div class="row">
     <div class="col s12">
-        <table class="striped">
+        <table class="bordered highlight">
             <tr>
                 <th>Navn</th>
                 <td><c:out value="${customer.getName()}"/></td>

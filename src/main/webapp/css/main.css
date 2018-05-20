@@ -212,6 +212,6 @@ table table td {
     padding: 0px;
 }
 
-table.horizontal {
-
+tr[data-link] {
+    cursor: pointer;
 }

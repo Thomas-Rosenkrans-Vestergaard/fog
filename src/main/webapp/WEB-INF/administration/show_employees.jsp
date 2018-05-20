@@ -21,17 +21,17 @@
     <div class="col s12">
         <table class="bordered highlight administration-table">
             <thead>
-            <th class="short">ID</th>
-            <th>Navn</th>
-            <th>Brugernavn</th>
-            <th class="short">Aktiv</th>
-            <th>Oprettet</th>
-            <th>Roller</th>
+            <tr>
+                <th>Navn</th>
+                <th>Brugernavn</th>
+                <th>Aktiv</th>
+                <th>Oprettet</th>
+                <th>Roller</th>
+            </tr>
             </thead>
             <tbody>
             <c:forEach items="${employees}" var="employee">
-                <tr>
-                    <td><a href="?action=update&id=${employee.getId()}">${employee.getId()}</a></td>
+                <tr data-link="?action=update&id=${employee.getId()}">
                     <td><c:out value="${employee.getName()}"/></td>
                     <td><c:out value="${employee.getUsername()}"/></td>
                     <td><c:out value="${f:formatBoolean(employee.isActive())}"/></td>

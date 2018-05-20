@@ -148,10 +148,12 @@
         <table>
             <table class="bordered highlight">
                 <thead>
-                <th>Materiale</th>
-                <th>Mængde</th>
-                <th>Noter</th>
-                <th>Pris</th>
+                <tr>
+                    <th>Materiale</th>
+                    <th>Mængde</th>
+                    <th>Noter</th>
+                    <th>Pris</th>
+                </tr>
                 </thead>
                 <tbody>
                 <tr>

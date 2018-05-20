@@ -18,21 +18,21 @@
     <div class="col s12">
         <table class="bordered highlight">
             <thead>
-            <th>ID</th>
-            <th>Kunde</th>
-            <th>Bredde</th>
-            <th>Længde</th>
-            <th>Højde</th>
-            <th>Tag</th>
-            <th>Hældning</th>
-            <th>Spær</th>
-            <th>Oprettet</th>
-            <th>Redskabsskur</th>
+            <tr>
+                <th>Kunde</th>
+                <th>Bredde</th>
+                <th>Længde</th>
+                <th>Højde</th>
+                <th>Tag</th>
+                <th>Hældning</th>
+                <th>Spær</th>
+                <th>Oprettet</th>
+                <th>Redskabsskur</th>
+            </tr>
             </thead>
             <tbody>
             <c:forEach items="${orders}" var="order">
-                <tr>
-                    <td><a href="?action=update&id=${order.getId()}">${order.getId()}</a></td>
+                <tr data-link="?action=update&id=${order.getId()}">
                     <c:set value="${order.getCustomer()}" var="customer"/>
                     <td>
                         <a href="customers?action=update&id=${customer.getId()}"><c:out
@@ -53,7 +53,7 @@
                     </c:if>
                     <c:if test="${order.getShed() != null}">
                         <td>
-                            <table class="inner-table">
+                            <table class="inner-table bordered">
                                 <tbody>
                                 <tr>
                                     <th>Dybde</th>

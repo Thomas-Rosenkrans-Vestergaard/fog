@@ -21,11 +21,13 @@
     <div class="col s12">
         <table class="bordered highlight">
             <thead>
-            <th>Ordre</th>
-            <th>Tilbudspris</th>
-            <th>Status</th>
-            <th>Oprettet</th>
-            <th style="width: 120px">Aktioner</th>
+            <tr>
+                <th>Ordre</th>
+                <th>Tilbudspris</th>
+                <th>Status</th>
+                <th>Oprettet</th>
+                <th style="width: 120px">Aktioner</th>
+            </tr>
             </thead>
             <tbody>
             <c:forEach items="${offers}" var="offer">

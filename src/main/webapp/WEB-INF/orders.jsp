@@ -35,7 +35,7 @@
             </thead>
             <tbody>
             <c:forEach items="${orders}" var="order">
-                <tr style="cursor:pointer;" onclick="location.href = 'order?id=${order.getId()}'">
+                <tr data-link="order?id=${order.getId()}">
                     <td>${order.getWidth()}</td>
                     <td>${order.getLength()}</td>
                     <td>${order.getHeight()}</td>
@@ -49,7 +49,7 @@
                     </c:if>
                     <c:if test="${order.getShed() != null}">
                         <td>
-                            <table class="inner-table">
+                            <table class="inner-table bordered">
                                 <thead>
                                 <tbody>
                                 <tr>

@@ -44,18 +44,18 @@
     <div class="col s12">
         <table class="bordered highlight administration-table">
             <thead>
-            <th>ID</th>
-            <th>Nummer</th>
-            <th>Beskrivelse</th>
-            <th class="short">Pris</th>
-            <th class="short">Enhed</th>
-            <th class="short">Kategori</th>
-            <th class="short">Aktiv</th>
+            <tr>
+                <th>Nummer</th>
+                <th>Beskrivelse</th>
+                <th>Pris</th>
+                <th>Enhed</th>
+                <th>Kategori</th>
+                <th>Aktiv</th>
+            </tr>
             </thead>
             <tbody>
             <c:forEach items="${materials}" var="material">
-                <tr>
-                    <td><a href="?action=update&id=${material.getId()}">${material.getId()}</a></td>
+                <tr data-link="?action=update&id=${material.getId()}">
                     <td><c:out value="${material.getNumber()}"/></td>
                     <td><c:out value="${material.getDescription()}"/></td>
                     <td><c:out value="${f:formatPrice(material.getPrice())}"/></td>

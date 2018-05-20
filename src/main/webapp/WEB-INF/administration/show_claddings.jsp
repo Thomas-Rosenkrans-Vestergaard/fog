@@ -21,17 +21,18 @@
     <div class="col s12">
         <table class="bordered highlight administration-table">
             <thead>
-            <th class="short">ID</th>
-            <th>Navn</th>
-            <th class="long">Beskrivelse</th>
-            <th class="short">Aktiv</th>
+            <tr>
+                <th>Navn</th>
+                <th class="long">Beskrivelse</th>
+                <th class="short">Aktiv</th>
+            </tr>
             </thead>
             <tbody>
             <c:forEach items="${claddings}" var="cladding">
-                <td><a href="?action=update&id=${cladding.getId()}">${cladding.getId()}</a></td>
-                <td><c:out value="${cladding.getName()}"/></td>
-                <td><c:out value="${cladding.getDescription()}"/></td>
-                <td><c:out value="${f:formatBoolean(cladding.isActive())}"/></td>
+                <tr data-link="?action=update&id=${cladding.getId()}">
+                    <td><c:out value="${cladding.getName()}"/></td>
+                    <td><c:out value="${cladding.getDescription()}"/></td>
+                    <td><c:out value="${f:formatBoolean(cladding.isActive())}"/></td>
                 </tr>
             </c:forEach>
             </tbody>
