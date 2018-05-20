@@ -100,6 +100,7 @@ public class OrderFacade
      * @param slope    The slope of the roofing used on the order to create.
      * @param rafters  The rafters construction delivered with the order to create.
      * @param shed     The shed to add to the order.
+     * @param comment  The comment provided by the customer about the order.
      * @return The new order.
      * @throws OrderValidatorException      When the provided information is considered invalid.
      * @throws UnknownCustomerException     When the customer placing the order is unknown to the application.
@@ -116,13 +117,14 @@ public class OrderFacade
             int roofing,
             int slope,
             RafterChoice rafters,
-            ShedBlueprint shed) throws OrderValidatorException,
-                                       UnknownCustomerException,
-                                       InactiveCustomerException,
-                                       UnconfirmedCustomerException
+            ShedBlueprint shed,
+            String comment) throws OrderValidatorException,
+                                   UnknownCustomerException,
+                                   InactiveCustomerException,
+                                   UnconfirmedCustomerException
     {
         try {
-            return placer.place(customer, width, length, height, roofing, slope, rafters, shed);
+            return placer.place(customer, width, length, height, roofing, slope, rafters, shed, comment);
         } catch (DataAccessException e) {
             throw new ApplicationException(e);
         }
@@ -164,14 +166,15 @@ public class OrderFacade
                           int roofing,
                           int slope,
                           RafterChoice rafters,
-                          ShedUpdater shedUpdater) throws OrderValidatorException
+                          ShedUpdater shedUpdater,
+                          String comment) throws OrderValidatorException
     {
         try {
             Set<OrderError> reasons = validator.validate(-1, width, length, height, roofing, slope, shedUpdater);
             if (!reasons.isEmpty())
                 throw new OrderValidatorException(reasons);
 
-            return dao.update(OrderUpdater.from(id, -1, width, length, height, roofing, slope, rafters, false, shedUpdater));
+            return dao.update(OrderUpdater.from(id, -1, width, length, height, roofing, slope, rafters, false, shedUpdater, comment));
         } catch (DataAccessException e) {
             throw new ApplicationException(e);
         }

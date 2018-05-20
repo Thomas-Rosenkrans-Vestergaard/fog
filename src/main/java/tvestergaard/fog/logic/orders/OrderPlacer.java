@@ -63,6 +63,7 @@ public class OrderPlacer
      * @param slope      The slope of the roofing.
      * @param rafters    The choice of rafters.
      * @param shed       The shed to include in the order.
+     * @param comment    The comment provided by the customer about the order.
      * @return The object representing the newly created order.
      * @throws OrderValidatorException      When the provided information is considered invalid.
      * @throws UnknownCustomerException     When the customer placing the order is unknown to the application.
@@ -79,11 +80,12 @@ public class OrderPlacer
             int roofing,
             int slope,
             RafterChoice rafters,
-            ShedBlueprint shed) throws OrderValidatorException,
-                                       UnknownCustomerException,
-                                       InactiveCustomerException,
-                                       UnconfirmedCustomerException,
-                                       DataAccessException
+            ShedBlueprint shed,
+            String comment) throws OrderValidatorException,
+                                   UnknownCustomerException,
+                                   InactiveCustomerException,
+                                   UnconfirmedCustomerException,
+                                   DataAccessException
     {
         Set<OrderError> reasons = validator.validate(customerId, width, length, height, roofing, slope, shed);
 
@@ -113,7 +115,8 @@ public class OrderPlacer
                 slope,
                 rafters,
                 true,
-                shed));
+                shed,
+                comment));
 
         OrderConfirmationEmail email = new OrderConfirmationEmail(order);
         mailer.send(email);

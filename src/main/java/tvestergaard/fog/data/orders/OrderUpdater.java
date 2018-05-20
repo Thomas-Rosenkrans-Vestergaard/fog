@@ -16,6 +16,7 @@ public interface OrderUpdater extends OrderBlueprint
      * @param rafterChoice The choice of rafters on the order to specify in the updater.
      * @param active       The active status of the order in the updater.
      * @param shedUpdater  The shed to include in the order. {@code null} when the order has no shed.
+     * @param comment      The comment by the customer about the order.
      * @return The newly created order updater.
      */
     static OrderUpdater from(int id,
@@ -27,10 +28,11 @@ public interface OrderUpdater extends OrderBlueprint
                              int slope,
                              RafterChoice rafterChoice,
                              boolean active,
-                             ShedUpdater shedUpdater)
+                             ShedUpdater shedUpdater,
+                             String comment)
     {
         return new OrderRecord(id, customer, null, width, length, height, roofing, null, slope, rafterChoice,
-                shedUpdater, shedUpdater, null, active, -1, -1,
+                shedUpdater, shedUpdater, null, comment, active, -1, -1,
                 null);
     }
 

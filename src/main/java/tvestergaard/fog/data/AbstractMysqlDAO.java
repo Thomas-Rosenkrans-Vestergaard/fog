@@ -398,6 +398,7 @@ public abstract class AbstractMysqlDAO
                 shed,
                 shed,
                 shed,
+                resultSet.getString(table + ".comment"),
                 resultSet.getBoolean(table + ".active"),
                 resultSet.getInt(table + ".offers"),
                 resultSet.getInt(table + ".open_offers"),

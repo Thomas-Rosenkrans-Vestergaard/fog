@@ -59,6 +59,10 @@
                 <td>${order.getRafterChoice()}</td>
             </tr>
             <tr>
+                <th>Kommentar</th>
+                <td><c:out value="${order.getComment()}"/></td>
+            </tr>
+            <tr>
                 <th>Oprettet</th>
                 <td>${f:formatDatetime(order.getCreatedAt())}</td>
             </tr>

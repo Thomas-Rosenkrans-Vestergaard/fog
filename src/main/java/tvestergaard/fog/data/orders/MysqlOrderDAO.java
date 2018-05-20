@@ -97,8 +97,8 @@ public class MysqlOrderDAO extends AbstractMysqlDAO implements OrderDAO
     @Override public Order create(OrderBlueprint blueprint) throws DataAccessException
     {
         String orderSQL = "INSERT INTO orders " +
-                "(customer, width, `length`, height, roofing, slope, rafters, shed) " +
-                "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+                "(customer, width, `length`, height, roofing, slope, rafters, shed, `comment`) " +
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
         String shedSQL = "INSERT INTO sheds (depth, cladding, flooring) VALUES (?, ?, ?)";
 
         try {
@@ -136,6 +136,7 @@ public class MysqlOrderDAO extends AbstractMysqlDAO implements OrderDAO
                         orderStatement.setInt(8, shedId);
                     else
                         orderStatement.setNull(8, Types.INTEGER);
+                    orderStatement.setString(9, blueprint.getComment());
                     orderStatement.executeUpdate();
                     ResultSet resultSet = orderStatement.getGeneratedKeys();
                     resultSet.first();
@@ -192,7 +193,7 @@ public class MysqlOrderDAO extends AbstractMysqlDAO implements OrderDAO
     {
         try {
             final String orderSQL = "UPDATE orders SET width = ?, `length` = ?, height = ?, " +
-                    "roofing = ?, slope = ?, rafters = ?, active = ?, shed = ? WHERE id = ?";
+                    "roofing = ?, slope = ?, rafters = ?, active = ?, shed = ?, `comment` = ? WHERE id = ?";
             Connection connection = getConnection();
 
             ShedUpdater shed = updater.getShedUpdater();
@@ -210,7 +211,8 @@ public class MysqlOrderDAO extends AbstractMysqlDAO implements OrderDAO
                         orderStatement.setInt(8, shed.getId());
                     else
                         orderStatement.setNull(8, Types.INTEGER);
-                    orderStatement.setInt(9, updater.getId());
+                    orderStatement.setString(9, updater.getComment());
+                    orderStatement.setInt(10, updater.getId());
                     orderStatement.executeUpdate();
                 }
 

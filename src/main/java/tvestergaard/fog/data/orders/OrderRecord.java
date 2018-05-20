@@ -14,6 +14,9 @@ public class OrderRecord implements Order
      */
     private final int id;
 
+    /**
+     * The id of the customer who placed the order.
+     */
     private int customerId;
 
     /**
@@ -41,6 +44,9 @@ public class OrderRecord implements Order
      */
     private Roofing roofing;
 
+    /**
+     * The id of the roofing used on the order.
+     */
     private int roofingId;
 
     /**
@@ -54,11 +60,24 @@ public class OrderRecord implements Order
     private RafterChoice rafters;
 
     /**
-     * The shed included with the order.
+     * The information about the shed when creating the order.
      */
     private ShedBlueprint shedBlueprint;
-    private ShedUpdater   shedUpdater;
-    private Shed          shed;
+
+    /**
+     * The information about the shed when updating the order.
+     */
+    private ShedUpdater shedUpdater;
+
+    /**
+     * The shed included with the order.
+     */
+    private Shed shed;
+
+    /**
+     * The comment provided by the customer about the order.
+     */
+    private String comment;
 
     /**
      * Whether or not the order is considered active.
@@ -107,6 +126,7 @@ public class OrderRecord implements Order
                        ShedBlueprint shedBlueprint,
                        ShedUpdater shedUpdater,
                        Shed shed,
+                       String comment,
                        boolean active,
                        int numberOfOffers,
                        int numberOfOpenOffers,
@@ -125,6 +145,7 @@ public class OrderRecord implements Order
         this.shedBlueprint = shedBlueprint;
         this.shedUpdater = shedUpdater;
         this.shed = shed;
+        this.comment = comment;
         this.numberOfOffers = numberOfOffers;
         this.numberOfOpenOffers = numberOfOpenOffers;
         this.active = active;
@@ -289,6 +310,16 @@ public class OrderRecord implements Order
     @Override public Shed getShed()
     {
         return shed;
+    }
+
+    /**
+     * Returns the comment about the order made by the customer.
+     *
+     * @return The comment about the order made by the customer.
+     */
+    @Override public String getComment()
+    {
+        return comment;
     }
 
     /**

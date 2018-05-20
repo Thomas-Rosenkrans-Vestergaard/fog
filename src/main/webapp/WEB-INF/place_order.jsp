@@ -197,6 +197,12 @@
                 <label>Beklædning</label>
             </div>
         </div>
+        <div class="row">
+            <div class="input-field col s12">
+                <textarea id="comment" name="comment" class="materialize-textarea"></textarea>
+                <label for="comment">Kommentar</label>
+            </div>
+        </div>
         <c:if test="${customer == null}">
             <div class="row">
                 <div class="col s12">

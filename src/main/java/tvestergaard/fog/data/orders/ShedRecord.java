@@ -18,6 +18,9 @@ public class ShedRecord implements Shed
      */
     private int depth;
 
+    /**
+     * The id of the cladding used on the shed.
+     */
     private int claddingId;
 
     /**
@@ -25,6 +28,9 @@ public class ShedRecord implements Shed
      */
     private Cladding cladding;
 
+    /**
+     * The id of the flooring used on the shed.
+     */
     private int flooringId;
 
     /**

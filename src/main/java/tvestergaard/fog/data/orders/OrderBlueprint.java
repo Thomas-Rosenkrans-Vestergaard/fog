@@ -15,6 +15,7 @@ public interface OrderBlueprint
      * @param rafterChoice  The choice of rafters on the order to specify in the blueprint.
      * @param active        Whether or not the order is currently active.
      * @param shedBlueprint The shed to include in the order. {@code null} for no shed.
+     * @param comment       The comment left by the customer about the order.
      * @return The newly created order blueprint.
      */
     static OrderBlueprint from(int customer,
@@ -25,10 +26,11 @@ public interface OrderBlueprint
                                int slope,
                                RafterChoice rafterChoice,
                                boolean active,
-                               ShedBlueprint shedBlueprint)
+                               ShedBlueprint shedBlueprint,
+                               String comment)
     {
         return new OrderRecord(-1, customer, null, width, length, height, roofing, null, slope, rafterChoice,
-                shedBlueprint, null, null, active, -1, -1, null);
+                shedBlueprint, null, null, comment, active, -1, -1, null);
     }
 
     /**
@@ -114,4 +116,11 @@ public interface OrderBlueprint
      * @return The shed included in the order.
      */
     ShedBlueprint getShedBlueprint();
+
+    /**
+     * Returns the comment about the order made by the customer.
+     *
+     * @return The comment about the order made by the customer.
+     */
+    String getComment();
 }

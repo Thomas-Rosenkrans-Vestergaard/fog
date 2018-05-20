@@ -19,7 +19,7 @@
             <input type="hidden" name="order" value="${order.getId()}">
             <div class="row">
                 <div class="col s10 input-field">
-                    <input type="number"  class="validate" pattern="^[0-9]+([\,][0-9]{0,2})?$" min="0" name="price"
+                    <input type="number" class="validate" pattern="^[0-9]+([\,][0-9]{0,2})?$" min="0" name="price"
                            id="price" required>
                     <label for="price">Tilbud pris</label>
                 </div>
@@ -79,6 +79,10 @@
             <tr>
                 <th>Oprettet</th>
                 <td>${f:formatDatetime(order.getCreatedAt())}</td>
+            </tr>
+            <tr>
+                <th>Kommentar</th>
+                <td><c:out value="${order.getComment()}"/></td>
             </tr>
             <tr>
                 <th>Redskabsskur</th>

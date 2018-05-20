@@ -218,6 +218,12 @@
             </div>
         </div>
         <div class="row">
+            <div class="input-field col s12">
+                <textarea id="comment" name="comment" class="materialize-textarea">${order.getComment()}</textarea>
+                <label for="comment">Kommentar</label>
+            </div>
+        </div>
+        <div class="row">
             <div class="col s12">
                 <button class="btn-large waves-effect waves-light" type="submit" name="action">
                     Opdater<i class="material-icons right">send</i>

@@ -29,6 +29,7 @@
                 <th>Hældning</th>
                 <th>Spær</th>
                 <th>Oprettet</th>
+                <th>Kommentar</th>
                 <th>Redskabsskur</th>
             </tr>
             </thead>
@@ -42,6 +43,7 @@
                     <td>${order.getSlope()}</td>
                     <td>${order.getRafterChoice()}</td>
                     <td>${f:formatDatetime(order.getCreatedAt())}</td>
+                    <td><c:out value="${order.getComment()}"/></td>
                     <c:if test="${order.getShed() == null}">
                         <td>Intet skur</td>
                     </c:if>

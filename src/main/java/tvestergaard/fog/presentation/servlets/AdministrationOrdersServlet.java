@@ -175,7 +175,8 @@ public class AdministrationOrdersServlet extends AdministrationServlet
                         parameters.getInt("roofing"),
                         parameters.getInt("slope"),
                         parameters.getEnum("rafters", RafterChoice.class),
-                        createShed(parameters));
+                        createShed(parameters),
+                        parameters.value("comment"));
 
                 notifications.success("Ordren blev opdateret.");
                 response.sendRedirect("?action=update&id=" + parameters.getInt("id"));

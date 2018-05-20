@@ -97,7 +97,8 @@ public class PlaceOrderServlet extends HttpServlet
                 !parameters.isInt("height") ||
                 !parameters.isInt("roofing") ||
                 !parameters.isInt("slope") ||
-                !parameters.isEnum("rafters", RafterChoice.class)) {
+                !parameters.isEnum("rafters", RafterChoice.class) ||
+                !parameters.isPresent("comment")) {
 
             notifications.error("Invalid design data.");
             resp.sendRedirect("place-order");
@@ -147,7 +148,8 @@ public class PlaceOrderServlet extends HttpServlet
                     parameters.getInt("roofing"),
                     parameters.getInt("slope"),
                     parameters.getEnum("rafters", RafterChoice.class),
-                    createShed(parameters));
+                    createShed(parameters),
+                    parameters.value("comment"));
 
             notifications.success("Din ordre blev registreret.");
             resp.sendRedirect("order?id=" + order.getId());
