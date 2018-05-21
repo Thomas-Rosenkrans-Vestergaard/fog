@@ -3,6 +3,9 @@ package tvestergaard.fog.logic.roofings;
 import java.util.Collections;
 import java.util.Set;
 
+/**
+ * Thrown when the information for some cladding could not be validated.
+ */
 public class RoofingValidatorException extends Exception
 {
     /**

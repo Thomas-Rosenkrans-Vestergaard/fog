@@ -5,6 +5,9 @@ import java.util.Set;
 
 import static tvestergaard.fog.logic.roofings.RoofingError.*;
 
+/**
+ * Validates some provided information about a cladding.
+ */
 public class RoofingValidator
 {
 

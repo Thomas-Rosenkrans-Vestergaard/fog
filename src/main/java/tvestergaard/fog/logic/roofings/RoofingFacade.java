@@ -22,16 +22,17 @@ public class RoofingFacade
     /**
      * The validator used to validate roofing information provided to the {@link RoofingFacade}.
      */
-    private final RoofingValidator validator = new RoofingValidator();
+    private final RoofingValidator validator;
 
     /**
      * Creates a new {@link RoofingDAO}.
      *
      * @param dao The {@link RoofingDAO} used to query the data storage of the application.
      */
-    public RoofingFacade(RoofingDAO dao)
+    public RoofingFacade(RoofingDAO dao, RoofingValidator validator)
     {
         this.dao = dao;
+        this.validator = validator;
     }
 
     /**
