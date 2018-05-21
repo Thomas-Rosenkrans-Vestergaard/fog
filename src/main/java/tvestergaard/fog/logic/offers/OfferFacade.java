@@ -217,9 +217,9 @@ public class OfferFacade
             if (!employee.is(Role.SALESMAN))
                 throw new InsufficientPermissionsException(Role.SALESMAN);
 
-            Offer      offer = offerDAO.create(OfferBlueprint.from(orderId, employeeId, price));
-            TokenPair  token = tokenIssuer.issue(order.getCustomer(), TokenUse.OFFER_EMAIL);
-            OfferEmail email = new OfferEmail(offer, token);
+            Offer                  offer = offerDAO.create(OfferBlueprint.from(orderId, employeeId, price));
+            TokenPair              token = tokenIssuer.issue(order.getCustomer(), TokenUse.OFFER_EMAIL);
+            OfferNotificationEmail email = new OfferNotificationEmail(offer, token);
             mailer.send(email);
             return offer;
         } catch (DataAccessException e) {

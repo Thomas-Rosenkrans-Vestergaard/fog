@@ -6,7 +6,10 @@ import tvestergaard.fog.logic.WebsiteContext;
 import tvestergaard.fog.logic.email.ApplicationEmail;
 import tvestergaard.fog.logic.tokens.TokenPair;
 
-public class OfferEmail implements ApplicationEmail
+/**
+ * The email that is send to a customer when a new offer is created.
+ */
+public class OfferNotificationEmail implements ApplicationEmail
 {
 
     /**
@@ -20,15 +23,15 @@ public class OfferEmail implements ApplicationEmail
     private final TokenPair tokenSecret;
 
     /**
-     * Creates a new {@link OfferEmail}.
+     * Creates a new {@link OfferNotificationEmail}.
      *
-     * @param offer       The offer to send in the email.
-     * @param tokenSecret The secret token to include in the email as links.
+     * @param offer The offer to send in the email.
+     * @param token The secret token to include in the email as links.
      */
-    public OfferEmail(Offer offer, TokenPair tokenSecret)
+    public OfferNotificationEmail(Offer offer, TokenPair token)
     {
         this.offer = offer;
-        this.tokenSecret = tokenSecret;
+        this.tokenSecret = token;
     }
 
     /**
