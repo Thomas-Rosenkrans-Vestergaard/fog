@@ -14,6 +14,9 @@ import java.util.Set;
 import static tvestergaard.fog.data.constraints.Constraint.eq;
 import static tvestergaard.fog.data.constraints.Constraint.where;
 
+/**
+ * Places orders for some customer.
+ */
 public class OrderPlacer
 {
 
@@ -68,7 +71,7 @@ public class OrderPlacer
      * @throws OrderValidatorException      When the provided information is considered invalid.
      * @throws UnknownCustomerException     When the customer placing the order is unknown to the application.
      * @throws InactiveCustomerException    When the customer is inactive, and can therefor not place new orders.
-     * @throws UnconfirmedCustomerException When the customer has not confirmed their email address, and can therefor
+     * @throws UnverifiedCustomerException When the customer has not confirmed their email address, and can therefor
      *                                      not place new orders.
      * @throws DataAccessException          When a data storage exception occurs while performing the operation.
      */
@@ -84,10 +87,10 @@ public class OrderPlacer
             String comment) throws OrderValidatorException,
                                    UnknownCustomerException,
                                    InactiveCustomerException,
-                                   UnconfirmedCustomerException,
+                                   UnverifiedCustomerException,
                                    DataAccessException
     {
-        Set<OrderError> reasons = validator.validate(customerId, width, length, height, roofing, slope, shed);
+        Set<OrderError> reasons = validator.validate(width, length, height, slope, shed);
 
         if (!reasons.isEmpty())
             throw new OrderValidatorException(reasons);
@@ -104,7 +107,7 @@ public class OrderPlacer
             throw new InactiveCustomerException();
 
         if (!customer.isVerified())
-            throw new UnconfirmedCustomerException();
+            throw new UnverifiedCustomerException();
 
         Order order = orderDAO.create(OrderBlueprint.from(
                 customerId,

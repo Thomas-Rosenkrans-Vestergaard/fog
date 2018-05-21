@@ -5,6 +5,9 @@ import tvestergaard.fog.data.orders.Order;
 import tvestergaard.fog.logic.WebsiteContext;
 import tvestergaard.fog.logic.email.ApplicationEmail;
 
+/**
+ * The email sent to a customer after successfully placing an order.
+ */
 public class OrderConfirmationEmail implements ApplicationEmail
 {
 

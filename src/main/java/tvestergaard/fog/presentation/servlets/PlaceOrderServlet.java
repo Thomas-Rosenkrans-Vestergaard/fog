@@ -16,7 +16,7 @@ import tvestergaard.fog.logic.floorings.FlooringFacade;
 import tvestergaard.fog.logic.orders.OrderError;
 import tvestergaard.fog.logic.orders.OrderFacade;
 import tvestergaard.fog.logic.orders.OrderValidatorException;
-import tvestergaard.fog.logic.orders.UnconfirmedCustomerException;
+import tvestergaard.fog.logic.orders.UnverifiedCustomerException;
 import tvestergaard.fog.logic.roofings.RoofingFacade;
 import tvestergaard.fog.presentation.Authentication;
 import tvestergaard.fog.presentation.Notifications;
@@ -158,7 +158,7 @@ public class PlaceOrderServlet extends HttpServlet
         } catch (OrderValidatorException e) {
             for (OrderError error : e.getReasons())
                 notifications.error(error.name());
-        } catch (UnconfirmedCustomerException e) {
+        } catch (UnverifiedCustomerException e) {
             notifications.error("Du har endnu ikke bekræftet din mailaddresse.");
         } catch (InactiveCustomerException e) {
             notifications.error("Du kan ikke placére en ordre, sides du er makeret inaktiv.");

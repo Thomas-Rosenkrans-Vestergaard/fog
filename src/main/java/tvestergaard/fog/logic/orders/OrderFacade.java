@@ -37,12 +37,13 @@ public class OrderFacade
      *
      * @param orderPlacer The object responsible for creating new orders.
      * @param dao         The dao used to access the order storage.
+     * @param validator   The validator used to validate information about orders.
      */
-    public OrderFacade(OrderPlacer orderPlacer, OrderDAO dao)
+    public OrderFacade(OrderPlacer orderPlacer, OrderDAO dao, OrderValidator validator)
     {
         this.placer = orderPlacer;
         this.dao = dao;
-        this.validator = new OrderValidator();
+        this.validator = validator;
     }
 
     /**
@@ -109,7 +110,7 @@ public class OrderFacade
      * @throws OrderValidatorException      When the provided information is considered invalid.
      * @throws UnknownCustomerException     When the customer placing the order is unknown to the application.
      * @throws InactiveCustomerException    When the customer is inactive, and can therefor not place new orders.
-     * @throws UnconfirmedCustomerException When the customer has not confirmed their email address, and can therefor
+     * @throws UnverifiedCustomerException When the customer has not confirmed their email address, and can therefor
      *                                      not place new orders.
      * @throws ApplicationException         When a data storage exception occurs while performing the operation.
      */
@@ -125,7 +126,7 @@ public class OrderFacade
             String comment) throws OrderValidatorException,
                                    UnknownCustomerException,
                                    InactiveCustomerException,
-                                   UnconfirmedCustomerException
+                                   UnverifiedCustomerException
     {
         try {
             return placer.place(customer, width, length, height, roofing, slope, rafters, shed, comment);
@@ -175,7 +176,7 @@ public class OrderFacade
                           String comment) throws OrderValidatorException
     {
         try {
-            Set<OrderError> reasons = validator.validate(-1, width, length, height, roofing, slope, shedUpdater);
+            Set<OrderError> reasons = validator.validate(width, length, height, slope, shedUpdater);
             if (!reasons.isEmpty())
                 throw new OrderValidatorException(reasons);
 
