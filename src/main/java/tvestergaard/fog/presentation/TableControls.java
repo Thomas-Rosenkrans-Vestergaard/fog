@@ -1,4 +1,4 @@
-package tvestergaard.fog.presentation.servlets;
+package tvestergaard.fog.presentation;
 
 import tvestergaard.fog.data.constraints.Column;
 import tvestergaard.fog.data.constraints.Constraints;

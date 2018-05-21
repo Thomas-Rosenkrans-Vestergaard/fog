@@ -6,8 +6,10 @@ import tvestergaard.fog.data.employees.Employee;
 import tvestergaard.fog.logic.customers.CustomerError;
 import tvestergaard.fog.logic.customers.CustomerFacade;
 import tvestergaard.fog.logic.customers.CustomerValidatorException;
+import tvestergaard.fog.presentation.Facades;
 import tvestergaard.fog.presentation.Notifications;
 import tvestergaard.fog.presentation.Parameters;
+import tvestergaard.fog.presentation.TableControls;
 import tvestergaard.fog.presentation.servlets.commands.Command;
 
 import javax.servlet.ServletException;

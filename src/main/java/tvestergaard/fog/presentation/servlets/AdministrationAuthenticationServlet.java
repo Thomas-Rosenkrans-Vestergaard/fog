@@ -3,6 +3,7 @@ package tvestergaard.fog.presentation.servlets;
 import tvestergaard.fog.data.employees.Employee;
 import tvestergaard.fog.logic.employees.EmployeeFacade;
 import tvestergaard.fog.logic.employees.InactiveEmployeeException;
+import tvestergaard.fog.presentation.Facades;
 import tvestergaard.fog.presentation.Notifications;
 import tvestergaard.fog.presentation.Parameters;
 

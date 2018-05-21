@@ -1,4 +1,4 @@
-package tvestergaard.fog.presentation.servlets;
+package tvestergaard.fog.presentation;
 
 import com.mysql.cj.jdbc.MysqlDataSource;
 import tvestergaard.fog.data.ProductionDataSource;

@@ -22,7 +22,7 @@ import tvestergaard.fog.logic.employees.InsufficientPermissionsException;
 import tvestergaard.fog.logic.employees.UnknownEmployeeException;
 import tvestergaard.fog.logic.orders.UnknownOrderException;
 import tvestergaard.fog.logic.tokens.*;
-import tvestergaard.fog.presentation.servlets.Facades;
+import tvestergaard.fog.presentation.Facades;
 
 import java.util.List;
 import java.util.Set;

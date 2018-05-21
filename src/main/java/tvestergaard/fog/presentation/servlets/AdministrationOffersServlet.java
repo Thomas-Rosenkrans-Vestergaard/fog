@@ -17,9 +17,7 @@ import tvestergaard.fog.logic.offers.OfferValidatorException;
 import tvestergaard.fog.logic.offers.OrderNotActiveException;
 import tvestergaard.fog.logic.orders.OrderFacade;
 import tvestergaard.fog.logic.orders.UnknownOrderException;
-import tvestergaard.fog.presentation.Authentication;
-import tvestergaard.fog.presentation.Notifications;
-import tvestergaard.fog.presentation.Parameters;
+import tvestergaard.fog.presentation.*;
 import tvestergaard.fog.presentation.servlets.commands.Command;
 
 import javax.servlet.ServletException;

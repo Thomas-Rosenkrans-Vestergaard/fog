@@ -3,6 +3,7 @@ package tvestergaard.fog.presentation.servlets;
 import tvestergaard.fog.data.customers.Customer;
 import tvestergaard.fog.logic.purchases.PurchaseFacade;
 import tvestergaard.fog.presentation.Authentication;
+import tvestergaard.fog.presentation.Facades;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;

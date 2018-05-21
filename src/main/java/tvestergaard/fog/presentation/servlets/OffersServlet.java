@@ -9,6 +9,7 @@ import tvestergaard.fog.logic.offers.OfferNotOpenException;
 import tvestergaard.fog.logic.offers.UnknownOfferException;
 import tvestergaard.fog.logic.purchases.PurchaseFacade;
 import tvestergaard.fog.presentation.Authentication;
+import tvestergaard.fog.presentation.Facades;
 import tvestergaard.fog.presentation.Notifications;
 import tvestergaard.fog.presentation.Parameters;
 

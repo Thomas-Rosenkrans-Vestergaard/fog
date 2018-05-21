@@ -6,6 +6,7 @@ import tvestergaard.fog.logic.ApplicationException;
 import tvestergaard.fog.logic.customers.AuthenticationException;
 import tvestergaard.fog.logic.customers.CustomerFacade;
 import tvestergaard.fog.presentation.Authentication;
+import tvestergaard.fog.presentation.Facades;
 import tvestergaard.fog.presentation.Notifications;
 import tvestergaard.fog.presentation.Parameters;
 
