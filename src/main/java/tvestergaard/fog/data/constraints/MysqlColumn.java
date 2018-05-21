@@ -11,11 +11,11 @@ public interface MysqlColumn
     String getMysqlName();
 
     /**
-     * Returns the column, that should be used in ORDER BY clauses. Used to order when using foreign keys.
+     * Returns the column, that should be used in search and sort columns. Used to order when using foreign keys.
      *
-     * @return The column, that should be used in ORDER BY clauses.
+     * @return The column, that should be used in search and sort columns.
      */
-    default String getOrderColumn()
+    default String getForeignColumn()
     {
         return getMysqlName();
     }

@@ -27,7 +27,7 @@ public enum PurchaseColumn implements Column<PurchaseColumn>, MysqlColumn
      *
      * @return The column, that should be used in ORDER BY clauses.
      */
-    @Override public String getOrderColumn()
+    @Override public String getForeignColumn()
     {
         if (this == OFFER)
             return "offers.id";

@@ -29,7 +29,7 @@ public enum OfferColumn implements Column<OfferColumn>, MysqlColumn
      *
      * @return The column, that should be used in ORDER BY clauses.
      */
-    @Override public String getOrderColumn()
+    @Override public String getForeignColumn()
     {
         if(this == ORDER)
             return "o.id";

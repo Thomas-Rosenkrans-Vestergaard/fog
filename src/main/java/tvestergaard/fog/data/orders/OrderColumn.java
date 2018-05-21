@@ -35,7 +35,7 @@ public enum OrderColumn implements Column<OrderColumn>, MysqlColumn
      *
      * @return The column, that should be used in ORDER BY clauses.
      */
-    @Override public String getOrderColumn()
+    @Override public String getForeignColumn()
     {
         if (this == CUSTOMER)
             return "customers.name";

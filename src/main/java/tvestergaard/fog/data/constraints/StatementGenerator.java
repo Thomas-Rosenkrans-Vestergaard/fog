@@ -215,7 +215,7 @@ public class StatementGenerator<C extends Column<C> & MysqlColumn>
         builder.append(' ');
         if (column.useBacktick())
             builder.append('`');
-        builder.append(column.getOrderColumn());
+        builder.append(column.getForeignColumn());
         if (column.useBacktick())
             builder.append('`');
         builder.append(" ");
