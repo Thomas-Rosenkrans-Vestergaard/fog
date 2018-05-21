@@ -5,11 +5,34 @@ import tvestergaard.fog.data.materials.Category;
 public class ComponentDefinitionRecord implements ComponentDefinition
 {
 
-    private final int      id;
-    private final String   identifier;
-    private       String   notes;
+    /**
+     * The id of the component definition.
+     */
+    private final int id;
+
+    /**
+     * The identifier of the component definition.
+     */
+    private final String identifier;
+
+    /**
+     * The notes of the component definition.
+     */
+    private String notes;
+
+    /**
+     * The category the component definition expects the material to be a part of.
+     */
     private final Category category;
 
+    /**
+     * Creates a new {@link ComponentDefinitionRecord}.
+     *
+     * @param id         The id of the component definition.
+     * @param identifier The identifier of the component definition.
+     * @param notes      The notes of the component definition.
+     * @param category   The category the component definition expects the material to be a part of.
+     */
     public ComponentDefinitionRecord(int id, String identifier, String notes, Category category)
     {
         this.id = id;
@@ -38,6 +61,11 @@ public class ComponentDefinitionRecord implements ComponentDefinition
         return identifier;
     }
 
+    /**
+     * Returns the notes of the component.
+     *
+     * @return The notes of the component.
+     */
     @Override public String getNotes()
     {
         return notes;

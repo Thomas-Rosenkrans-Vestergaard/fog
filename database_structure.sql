@@ -193,7 +193,7 @@ CREATE TABLE `customers` (
   `phone` varchar(30) CHARACTER SET utf8 NOT NULL,
   `password` varchar(255) CHARACTER SET utf8 NOT NULL,
   `active` bit(1) NOT NULL DEFAULT b'1',
-  `confirmed` bit(1) NOT NULL DEFAULT b'0',
+  `verified` bit(1) NOT NULL DEFAULT b'0',
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`)

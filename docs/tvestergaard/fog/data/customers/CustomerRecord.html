@@ -140,7 +140,7 @@ implements <a href="../../../../tvestergaard/fog/data/customers/Customer.html" t
               java.lang.String&nbsp;phone,
               java.lang.String&nbsp;password,
               boolean&nbsp;active,
-              boolean&nbsp;confirmed,
+              boolean&nbsp;verified,
               java.time.LocalDateTime&nbsp;createdAt)</code>
 <div class="block">Creates a new customer.</div>
 </td>
@@ -219,7 +219,7 @@ implements <a href="../../../../tvestergaard/fog/data/customers/Customer.html" t
 <tr id="i10" class="altColor">
 <td class="colFirst"><code>boolean</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../tvestergaard/fog/data/customers/CustomerRecord.html#isConfirmed--">isConfirmed</a></span>()</code>
-<div class="block">Returns whether or not the customer has confirmed their membership using their email address.</div>
+<div class="block">Returns whether or not the customer has verified their membership using their email address.</div>
 </td>
 </tr>
 <tr id="i11" class="rowColor">
@@ -307,7 +307,7 @@ implements <a href="../../../../tvestergaard/fog/data/customers/Customer.html" t
                       java.lang.String&nbsp;phone,
                       java.lang.String&nbsp;password,
                       boolean&nbsp;active,
-                      boolean&nbsp;confirmed,
+                      boolean&nbsp;verified,
                       java.time.LocalDateTime&nbsp;createdAt)</pre>
 <div class="block">Creates a new customer.</div>
 <dl>
@@ -319,7 +319,7 @@ implements <a href="../../../../tvestergaard/fog/data/customers/Customer.html" t
 <dd><code>phone</code> - The phone number of the customer.</dd>
 <dd><code>password</code> - The password of the customer.</dd>
 <dd><code>active</code> - Whether or not the customer is active.</dd>
-<dd><code>confirmed</code> - Whether or not the customer has confirmed their membership using their email address.</dd>
+<dd><code>verified</code> - Whether or not the customer has verified their membership using their email address.</dd>
 <dd><code>createdAt</code> - The moment in time when the customer was created.</dd>
 </dl>
 </li>
@@ -547,12 +547,12 @@ implements <a href="../../../../tvestergaard/fog/data/customers/Customer.html" t
 <li class="blockList">
 <h4>isConfirmed</h4>
 <pre>public&nbsp;boolean&nbsp;isConfirmed()</pre>
-<div class="block">Returns whether or not the customer has confirmed their membership using their email address.</div>
+<div class="block">Returns whether or not the customer has verified their membership using their email address.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
 <dd><code><a href="../../../../tvestergaard/fog/data/customers/Customer.html#isConfirmed--">isConfirmed</a></code>&nbsp;in interface&nbsp;<code><a href="../../../../tvestergaard/fog/data/customers/Customer.html" title="interface in tvestergaard.fog.data.customers">Customer</a></code></dd>
 <dt><span class="returnLabel">Returns:</span></dt>
-<dd><code>true</code> if the customer has confirmed their membership using their email address.</dd>
+<dd><code>true</code> if the customer has verified their membership using their email address.</dd>
 </dl>
 </li>
 </ul>

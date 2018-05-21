@@ -42,9 +42,9 @@ public class CustomerRecord implements Customer
     private boolean active;
 
     /**
-     * Whether or not the customer has confirmed their membership using their email address.
+     * Whether or not the customer has verified their membership using their email address.
      */
-    private boolean confirmed;
+    private boolean verified;
 
     /**
      * The moment in time when the customer was created.
@@ -61,11 +61,11 @@ public class CustomerRecord implements Customer
      * @param phone     The phone number of the customer.
      * @param password  The password of the customer.
      * @param active    Whether or not the customer is active.
-     * @param confirmed Whether or not the customer has confirmed their membership using their email address.
+     * @param verified  Whether or not the customer has verified their membership using their email address.
      * @param createdAt The moment in time when the customer was created.
      */
     public CustomerRecord(int id, String name, String address, String email, String phone, String password,
-                          boolean active, boolean confirmed, LocalDateTime createdAt)
+                          boolean active, boolean verified, LocalDateTime createdAt)
     {
         this.id = id;
         this.name = name;
@@ -74,7 +74,7 @@ public class CustomerRecord implements Customer
         this.phone = phone;
         this.password = password;
         this.active = active;
-        this.confirmed = confirmed;
+        this.verified = verified;
         this.createdAt = createdAt;
     }
 
@@ -209,13 +209,13 @@ public class CustomerRecord implements Customer
     }
 
     /**
-     * Returns whether or not the customer has confirmed their membership using their email address.
+     * Returns whether or not the customer has verified their membership using their email address.
      *
-     * @return {@code true} if the customer has confirmed their membership using their email address.
+     * @return {@code true} if the customer has verified their membership using their email address.
      */
-    @Override public boolean isConfirmed()
+    @Override public boolean isVerified()
     {
-        return confirmed;
+        return verified;
     }
 
     /**
@@ -233,18 +233,19 @@ public class CustomerRecord implements Customer
         if (this == o) return true;
         if (!(o instanceof Customer)) return false;
         Customer that = (Customer) o;
-        return id == that.getId() &&
-                active == that.isActive() &&
-                Objects.equals(name, that.getName()) &&
-                Objects.equals(address, that.getAddress()) &&
-                Objects.equals(email, that.getEmail()) &&
-                Objects.equals(phone, that.getPhone()) &&
-                Objects.equals(password, that.getPassword()) &&
-                Objects.equals(createdAt, that.getCreatedAt());
+        return getId() == that.getId() &&
+                isActive() == that.isActive() &&
+                verified == that.isVerified() &&
+                Objects.equals(getName(), that.getName()) &&
+                Objects.equals(getAddress(), that.getAddress()) &&
+                Objects.equals(getEmail(), that.getEmail()) &&
+                Objects.equals(getPhone(), that.getPhone()) &&
+                Objects.equals(getPassword(), that.getPassword()) &&
+                Objects.equals(getCreatedAt(), that.getCreatedAt());
     }
 
     @Override public int hashCode()
     {
-        return Objects.hash(getId());
+        return Objects.hash(getId(), getName(), getAddress(), getEmail(), getPhone(), getPassword(), isActive(), verified, getCreatedAt());
     }
 }

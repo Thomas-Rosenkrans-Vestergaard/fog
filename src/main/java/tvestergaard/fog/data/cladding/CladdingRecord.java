@@ -21,7 +21,7 @@ public class CladdingRecord implements Cladding
     private String description;
 
     /**
-     * Whether or not the cladding can be applied to new orders.
+     * Whether or not the cladding can currently be applied to new orders.
      */
     private boolean active;
 

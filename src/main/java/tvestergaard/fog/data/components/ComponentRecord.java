@@ -4,14 +4,40 @@ import tvestergaard.fog.data.materials.Material;
 
 import java.util.Objects;
 
+/**
+ * The default implementation for the {@link Component} interface.
+ */
 public class ComponentRecord implements Component
 {
 
-    private final ComponentDefinition definition;
-    private final int                 definitionId;
-    private final Material            material;
-    private final int                 materialId;
+    /**
+     * The id of the definition of the component.
+     */
+    private final int definitionId;
 
+    /**
+     * The definition of the component.
+     */
+    private final ComponentDefinition definition;
+
+    /**
+     * The id of the material selected for the component.
+     */
+    private final int materialId;
+
+    /**
+     * The material selected for the component.
+     */
+    private final Material material;
+
+    /**
+     * Creates a new {@link ComponentRecord}.
+     *
+     * @param definitionId The id of the definition of the component.
+     * @param definition   The definition of the component.
+     * @param materialId   The id of the material selected for the component.
+     * @param material     The material selected for the component.
+     */
     public ComponentRecord(int definitionId, ComponentDefinition definition, int materialId, Material material)
     {
         this.definitionId = definitionId;
@@ -20,11 +46,21 @@ public class ComponentRecord implements Component
         this.material = material;
     }
 
+    /**
+     * Returns the id of the definition of the component.
+     *
+     * @return The id of the definition of the component.
+     */
     @Override public int getDefinitionId()
     {
         return definitionId;
     }
 
+    /**
+     * Returns the id of the material selected as the component.
+     *
+     * @return The id of the material selected as the component.
+     */
     @Override public int getMaterialId()
     {
         return materialId;

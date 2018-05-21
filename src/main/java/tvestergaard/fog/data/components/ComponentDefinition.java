@@ -2,6 +2,9 @@ package tvestergaard.fog.data.components;
 
 import tvestergaard.fog.data.materials.Category;
 
+/**
+ * Represents some component definition.
+ */
 public interface ComponentDefinition
 {
 

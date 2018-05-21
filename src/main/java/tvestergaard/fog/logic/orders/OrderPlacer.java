@@ -103,7 +103,7 @@ public class OrderPlacer
         if (!customer.isActive())
             throw new InactiveCustomerException();
 
-        if (!customer.isConfirmed())
+        if (!customer.isVerified())
             throw new UnconfirmedCustomerException();
 
         Order order = orderDAO.create(OrderBlueprint.from(

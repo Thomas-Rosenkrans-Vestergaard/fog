@@ -8,5 +8,5 @@ public interface Customer extends CustomerUpdater
      *
      * @return {@code true} if the customer has confirmed their membership using their email address.
      */
-    boolean isConfirmed();
+    boolean isVerified();
 }
