@@ -80,6 +80,7 @@ public class MysqlOrderDAOTest
     public static void afterClass() throws Exception
     {
         Connection connection = TestDataSource.getSource().getConnection();
+        connection.createStatement().executeUpdate("DELETE FROM tokens");
         connection.createStatement().executeUpdate("DELETE FROM customers");
         connection.createStatement().executeUpdate("DELETE FROM claddings");
         connection.createStatement().executeUpdate("DELETE FROM roofings");
@@ -99,7 +100,7 @@ public class MysqlOrderDAOTest
         ShedBlueprint expectedShed     = ShedBlueprint.from(200, cladding1.getId(), flooring1.getId());
 
         Order actual = dao.create(OrderBlueprint.from(expectedCustomer.getId(), expectedWidth, expectedLength,
-                expectedHeight, expectedRoofing.getId(), expectedSlope, expectedRafters, expectedActive, null, "Some comment"));
+                expectedHeight, expectedRoofing.getId(), expectedSlope, expectedRafters, expectedActive, expectedShed, "Some comment"));
 
         assertEquals(expectedCustomer, actual.getCustomer());
         assertEquals(expectedWidth, actual.getWidth());

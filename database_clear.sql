@@ -1,8 +1,9 @@
 SET SQL_SAFE_UPDATES = 0;
 
-DELETE FROM bom_lines;
-DELETE FROM bom;
 DELETE FROM purchases;
+DELETE FROM bom_lines;
+DELETE FROM bom_drawings;
+DELETE FROM bom;
 DELETE FROM offers;
 DELETE FROM orders;
 DELETE FROM sheds;

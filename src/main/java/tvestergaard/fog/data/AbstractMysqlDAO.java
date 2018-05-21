@@ -129,7 +129,7 @@ public abstract class AbstractMysqlDAO
                 resultSet.getString(table + ".phone"),
                 resultSet.getString(table + ".password"),
                 resultSet.getBoolean(table + ".active"),
-                resultSet.getBoolean(table + ".confirmed"),
+                resultSet.getBoolean(table + ".verified"),
                 resultSet.getTimestamp(table + ".created_at").toLocalDateTime()
         );
     }

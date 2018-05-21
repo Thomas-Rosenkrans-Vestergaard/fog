@@ -21,6 +21,11 @@ import java.util.List;
 public class MysqlModelDAO extends AbstractMysqlDAO implements ModelDAO
 {
 
+    /**
+     * Creates a new {@link MysqlModelDAO}.
+     *
+     * @param source The source to act upon.
+     */
     public MysqlModelDAO(MysqlDataSource source)
     {
         super(source);

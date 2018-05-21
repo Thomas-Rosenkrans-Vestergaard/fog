@@ -42,6 +42,7 @@ public class MysqlCustomersDAOTest
     public void after() throws Exception
     {
         Connection connection = TestDataSource.getSource().getConnection();
+        connection.createStatement().executeUpdate("DELETE FROM tokens");
         connection.createStatement().executeUpdate("DELETE FROM customers");
     }
 

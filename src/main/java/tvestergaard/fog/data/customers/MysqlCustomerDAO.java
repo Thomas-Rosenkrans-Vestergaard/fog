@@ -195,7 +195,7 @@ public class MysqlCustomerDAO extends AbstractMysqlDAO implements CustomerDAO
 
             try {
 
-                final String updateSQL = "UPDATE customers SET confirmed = TRUE " +
+                final String updateSQL = "UPDATE customers SET verified = TRUE " +
                         "WHERE id = (SELECT customer FROM tokens WHERE tokens.id = ? LIMIT 1);";
                 try (PreparedStatement statement = connection.prepareStatement(updateSQL)) {
                     statement.setInt(1, token);
