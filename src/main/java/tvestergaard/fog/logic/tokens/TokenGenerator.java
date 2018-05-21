@@ -3,6 +3,9 @@ package tvestergaard.fog.logic.tokens;
 import java.security.SecureRandom;
 import java.util.Base64;
 
+/**
+ * Generates the secret key for a token.
+ */
 public class TokenGenerator
 {
 

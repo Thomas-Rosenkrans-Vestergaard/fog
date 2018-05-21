@@ -8,6 +8,9 @@ import tvestergaard.fog.data.tokens.TokenUse;
 
 import java.time.LocalDateTime;
 
+/**
+ * Authenticates provided tokens using the provided token dao to access the tokens persisted in the application.
+ */
 public class TokenAuthenticator
 {
 

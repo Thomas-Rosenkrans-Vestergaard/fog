@@ -8,7 +8,7 @@ import tvestergaard.fog.data.tokens.TokenDAO;
 import tvestergaard.fog.data.tokens.TokenUse;
 
 /**
- * Issues a single use token for some customer for some provided use.
+ * Generates and persists some token for the provided use case.
  */
 public class TokenIssuer
 {

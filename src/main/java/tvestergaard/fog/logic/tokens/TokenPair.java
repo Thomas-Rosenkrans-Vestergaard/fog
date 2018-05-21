@@ -1,5 +1,8 @@
 package tvestergaard.fog.logic.tokens;
 
+/**
+ * Represents a token with an id and a secret key.
+ */
 public class TokenPair
 {
 
@@ -9,7 +12,7 @@ public class TokenPair
     public final int id;
 
     /**
-     * The secret password needed to authenticate the token.
+     * The secret key needed to authenticate the token.
      */
     public final String secret;
 
@@ -23,5 +26,25 @@ public class TokenPair
     {
         this.id = id;
         this.secret = secret;
+    }
+
+    /**
+     * Returns the unique identifier of the token.
+     *
+     * @return The unique identifier of the token.
+     */
+    public int getId()
+    {
+        return this.id;
+    }
+
+    /**
+     * Returns the secret key needed to authenticate the token.
+     *
+     * @return The secret key needed to authenticate the token.
+     */
+    public String getSecret()
+    {
+        return this.secret;
     }
 }

@@ -5,19 +5,15 @@
         xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
         version="3.0">
     <filter>
-
         <filter-name>EncodingFilter</filter-name>
         <filter-class>
             tvestergaard.fog.presentation.EncodingFilter
         </filter-class>
-
         <init-param>
             <param-name>encoding</param-name>
             <param-value>UTF-8</param-value>
         </init-param>
-
     </filter>
-
     <filter-mapping>
         <filter-name>EncodingFilter</filter-name>
         <url-pattern>/*</url-pattern>
@@ -29,7 +25,7 @@
         </taglib>
     </jsp-config>
     <error-page>
-        <exception-type>java.lang.Exception</exception-type>
+        <exception-type>java.lang.Throwable</exception-type>
         <location>/error-handler</location>
     </error-page>
 </web-app>
