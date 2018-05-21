@@ -213,13 +213,33 @@
             ${csrf}
             <input type="hidden" name="order" value="${order.getId()}">
             <div class="row">
-                <div class="col s10 input-field">
+                <input type="hidden" id="total" value="${summary.getTotal()}">
+                <div class="col s2 input-field">
+                    <input type="number" class="validate" min="0" value="40" id="coverage">
+                    <label for="coverage">Dækningsgrad</label>
+                </div>
+                <script>
+                    $('input#coverage').on('input', updatePrice);
+                    updatePrice();
+
+                    function updatePrice() {
+                        var multiplier = 100 / parseFloat($('input#coverage').val());
+                        console.log(multiplier);
+                        var total = parseInt($('input#total').val());
+                        console.log(total);
+                        console.log(multiplier * total);
+                        $('input#price').val(multiplier * total / 100);
+                    }
+
+                </script>
+                <div class="col s8 input-field">
                     <input type="number" class="validate" pattern="^[0-9]+([\,][0-9]{0,2})?$" min="0" name="price"
                            id="price" required>
                     <label for="price">Tilbud pris</label>
                 </div>
                 <div class="col s2">
-                    <button class="btn-large waves-effect waves-light" type="submit" name="action">
+                    <button class="btn-large waves-effect waves-light" type="submit" name="action"
+                            style="display:block;width: 100%">
                         Opret<i class="material-icons right">send</i>
                     </button>
                 </div>

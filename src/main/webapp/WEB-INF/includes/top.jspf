@@ -140,7 +140,7 @@
         <li><a href="${context}/administration/logout">Log ud</a></li>
         <% } %>
         <% } else { %>
-        <li><a href="${context}/administration/authenticate">Log ind</a></li>
+        <li><a href="${context}/administration/authenticate">Authntificer</a></li>
         <% } %>
     </div>
 </ul>
