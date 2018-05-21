@@ -57,7 +57,7 @@ public class EmployeeValidator
      * @param password The password of the employee to validate.
      * @return The errors with the provided information.
      * @throws DataAccessException When a data access exception occurs.
-     * @see EmployeeFacade#update(int, String, String, String, String, String, boolean)
+     * @see EmployeeFacade#update(int, String, String, Set, String, boolean)
      */
     public Set<EmployeeError> validateUpdate(int id, String name, String username, String password) throws DataAccessException
     {

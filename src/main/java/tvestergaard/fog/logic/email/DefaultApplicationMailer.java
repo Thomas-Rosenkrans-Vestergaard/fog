@@ -6,7 +6,7 @@ import org.simplejavamail.mailer.config.TransportStrategy;
 import tvestergaard.fog.data.customers.Customer;
 import tvestergaard.fog.logic.WebsiteContext;
 
-public class SimpleJavaMailer implements ApplicationMailer
+public class DefaultApplicationMailer implements ApplicationMailer
 {
 
     /**
@@ -23,9 +23,9 @@ public class SimpleJavaMailer implements ApplicationMailer
     private final WebsiteContext websiteContext;
 
     /**
-     * Creates a new {@link SimpleJavaMailer}.
+     * Creates a new {@link DefaultApplicationMailer}.
      */
-    public SimpleJavaMailer(EmailTemplate template, WebsiteContext websiteContext)
+    public DefaultApplicationMailer(EmailTemplate template, WebsiteContext websiteContext)
     {
         this.mailer = new Mailer(HOST, PORT, USER, PASS, TransportStrategy.SMTP_TLS);
         this.template = template;

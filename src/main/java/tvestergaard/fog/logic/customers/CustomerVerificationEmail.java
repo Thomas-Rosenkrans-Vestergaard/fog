@@ -5,7 +5,7 @@ import tvestergaard.fog.logic.WebsiteContext;
 import tvestergaard.fog.logic.email.ApplicationEmail;
 import tvestergaard.fog.logic.tokens.TokenPair;
 
-public class RegistrationEmail implements ApplicationEmail
+public class CustomerVerificationEmail implements ApplicationEmail
 {
 
     /**
@@ -19,12 +19,12 @@ public class RegistrationEmail implements ApplicationEmail
     private final TokenPair token;
 
     /**
-     * Creates a new {@link RegistrationEmail}.
+     * Creates a new {@link CustomerVerificationEmail}.
      *
      * @param customer The customer to send the registration confirmation email to.
      * @param token    The token secret to send in the email.
      */
-    public RegistrationEmail(Customer customer, TokenPair token)
+    public CustomerVerificationEmail(Customer customer, TokenPair token)
     {
         this.customer = customer;
         this.token = token;

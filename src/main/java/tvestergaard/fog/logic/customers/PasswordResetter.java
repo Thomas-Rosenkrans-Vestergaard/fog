@@ -73,7 +73,7 @@ public class PasswordResetter
             throw new InactiveCustomerException();
 
         TokenPair        secret     = tokenIssuer.issue(customer, PASSWORD_RESET);
-        ApplicationEmail resetEmail = new PasswordResetEmail(customer, secret);
+        ApplicationEmail resetEmail = new ForgotPasswordEmail(customer, secret);
         mailer.send(resetEmail);
     }
 

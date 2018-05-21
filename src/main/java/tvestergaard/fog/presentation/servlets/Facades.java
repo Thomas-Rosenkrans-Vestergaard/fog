@@ -33,9 +33,11 @@ import tvestergaard.fog.logic.construction.ConstructionFacade;
 import tvestergaard.fog.logic.customers.CustomerFacade;
 import tvestergaard.fog.logic.email.ApplicationMailer;
 import tvestergaard.fog.logic.email.CurrentEmailTemplate;
+import tvestergaard.fog.logic.email.DefaultApplicationMailer;
 import tvestergaard.fog.logic.email.EmailTemplate;
-import tvestergaard.fog.logic.email.SimpleJavaMailer;
+import tvestergaard.fog.logic.employees.EmployeeAuthentication;
 import tvestergaard.fog.logic.employees.EmployeeFacade;
+import tvestergaard.fog.logic.employees.EmployeeValidator;
 import tvestergaard.fog.logic.floorings.FlooringFacade;
 import tvestergaard.fog.logic.materials.MaterialFacade;
 import tvestergaard.fog.logic.offers.OfferFacade;
@@ -53,7 +55,7 @@ public class Facades
     private static final WebsiteContext websiteContext = new WebsiteContext("http://localhost:8080/fog/");
     private static final EmailTemplate  emailTemplate  = new CurrentEmailTemplate(websiteContext);
 
-    private static final ApplicationMailer mailer = new SimpleJavaMailer(emailTemplate, websiteContext);
+    private static final ApplicationMailer mailer = new DefaultApplicationMailer(emailTemplate, websiteContext);
 
     private static final MysqlDataSource source      = ProductionDataSource.getSource();
     private static final CladdingDAO     claddingDAO = new MysqlCladdingDAO(source);
@@ -73,15 +75,16 @@ public class Facades
     private static final TokenIssuer        tokenIssuer        = new TokenIssuer(tokenDAO, new TokenGenerator());
     private static final TokenAuthenticator tokenAuthenticator = new TokenAuthenticator(tokenDAO, 24);
 
-    public static final CladdingFacade     claddingFacade     = new CladdingFacade(claddingDAO);
-    public static final CustomerFacade     customerFacade     = new CustomerFacade(customerDAO, tokenDAO, mailer);
-    public static final EmployeeFacade     employeeFacade     = new EmployeeFacade(employeeDAO);
-    public static final FlooringFacade     flooringFacade     = new FlooringFacade(flooringDAO);
-    public static final MaterialFacade     materialFacade     = new MaterialFacade(materialDAO);
-    public static final OrderFacade        orderFacade        = new OrderFacade(new OrderPlacer(orderDAO, customerDAO, mailer), orderDAO);
-    public static final RoofingFacade      roofingFacade      = new RoofingFacade(roofingDAO);
-    public static final OfferFacade        offerFacade        = new OfferFacade(offerDAO, orderDAO, employeeDAO, mailer, tokenIssuer, tokenAuthenticator, websiteContext);
-    public static final ConstructionFacade constructionFacade = new ConstructionFacade(modelDAO, roofingDAO);
-    public static final PurchaseFacade     purchaseFacade     = new PurchaseFacade(purchaseDAO, offerDAO, bomDAO, constructionFacade);
-    public static final ModelFacade        skeletonFacade     = new ModelFacade(modelDAO);
+    public static final  CladdingFacade     claddingFacade     = new CladdingFacade(claddingDAO);
+    public static final  CustomerFacade     customerFacade     = new CustomerFacade(customerDAO, tokenDAO, mailer);
+    private static final EmployeeValidator  employeeValidator  = new EmployeeValidator(employeeDAO);
+    public static final  EmployeeFacade     employeeFacade     = new EmployeeFacade(employeeDAO, employeeValidator, new EmployeeAuthentication(employeeDAO, employeeValidator));
+    public static final  FlooringFacade     flooringFacade     = new FlooringFacade(flooringDAO);
+    public static final  MaterialFacade     materialFacade     = new MaterialFacade(materialDAO);
+    public static final  OrderFacade        orderFacade        = new OrderFacade(new OrderPlacer(orderDAO, customerDAO, mailer), orderDAO);
+    public static final  RoofingFacade      roofingFacade      = new RoofingFacade(roofingDAO);
+    public static final  OfferFacade        offerFacade        = new OfferFacade(offerDAO, orderDAO, employeeDAO, mailer, tokenIssuer, tokenAuthenticator, websiteContext);
+    public static final  ConstructionFacade constructionFacade = new ConstructionFacade(modelDAO, roofingDAO);
+    public static final  PurchaseFacade     purchaseFacade     = new PurchaseFacade(purchaseDAO, offerDAO, bomDAO, constructionFacade);
+    public static final  ModelFacade        skeletonFacade     = new ModelFacade(modelDAO);
 }

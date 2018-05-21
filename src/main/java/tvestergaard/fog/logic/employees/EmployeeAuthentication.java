@@ -13,12 +13,28 @@ import static tvestergaard.fog.data.constraints.Constraint.eq;
 import static tvestergaard.fog.data.constraints.Constraint.where;
 import static tvestergaard.fog.data.employees.EmployeeColumn.USERNAME;
 
+/**
+ * Contains methods for registering and authenticating customers.
+ */
 public class EmployeeAuthentication
 {
 
-    private final EmployeeDAO       employeeDAO;
+    /**
+     * The employee dao used to access the date storage for the customers in the application.
+     */
+    private final EmployeeDAO employeeDAO;
+
+    /**
+     * The object used to validate customer information.
+     */
     private final EmployeeValidator validator;
 
+    /**
+     * Creates a new {@link EmployeeAuthentication}.
+     *
+     * @param employeeDAO The employee dao used to access the date storage for the customers in the application.
+     * @param validator   The object used to validate customer information.
+     */
     public EmployeeAuthentication(EmployeeDAO employeeDAO, EmployeeValidator validator)
     {
         this.employeeDAO = employeeDAO;
@@ -37,11 +53,8 @@ public class EmployeeAuthentication
      * @throws DataAccessException        When a data storage exception occurs.
      * @throws EmployeeValidatorException When the provided details are invalid.
      */
-    public Employee register(String name,
-                             String username,
-                             String password,
-                             Set<Role> roles,
-                             boolean active) throws DataAccessException, EmployeeValidatorException
+    public Employee register(String name, String username, String password, Set<Role> roles, boolean active)
+            throws DataAccessException, EmployeeValidatorException
     {
         Set<EmployeeError> reasons = validator.validateRegister(name, username, password);
         if (!reasons.isEmpty())

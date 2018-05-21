@@ -43,7 +43,6 @@ public class MysqlOrderDAOTest
     private static Flooring flooring1;
 
     private Order order1;
-    private Order order2;
 
     @BeforeClass
     public static void before() throws Exception
@@ -64,7 +63,6 @@ public class MysqlOrderDAOTest
     {
         ShedBlueprint shedBlueprint = ShedBlueprint.from(10, cladding1.getId(), flooring1.getId());
         this.order1 = dao.create(OrderBlueprint.from(customer1.getId(), 1, 2, 3, roofing1.getId(), 6, RafterChoice.PREBUILT, true, shedBlueprint, "Some comment"));
-        this.order2 = dao.create(OrderBlueprint.from(customer2.getId(), 10, 11, 12, roofing2.getId(), 34, RafterChoice.BUILD_SELF, false, null, "Some comment"));
     }
 
     @After

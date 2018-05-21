@@ -115,16 +115,16 @@ public class CustomerFacade
     /**
      * Confirms the membership matching the provided token details.
      *
-     * @param id    The id of the token.
-     * @param token The secret token.
+     * @param tokenId     The id of the token.
+     * @param tokenSecret The secret key of the token.
      * @throws ApplicationException    When an exception occurs while performing the operation.
      * @throws IncorrectTokenException When the provided token could not be validated.
      * @throws ExpiredTokenException   When the token secret was valid, but the token had expired.
      */
-    public void confirm(int id, String token) throws IncorrectTokenException, ExpiredTokenException
+    public void confirm(int tokenId, String tokenSecret) throws IncorrectTokenException, ExpiredTokenException
     {
         try {
-            emailChallenger.confirm(id, token);
+            emailChallenger.confirm(new TokenPair(tokenId, tokenSecret));
         } catch (DataAccessException e) {
             throw new ApplicationException(e);
         }
@@ -176,11 +176,11 @@ public class CustomerFacade
      * @throws CustomerValidatorException When the provided details are invalid.
      * @throws ApplicationException       When an exception occurs while performing the operation.
      */
-    public Customer register(String name, String address, String email, String phone, String password, boolean active)
+    public Customer register(String name, String address, String email, String phone, String password)
             throws CustomerValidatorException
     {
         try {
-            return authentication.register(name, address, email, phone, password, active);
+            return authentication.register(name, address, email, phone, password);
         } catch (DataAccessException e) {
             throw new ApplicationException(e);
         }

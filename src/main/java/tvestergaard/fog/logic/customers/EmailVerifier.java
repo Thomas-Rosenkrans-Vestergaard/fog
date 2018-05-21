@@ -7,8 +7,6 @@ import tvestergaard.fog.data.tokens.TokenUse;
 import tvestergaard.fog.logic.email.ApplicationMailer;
 import tvestergaard.fog.logic.tokens.*;
 
-import java.security.SecureRandom;
-
 /**
  * Challenges new customers to verify their email address.
  */
@@ -16,24 +14,33 @@ public class EmailVerifier
 {
 
     /**
-     * The source of randomness used to generate the tokens.
-     */
-    private final SecureRandom random = new SecureRandom();
-
-    /**
-     * The customer DAO used to
+     * The customer DAO used to access the customers known to the application.
      */
     private final CustomerDAO customerDAO;
 
-    private final TokenIssuer        tokenIssuer;
-    private final TokenAuthenticator tokenAuthenticator;
-    private final ApplicationMailer  mailer;
+    /**
+     * The object responsible for issuing the token sent to the email address of the customer.
+     */
+    private final TokenIssuer tokenIssuer;
 
     /**
-     * The number of hours the token can be used from when it was first issued.
+     * The object responsible for authenticating the token sent to the email address of the customer.
      */
-    private final int EXPIRATION_TIME_HOURS = 24;
+    private final TokenAuthenticator tokenAuthenticator;
 
+    /**
+     * The object responsible for sending the verification email to the email address of the customer.
+     */
+    private final ApplicationMailer mailer;
+
+    /**
+     * Creates a new {@link EmailVerifier}.
+     *
+     * @param customerDAO        The customer DAO used to access the customers known to the application.
+     * @param tokenIssuer        The object responsible for issuing the token sent to the email address of the customer.
+     * @param tokenAuthenticator The object responsible for authenticating the token sent to the email address of the customer.
+     * @param mailer             The object responsible for sending the verification email to the email address of the customer.
+     */
     public EmailVerifier(CustomerDAO customerDAO, TokenIssuer tokenIssuer, TokenAuthenticator tokenAuthenticator, ApplicationMailer mailer)
     {
         this.customerDAO = customerDAO;
@@ -51,26 +58,25 @@ public class EmailVerifier
      */
     public void challenge(Customer customer) throws DataAccessException
     {
-        TokenPair         secret = tokenIssuer.issue(customer, TokenUse.EMAIL_VERIFICATION);
-        RegistrationEmail email  = new RegistrationEmail(customer, secret);
+        TokenPair                 secret = tokenIssuer.issue(customer, TokenUse.EMAIL_VERIFICATION);
+        CustomerVerificationEmail email  = new CustomerVerificationEmail(customer, secret);
         mailer.send(email);
     }
 
     /**
      * Verifies the email address issued the provided token.
      *
-     * @param id    The id of the token.
-     * @param token The secret token.
+     * @param tokenPair The token to use when confirming the email address.
      * @throws DataAccessException     When an exception occurs while performing the operation.
      * @throws IncorrectTokenException When the provided token could not be validated.
      * @throws ExpiredTokenException   When the token secret was valid, but the token had expired.
      */
-    public void confirm(int id, String token) throws DataAccessException, IncorrectTokenException, ExpiredTokenException
+    public void confirm(TokenPair tokenPair) throws DataAccessException, IncorrectTokenException, ExpiredTokenException
     {
-        if (!tokenAuthenticator.authenticate(new TokenPair(id, token), TokenUse.EMAIL_VERIFICATION)) {
+        if (!tokenAuthenticator.authenticate(tokenPair, TokenUse.EMAIL_VERIFICATION)) {
             throw new IncorrectTokenException();
         }
 
-        customerDAO.confirmMembership(id);
+        customerDAO.confirmMembership(tokenPair.id);
     }
 }

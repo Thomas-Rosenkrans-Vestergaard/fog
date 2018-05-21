@@ -26,19 +26,23 @@ public class EmployeeFacade
      */
     private final EmployeeValidator validator;
 
+    /**
+     * The object responsible the registering and authenticating customers.
+     */
     private final EmployeeAuthentication authentication;
 
     /**
      * Creates a new {@link EmployeeFacade}.
      *
-     * @param employeeDAO The {@link EmployeeDAO} used to access and make changes to the data storage used by the
-     *                    application.
+     * @param employeeDAO    The {@link EmployeeDAO} used to access and make changes to the data storage used by the application.
+     * @param validator      The validator responsible for validating information about employees.
+     * @param authentication The object responsible the registering and authenticating customers.
      */
-    public EmployeeFacade(EmployeeDAO employeeDAO)
+    public EmployeeFacade(EmployeeDAO employeeDAO, EmployeeValidator validator, EmployeeAuthentication authentication)
     {
         this.employeeDAO = employeeDAO;
-        this.validator = new EmployeeValidator(employeeDAO);
-        this.authentication = new EmployeeAuthentication(employeeDAO, validator);
+        this.validator = validator;
+        this.authentication = authentication;
     }
 
     /**

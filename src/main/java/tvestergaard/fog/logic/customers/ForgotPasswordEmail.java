@@ -5,7 +5,7 @@ import tvestergaard.fog.logic.WebsiteContext;
 import tvestergaard.fog.logic.email.ApplicationEmail;
 import tvestergaard.fog.logic.tokens.TokenPair;
 
-public class PasswordResetEmail implements ApplicationEmail
+public class ForgotPasswordEmail implements ApplicationEmail
 {
 
     /**
@@ -19,12 +19,12 @@ public class PasswordResetEmail implements ApplicationEmail
     private final TokenPair token;
 
     /**
-     * Creates a new {@link PasswordResetEmail}.
+     * Creates a new {@link ForgotPasswordEmail}.
      *
      * @param customer The customer to send the password-reset email to.
      * @param token    The token to send within the password-reset email.
      */
-    public PasswordResetEmail(Customer customer, TokenPair token)
+    public ForgotPasswordEmail(Customer customer, TokenPair token)
     {
         this.customer = customer;
         this.token = token;

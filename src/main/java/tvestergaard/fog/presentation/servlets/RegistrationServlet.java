@@ -75,8 +75,7 @@ public class RegistrationServlet extends HttpServlet
                     parameters.value("address"),
                     parameters.value("email"),
                     parameters.value("phone"),
-                    parameters.value("password"),
-                    true);
+                    parameters.value("password"));
 
             HttpSession session = req.getSession();
             session.setAttribute("customer", customer);

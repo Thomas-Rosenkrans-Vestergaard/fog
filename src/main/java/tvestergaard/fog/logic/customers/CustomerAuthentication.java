@@ -15,10 +15,28 @@ import static tvestergaard.fog.data.customers.CustomerColumn.EMAIL;
 public class CustomerAuthentication
 {
 
-    private final CustomerDAO       customerDAO;
-    private final CustomerValidator validator;
-    private final EmailVerifier     emailChallenger;
+    /**
+     * The customer dao used to access the customers in the application.
+     */
+    private final CustomerDAO customerDAO;
 
+    /**
+     * The object responsible the validating customer information.
+     */
+    private final CustomerValidator validator;
+
+    /**
+     * The object responsible for verifying customer emails.
+     */
+    private final EmailVerifier emailChallenger;
+
+    /**
+     * Creates a new {@link CustomerAuthentication}:
+     *
+     * @param customerDAO     The customer dao used to access the customers in the application.
+     * @param validator       The object responsible the validating customer information.
+     * @param emailChallenger The object responsible for verifying customer emails.
+     */
     public CustomerAuthentication(CustomerDAO customerDAO, CustomerValidator validator, EmailVerifier emailChallenger)
     {
         this.customerDAO = customerDAO;
@@ -34,22 +52,17 @@ public class CustomerAuthentication
      * @param email    The email address of the customer to create.
      * @param phone    The phone number of the customer to create.
      * @param password The password of the customer to create.
-     * @param active   Whether or not the customer can be applied to orders.
      * @return The customer instance representing the newly created customer.
      * @throws DataAccessException        When a data storage exception occurs.
      * @throws CustomerValidatorException When the provided details are invalid.
      */
-    public Customer register(String name,
-                             String address,
-                             String email,
-                             String phone,
-                             String password,
-                             boolean active) throws DataAccessException, CustomerValidatorException
+    public Customer register(String name, String address, String email, String phone, String password)
+            throws DataAccessException, CustomerValidatorException
     {
         Set<CustomerError> reasons = validator.validateRegister(name, address, email, phone, password);
         if (!reasons.isEmpty())
             throw new CustomerValidatorException(reasons);
-        CustomerBlueprint blueprint = CustomerBlueprint.from(name, address, email, phone, password, active);
+        CustomerBlueprint blueprint = CustomerBlueprint.from(name, address, email, phone, password, true);
         blueprint.setPassword(hash(password));
         Customer customer = customerDAO.create(blueprint);
         emailChallenger.challenge(customer);

@@ -159,8 +159,7 @@ public class AdministrationCustomersServlet extends AdministrationServlet
                     !parameters.isPresent("address") ||
                     !parameters.isPresent("email") ||
                     !parameters.isPresent("phone") ||
-                    !parameters.isPresent("password") ||
-                    !parameters.isBoolean("active")) {
+                    !parameters.isPresent("password")) {
                 notifications.error("Cannot format parameters.");
                 response.sendRedirect("customers");
                 return;
@@ -171,8 +170,7 @@ public class AdministrationCustomersServlet extends AdministrationServlet
                         parameters.value("address"),
                         parameters.value("email"),
                         parameters.value("phone"),
-                        parameters.value("password"),
-                        parameters.getBoolean("active"));
+                        parameters.value("password"));
 
                 notifications.success("Kunden blev oprettet.");
                 response.sendRedirect("?action=update&id=" + customer.getId());
