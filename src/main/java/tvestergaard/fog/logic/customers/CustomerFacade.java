@@ -193,8 +193,9 @@ public class CustomerFacade
      * @param password The password to authenticate with.
      * @return The customer who was authenticated. {@code null} in case no customer with the provided credentials exist.
      * @throws InactiveCustomerException When the provided customer is marked inactive.
+     * @throws CustomerAuthentication    When the provided email or password is incorrect.
      */
-    public Customer authenticate(String email, String password) throws InactiveCustomerException
+    public Customer authenticate(String email, String password) throws InactiveCustomerException, CustomerAuthenticationException
     {
         try {
             return authentication.authenticate(email, password);
@@ -246,20 +247,20 @@ public class CustomerFacade
      * @param customerId  The id of the customer to update the password of.
      * @param oldPassword The old password.
      * @param newPassword The new password.
-     * @throws ApplicationException     When a data storage exception occurs.
-     * @throws UnknownCustomerException When the customer is unknown to the application.
-     * @throws AuthenticationException  When the provided old password does not match the current password of the customer.
+     * @throws ApplicationException            When a data storage exception occurs.
+     * @throws UnknownCustomerException        When the customer is unknown to the application.
+     * @throws CustomerAuthenticationException When the provided old password does not match the current password of the customer.
      */
     public void updatePassword(int customerId, String oldPassword, String newPassword) throws ApplicationException,
                                                                                               UnknownCustomerException,
-                                                                                              AuthenticationException
+                                                                                              CustomerAuthenticationException
     {
         try {
             Customer customer = customerDAO.first(where(eq(ID, customerId)));
             if (customer == null)
                 throw new UnknownCustomerException();
             if (!check(customer.getPassword(), oldPassword))
-                throw new AuthenticationException();
+                throw new CustomerAuthenticationException();
 
             customer.setPassword(hash(newPassword));
             customerDAO.update(customer);

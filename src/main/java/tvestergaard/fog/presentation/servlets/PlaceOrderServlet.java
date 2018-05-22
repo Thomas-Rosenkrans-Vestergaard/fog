@@ -10,6 +10,7 @@ import tvestergaard.fog.data.orders.ShedBlueprint;
 import tvestergaard.fog.data.orders.ShedRecord;
 import tvestergaard.fog.data.roofing.RoofingColumn;
 import tvestergaard.fog.logic.claddings.CladdingFacade;
+import tvestergaard.fog.logic.customers.CustomerAuthenticationException;
 import tvestergaard.fog.logic.customers.CustomerFacade;
 import tvestergaard.fog.logic.customers.InactiveCustomerException;
 import tvestergaard.fog.logic.floorings.FlooringFacade;
@@ -35,9 +36,7 @@ import java.io.IOException;
 
 import static tvestergaard.fog.data.constraints.Constraint.eq;
 import static tvestergaard.fog.data.constraints.Constraint.where;
-import static tvestergaard.fog.presentation.PresentationFunctions.csrf;
-import static tvestergaard.fog.presentation.PresentationFunctions.notifications;
-import static tvestergaard.fog.presentation.PresentationFunctions.vefiry;
+import static tvestergaard.fog.presentation.PresentationFunctions.*;
 
 @WebServlet(urlPatterns = {"/place-order", ""})
 public class PlaceOrderServlet extends HttpServlet
@@ -132,12 +131,6 @@ public class PlaceOrderServlet extends HttpServlet
                                         parameters.value("customer-email"),
                                         parameters.value("customer-password"));
 
-            if (customer == null) {
-                notifications.error("Incorrect customer credentials.");
-                resp.sendRedirect("place-order");
-                return;
-            }
-
             HttpSession session = req.getSession();
             session.setAttribute("customer", customer);
 
@@ -165,6 +158,8 @@ public class PlaceOrderServlet extends HttpServlet
             notifications.error("Du kan ikke placére en ordre, sides du er makeret inaktiv.");
         } catch (UnknownCustomerException e) {
             notifications.error("Ukendt kunde.");
+        } catch (CustomerAuthenticationException e) {
+            notifications.error("Incorrect customer credentials.");
         }
 
         resp.sendRedirect("place-order");

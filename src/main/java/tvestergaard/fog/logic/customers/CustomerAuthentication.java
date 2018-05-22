@@ -74,20 +74,26 @@ public class CustomerAuthentication
      *
      * @param email    The email to authenticate with.
      * @param password The password to authenticate with.
-     * @return The customer who was authenticated. {@code null} in case no customer with the provided credentials exist.
-     * @throws DataAccessException       When a data storage exception occurs.
-     * @throws InactiveCustomerException When the provided customer is marked inactive.
+     * @return The customer who was authenticated.
+     * @throws DataAccessException             When a data storage exception occurs.
+     * @throws InactiveCustomerException       When the provided customer is marked inactive.
+     * @throws CustomerAuthenticationException When the provided email or password is incorrect.
      */
-    public Customer authenticate(String email, String password) throws DataAccessException, InactiveCustomerException
+    public Customer authenticate(String email, String password) throws DataAccessException,
+                                                                       InactiveCustomerException,
+                                                                       CustomerAuthenticationException
     {
         Customer customer = customerDAO.first(where(eq(EMAIL, email)));
         if (customer == null)
-            return null;
+            throw new CustomerAuthenticationException();
 
         if (!customer.isActive())
             throw new InactiveCustomerException();
 
-        return BCrypt.checkpw(password, customer.getPassword()) ? customer : null;
+        if (!BCrypt.checkpw(password, customer.getPassword()))
+            throw new CustomerAuthenticationException();
+
+        return customer;
     }
 
     /**

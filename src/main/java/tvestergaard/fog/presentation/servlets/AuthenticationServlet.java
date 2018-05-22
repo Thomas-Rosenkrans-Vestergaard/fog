@@ -1,6 +1,7 @@
 package tvestergaard.fog.presentation.servlets;
 
 import tvestergaard.fog.data.customers.Customer;
+import tvestergaard.fog.logic.customers.CustomerAuthenticationException;
 import tvestergaard.fog.logic.customers.CustomerFacade;
 import tvestergaard.fog.logic.customers.InactiveCustomerException;
 import tvestergaard.fog.presentation.Facades;
@@ -69,12 +70,6 @@ public class AuthenticationServlet extends HttpServlet
         try {
             Customer customer = customerFacade.authenticate(parameters.value("email"), parameters.value("password"));
 
-            if (customer == null) {
-                notifications.error("Ukorrekte akkreditiver.");
-                resp.sendRedirect("authenticate");
-                return;
-            }
-
             String from = req.getParameter("from");
 
             HttpSession session = req.getSession();
@@ -84,6 +79,9 @@ public class AuthenticationServlet extends HttpServlet
 
         } catch (InactiveCustomerException e) {
             notifications.error("Denne konto er inaktiv.");
+            resp.sendRedirect("authenticate");
+        } catch (CustomerAuthenticationException e) {
+            notifications.error("Ukorrekte akkreditiver.");
             resp.sendRedirect("authenticate");
         }
     }

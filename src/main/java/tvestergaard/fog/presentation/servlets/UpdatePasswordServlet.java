@@ -3,7 +3,7 @@ package tvestergaard.fog.presentation.servlets;
 import tvestergaard.fog.data.customers.Customer;
 import tvestergaard.fog.data.customers.UnknownCustomerException;
 import tvestergaard.fog.logic.ApplicationException;
-import tvestergaard.fog.logic.customers.AuthenticationException;
+import tvestergaard.fog.logic.customers.CustomerAuthenticationException;
 import tvestergaard.fog.logic.customers.CustomerFacade;
 import tvestergaard.fog.presentation.Authentication;
 import tvestergaard.fog.presentation.Facades;
@@ -79,7 +79,7 @@ public class UpdatePasswordServlet extends HttpServlet
             notifications.error("ApplicationException");
         } catch (UnknownCustomerException e) {
             notifications.error("Ukendt kunde.");
-        } catch (AuthenticationException e) {
+        } catch (CustomerAuthenticationException e) {
             notifications.error("Den givne adgangskode er ukorrekt.");
         }
 
