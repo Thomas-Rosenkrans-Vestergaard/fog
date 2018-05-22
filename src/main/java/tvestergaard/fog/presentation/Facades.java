@@ -75,7 +75,7 @@ public class Facades
 
 
     private static final TokenIssuer        tokenIssuer        = new TokenIssuer(tokenDAO, new TokenGenerator());
-    private static final TokenAuthenticator tokenAuthenticator = new TokenAuthenticator(tokenDAO, 24);
+    private static final TokenAuthenticator tokenAuthenticator = new TokenAuthenticator(tokenDAO, 24 * 60 * 60);
 
     public static final  CladdingFacade     claddingFacade     = new CladdingFacade(claddingDAO);
     public static final  CustomerFacade     customerFacade     = new CustomerFacade(customerDAO, tokenDAO, mailer);

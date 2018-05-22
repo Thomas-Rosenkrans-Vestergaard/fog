@@ -57,7 +57,7 @@ public class CustomerFacade
 
         TokenGenerator     tokenGenerator     = new TokenGenerator();
         TokenIssuer        tokenIssuer        = new TokenIssuer(tokenDAO, tokenGenerator);
-        TokenAuthenticator tokenAuthenticator = new TokenAuthenticator(tokenDAO, 24);
+        TokenAuthenticator tokenAuthenticator = new TokenAuthenticator(tokenDAO, 24 * 60 * 60);
 
         this.emailChallenger = new EmailVerifier(customerDAO, tokenIssuer, tokenAuthenticator, mailer);
         this.passwordResetter = new PasswordResetter(customerDAO, tokenIssuer, tokenAuthenticator, mailer);

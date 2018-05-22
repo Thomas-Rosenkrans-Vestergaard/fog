@@ -27,13 +27,13 @@ public class TokenAuthenticator
     /**
      * Creates a new {@link TokenAuthenticator}.
      *
-     * @param tokenDAO        The TokenDAO used to query the issued tokens from data storage.
-     * @param expirationHours The number of hours the token should be considered valid.
+     * @param tokenDAO          The TokenDAO used to query the issued tokens from data storage.
+     * @param expirationSeconds The number of seconds the token should be considered valid.
      */
-    public TokenAuthenticator(TokenDAO tokenDAO, int expirationHours)
+    public TokenAuthenticator(TokenDAO tokenDAO, int expirationSeconds)
     {
         this.tokenDAO = tokenDAO;
-        this.expirationHours = expirationHours;
+        this.expirationHours = expirationSeconds;
     }
 
     /**
@@ -51,7 +51,7 @@ public class TokenAuthenticator
         if (tokenDB == null)
             return false;
 
-        LocalDateTime expiration = LocalDateTime.from(tokenDB.getCreatedAt().plusHours(expirationHours));
+        LocalDateTime expiration = LocalDateTime.from(tokenDB.getCreatedAt().plusSeconds(expirationHours));
         if (LocalDateTime.now().isAfter(expiration)) {
             throw new ExpiredTokenException();
         }
