@@ -5,9 +5,22 @@ import java.util.Objects;
 public class ModelRecord implements Model
 {
 
-    private final int    id;
-    private       String name;
+    /**
+     * The unique identifier of the model.
+     */
+    private final int id;
 
+    /**
+     * The name of the model.
+     */
+    private String name;
+
+    /**
+     * Creates a new {@link ModelRecord}.
+     *
+     * @param id   The unique identifier of the model.
+     * @param name The name of the model.
+     */
     public ModelRecord(int id, String name)
     {
         this.id = id;
