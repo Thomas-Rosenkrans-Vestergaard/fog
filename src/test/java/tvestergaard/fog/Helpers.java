@@ -35,6 +35,9 @@ public class Helpers
 
     public static int randomInt(int min)
     {
+        if (min == 0)
+            return random.nextInt();
+
         return random.nextInt(min) + min;
     }
 
