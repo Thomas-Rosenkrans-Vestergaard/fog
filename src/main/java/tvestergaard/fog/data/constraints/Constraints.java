@@ -23,11 +23,15 @@ public class Constraints<C extends Column<C>>
         if (whereConditions == null)
             whereConditions = new ArrayList<>();
 
-        for (WhereCondition<C> condition : conditions)
-            if (whereConditions.isEmpty())
+        for (WhereCondition<C> condition : conditions) {
+            if (whereConditions.isEmpty() || condition instanceof BinaryOrCondition ||
+                    condition instanceof BinaryAndCondition ||
+                    condition instanceof UnaryAndCondition ||
+                    condition instanceof UnaryOrCondition)
                 whereConditions.add(condition);
             else
                 whereConditions.add(and(condition));
+        }
 
         return this;
     }

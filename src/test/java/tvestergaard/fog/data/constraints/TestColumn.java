@@ -1,6 +1,6 @@
 package tvestergaard.fog.data.constraints;
 
-public enum TestColumn implements Column<TestColumn>, MysqlColumn
+public enum TestColumn implements Column<TestColumn>, MysqlColumn<TestColumn>
 {
     COLUMN_ONE("column_one"),
     COLUMN_TWO("column_two"),
