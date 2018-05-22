@@ -1,42 +1,40 @@
 <%@ page pageEncoding="UTF-8" %>
 <tr id="table-controls">
-    <form>
-        <c:forEach items="${columns}" var="entry">
-            <c:set var="column" value="${entry.getKey()}"/>
-            <c:set var="type" value="${entry.getValue()}"/>
-            <c:if test="${type.name().equals('INT')}">
-                <td>
-                    <input class="controls-input" type="number" step="1" name="${column.getMysqlName()}"
-                           value="${parameters.value(column.getMysqlName())}">
-                </td>
-            </c:if>
-            <c:if test="${type.name().equals('TEXT')}">
-                <td>
-                    <input class="controls-input" type="text" name="${column.getMysqlName()}"
-                           value="${parameters.value(column.getMysqlName())}">
-                </td>
-            </c:if>
-            <c:if test="${type.name().equals('TIMESTAMP')}">
-                <td>
-                    <input class="controls-input" type="text" name="${column.getMysqlName()}"
-                           value="${parameters.value(column.getMysqlName())}">
-                </td>
-            </c:if>
-            <c:if test="${type.name().equals('BOOLEAN')}">
-                <td>
-                    <select class="controls-input" name="${column.getMysqlName()}">
-                        <option value="">Begge</option>
-                        <option ${parameters.value(column.getMysqlName()) == 'true' ? 'selected' : ''}
-                                value="true">Ja
-                        </option>
-                        <option ${parameters.value(column.getMysqlName()) == 'false' ? 'selected' : ''}
-                                value="false">Nej
-                        </option>
-                    </select>
-                </td>
-            </c:if>
-        </c:forEach>
-    </form>
+    <c:forEach items="${columns}" var="entry">
+        <c:set var="column" value="${entry.getKey()}"/>
+        <c:set var="type" value="${entry.getValue()}"/>
+        <c:if test="${type.name().equals('INT')}">
+            <td>
+                <input class="controls-input" type="number" step="1" name="${column.getMysqlName()}"
+                       value="${parameters.value(column.getMysqlName())}">
+            </td>
+        </c:if>
+        <c:if test="${type.name().equals('TEXT')}">
+            <td>
+                <input class="controls-input" type="text" name="${column.getMysqlName()}"
+                       value="${parameters.value(column.getMysqlName())}">
+            </td>
+        </c:if>
+        <c:if test="${type.name().equals('TIMESTAMP')}">
+            <td>
+                <input class="controls-input" type="text" name="${column.getMysqlName()}"
+                       value="${parameters.value(column.getMysqlName())}">
+            </td>
+        </c:if>
+        <c:if test="${type.name().equals('BOOLEAN')}">
+            <td>
+                <select class="controls-input" name="${column.getMysqlName()}">
+                    <option value="">Begge</option>
+                    <option ${parameters.value(column.getMysqlName()) == 'true' ? 'selected' : ''}
+                            value="true">Ja
+                    </option>
+                    <option ${parameters.value(column.getMysqlName()) == 'false' ? 'selected' : ''}
+                            value="false">Nej
+                    </option>
+                </select>
+            </td>
+        </c:if>
+    </c:forEach>
 </tr>
 <script>
 
