@@ -4,19 +4,63 @@ import tvestergaard.fog.data.employees.Employee;
 import tvestergaard.fog.data.orders.Order;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 public class OfferRecord implements Offer
 {
 
-    private final int           id;
-    private final Order         order;
-    private final int           orderId;
-    private final Employee      employee;
-    private final int           employeeId;
-    private final int           price;
-    private       OfferStatus   status;
+    /**
+     * The unique identifier of the offer.
+     */
+    private final int id;
+
+    /**
+     * The order the offer references.
+     */
+    private final Order order;
+
+    /**
+     * The id of the order the offer references.
+     */
+    private final int orderId;
+
+    /**
+     * The employee who created the offer.
+     */
+    private final Employee employee;
+
+    /**
+     * The id of the employee who created the offer.
+     */
+    private final int employeeId;
+
+    /**
+     * The price of the offer (in cents).
+     */
+    private final int price;
+
+    /**
+     * The status of the offer.
+     */
+    private OfferStatus status;
+
+    /**
+     * The moment in time when the offer was created.
+     */
     private final LocalDateTime createdAt;
 
+    /**
+     * Creates a new {@link OfferRecord}.
+     *
+     * @param id         The unique identifier of the offer.
+     * @param order      The order the offer references.
+     * @param orderId    The id of the order the offer references.
+     * @param employee   The employee who created the offer.
+     * @param employeeId The id of the employee who created the offer.
+     * @param price      The price of the offer (in cents).
+     * @param status     The status of the offer.
+     * @param createdAt  The moment in time when the offer was created.
+     */
     public OfferRecord(int id, Order order, int orderId, Employee employee, int employeeId, int price, OfferStatus status, LocalDateTime createdAt)
     {
         this.id = id;
@@ -112,44 +156,34 @@ public class OfferRecord implements Offer
     @Override public boolean equals(Object o)
     {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        OfferRecord that = (OfferRecord) o;
-
-        if (id != that.id) return false;
-        if (orderId != that.orderId) return false;
-        if (employeeId != that.employeeId) return false;
-        if (price != that.price) return false;
-        if (order != null ? !order.equals(that.order) : that.order != null) return false;
-        if (employee != null ? !employee.equals(that.employee) : that.employee != null) return false;
-        if (status != that.status) return false;
-        return createdAt != null ? createdAt.equals(that.createdAt) : that.createdAt == null;
+        if (!(o instanceof Offer)) return false;
+        Offer that = (Offer) o;
+        return getId() == that.getId() &&
+                getOrderId() == that.getOrderId() &&
+                getEmployeeId() == that.getEmployeeId() &&
+                getPrice() == that.getPrice() &&
+                Objects.equals(getOrder(), that.getOrder()) &&
+                Objects.equals(getEmployee(), that.getEmployee()) &&
+                getStatus() == that.getStatus() &&
+                Objects.equals(getCreatedAt(), that.getCreatedAt());
     }
 
     @Override public int hashCode()
     {
-        int result = id;
-        result = 31 * result + (order != null ? order.hashCode() : 0);
-        result = 31 * result + orderId;
-        result = 31 * result + (employee != null ? employee.hashCode() : 0);
-        result = 31 * result + employeeId;
-        result = 31 * result + price;
-        result = 31 * result + (status != null ? status.hashCode() : 0);
-        result = 31 * result + (createdAt != null ? createdAt.hashCode() : 0);
-        return result;
+        return Objects.hash(getId(), getOrder(), getOrderId(), getEmployee(), getEmployeeId(), getPrice(), getStatus(), getCreatedAt());
     }
 
     @Override public String toString()
     {
         return "OfferRecord{" +
-               "id=" + id +
-               ", order=" + order +
-               ", orderId=" + orderId +
-               ", employee=" + employee +
-               ", employeeId=" + employeeId +
-               ", price=" + price +
-               ", status=" + status +
-               ", createdAt=" + createdAt +
-               '}';
+                "id=" + id +
+                ", order=" + order +
+                ", orderId=" + orderId +
+                ", employee=" + employee +
+                ", employeeId=" + employeeId +
+                ", price=" + price +
+                ", status=" + status +
+                ", createdAt=" + createdAt +
+                '}';
     }
 }
