@@ -1,7 +1,5 @@
 package tvestergaard.fog.data.materials.attributes;
 
-import java.util.Objects;
-
 public class DefaultAttributeValue implements AttributeValue
 {
 
@@ -129,22 +127,26 @@ public class DefaultAttributeValue implements AttributeValue
     @Override public boolean equals(Object o)
     {
         if (this == o) return true;
-        if (!(o instanceof AttributeValue)) return false;
-        AttributeValue that = (AttributeValue) o;
-        return Objects.equals(getDefinition(), that.getDefinition()) &&
-                Objects.equals(value, that.getValue());
+        if (o == null || getClass() != o.getClass()) return false;
+
+        DefaultAttributeValue that = (DefaultAttributeValue) o;
+
+        if (!definition.equals(that.definition)) return false;
+        return value.equals(that.value);
     }
 
     @Override public int hashCode()
     {
-        return Objects.hash(getDefinition(), value);
+        int result = definition.hashCode();
+        result = 31 * result + value.hashCode();
+        return result;
     }
 
     @Override public String toString()
     {
         return "DefaultAttributeValue{" +
-                "definition=" + definition +
-                ", value=" + value +
-                '}';
+               "definition=" + definition +
+               ", value=" + value +
+               '}';
     }
 }

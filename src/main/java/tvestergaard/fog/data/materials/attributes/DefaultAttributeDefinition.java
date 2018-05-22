@@ -1,7 +1,5 @@
 package tvestergaard.fog.data.materials.attributes;
 
-import java.util.Objects;
-
 public class DefaultAttributeDefinition implements AttributeDefinition
 {
 
@@ -67,24 +65,29 @@ public class DefaultAttributeDefinition implements AttributeDefinition
     @Override public boolean equals(Object o)
     {
         if (this == o) return true;
-        if (!(o instanceof DefaultAttributeDefinition)) return false;
+        if (o == null || getClass() != o.getClass()) return false;
+
         DefaultAttributeDefinition that = (DefaultAttributeDefinition) o;
-        return getId() == that.getId() &&
-                Objects.equals(getName(), that.getName()) &&
-                getDataType() == that.getDataType();
+
+        if (id != that.id) return false;
+        if (!name.equals(that.name)) return false;
+        return dataType == that.dataType;
     }
 
     @Override public int hashCode()
     {
-        return Objects.hash(getId(), getName(), getDataType());
+        int result = id;
+        result = 31 * result + name.hashCode();
+        result = 31 * result + dataType.hashCode();
+        return result;
     }
 
     @Override public String toString()
     {
         return "DefaultAttributeDefinition{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", dataType=" + dataType +
-                '}';
+               "id=" + id +
+               ", name='" + name + '\'' +
+               ", dataType=" + dataType +
+               '}';
     }
 }
