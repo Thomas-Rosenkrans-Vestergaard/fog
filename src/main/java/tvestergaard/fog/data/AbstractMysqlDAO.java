@@ -80,139 +80,180 @@ public abstract class AbstractMysqlDAO
         return connection;
     }
 
-    protected BomLine createBomLine(ResultSet linesResults, String lines, String materials, String categories) throws SQLException
+    /**
+     * Creates a new {@link BomLine} from the provided information.
+     *
+     * @param resultSet The result set containing the information.
+     * @param tLine     The name of the table containing the bom line.
+     * @param tMaterial The name of the table containing the material.
+     * @param tCategory The name of the table containing the category.
+     * @return The resulting {@link BomLine}.
+     * @throws SQLException When the factory could not access a required column.
+     */
+    protected BomLine createBomLine(ResultSet resultSet, String tLine, String tMaterial, String tCategory)
+            throws SQLException
     {
+        SimpleMaterial material = createSimpleMaterial(resultSet, tMaterial, tCategory);
 
-        SimpleMaterial material = createSimpleMaterial(materials, categories, linesResults);
-
-        return new BomLineRecord(linesResults.getInt(lines + ".id"), material, material.getId(), linesResults.getInt(lines + ".amount"), linesResults.getString(lines + ".notes"));
+        return new BomLineRecord(
+                resultSet.getInt(tLine + ".id"),
+                material,
+                material.getId(),
+                resultSet.getInt(tLine + ".amount"),
+                resultSet.getString(tLine + ".notes")
+        );
     }
 
-    protected BomDrawing createBomDrawing(ResultSet drawingResults, String drawings) throws SQLException
+
+    /**
+     * Creates a new {@link BomDrawing} from the provided information.
+     *
+     * @param results  The result set containing the information.
+     * @param tDrawing The name of the table containing the drawing.
+     * @return The resulting {@link BomDrawing}.
+     * @throws SQLException When the factory could not access a required column.
+     */
+    protected BomDrawing createBomDrawing(ResultSet results, String tDrawing) throws SQLException
     {
-        return new BomDrawingRecord(drawingResults.getInt(drawings + ".id"), drawingResults.getString(drawings + ".title"), drawingResults.getString(drawings + ".content"));
+        return new BomDrawingRecord(
+                results.getInt(tDrawing + ".id"),
+                results.getString(tDrawing + ".title"),
+                results.getString(tDrawing + ".content")
+        );
     }
 
     /**
-     * Creates a new {@link Cladding} using the provided {@code ResultSet}.
+     * Creates a new {@link Cladding} from the provided information.
      *
-     * @param table     The name of the table.
-     * @param claddings The {@code ResultSet} from which to create the instance of {@link Cladding}.
-     * @return The newly created instance of {@link Cladding}.
-     * @throws SQLException When an exception occurs while creating the entity.
+     * @param results   The result set containing the information.
+     * @param tCladding The name of the table containing the cladding.
+     * @return The resulting {@link Cladding}.
+     * @throws SQLException When the factory could not access a required column.
      */
-    protected Cladding createCladding(String table, ResultSet claddings) throws SQLException
+    protected Cladding createCladding(ResultSet results, String tCladding) throws SQLException
     {
         return new CladdingRecord(
-                claddings.getInt(table + ".id"),
-                claddings.getString(table + ".name"),
-                claddings.getString(table + ".description"),
-                claddings.getBoolean(table + ".active")
+                results.getInt(tCladding + ".id"),
+                results.getString(tCladding + ".name"),
+                results.getString(tCladding + ".description"),
+                results.getBoolean(tCladding + ".active")
         );
     }
 
     /**
-     * Creates a new {@link Customer} instance from the provided {@code ResultSet}.
+     * Creates a new {@link Customer} from the provided information.
      *
-     * @param table     The name of the table.
-     * @param resultSet The {@code ResultSet} from which to create the {@link Customer} instance.
-     * @return The newly created {@link Customer} instance.
-     * @throws SQLException When an exception occurs while creating the entity.
+     * @param results   The result set containing the information.
+     * @param tCustomer The name of the table containing the customer.
+     * @return The resulting {@link Customer}.
+     * @throws SQLException When the factory could not access a required column.
      */
-    protected Customer createCustomer(String table, ResultSet resultSet) throws SQLException
+    protected Customer createCustomer(ResultSet results, String tCustomer) throws SQLException
     {
         return new CustomerRecord(
-                resultSet.getInt(table + ".id"),
-                resultSet.getString(table + ".name"),
-                resultSet.getString(table + ".address"),
-                resultSet.getString(table + ".email"),
-                resultSet.getString(table + ".phone"),
-                resultSet.getString(table + ".password"),
-                resultSet.getBoolean(table + ".active"),
-                resultSet.getBoolean(table + ".verified"),
-                resultSet.getTimestamp(table + ".created_at").toLocalDateTime()
+                results.getInt(tCustomer + ".id"),
+                results.getString(tCustomer + ".name"),
+                results.getString(tCustomer + ".address"),
+                results.getString(tCustomer + ".email"),
+                results.getString(tCustomer + ".phone"),
+                results.getString(tCustomer + ".password"),
+                results.getBoolean(tCustomer + ".active"),
+                results.getBoolean(tCustomer + ".verified"),
+                results.getTimestamp(tCustomer + ".created_at").toLocalDateTime()
         );
     }
 
     /**
-     * Creates a new {@link Flooring} using the provided {@code ResultSet}.
+     * Creates a new {@link Flooring} from the provided information.
      *
-     * @param table     The name of the table.
-     * @param resultSet The {@code ResultSet} from which to create the instance of {@link Flooring}.
-     * @return The newly created instance of {@link Flooring}.
-     * @throws SQLException When an exception occurs while creating the entity.
+     * @param results   The result set containing the information.
+     * @param tFlooring The name of the table containing the flooring.
+     * @return The resulting {@link Flooring}.
+     * @throws SQLException When the factory could not access a required column.
      */
-    protected Flooring createFlooring(String table, ResultSet resultSet) throws SQLException
+    protected Flooring createFlooring(ResultSet results, String tFlooring) throws SQLException
     {
         return new FlooringRecord(
-                resultSet.getInt(table + ".id"),
-                resultSet.getString(table + ".name"),
-                resultSet.getString(table + ".description"),
-                resultSet.getBoolean(table + ".active")
+                results.getInt(tFlooring + ".id"),
+                results.getString(tFlooring + ".name"),
+                results.getString(tFlooring + ".description"),
+                results.getBoolean(tFlooring + ".active")
         );
     }
 
     /**
-     * Creates a new {@link Roofing} implementation using the provided {@link ResultSet}.
+     * Creates a new {@link Roofing} from the provided information.
      *
-     * @param table     The name of the table.
-     * @param resultSet The {@code ResultSet} from which to create the {@link Roofing} implementation.
-     * @return The resulting instance of {@link Roofing}.
-     * @throws SQLException When an exception occurs while creating the entity.
+     * @param results  The result set containing the information.
+     * @param roofings The name of the table containing the roofing.
+     * @return The resulting {@link Roofing}.
+     * @throws SQLException When the factory could not access a required column.
      */
-    protected Roofing createRoofing(String table, ResultSet resultSet) throws SQLException
+    protected Roofing createRoofing(ResultSet results, String roofings) throws SQLException
     {
         return new RoofingRecord(
-                resultSet.getInt(table + ".id"),
-                resultSet.getString(table + ".name"),
-                resultSet.getString(table + ".description"),
-                resultSet.getBoolean(table + ".active"),
-                RoofingType.valueOf(resultSet.getString(table + ".type"))
+                results.getInt(roofings + ".id"),
+                results.getString(roofings + ".name"),
+                results.getString(roofings + ".description"),
+                results.getBoolean(roofings + ".active"),
+                RoofingType.valueOf(results.getString(roofings + ".type"))
         );
     }
 
     /**
-     * Creates a new {@link Shed} from the provided {@code ResultSet}.
+     * Creates a new {@link Shed} from the provided information.
      *
-     * @param resultSet The {@code ResultSet} from which to create the {@link Shed} implementation.
-     * @return The resulting instance of {@link Shed}.
-     * @throws SQLException When an exception occurs while creating the entity.
+     * @param results   The result set containing the information.
+     * @param tShed     The name of the table containing the shed.
+     * @param tCladding The name of the table containing the cladding.
+     * @param tFlooring The name of the table containing the flooring.
+     * @return The resulting {@link Shed}.
+     * @throws SQLException When the factory could not access a required column.
      */
-    protected Shed createShed(ResultSet resultSet, String table, String claddingTable, String flooringTable) throws SQLException
+    protected Shed createShed(ResultSet results, String tShed, String tCladding, String tFlooring) throws SQLException
     {
         return new ShedRecord(
-                resultSet.getInt(table + ".id"),
-                resultSet.getInt(table + ".depth"),
-                resultSet.getInt(table + ".cladding"),
-                createCladding(claddingTable, resultSet),
-                resultSet.getInt(table + ".flooring"),
-                createFlooring(flooringTable, resultSet)
+                results.getInt(tShed + ".id"),
+                results.getInt(tShed + ".depth"),
+                results.getInt(tShed + ".cladding"),
+                createCladding(results, tCladding),
+                results.getInt(tShed + ".flooring"),
+                createFlooring(results, tFlooring)
         );
     }
 
     /**
-     * Creates a new {@link Employee} instance from the provided {@code ResultSet}.
+     * Creates a new {@link Employee} from the provided information.
      *
-     * @param employees
-     * @return The newly created {@link Employee} instance.
-     * @throws SQLException
+     * @param results   The result set containing the information.
+     * @param tEmployee The name of the table containing the employee.
+     * @return The resulting {@link Employee}.
+     * @throws SQLException When the factory could not access a required column.
      */
-    protected Employee createEmployee(String table, ResultSet employees) throws SQLException
+    protected Employee createEmployee(ResultSet results, String tEmployee) throws SQLException
     {
         return new EmployeeRecord(
-                employees.getInt(table + ".id"),
-                employees.getString(table + ".name"),
-                employees.getString(table + ".username"),
-                employees.getString(table + ".password"),
-                employees.getBoolean(table + ".active"),
-                createRoleSet(employees, table + ".roles"),
-                employees.getTimestamp(table + ".created_at").toLocalDateTime()
+                results.getInt(tEmployee + ".id"),
+                results.getString(tEmployee + ".name"),
+                results.getString(tEmployee + ".username"),
+                results.getString(tEmployee + ".password"),
+                results.getBoolean(tEmployee + ".active"),
+                createRoleSet(results, tEmployee + ".roles"),
+                results.getTimestamp(tEmployee + ".created_at").toLocalDateTime()
         );
     }
 
-    private Set<Role> createRoleSet(ResultSet resultSet, String column) throws SQLException
+    /**
+     * Creates a new set of roles using the provided information.
+     *
+     * @param results The result set containing the information.
+     * @param column  The name of the column containing the comma separated roles of the employees.
+     * @return The resulting set of roles.
+     * @throws SQLException When the factory could not access a required column.
+     */
+    private Set<Role> createRoleSet(ResultSet results, String column) throws SQLException
     {
-        String roles = resultSet.getString(column);
+        String roles = results.getString(column);
         if (roles == null)
             return new HashSet<>();
 
@@ -224,121 +265,223 @@ public abstract class AbstractMysqlDAO
         return result;
     }
 
-    protected SimpleMaterial createSimpleMaterial(String table, String categoryTable, ResultSet resultSet) throws SQLException
+    /**
+     * Creates a new {@link SimpleMaterial}. A simple material is a material without the attributes.
+     *
+     * @param results   The result set containing the information.
+     * @param tMaterial The name of the table containing the material.
+     * @param tCategory The name of the table containing the category.
+     * @return The resulting {@link SimpleMaterial}.
+     * @throws SQLException When the factory could not access a required column.
+     */
+    protected SimpleMaterial createSimpleMaterial(ResultSet results, String tMaterial, String tCategory) throws SQLException
     {
         return new MaterialRecord(
-                resultSet.getInt(table + ".id"),
-                resultSet.getString(table + ".number"),
-                resultSet.getString(table + ".description"),
-                resultSet.getInt(table + ".price"),
-                resultSet.getInt(table + ".unit"),
-                resultSet.getBoolean(table + ".active"),
-                resultSet.getInt(categoryTable + ".id"),
-                createCategory(categoryTable, resultSet),
-                new HashSet<>()
+                results.getInt(tMaterial + ".id"),
+                results.getString(tMaterial + ".number"),
+                results.getString(tMaterial + ".description"),
+                results.getInt(tMaterial + ".price"),
+                results.getInt(tMaterial + ".unit"),
+                results.getBoolean(tMaterial + ".active"),
+                results.getInt(tCategory + ".id"),
+                createCategory(results, tCategory),
+                null
         );
     }
 
-    protected Material createMaterial(String table, String categoryTable, ResultSet resultSet, String attributesDefinition, String attributeValues, ResultSet attributes) throws SQLException
+    /**
+     * Creates a new {@link Material} from the provided information.
+     *
+     * @param results              The result set containing the information.
+     * @param tMaterial            The name of the table containing the material.
+     * @param tCategory            The name of the table containing the category.
+     * @param attributes           The result set containing the attributes of the material to create.
+     * @param tAttributeDefinition The name of the table containing the attribute definitions.
+     * @param tAttributeValues     The name of the table containing the attribute values.
+     * @return The resulting {@link Material}.
+     * @throws SQLException When the factory could not access a required column.
+     */
+    protected Material createMaterial(ResultSet results,
+                                      String tMaterial,
+                                      String tCategory,
+                                      ResultSet attributes,
+                                      String tAttributeDefinition,
+                                      String tAttributeValues) throws SQLException
     {
         return new MaterialRecord(
-                resultSet.getInt(table + ".id"),
-                resultSet.getString(table + ".number"),
-                resultSet.getString(table + ".description"),
-                resultSet.getInt(table + ".price"),
-                resultSet.getInt(table + ".unit"),
-                resultSet.getBoolean(table + ".active"),
-                resultSet.getInt(categoryTable + ".id"),
-                createCategory(categoryTable, resultSet),
-                createAttributeSet(attributesDefinition, attributeValues, attributes)
+                results.getInt(tMaterial + ".id"),
+                results.getString(tMaterial + ".number"),
+                results.getString(tMaterial + ".description"),
+                results.getInt(tMaterial + ".price"),
+                results.getInt(tMaterial + ".unit"),
+                results.getBoolean(tMaterial + ".active"),
+                results.getInt(tCategory + ".id"),
+                createCategory(results, tCategory),
+                createAttributeSet(attributes, tAttributeDefinition, tAttributeValues)
         );
     }
 
-    protected Category createCategory(String categoryTable, ResultSet resultSet) throws SQLException
+    /**
+     * Creates a new {@link Category} from the provided information.
+     *
+     * @param results   The result set containing the information.
+     * @param tCategory The name of the table containing the category.
+     * @return The resulting {@link Category}.
+     * @throws SQLException When the factory could not access a required column.
+     */
+    protected Category createCategory(ResultSet results, String tCategory) throws SQLException
     {
         return new CategoryRecord(
-                resultSet.getInt(categoryTable + ".id"),
-                resultSet.getString(categoryTable + ".name")
+                results.getInt(tCategory + ".id"),
+                results.getString(tCategory + ".name")
         );
     }
 
-    protected Set<AttributeValue> createAttributeSet(String attributesDefinition, String attributeValues, ResultSet attributes) throws SQLException
+    /**
+     * Creates a new set of {@link AttributeValue}s.
+     *
+     * @param results               The result set containing the information.
+     * @param tAttributesDefinition The name of the table containing the attribute definitions.
+     * @param tAttributeValues      The name of the table containing the attribute values.
+     * @return The resulting set of {@link AttributeValue}s.
+     * @throws SQLException When the factory could not access a required column.
+     */
+    protected Set<AttributeValue> createAttributeSet(ResultSet results, String tAttributesDefinition, String tAttributeValues)
+            throws SQLException
     {
         Set<AttributeValue> result = new HashSet<>();
-        while (attributes.next()) {
-            result.add(createAttributeValue(attributesDefinition, attributeValues, attributes));
-        }
+        while (results.next())
+            result.add(createAttributeValue(results, tAttributesDefinition, tAttributeValues));
 
         return result;
     }
 
-    protected AttributeDefinition createAttributeDefinition(String definitionTable, ResultSet resultSet) throws SQLException
+    /**
+     * Creates a new {@link AttributeDefinition} from the provided information.
+     *
+     * @param results              The result set containing the information.
+     * @param tAttributeDefinition The name of the table containing the attribute definitions.
+     * @return The resulting {@link AttributeDefinition}.
+     * @throws SQLException When the factory could not access a required column.
+     */
+    protected AttributeDefinition createAttributeDefinition(ResultSet results, String tAttributeDefinition)
+            throws SQLException
     {
         return new DefaultAttributeDefinition(
-                resultSet.getInt(definitionTable + ".id"),
-                resultSet.getString(definitionTable + ".name"),
-                DataType.valueOf(resultSet.getString(definitionTable + ".data_type"))
+                results.getInt(tAttributeDefinition + ".id"),
+                results.getString(tAttributeDefinition + ".name"),
+                DataType.valueOf(results.getString(tAttributeDefinition + ".data_type"))
         );
     }
 
-    protected AttributeValue createAttributeValue(String definitionTable, String valueTable, ResultSet attributes) throws SQLException
+    /**
+     * Creates a new {@link AttributeValue} from the provided information.
+     *
+     * @param results              The result set containing the information.
+     * @param tAttributeDefinition The name of the table containing the attribute definitions.
+     * @param tAttributeValues     The name of the table containing the attributes values.
+     * @return The resulting {@link AttributeValue}.
+     * @throws SQLException When the factory could not access a required column.
+     */
+    protected AttributeValue createAttributeValue(ResultSet results, String tAttributeDefinition, String tAttributeValues) throws SQLException
     {
-        AttributeDefinition definition = createAttributeDefinition(definitionTable, attributes);
+        AttributeDefinition definition = createAttributeDefinition(results, tAttributeDefinition);
 
         return new DefaultAttributeValue(
-                definition,
-                getAttributeValue(valueTable, attributes, definition.getDataType())
+                createAttributeDefinition(results, tAttributeDefinition),
+                getAttributeValue(results, tAttributeValues, definition.getDataType())
         );
     }
 
-    private Object getAttributeValue(String valueTable, ResultSet attributes, DataType dataType) throws SQLException
+    /**
+     * Creates am object value from the provided {@link DataType} and result set.
+     *
+     * @param results         The result set containing the information.
+     * @param tAttributeValue The name of the table containing the attribute values.
+     * @param attributeType   The data type to return the value as.
+     * @return The object value.
+     * @throws SQLException When the factory could not access a required column.
+     */
+    private Object getAttributeValue(ResultSet results, String tAttributeValue, DataType attributeType) throws SQLException
     {
-        if (dataType == DataType.INT)
-            return attributes.getInt(valueTable + ".value");
-        if (dataType == STRING)
-            return attributes.getString(valueTable + ".value");
+        if (attributeType == DataType.INT)
+            return results.getInt(tAttributeValue + ".value");
 
-        throw new IllegalStateException("Unknown data type " + dataType.name());
+        if (attributeType == STRING)
+            return results.getString(tAttributeValue + ".value");
+
+        throw new IllegalStateException("Unknown data type " + attributeType.name());
     }
 
-    protected void setAttributeValue(PreparedStatement attributeStatement, int parameter, AttributeValue attribute) throws SQLException
+    /**
+     * Sets the parameter with the provided index to the value in the provided {@link AttributeValue}.
+     *
+     * @param statement      The statement to set the parameter of.
+     * @param parameterIndex The index of the parameter to set on the statement.
+     * @param attribute      The attribute containing the value to set.
+     * @throws SQLException When the factory could not access a required column.
+     */
+    protected void setAttributeValue(PreparedStatement statement, int parameterIndex, AttributeValue attribute)
+            throws SQLException
     {
         DataType dataType = attribute.getDefinition().getDataType();
 
         if (dataType == DataType.INT) {
-            attributeStatement.setInt(parameter, attribute.getInt());
+            statement.setInt(parameterIndex, attribute.getInt());
             return;
         }
 
         if (dataType == DataType.STRING) {
-            attributeStatement.setString(parameter, attribute.getString());
+            statement.setString(parameterIndex, attribute.getString());
             return;
         }
 
         throw new IllegalStateException("Unknown data type " + dataType.name());
     }
 
-    protected ComponentDefinition createComponentDefinition(
-            String componentDefinitionTable, ResultSet components, String categoriesTable) throws SQLException
+    /**
+     * Creates a new {@link ComponentDefinition} from the provided information.
+     *
+     * @param results              The result set containing the information.
+     * @param tComponentDefinition The name of the table containing the component definitions.
+     * @param tCategory            The name of the table containing the category.
+     * @return The resulting {@link ComponentDefinition}.
+     * @throws SQLException When the factory could not access a required column.
+     */
+    protected ComponentDefinition createComponentDefinition(ResultSet results, String tComponentDefinition, String tCategory)
+            throws SQLException
     {
         return new ComponentDefinitionRecord(
-                components.getInt(componentDefinitionTable + ".id"),
-                components.getString(componentDefinitionTable + ".identifier"),
-                components.getString(componentDefinitionTable + ".notes"),
-                createCategory(categoriesTable, components)
+                results.getInt(tComponentDefinition + ".id"),
+                results.getString(tComponentDefinition + ".identifier"),
+                results.getString(tComponentDefinition + ".notes"),
+                createCategory(results, tCategory)
         );
     }
 
-    protected Component createComponent(String componentDefinitionTable,
-                                        String materialsTable,
-                                        String categoriesTable,
-                                        ResultSet resultSet,
-                                        String attributeDefinitions,
-                                        String attributeValues,
-                                        ResultSet attributes) throws SQLException
+    /**
+     * Creates a new {@link Component} from the provided information.
+     *
+     * @param results              The result set containing the information.
+     * @param tComponentDefinition The name of the table containing the component definitions.
+     * @param tMaterial            The name of the table containing the material.
+     * @param tCategory            The name of the table containing the category.
+     * @param attributes           The result set containing the attributes for the material.
+     * @param tAttributeDefinition The name of the table containing the attribute definition.
+     * @param tAttributeValue      The name of the table containing the attribute value.
+     * @return The resulting {@link Component}.
+     * @throws SQLException When the factory could not access a required column.
+     */
+    protected Component createComponent(ResultSet results,
+                                        String tComponentDefinition,
+                                        String tMaterial,
+                                        String tCategory,
+                                        ResultSet attributes,
+                                        String tAttributeDefinition,
+                                        String tAttributeValue) throws SQLException
     {
-        ComponentDefinition definition = createComponentDefinition(componentDefinitionTable, resultSet, categoriesTable);
-        Material            material   = createMaterial(materialsTable, categoriesTable, resultSet, attributeDefinitions, attributeValues, attributes);
+        ComponentDefinition definition = createComponentDefinition(results, tComponentDefinition, tCategory);
+        Material            material   = createMaterial(results, tMaterial, tCategory, attributes, tAttributeDefinition, tAttributeValue);
 
         return new ComponentRecord(
                 definition.getId(),
@@ -348,6 +491,12 @@ public abstract class AbstractMysqlDAO
         );
     }
 
+    /**
+     * Creates a new IN operand. For size 5 returns '(?,?,?,?,?)'.
+     *
+     * @param size The number of arguments to provided to the in.
+     * @return The resulting in parameters.
+     */
     protected String createIn(int size)
     {
         StringBuilder builder = new StringBuilder();
@@ -359,93 +508,149 @@ public abstract class AbstractMysqlDAO
         return builder.toString();
     }
 
-    protected Model createModel(ResultSet resultSet, String tableName) throws SQLException
+    /**
+     * Creates a new {@link Model} from the provided information.
+     *
+     * @param results The result set containing the information.
+     * @param tModel  The name of the table containing the model.
+     * @return The resulting {@link Model}.
+     * @throws SQLException When the factory could not access a required column.
+     */
+    protected Model createModel(ResultSet results, String tModel) throws SQLException
     {
         return new ModelRecord(
-                resultSet.getInt(tableName + ".id"),
-                resultSet.getString(tableName + ".name")
+                results.getInt(tModel + ".id"),
+                results.getString(tModel + ".name")
         );
     }
 
     /**
      * Creates a new {@link Order} instance from the provided {@code ResultSet}.
      *
-     * @param resultSet The {@code ResultSet} from which to create the instance of {@link Flooring}.
-     * @return The newly create instance of {@link Order}.
-     * @throws SQLException
+     * @param results   The result set containing the information.
+     * @param tOrder    The name of the table containing the order.
+     * @param tCustomer The name of the table containing the customer.
+     * @param tRoofing  The name of the table containing the roofing on the order.
+     * @param tShed     The name of the table containing the shed.
+     * @param tCladding The name of the table containing the cladding on the shed.
+     * @param tFlooring The name of the table containing the flooring of the shed.
+     * @return The resulting {@link Order}.
+     * @throws SQLException When the factory could not access a required column.
      */
-    protected Order createOrder(ResultSet resultSet,
-                                String table,
-                                String customerTable,
-                                String roofingTable,
-                                String shedTable,
-                                String shedCladdingTable,
-                                String shedFlooringTable) throws SQLException
+    protected Order createOrder(ResultSet results,
+                                String tOrder,
+                                String tCustomer,
+                                String tRoofing,
+                                String tShed,
+                                String tCladding,
+                                String tFlooring) throws SQLException
     {
-        Shed shed = resultSet.getInt("shed") == 0 ? null : createShed(resultSet, shedTable, shedCladdingTable, shedFlooringTable);
+        Shed shed = results.getInt("shed") == 0 ? null : createShed(results, tShed, tCladding, tFlooring);
 
         return new OrderRecord(
-                resultSet.getInt(table + ".id"),
-                resultSet.getInt(table + ".customer"),
-                createCustomer(customerTable, resultSet),
-                resultSet.getInt(table + ".width"),
-                resultSet.getInt(table + ".length"),
-                resultSet.getInt(table + ".height"),
-                resultSet.getInt(table + ".roofing"),
-                createRoofing(roofingTable, resultSet),
-                resultSet.getInt(table + ".slope"),
-                RafterChoice.from(resultSet.getInt(table + ".rafters")),
+                results.getInt(tOrder + ".id"),
+                results.getInt(tOrder + ".customer"),
+                createCustomer(results, tCustomer),
+                results.getInt(tOrder + ".width"),
+                results.getInt(tOrder + ".length"),
+                results.getInt(tOrder + ".height"),
+                results.getInt(tOrder + ".roofing"),
+                createRoofing(results, tRoofing),
+                results.getInt(tOrder + ".slope"),
+                RafterChoice.from(results.getInt(tOrder + ".rafters")),
                 shed,
                 shed,
                 shed,
-                resultSet.getString(table + ".comment"),
-                resultSet.getBoolean(table + ".active"),
-                resultSet.getInt(table + ".offers"),
-                resultSet.getInt(table + ".open_offers"),
-                resultSet.getTimestamp(table + ".created_at").toLocalDateTime()
+                results.getString(tOrder + ".comment"),
+                results.getBoolean(tOrder + ".active"),
+                results.getInt(tOrder + ".offers"),
+                results.getInt(tOrder + ".open_offers"),
+                results.getTimestamp(tOrder + ".created_at").toLocalDateTime()
         );
     }
 
-    protected Offer createOffer(ResultSet resultSet,
-                                String table,
-                                String orderTable,
-                                String customerTable,
-                                String orderRoofingTable,
-                                String shedTable,
-                                String shedCladdingTable,
-                                String shedFlooringsTable,
-                                String employeeTable) throws SQLException
+    /**
+     * Creates a new {@link Offer} from the provided information.
+     *
+     * @param results   The result set containing the information.
+     * @param tOffer    The name of the table containing the offer.
+     * @param tEmployee The name of the table containing the employee who created the offer.
+     * @param tOrder    The name of the table containing the order.
+     * @param tCustomer The name of the table containing the customer who created the order.
+     * @param tRoofing  The name of the table containing the roofing of the order.
+     * @param tShed     The name of the table containing the shed of the order.
+     * @param tCladding The name of the table containing the cladding on the shed.
+     * @param tFlooring The name of the table containing the flooring of the shed.
+     * @return The resulting {@link Offer}.
+     * @throws SQLException When the factory could not access a required column.
+     */
+    protected Offer createOffer(ResultSet results,
+                                String tOffer,
+                                String tEmployee,
+                                String tOrder,
+                                String tCustomer,
+                                String tRoofing,
+                                String tShed,
+                                String tCladding,
+                                String tFlooring) throws SQLException
     {
-        Order    order    = createOrder(resultSet, orderTable, customerTable, orderRoofingTable, shedTable, shedCladdingTable, shedFlooringsTable);
-        Employee employee = createEmployee(employeeTable, resultSet);
+        Order    order    = createOrder(results, tOrder, tCustomer, tRoofing, tShed, tCladding, tFlooring);
+        Employee employee = createEmployee(results, tEmployee);
 
         return new OfferRecord(
-                resultSet.getInt(table + ".id"),
+                results.getInt(tOffer + ".id"),
                 order,
                 order.getId(),
                 employee,
                 employee.getId(),
-                resultSet.getInt(table + ".price"),
-                OfferStatus.valueOf(resultSet.getString(table + ".status")),
-                resultSet.getTimestamp(table + ".created_at").toLocalDateTime());
+                results.getInt(tOffer + ".price"),
+                OfferStatus.valueOf(results.getString(tOffer + ".status")),
+                results.getTimestamp(tOffer + ".created_at").toLocalDateTime());
     }
 
-    protected Purchase createPurchase(ResultSet resultSet,
-                                      String table,
-                                      String offerTable,
-                                      String orderTable,
-                                      String customerTable,
-                                      String orderRoofingTable,
-                                      String shedTable,
-                                      String shedCladdingTable,
-                                      String shedFlooringsTable,
-                                      String offerEmployeeTable) throws SQLException
+    /**
+     * Creates a new {@link Customer} from the provided information.
+     *
+     * @param results   The result set containing the information.
+     * @param tPurchase The name of the table containing the purchase.
+     * @param tOffer    The name of the table containing the offer.
+     * @param tEmployee The name of the table containing the employee who placed the offer.
+     * @param tOrder    The name of the table containing the order.
+     * @param tCustomer The name of the table containing the customer who placed the order.
+     * @param tRoofing  The name of the table containing the roofing on the order.
+     * @param tShed     The name of the table containing the shed of the order.
+     * @param tCladding The name of the table containing the cladding on the shed.
+     * @param tFlooring The name of the table containing the flooring of the shed.
+     * @return The resulting {@link Purchase}.
+     * @throws SQLException When the factory could not access a required column.
+     */
+    protected Purchase createPurchase(ResultSet results,
+                                      String tPurchase,
+                                      String tOffer,
+                                      String tEmployee,
+                                      String tOrder,
+                                      String tCustomer,
+                                      String tRoofing,
+                                      String tShed,
+                                      String tCladding,
+                                      String tFlooring) throws SQLException
     {
         Offer offer = createOffer(
-                resultSet, offerTable, orderTable, customerTable, orderRoofingTable, shedTable,
-                shedCladdingTable, shedFlooringsTable, offerEmployeeTable);
+                results,
+                tOffer,
+                tEmployee,
+                tOrder,
+                tCustomer,
+                tRoofing,
+                tShed,
+                tCladding,
+                tFlooring);
 
-        return new PurchaseRecord(resultSet.getInt(table + ".id"), offer.getId(), offer, resultSet.getInt(table + ".bom"),
-                resultSet.getTimestamp(table + ".created_at").toLocalDateTime());
+        return new PurchaseRecord(
+                results.getInt(tPurchase + ".id"),
+                offer.getId(),
+                offer,
+                results.getInt(tPurchase + ".bom"),
+                results.getTimestamp(tPurchase + ".created_at").toLocalDateTime());
     }
 }

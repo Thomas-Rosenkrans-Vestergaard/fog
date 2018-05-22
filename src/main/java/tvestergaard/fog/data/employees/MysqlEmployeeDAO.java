@@ -55,7 +55,7 @@ public class MysqlEmployeeDAO extends AbstractMysqlDAO implements EmployeeDAO
             binder.bind(statement, constraints);
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next())
-                employees.add(createEmployee("employees", resultSet));
+                employees.add(createEmployee(resultSet, "employees"));
 
             return employees;
         } catch (SQLException e) {

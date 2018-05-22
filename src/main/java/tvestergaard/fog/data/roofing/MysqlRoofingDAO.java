@@ -61,7 +61,7 @@ public class MysqlRoofingDAO extends AbstractMysqlDAO implements RoofingDAO
             binder.bind(statement, constraints);
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next())
-                roofings.add(createRoofing("roofings", resultSet));
+                roofings.add(createRoofing(resultSet, "roofings"));
 
             return roofings;
         } catch (SQLException e) {
@@ -239,7 +239,7 @@ public class MysqlRoofingDAO extends AbstractMysqlDAO implements RoofingDAO
             statement.setString(1, roofingType.name());
             ResultSet componentResults = statement.executeQuery();
             while (componentResults.next())
-                definitions.add(createComponentDefinition("cd", componentResults, "categories"));
+                definitions.add(createComponentDefinition(componentResults, "cd", "categories"));
 
             return definitions;
         } catch (SQLException e) {
@@ -275,7 +275,7 @@ public class MysqlRoofingDAO extends AbstractMysqlDAO implements RoofingDAO
                 while (resultSet.next()) {
                     attributeStatement.setInt(1, resultSet.getInt("materials.id"));
                     ResultSet attributes = attributeStatement.executeQuery();
-                    components.add(createComponent("cd", "materials", "categories", resultSet, "ad", "av", attributes));
+                    components.add(createComponent(resultSet, "cd", "materials", "categories", attributes, "ad", "av"));
                 }
             }
 

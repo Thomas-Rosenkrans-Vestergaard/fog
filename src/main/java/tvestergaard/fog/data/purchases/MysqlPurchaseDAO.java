@@ -68,8 +68,8 @@ public class MysqlPurchaseDAO extends AbstractMysqlDAO implements PurchaseDAO
             binder.bind(statement, constraints);
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next())
-                purchases.add(createPurchase(resultSet, "purchases", "offers", "o", "customers", "roofings",
-                        "sheds", "claddings", "floorings", "employees"));
+                purchases.add(createPurchase(resultSet, "purchases", "offers", "employees", "o", "customers", "roofings",
+                        "sheds", "claddings", "floorings"));
             return purchases;
         } catch (SQLException e) {
             throw new MysqlDataAccessException(e);

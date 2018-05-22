@@ -67,7 +67,7 @@ public class MysqlOfferDAO extends AbstractMysqlDAO implements OfferDAO
             binder.bind(statement, constraints);
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next())
-                offers.add(createOffer(resultSet, "offers", "o", "customers", "roofings", "sheds", "claddings", "floorings", "employees"));
+                offers.add(createOffer(resultSet, "offers", "employees", "o", "customers", "roofings", "sheds", "claddings", "floorings"));
 
             return offers;
         } catch (SQLException e) {

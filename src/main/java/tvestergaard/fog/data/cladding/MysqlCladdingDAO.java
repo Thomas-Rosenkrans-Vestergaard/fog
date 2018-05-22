@@ -49,7 +49,7 @@ public class MysqlCladdingDAO extends AbstractMysqlDAO implements CladdingDAO
             binder.bind(statement, constraints);
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next())
-                floors.add(createCladding("claddings", resultSet));
+                floors.add(createCladding(resultSet, "claddings"));
 
             return floors;
         } catch (SQLException e) {

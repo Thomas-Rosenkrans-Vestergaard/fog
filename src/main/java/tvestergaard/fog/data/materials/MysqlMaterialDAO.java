@@ -67,7 +67,7 @@ public class MysqlMaterialDAO extends AbstractMysqlDAO implements MaterialDAO
                 while (resultSet.next()) {
                     attributeStatement.setInt(1, resultSet.getInt("materials.id"));
                     ResultSet attributes = attributeStatement.executeQuery();
-                    materials.add(createMaterial("materials", "categories", resultSet, "ad", "av", attributes));
+                    materials.add(createMaterial(resultSet, "materials", "categories", attributes, "ad", "av"));
                 }
             }
 
@@ -104,7 +104,7 @@ public class MysqlMaterialDAO extends AbstractMysqlDAO implements MaterialDAO
             try (PreparedStatement attributeStatement = getConnection().prepareStatement(attributeSQL)) {
                 attributeStatement.setInt(1, resultSet.getInt("materials.id"));
                 ResultSet attributes = attributeStatement.executeQuery();
-                return createMaterial("materials", "categories", resultSet, "ad", "av", attributes);
+                return createMaterial(resultSet, "materials", "categories", attributes, "ad", "av");
             }
 
         } catch (SQLException e) {
@@ -235,7 +235,7 @@ public class MysqlMaterialDAO extends AbstractMysqlDAO implements MaterialDAO
             statement.setInt(1, category);
             ResultSet attributes = statement.executeQuery();
             while (attributes.next())
-                result.add(createAttributeDefinition("ad", attributes));
+                result.add(createAttributeDefinition(attributes, "ad"));
 
             return result;
         } catch (SQLException e) {
@@ -256,7 +256,7 @@ public class MysqlMaterialDAO extends AbstractMysqlDAO implements MaterialDAO
         try (PreparedStatement statement = getConnection().prepareStatement(SQL)) {
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next())
-                result.add(createCategory("categories", resultSet));
+                result.add(createCategory(resultSet, "categories"));
 
             return result;
         } catch (SQLException e) {
@@ -284,7 +284,7 @@ public class MysqlMaterialDAO extends AbstractMysqlDAO implements MaterialDAO
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next())
                 map.put(resultSet.getInt("materials.category"),
-                        createSimpleMaterial("materials", "categories", resultSet));
+                        createSimpleMaterial(resultSet, "materials", "categories"));
 
             return map;
         } catch (SQLException e) {

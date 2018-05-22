@@ -88,7 +88,7 @@ public class MysqlTokenDAO extends AbstractMysqlDAO implements TokenDAO
     {
         return new TokenRecord(
                 resultSet.getInt("id"),
-                createCustomer("customers", resultSet),
+                createCustomer(resultSet, "customers"),
                 resultSet.getString("hash"),
                 TokenUse.valueOf(resultSet.getString("use")),
                 resultSet.getTimestamp("created_at").toLocalDateTime()

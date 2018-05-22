@@ -171,7 +171,7 @@ public class MysqlModelDAO extends AbstractMysqlDAO implements ModelDAO
             statement.setInt(1, model);
             ResultSet componentResults = statement.executeQuery();
             while (componentResults.next())
-                definitions.add(createComponentDefinition("cd", componentResults, "categories"));
+                definitions.add(createComponentDefinition(componentResults, "cd", "categories"));
 
             return definitions;
         } catch (SQLException e) {
@@ -204,7 +204,7 @@ public class MysqlModelDAO extends AbstractMysqlDAO implements ModelDAO
                 while (resultSet.next()) {
                     attributeStatement.setInt(1, resultSet.getInt("materials.id"));
                     ResultSet attributes = attributeStatement.executeQuery();
-                    components.add(createComponent("cd", "materials", "categories", resultSet, "ad", "av", attributes));
+                    components.add(createComponent(resultSet, "cd", "materials", "categories", attributes, "ad", "av"));
                 }
             }
 
@@ -234,7 +234,7 @@ public class MysqlModelDAO extends AbstractMysqlDAO implements ModelDAO
         try (PreparedStatement statement = getConnection().prepareStatement(SQL)) {
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next())
-                results.put(resultSet.getInt("cd.id"), createSimpleMaterial("materials", "categories", resultSet));
+                results.put(resultSet.getInt("cd.id"), createSimpleMaterial(resultSet, "materials", "categories"));
 
             return results;
         } catch (SQLException e) {

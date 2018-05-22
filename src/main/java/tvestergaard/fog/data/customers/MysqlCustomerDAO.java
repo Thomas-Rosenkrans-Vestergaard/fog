@@ -52,7 +52,7 @@ public class MysqlCustomerDAO extends AbstractMysqlDAO implements CustomerDAO
             binder.bind(statement, constraints);
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next())
-                customers.add(createCustomer("customers", resultSet));
+                customers.add(createCustomer(resultSet, "customers"));
 
             return customers;
         } catch (SQLException e) {

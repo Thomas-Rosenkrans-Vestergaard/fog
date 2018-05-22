@@ -50,7 +50,7 @@ public class MysqlFlooringDAO extends AbstractMysqlDAO implements FlooringDAO
             binder.bind(statement, constraints);
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next())
-                floors.add(createFlooring("floorings", resultSet));
+                floors.add(createFlooring(resultSet, "floorings"));
 
             return floors;
         } catch (SQLException e) {
