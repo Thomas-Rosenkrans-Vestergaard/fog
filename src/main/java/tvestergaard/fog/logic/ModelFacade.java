@@ -1,11 +1,9 @@
 package tvestergaard.fog.logic;
 
-import com.google.common.collect.Multimap;
 import tvestergaard.fog.data.DataAccessException;
 import tvestergaard.fog.data.components.Component;
 import tvestergaard.fog.data.components.ComponentDefinition;
 import tvestergaard.fog.data.components.ComponentReference;
-import tvestergaard.fog.data.materials.SimpleMaterial;
 import tvestergaard.fog.data.models.Model;
 import tvestergaard.fog.data.models.ModelDAO;
 import tvestergaard.fog.data.models.ModelUpdater;
@@ -15,8 +13,16 @@ import java.util.List;
 public class ModelFacade
 {
 
+    /**
+     * The model dao used to access the models in the application.
+     */
     private final ModelDAO modelDAO;
 
+    /**
+     * Creates a new {@link ModelFacade}.
+     *
+     * @param modelDAO The model dao used to access the models in the application.
+     */
     public ModelFacade(ModelDAO modelDAO)
     {
         this.modelDAO = modelDAO;
@@ -115,23 +121,6 @@ public class ModelFacade
     {
         try {
             return modelDAO.getComponents(model);
-        } catch (DataAccessException e) {
-            throw new ApplicationException(e);
-        }
-    }
-
-    /**
-     * Returns the material choices for the provided garage model.
-     *
-     * @param model The garage model to return the material choices for.
-     * @return Returns the material choices for the components of the garage skeleton.The material is then mapped to the
-     * id of the component.
-     * @throws ApplicationException When a data storage exception occurs while performing the operation.
-     */
-    public Multimap<Integer, SimpleMaterial> getMaterialChoices(int model)
-    {
-        try {
-            return modelDAO.getMaterialChoices(model);
         } catch (DataAccessException e) {
             throw new ApplicationException(e);
         }
