@@ -35,7 +35,7 @@ public class Helpers
 
     public static int randomInt(int min)
     {
-        return random.nextInt(min);
+        return random.nextInt(min) + min;
     }
 
     public static int randomInt()

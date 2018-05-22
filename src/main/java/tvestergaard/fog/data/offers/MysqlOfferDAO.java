@@ -53,16 +53,16 @@ public class MysqlOfferDAO extends AbstractMysqlDAO implements OfferDAO
         final List<Offer> offers = new ArrayList<>();
         final String SQL = generator.generate(
                 "SELECT *, (SELECT count(*) FROM offers WHERE `order` = o.id) AS `o.offers`, " +
-                        "(SELECT count(offers.id) FROM offers WHERE offers.order = o.id AND offers.status = 'OPEN') as `o.open_offers`, " +
-                        "(SELECT GROUP_CONCAT(roles.role SEPARATOR ',') FROM roles WHERE employee = employees.id) as `employees.roles` " +
-                        "FROM offers " +
-                        "INNER JOIN orders o ON offers.order = o.id " +
-                        "INNER JOIN customers ON o.customer = customers.id " +
-                        "INNER JOIN roofings ON o.roofing = roofings.id " +
-                        "LEFT  JOIN sheds ON sheds.id = o.shed " +
-                        "LEFT  JOIN claddings ON sheds.cladding = claddings.id " +
-                        "LEFT  JOIN floorings ON sheds.flooring = floorings.id " +
-                        "INNER JOIN employees ON offers.employee = employees.id", constraints);
+                "(SELECT count(offers.id) FROM offers WHERE offers.order = o.id AND offers.status = 'OPEN') as `o.open_offers`, " +
+                "(SELECT GROUP_CONCAT(roles.role SEPARATOR ',') FROM roles WHERE employee = employees.id) as `employees.roles` " +
+                "FROM offers " +
+                "INNER JOIN orders o ON offers.order = o.id " +
+                "INNER JOIN customers ON o.customer = customers.id " +
+                "INNER JOIN roofings ON o.roofing = roofings.id " +
+                "LEFT  JOIN sheds ON sheds.id = o.shed " +
+                "LEFT  JOIN claddings ON sheds.cladding = claddings.id " +
+                "LEFT  JOIN floorings ON sheds.flooring = floorings.id " +
+                "INNER JOIN employees ON offers.employee = employees.id", constraints);
         try (PreparedStatement statement = getConnection().prepareStatement(SQL)) {
             binder.bind(statement, constraints);
             ResultSet resultSet = statement.executeQuery();
@@ -118,12 +118,12 @@ public class MysqlOfferDAO extends AbstractMysqlDAO implements OfferDAO
                 statement.setInt(1, blueprint.getOrderId());
                 statement.setInt(2, blueprint.getEmployeeId());
                 statement.setInt(3, blueprint.getPrice());
-                int updated = statement.executeUpdate();
-                connection.commit();
-                if (updated == 0)
-                    return null;
+                statement.executeUpdate();
                 ResultSet generated = statement.getGeneratedKeys();
                 generated.first();
+                connection.commit();
+
+
                 return first(where(eq(OfferColumn.ID, generated.getInt(1))));
             } catch (SQLException e) {
                 connection.rollback();
@@ -139,7 +139,6 @@ public class MysqlOfferDAO extends AbstractMysqlDAO implements OfferDAO
      * <p>
      * To accept an offer, use the {@link PurchaseDAO#create(PurchaseBlueprint, BomBlueprint)} method,
      * that will mark the provided offer accepted.
-     *
      *
      * @param offerId The id of the offer to mark reject.
      * @throws MysqlDataAccessException When a data storage exception occurs while performing the operation.
@@ -175,8 +174,8 @@ public class MysqlOfferDAO extends AbstractMysqlDAO implements OfferDAO
     @Override public int getNumberOfOpenOffers(int customer) throws MysqlDataAccessException
     {
         String SQL = "SELECT count(*) FROM offers " +
-                "INNER JOIN orders ON offers.order = orders.id AND orders.customer = ? " +
-                "WHERE offers.status = 'OPEN'";
+                     "INNER JOIN orders ON offers.order = orders.id AND orders.customer = ? " +
+                     "WHERE offers.status = 'OPEN'";
         try (PreparedStatement statement = getConnection().prepareStatement(SQL)) {
             statement.setInt(1, customer);
             ResultSet resultSet = statement.executeQuery();

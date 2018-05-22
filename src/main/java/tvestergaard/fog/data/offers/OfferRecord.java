@@ -108,4 +108,48 @@ public class OfferRecord implements Offer
     {
         return createdAt;
     }
+
+    @Override public boolean equals(Object o)
+    {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        OfferRecord that = (OfferRecord) o;
+
+        if (id != that.id) return false;
+        if (orderId != that.orderId) return false;
+        if (employeeId != that.employeeId) return false;
+        if (price != that.price) return false;
+        if (order != null ? !order.equals(that.order) : that.order != null) return false;
+        if (employee != null ? !employee.equals(that.employee) : that.employee != null) return false;
+        if (status != that.status) return false;
+        return createdAt != null ? createdAt.equals(that.createdAt) : that.createdAt == null;
+    }
+
+    @Override public int hashCode()
+    {
+        int result = id;
+        result = 31 * result + (order != null ? order.hashCode() : 0);
+        result = 31 * result + orderId;
+        result = 31 * result + (employee != null ? employee.hashCode() : 0);
+        result = 31 * result + employeeId;
+        result = 31 * result + price;
+        result = 31 * result + (status != null ? status.hashCode() : 0);
+        result = 31 * result + (createdAt != null ? createdAt.hashCode() : 0);
+        return result;
+    }
+
+    @Override public String toString()
+    {
+        return "OfferRecord{" +
+               "id=" + id +
+               ", order=" + order +
+               ", orderId=" + orderId +
+               ", employee=" + employee +
+               ", employeeId=" + employeeId +
+               ", price=" + price +
+               ", status=" + status +
+               ", createdAt=" + createdAt +
+               '}';
+    }
 }
