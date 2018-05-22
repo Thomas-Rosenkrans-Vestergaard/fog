@@ -383,4 +383,28 @@ public class OrderRecord implements Order
     {
         return Objects.hash(getId());
     }
+
+    @Override public String toString()
+    {
+        return "OrderRecord{" +
+                "id=" + id +
+                ", customerId=" + customerId +
+                ", customer=" + customer +
+                ", width=" + width +
+                ", length=" + length +
+                ", height=" + height +
+                ", roofing=" + roofing +
+                ", roofingId=" + roofingId +
+                ", slope=" + slope +
+                ", rafters=" + rafters +
+                ", shedBlueprint=" + shedBlueprint +
+                ", shedUpdater=" + shedUpdater +
+                ", shed=" + shed +
+                ", comment='" + comment + '\'' +
+                ", active=" + active +
+                ", numberOfOffers=" + numberOfOffers +
+                ", numberOfOpenOffers=" + numberOfOpenOffers +
+                ", createdAt=" + createdAt +
+                '}';
+    }
 }

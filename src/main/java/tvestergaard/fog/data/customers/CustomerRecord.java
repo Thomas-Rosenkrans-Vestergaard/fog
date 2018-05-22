@@ -248,4 +248,19 @@ public class CustomerRecord implements Customer
     {
         return Objects.hash(getId(), getName(), getAddress(), getEmail(), getPhone(), getPassword(), isActive(), verified, getCreatedAt());
     }
+
+    @Override public String toString()
+    {
+        return "CustomerRecord{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", address='" + address + '\'' +
+                ", email='" + email + '\'' +
+                ", phone='" + phone + '\'' +
+                ", password='" + password + '\'' +
+                ", active=" + active +
+                ", verified=" + verified +
+                ", createdAt=" + createdAt +
+                '}';
+    }
 }

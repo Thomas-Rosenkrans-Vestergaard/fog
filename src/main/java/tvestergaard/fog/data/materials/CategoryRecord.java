@@ -60,4 +60,12 @@ public class CategoryRecord implements Category
     {
         return Objects.hash(getId());
     }
+
+    @Override public String toString()
+    {
+        return "CategoryRecord{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                '}';
+    }
 }

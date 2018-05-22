@@ -126,4 +126,14 @@ public class FlooringRecord implements Flooring
     {
         return Objects.hash(getId());
     }
+
+    @Override public String toString()
+    {
+        return "FlooringRecord{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", active=" + active +
+                '}';
+    }
 }

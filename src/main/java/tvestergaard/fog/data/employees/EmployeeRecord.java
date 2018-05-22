@@ -215,4 +215,17 @@ public class EmployeeRecord implements Employee
     {
         return Objects.hash(getId());
     }
+
+    @Override public String toString()
+    {
+        return "EmployeeRecord{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", active=" + active +
+                ", roles=" + roles +
+                ", createdAt=" + createdAt +
+                '}';
+    }
 }

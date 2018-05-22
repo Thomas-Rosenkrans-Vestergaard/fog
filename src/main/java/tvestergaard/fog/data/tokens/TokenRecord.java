@@ -115,4 +115,15 @@ public class TokenRecord implements Token
     {
         return Objects.hash(getId());
     }
+
+    @Override public String toString()
+    {
+        return "TokenRecord{" +
+                "id=" + id +
+                ", customer=" + customer +
+                ", hash='" + hash + '\'' +
+                ", use=" + use +
+                ", createdAt=" + createdAt +
+                '}';
+    }
 }

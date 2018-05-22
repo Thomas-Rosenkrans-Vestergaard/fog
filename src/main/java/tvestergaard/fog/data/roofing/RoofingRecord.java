@@ -153,4 +153,15 @@ public class RoofingRecord implements Roofing
     {
         return Objects.hash(getId());
     }
+
+    @Override public String toString()
+    {
+        return "RoofingRecord{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", active=" + active +
+                ", type=" + type +
+                '}';
+    }
 }

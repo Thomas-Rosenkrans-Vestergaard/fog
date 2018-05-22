@@ -114,8 +114,8 @@ public class CladdingRecord implements Cladding
     @Override public boolean equals(Object o)
     {
         if (this == o) return true;
-        if (!(o instanceof CladdingRecord)) return false;
-        CladdingRecord record = (CladdingRecord) o;
+        if (!(o instanceof Cladding)) return false;
+        Cladding record = (Cladding) o;
         return getId() == record.getId() &&
                 isActive() == record.isActive() &&
                 Objects.equals(getName(), record.getName()) &&

@@ -67,8 +67,8 @@ public class BomDrawingRecord implements BomDrawing
     @Override public boolean equals(Object o)
     {
         if (this == o) return true;
-        if (!(o instanceof BomDrawingRecord)) return false;
-        BomDrawingRecord that = (BomDrawingRecord) o;
+        if (!(o instanceof BomDrawing)) return false;
+        BomDrawing that = (BomDrawing) o;
         return getId() == that.getId() &&
                 Objects.equals(getTitle(), that.getTitle()) &&
                 Objects.equals(getContent(), that.getContent());

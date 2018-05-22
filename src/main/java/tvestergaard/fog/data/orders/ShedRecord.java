@@ -164,4 +164,16 @@ public class ShedRecord implements Shed
     {
         return Objects.hash(getId());
     }
+
+    @Override public String toString()
+    {
+        return "ShedRecord{" +
+                "id=" + id +
+                ", depth=" + depth +
+                ", claddingId=" + claddingId +
+                ", cladding=" + cladding +
+                ", flooringId=" + flooringId +
+                ", flooring=" + flooring +
+                '}';
+    }
 }

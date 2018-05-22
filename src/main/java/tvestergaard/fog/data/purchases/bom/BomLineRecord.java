@@ -2,6 +2,8 @@ package tvestergaard.fog.data.purchases.bom;
 
 import tvestergaard.fog.data.materials.SimpleMaterial;
 
+import java.util.Objects;
+
 public class BomLineRecord implements BomLine
 {
 
@@ -96,5 +98,33 @@ public class BomLineRecord implements BomLine
     @Override public String getNotes()
     {
         return notes;
+    }
+
+    @Override public boolean equals(Object o)
+    {
+        if (this == o) return true;
+        if (!(o instanceof BomLine)) return false;
+        BomLine that = (BomLine) o;
+        return getId() == that.getId() &&
+                getMaterialId() == that.getMaterialId() &&
+                getAmount() == that.getAmount() &&
+                Objects.equals(getMaterial(), that.getMaterial()) &&
+                Objects.equals(getNotes(), that.getNotes());
+    }
+
+    @Override public int hashCode()
+    {
+        return Objects.hash(getId(), getMaterial(), getMaterialId(), getAmount(), getNotes());
+    }
+
+    @Override public String toString()
+    {
+        return "BomLineRecord{" +
+                "id=" + id +
+                ", material=" + material +
+                ", materialId=" + materialId +
+                ", amount=" + amount +
+                ", notes='" + notes + '\'' +
+                '}';
     }
 }

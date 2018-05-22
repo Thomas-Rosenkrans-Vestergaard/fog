@@ -2,6 +2,8 @@ package tvestergaard.fog.data.components;
 
 import tvestergaard.fog.data.materials.Category;
 
+import java.util.Objects;
+
 public class ComponentDefinitionRecord implements ComponentDefinition
 {
 
@@ -89,5 +91,31 @@ public class ComponentDefinitionRecord implements ComponentDefinition
     @Override public Category getCategory()
     {
         return category;
+    }
+
+    @Override public boolean equals(Object o)
+    {
+        if (this == o) return true;
+        if (!(o instanceof ComponentDefinition)) return false;
+        ComponentDefinition that = (ComponentDefinition) o;
+        return getId() == that.getId() &&
+                Objects.equals(getIdentifier(), that.getIdentifier()) &&
+                Objects.equals(getNotes(), that.getNotes()) &&
+                Objects.equals(getCategory(), that.getCategory());
+    }
+
+    @Override public int hashCode()
+    {
+        return Objects.hash(getId(), getIdentifier(), getNotes(), getCategory());
+    }
+
+    @Override public String toString()
+    {
+        return "ComponentDefinitionRecord{" +
+                "id=" + id +
+                ", identifier='" + identifier + '\'' +
+                ", notes='" + notes + '\'' +
+                ", category=" + category +
+                '}';
     }
 }

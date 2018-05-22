@@ -116,4 +116,15 @@ public class PurchaseRecord implements Purchase
     {
         return Objects.hash(getId(), getOfferId(), getOffer(), getCreatedAt());
     }
+
+    @Override public String toString()
+    {
+        return "PurchaseRecord{" +
+                "id=" + id +
+                ", offerId=" + offerId +
+                ", offer=" + offer +
+                ", bomId=" + bomId +
+                ", createdAt=" + createdAt +
+                '}';
+    }
 }
