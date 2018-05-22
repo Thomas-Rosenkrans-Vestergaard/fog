@@ -8,6 +8,7 @@ import tvestergaard.fog.data.constraints.StatementBinder;
 import tvestergaard.fog.data.constraints.StatementGenerator;
 import tvestergaard.fog.data.purchases.PurchaseBlueprint;
 import tvestergaard.fog.data.purchases.PurchaseDAO;
+import tvestergaard.fog.data.purchases.bom.BomBlueprint;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -136,8 +137,9 @@ public class MysqlOfferDAO extends AbstractMysqlDAO implements OfferDAO
     /**
      * Rejects the offer with the provided id.
      * <p>
-     * To accept an offer, use the {@link PurchaseDAO#create(PurchaseBlueprint)} method,
+     * To accept an offer, use the {@link PurchaseDAO#create(PurchaseBlueprint, BomBlueprint)} method,
      * that will mark the provided offer accepted.
+     *
      *
      * @param offerId The id of the offer to mark reject.
      * @throws MysqlDataAccessException When a data storage exception occurs while performing the operation.

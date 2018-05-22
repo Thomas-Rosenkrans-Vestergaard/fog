@@ -6,7 +6,6 @@ import tvestergaard.fog.data.TestDataSource;
 import tvestergaard.fog.data.cladding.Cladding;
 import tvestergaard.fog.data.cladding.CladdingBlueprint;
 import tvestergaard.fog.data.cladding.MysqlCladdingDAO;
-import tvestergaard.fog.data.constraints.Constraint;
 import tvestergaard.fog.data.customers.Customer;
 import tvestergaard.fog.data.customers.CustomerBlueprint;
 import tvestergaard.fog.data.customers.MysqlCustomerDAO;
@@ -24,6 +23,8 @@ import java.util.ArrayList;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static tvestergaard.fog.data.constraints.Constraint.eq;
+import static tvestergaard.fog.data.constraints.Constraint.where;
+import static tvestergaard.fog.data.orders.OrderColumn.ID;
 
 public class MysqlOrderDAOTest
 {
@@ -98,7 +99,7 @@ public class MysqlOrderDAOTest
         ShedBlueprint expectedShed     = ShedBlueprint.from(200, cladding1.getId(), flooring1.getId());
 
         Order actual = dao.create(OrderBlueprint.from(expectedCustomer.getId(), expectedWidth, expectedLength,
-                expectedHeight, expectedRoofing.getId(), expectedSlope, expectedRafters, expectedActive, expectedShed, "Some comment"));
+                                                      expectedHeight, expectedRoofing.getId(), expectedSlope, expectedRafters, expectedActive, expectedShed, "Some comment"));
 
         assertEquals(expectedCustomer, actual.getCustomer());
         assertEquals(expectedWidth, actual.getWidth());
@@ -118,14 +119,22 @@ public class MysqlOrderDAOTest
     @Test
     public void get() throws Exception
     {
-        Order actual = dao.first(Constraint.where(eq(OrderColumn.ID, order1.getId())));
+        Order actual = dao.first(where(eq(ID, order1.getId())));
         assertEquals(order1, actual);
     }
 
     @Test
     public void update() throws Exception
     {
+        order1.setHeight(45);
+        order1.setWidth(45);
+        order1.setSlope(45);
+        order1.setLength(300);
 
+        dao.update(order1);
+        Order actual = dao.first(where(eq(ID, order1.getId())));
+
+        assertEquals(order1, actual);
     }
 
     @Test

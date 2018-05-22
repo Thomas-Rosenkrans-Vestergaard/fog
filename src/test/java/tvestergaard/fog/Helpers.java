@@ -33,6 +33,16 @@ public class Helpers
         return random.nextInt((max - min) + 1) + min;
     }
 
+    public static int randomInt(int min)
+    {
+        return random.nextInt(min);
+    }
+
+    public static int randomInt()
+    {
+        return random.nextInt();
+    }
+
     public static float randomFloat()
     {
         return random.nextFloat();
