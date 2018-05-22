@@ -77,14 +77,14 @@ public class MysqlOfferDAOTest
         Connection connection = TestDataSource.getSource().getConnection();
 
         connection.createStatement().executeUpdate("DELETE FROM offers");
-        connection.createStatement().executeUpdate("DELETE FROM orders");
-        connection.createStatement().executeUpdate("DELETE FROM sheds");
     }
 
     @AfterClass
     public static void afterClass() throws Exception
     {
         Connection connection = TestDataSource.getSource().getConnection();
+        connection.createStatement().executeUpdate("DELETE FROM orders");
+        connection.createStatement().executeUpdate("DELETE FROM sheds");
         connection.createStatement().executeUpdate("DELETE FROM tokens");
         connection.createStatement().executeUpdate("DELETE FROM customers");
         connection.createStatement().executeUpdate("DELETE FROM employees");
