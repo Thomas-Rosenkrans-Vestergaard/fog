@@ -51,9 +51,7 @@ public class MysqlOrderDAO extends AbstractMysqlDAO implements OrderDAO
         final List<Order> orders = new ArrayList<>();
         final String SQL = generator.generate(
                 "SELECT *, (SELECT count(*) FROM offers WHERE `order` = o.id) AS `o.offers`, " +
-                        "(SELECT count(offers.id) FROM offers WHERE offers.order = o.id AND offers.status = 'OPEN') as `o.open_offers`, " +
-                        "CONCAT_WS('.', customers.name, customers.email, roofings.name, claddings.name, floorings.name, " +
-                        "o.width, o.height, o.length, o.rafters) as `o.search` " +
+                        "(SELECT count(offers.id) FROM offers WHERE offers.order = o.id AND offers.status = 'OPEN') as `o.open_offers` " +
                         "FROM orders o " +
                         "INNER JOIN customers ON o.customer = customers.id " +
                         "INNER JOIN roofings ON o.roofing = roofings.id " +

@@ -42,7 +42,7 @@
             </tr>
             <tr>
                 <th>Bekræftet</th>
-                <td>${f:formatBoolean(customer.isConfirmed())}</td>
+                <td>${f:formatBoolean(customer.isVerified())}</td>
             </tr>
         </table>
     </div>

@@ -67,7 +67,11 @@ public class AdministrationEmployeesServlet extends AdministrationServlet
     {
         @Override public void dispatch(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
         {
-            TableControls<EmployeeColumn> controls = new TableControls<>(request, EmployeeColumn.class, EmployeeColumn.SEARCH);
+            TableControls<EmployeeColumn> controls = new TableControls<>(request);
+            controls.add(EmployeeColumn.NAME, TableControls.Type.TEXT);
+            controls.add(EmployeeColumn.USERNAME, TableControls.Type.TEXT);
+            controls.add(EmployeeColumn.ACTIVE, TableControls.Type.BOOLEAN);
+            controls.add(EmployeeColumn.CREATED_AT, TableControls.Type.TIMESTAMP);
             notifications(request);
             request.setAttribute("title", "Medarbejdere");
             request.setAttribute("employees", facade.get(controls.constraints()));

@@ -19,7 +19,7 @@ import java.io.IOException;
 
 import static tvestergaard.fog.data.constraints.Constraint.eq;
 import static tvestergaard.fog.data.constraints.Constraint.where;
-import static tvestergaard.fog.data.purchases.PurchaseColumn.ID;
+import static tvestergaard.fog.data.purchases.PurchaseColumn.*;
 import static tvestergaard.fog.presentation.PresentationFunctions.notifications;
 
 @WebServlet(urlPatterns = "/administration/purchases")
@@ -52,7 +52,12 @@ public class AdministrationPurchases extends AdministrationServlet
          */
         @Override public void dispatch(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
         {
-            TableControls<PurchaseColumn> controls = new TableControls<>(request, PurchaseColumn.class, PurchaseColumn.SEARCH);
+            TableControls<PurchaseColumn> controls = new TableControls<>(request);
+            controls.add(OFFER, TableControls.Type.INT);
+            controls.add(CUSTOMER_NAME, TableControls.Type.TEXT);
+            controls.add(EMPLOYEE_NAME, TableControls.Type.TEXT);
+            controls.add(PURCHASE_PRICE, TableControls.Type.INT);
+            controls.add(CREATED_AT, TableControls.Type.TIMESTAMP);
             notifications(request);
             request.setAttribute("title", "Køb");
             request.setAttribute("purchases", purchaseFacade.get(controls.constraints()));

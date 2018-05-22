@@ -4,7 +4,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.List;
 
-public class StatementBinder<T extends Column<T> & MysqlColumn>
+public class StatementBinder<C extends Column<C> & MysqlColumn<C>>
 {
 
     /**
@@ -12,7 +12,7 @@ public class StatementBinder<T extends Column<T> & MysqlColumn>
      */
     private int currentParameterIndex = 1;
 
-    public void bind(PreparedStatement statement, int begin, Constraints<T> constraints) throws SQLException
+    public void bind(PreparedStatement statement, int begin, Constraints<C> constraints) throws SQLException
     {
         if (constraints == null)
             return;
@@ -37,14 +37,14 @@ public class StatementBinder<T extends Column<T> & MysqlColumn>
             statement.setInt(currentParameterIndex++, offset);
     }
 
-    private void bindWhereConditions(PreparedStatement statement, List<WhereCondition<T>> whereConditions) throws SQLException
+    private void bindWhereConditions(PreparedStatement statement, List<WhereCondition<C>> whereConditions) throws SQLException
     {
         if (whereConditions != null)
-            for (WhereCondition<T> condition : whereConditions)
+            for (WhereCondition<C> condition : whereConditions)
                 bindWhereCondition(statement, condition);
     }
 
-    public void bind(PreparedStatement statement, Constraints<T> constraints) throws SQLException
+    public void bind(PreparedStatement statement, Constraints<C> constraints) throws SQLException
     {
         bind(statement, 1, constraints);
     }

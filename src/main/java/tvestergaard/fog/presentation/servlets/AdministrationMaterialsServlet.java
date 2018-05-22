@@ -70,7 +70,12 @@ public class AdministrationMaterialsServlet extends AdministrationServlet
     {
         @Override public void dispatch(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
         {
-            TableControls<MaterialColumn> controls = new TableControls<>(request, MaterialColumn.class, MaterialColumn.SEARCH);
+            TableControls<MaterialColumn> controls = new TableControls<>(request);
+            controls.add(MaterialColumn.NUMBER, TableControls.Type.TEXT);
+            controls.add(MaterialColumn.DESCRIPTION, TableControls.Type.TEXT);
+            controls.add(MaterialColumn.PRICE, TableControls.Type.INT);
+            controls.add(MaterialColumn.UNIT, TableControls.Type.INT);
+            controls.add(MaterialColumn.CATEGORY_NAME, TableControls.Type.TEXT);
 
             notifications(request);
             request.setAttribute("title", "Materialer");

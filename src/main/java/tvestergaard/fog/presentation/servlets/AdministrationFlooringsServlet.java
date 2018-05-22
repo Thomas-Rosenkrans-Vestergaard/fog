@@ -65,7 +65,10 @@ public class AdministrationFlooringsServlet extends AdministrationServlet
     {
         @Override public void dispatch(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
         {
-            TableControls<FlooringColumn> controls = new TableControls<>(request, FlooringColumn.class, FlooringColumn.SEARCH);
+            TableControls<FlooringColumn> controls = new TableControls<>(request);
+            controls.add(FlooringColumn.NAME, TableControls.Type.TEXT);
+            controls.add(FlooringColumn.DESCRIPTION, TableControls.Type.TEXT);
+            controls.add(FlooringColumn.ACTIVE, TableControls.Type.BOOLEAN);
             notifications(request);
             request.setAttribute("title", "Gulve");
             request.setAttribute("floorings", facade.get(controls.constraints()));

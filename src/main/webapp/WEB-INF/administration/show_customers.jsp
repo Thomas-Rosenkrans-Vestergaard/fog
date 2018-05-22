@@ -13,7 +13,6 @@
             reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus asperiores repellat.</p>
     </div>
 </div>
-<%@ include file="../includes/table_controls.jspf" %>
 <div class="row">
     <div class="col s12">
         <table class="bordered highlight administration-table">
@@ -23,9 +22,10 @@
                 <th>Adresse</th>
                 <th>Email</th>
                 <th>Telefon</th>
-                <th class="short">Aktiv</th>
+                <th>Aktiv</th>
+                <th>Oprettet</th>
             </tr>
-            <th>Oprettet</th>
+            <%@ include file="../includes/table_controls.jspf" %>
             </thead>
             <tbody>
             <c:forEach items="${customers}" var="customer">

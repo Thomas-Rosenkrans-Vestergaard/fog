@@ -3,7 +3,7 @@ package tvestergaard.fog.data.materials;
 import tvestergaard.fog.data.constraints.Column;
 import tvestergaard.fog.data.constraints.MysqlColumn;
 
-public enum MaterialColumn implements Column<MaterialColumn>, MysqlColumn
+public enum MaterialColumn implements Column<MaterialColumn>, MysqlColumn<MaterialColumn>
 {
 
     ID,
@@ -12,8 +12,8 @@ public enum MaterialColumn implements Column<MaterialColumn>, MysqlColumn
     PRICE,
     UNIT,
     CATEGORY,
+    CATEGORY_NAME,
     CREATED_AT,
-    SEARCH,
     ACTIVE;
 
     /**
@@ -23,20 +23,10 @@ public enum MaterialColumn implements Column<MaterialColumn>, MysqlColumn
      */
     @Override public String getMysqlName()
     {
-        return String.format("materials.%s", this.name().toLowerCase());
-    }
-
-    /**
-     * Returns the column, that should be used in ORDER BY clauses. Used to order when using foreign keys.
-     *
-     * @return The column, that should be used in ORDER BY clauses.
-     */
-    @Override public String getForeignColumn()
-    {
-        if (this == CATEGORY)
+        if (this == CATEGORY_NAME)
             return "categories.name";
 
-        return getMysqlName();
+        return String.format("materials.%s", this.name().toLowerCase());
     }
 
     /**
@@ -46,9 +36,6 @@ public enum MaterialColumn implements Column<MaterialColumn>, MysqlColumn
      */
     @Override public boolean useBacktick()
     {
-        if (this == SEARCH)
-            return true;
-
         return false;
     }
 }

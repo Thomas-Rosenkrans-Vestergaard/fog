@@ -1,9 +1,11 @@
 package tvestergaard.fog.presentation.servlets;
 
 import tvestergaard.fog.data.customers.Customer;
+import tvestergaard.fog.data.orders.OrderColumn;
 import tvestergaard.fog.logic.orders.OrderFacade;
 import tvestergaard.fog.presentation.Authentication;
 import tvestergaard.fog.presentation.Facades;
+import tvestergaard.fog.presentation.TableControls;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -15,8 +17,7 @@ import java.io.IOException;
 import static tvestergaard.fog.data.constraints.Constraint.eq;
 import static tvestergaard.fog.data.constraints.Constraint.where;
 import static tvestergaard.fog.data.constraints.OrderDirection.DESC;
-import static tvestergaard.fog.data.orders.OrderColumn.CREATED_AT;
-import static tvestergaard.fog.data.orders.OrderColumn.CUSTOMER;
+import static tvestergaard.fog.data.orders.OrderColumn.*;
 
 @WebServlet(urlPatterns = "/orders")
 public class OrdersServlet extends HttpServlet
@@ -40,11 +41,21 @@ public class OrdersServlet extends HttpServlet
 
         Customer customer = authentication.getCustomer();
 
+        TableControls<OrderColumn> controls = new TableControls<>(req, where(eq(CUSTOMER, customer.getId())).order(CREATED_AT, DESC));
+        controls.add(WIDTH, TableControls.Type.INT);
+        controls.add(LENGTH, TableControls.Type.INT);
+        controls.add(HEIGHT, TableControls.Type.INT);
+        controls.add(ROOFING_NAME, TableControls.Type.TEXT);
+        controls.add(SLOPE, TableControls.Type.INT);
+        controls.add(RAFTERS, TableControls.Type.TEXT);
+        controls.add(CREATED_AT, TableControls.Type.TEXT);
+        controls.add(ACTIVE, TableControls.Type.BOOLEAN);
+
         req.setAttribute("context", ".");
         req.setAttribute("title", "Mine ordre");
         req.setAttribute("navigation", "orders");
         req.setAttribute("customer", customer);
-        req.setAttribute("orders", orderFacade.get(where(eq(CUSTOMER, customer.getId())).order(CREATED_AT, DESC)));
+        req.setAttribute("orders", orderFacade.get(controls.constraints()));
         req.getRequestDispatcher("/WEB-INF/orders.jsp").forward(req, resp);
     }
 }

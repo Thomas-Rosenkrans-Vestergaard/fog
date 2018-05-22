@@ -3,15 +3,14 @@ package tvestergaard.fog.data.employees;
 import tvestergaard.fog.data.constraints.Column;
 import tvestergaard.fog.data.constraints.MysqlColumn;
 
-public enum EmployeeColumn implements Column<EmployeeColumn>, MysqlColumn
+public enum EmployeeColumn implements Column<EmployeeColumn>, MysqlColumn<EmployeeColumn>
 {
     ID,
     NAME,
     USERNAME,
     PASSWORD,
     ACTIVE,
-    CREATED_AT,
-    SEARCH;
+    CREATED_AT;
 
     /**
      * Returns the name of the column in MySQL.

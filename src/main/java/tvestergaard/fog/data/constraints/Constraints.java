@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static tvestergaard.fog.data.constraints.Constraint.and;
+
 public class Constraints<C extends Column<C>>
 {
 
@@ -22,7 +24,10 @@ public class Constraints<C extends Column<C>>
             whereConditions = new ArrayList<>();
 
         for (WhereCondition<C> condition : conditions)
-            whereConditions.add(condition);
+            if (whereConditions.isEmpty())
+                whereConditions.add(condition);
+            else
+                whereConditions.add(and(condition));
 
         return this;
     }
@@ -44,7 +49,10 @@ public class Constraints<C extends Column<C>>
             havingConditions = new ArrayList<>();
 
         for (WhereCondition<C> condition : conditions)
-            havingConditions.add(condition);
+            if (havingConditions.isEmpty())
+                havingConditions.add(condition);
+            else
+                havingConditions.add(and(condition));
 
         return this;
     }

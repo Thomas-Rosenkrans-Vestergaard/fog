@@ -3,14 +3,17 @@ package tvestergaard.fog.data.purchases;
 import tvestergaard.fog.data.constraints.Column;
 import tvestergaard.fog.data.constraints.MysqlColumn;
 
-public enum PurchaseColumn implements Column<PurchaseColumn>, MysqlColumn
+public enum PurchaseColumn implements Column<PurchaseColumn>, MysqlColumn<PurchaseColumn>
 {
     ID,
     OFFER,
     EMPLOYEE,
+    EMPLOYEE_NAME,
+    CUSTOMER,
+    CUSTOMER_NAME,
+    PURCHASE_PRICE,
     BOM,
-    CREATED_AT,
-    SEARCH;
+    CREATED_AT;
 
     /**
      * Returns the name of the column in MySQL.
@@ -19,23 +22,18 @@ public enum PurchaseColumn implements Column<PurchaseColumn>, MysqlColumn
      */
     @Override public String getMysqlName()
     {
-        return String.format("purchases.%s", this.name().toLowerCase());
-    }
-
-    /**
-     * Returns the column, that should be used in ORDER BY clauses. Used to order when using foreign keys.
-     *
-     * @return The column, that should be used in ORDER BY clauses.
-     */
-    @Override public String getForeignColumn()
-    {
-        if (this == OFFER)
-            return "offers.id";
-
         if (this == EMPLOYEE)
-            return "o_emp.id";
+            return "employees.id";
+        if (this == EMPLOYEE_NAME)
+            return "employees.name";
+        if (this == CUSTOMER)
+            return "customers.id";
+        if (this == CUSTOMER_NAME)
+            return "customers.name";
+        if (this == PURCHASE_PRICE)
+            return "offers.price";
 
-        return getMysqlName();
+        return String.format("purchases.%s", this.name().toLowerCase());
     }
 
     /**
@@ -45,9 +43,6 @@ public enum PurchaseColumn implements Column<PurchaseColumn>, MysqlColumn
      */
     @Override public boolean useBacktick()
     {
-        if (this == SEARCH)
-            return true;
-
         return false;
     }
 }

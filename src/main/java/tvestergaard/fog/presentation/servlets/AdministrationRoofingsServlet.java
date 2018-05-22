@@ -27,7 +27,7 @@ import java.util.*;
 
 import static tvestergaard.fog.data.constraints.Constraint.eq;
 import static tvestergaard.fog.data.constraints.Constraint.where;
-import static tvestergaard.fog.data.roofing.RoofingColumn.ID;
+import static tvestergaard.fog.data.roofing.RoofingColumn.*;
 import static tvestergaard.fog.logic.roofings.RoofingError.*;
 import static tvestergaard.fog.presentation.PresentationFunctions.csrf;
 import static tvestergaard.fog.presentation.PresentationFunctions.notifications;
@@ -72,7 +72,12 @@ public class AdministrationRoofingsServlet extends AdministrationServlet
     {
         @Override public void dispatch(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
         {
-            TableControls<RoofingColumn> controls = new TableControls<>(request, RoofingColumn.class, RoofingColumn.SEARCH);
+            TableControls<RoofingColumn> controls = new TableControls<>(request);
+            controls.add(NAME, TableControls.Type.TEXT);
+            controls.add(DESCRIPTION, TableControls.Type.TEXT);
+            controls.add(ACTIVE, TableControls.Type.BOOLEAN);
+            controls.add(TYPE, TableControls.Type.TEXT);
+
             notifications(request);
             request.setAttribute("title", "Tage");
             request.setAttribute("roofings", roofingFacade.get(controls.constraints()));

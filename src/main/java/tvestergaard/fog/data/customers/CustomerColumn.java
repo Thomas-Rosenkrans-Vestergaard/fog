@@ -3,7 +3,7 @@ package tvestergaard.fog.data.customers;
 import tvestergaard.fog.data.constraints.Column;
 import tvestergaard.fog.data.constraints.MysqlColumn;
 
-public enum CustomerColumn implements Column<CustomerColumn>, MysqlColumn
+public enum CustomerColumn implements Column<CustomerColumn>, MysqlColumn<CustomerColumn>
 {
 
     ID,
@@ -13,8 +13,7 @@ public enum CustomerColumn implements Column<CustomerColumn>, MysqlColumn
     PHONE,
     PASSWORD,
     ACTIVE,
-    CREATED_AT,
-    SEARCH;
+    CREATED_AT;
 
     /**
      * Returns the name of the column in MySQL.

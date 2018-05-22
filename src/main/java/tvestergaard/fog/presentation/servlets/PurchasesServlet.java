@@ -1,9 +1,11 @@
 package tvestergaard.fog.presentation.servlets;
 
 import tvestergaard.fog.data.customers.Customer;
+import tvestergaard.fog.data.purchases.PurchaseColumn;
 import tvestergaard.fog.logic.purchases.PurchaseFacade;
 import tvestergaard.fog.presentation.Authentication;
 import tvestergaard.fog.presentation.Facades;
+import tvestergaard.fog.presentation.TableControls;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -40,11 +42,17 @@ public class PurchasesServlet extends HttpServlet
 
         Customer customer = authentication.getCustomer();
 
+        TableControls<PurchaseColumn> controls = new TableControls<>(req, where(eq(CUSTOMER, customer.getId())).order(CREATED_AT, DESC));
+        controls.add(PurchaseColumn.OFFER, TableControls.Type.INT);
+        controls.add(PurchaseColumn.EMPLOYEE_NAME, TableControls.Type.TEXT);
+        controls.add(PurchaseColumn.PURCHASE_PRICE, TableControls.Type.INT);
+        controls.add(PurchaseColumn.CREATED_AT, TableControls.Type.TEXT);
+
         req.setAttribute("context", ".");
         req.setAttribute("title", "Mine køb");
         req.setAttribute("navigation", "purchases");
         req.setAttribute("customer", customer);
-        req.setAttribute("purchases", purchaseFacade.get(where(eq(CUSTOMER, customer.getId())).order(CREATED_AT, DESC)));
+        req.setAttribute("purchases", purchaseFacade.get(controls.constraints()));
         req.getRequestDispatcher("/WEB-INF/purchases.jsp").forward(req, resp);
     }
 }

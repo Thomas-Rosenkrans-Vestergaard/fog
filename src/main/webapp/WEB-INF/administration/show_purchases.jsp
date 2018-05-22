@@ -18,7 +18,6 @@
             porttitor, facilisis luctus, metus</p>
     </div>
 </div>
-<%@ include file="../includes/table_controls.jspf" %>
 <div class="row">
     <div class="col s12">
         <table class="bordered highlight">
@@ -30,6 +29,7 @@
                 <th>Købspris</th>
                 <th>Oprettet</th>
             </tr>
+            <%@ include file="../includes/table_controls.jspf" %>
             </thead>
             <tbody>
             <c:forEach items="${purchases}" var="purchase">

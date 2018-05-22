@@ -3,14 +3,13 @@ package tvestergaard.fog.data.cladding;
 import tvestergaard.fog.data.constraints.Column;
 import tvestergaard.fog.data.constraints.MysqlColumn;
 
-public enum CladdingColumn implements Column<CladdingColumn>, MysqlColumn
+public enum CladdingColumn implements Column<CladdingColumn>, MysqlColumn<CladdingColumn>
 {
 
     ID,
     NAME,
     DESCRIPTION,
-    ACTIVE,
-    SEARCH;
+    ACTIVE;
 
     /**
      * Returns the name of the column in MySQL.

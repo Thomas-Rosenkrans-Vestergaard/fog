@@ -1,4 +1,5 @@
 <%@page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ include file="../includes/top.jspf" %>
 <div class="row">
     <div class="col s12">
         <h2><span class="focus">${cladding.getName()}</span></h2>
@@ -43,11 +44,6 @@
                 </button>
             </div>
         </div>
-        <script>
-            $(document).ready(function () {
-                $('input#name').characterCounter();
-            });
-        </script>
     </form>
 </div>
 <%@ include file="../includes/bottom.jspf" %>

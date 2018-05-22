@@ -1,50 +1,47 @@
 package tvestergaard.fog.presentation;
 
-import tvestergaard.fog.data.constraints.Column;
 import tvestergaard.fog.data.constraints.Constraints;
-import tvestergaard.fog.data.constraints.OrderDirection;
-import tvestergaard.fog.presentation.Parameters;
+import tvestergaard.fog.data.constraints.MysqlColumn;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.EnumSet;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
+import static tvestergaard.fog.data.constraints.Constraint.eq;
 import static tvestergaard.fog.data.constraints.Constraint.like;
 
-public class TableControls<C extends Enum<C> & Column<C>>
+public class TableControls<C extends Enum<C> & MysqlColumn<C>>
 {
 
-    private final HttpServletRequest request;
-    private final Class<C>           columns;
-    private final Parameters         parameters;
-    private final C                  searchColumn;
-    private final Constraints<C>     def;
-    private       int                currentPage;
+    private final Parameters     parameters;
+    private final Constraints<C> def;
 
-    public TableControls(HttpServletRequest request, Class<C> columns, C searchColumn, Constraints<C> def)
+    public enum Type
     {
-        this.request = request;
-        this.columns = columns;
-        this.parameters = new Parameters(request);
-        this.searchColumn = searchColumn;
-        this.def = def;
-
-        this.currentPage = parameters.isInt("page") ? parameters.getInt("page") : 1;
-
-
-        def.limit(20);
-        def.offset((currentPage - 1) * 20);
-
-        request.setAttribute("orderings", EnumSet.allOf(OrderDirection.class));
-        request.setAttribute("columns", EnumSet.allOf(columns));
-        request.setAttribute("search_value", parameters.value("search_value"));
-        request.setAttribute("sort_column", parameters.value("sort_column"));
-        request.setAttribute("sort_direction", parameters.value("sort_direction"));
-        request.setAttribute("page", currentPage);
+        TEXT,
+        INT,
+        BOOLEAN,
+        TIMESTAMP
     }
 
-    public TableControls(HttpServletRequest request, Class<C> columns, C searchColumn)
+    private final Map<C, Type> columns = new LinkedHashMap<>();
+
+    public void add(C column, Type type)
     {
-        this(request, columns, searchColumn, new Constraints<>());
+        columns.put(column, type);
+    }
+
+    public TableControls(HttpServletRequest request, Constraints<C> def)
+    {
+        this.parameters = new Parameters(request);
+        request.setAttribute("parameters", parameters);
+        request.setAttribute("columns", this.columns.entrySet());
+        this.def = def;
+    }
+
+    public TableControls(HttpServletRequest request)
+    {
+        this(request, new Constraints<>());
     }
 
     public Constraints<C> constraints()
@@ -52,15 +49,12 @@ public class TableControls<C extends Enum<C> & Column<C>>
         if (!parameters.isPresent("search"))
             return def;
 
-        String         searchValue   = parameters.value("search_value");
-        C              sortColumn    = parameters.getEnum("sort_column", columns);
-        OrderDirection sortDirection = parameters.getEnum("sort_direction", OrderDirection.class);
-        int            currentPage   = parameters.getInt("page");
-
-        return new Constraints<C>()
-                .having(like(searchColumn, '%' + searchValue + '%'))
-                .order(sortColumn, sortDirection)
-                .limit(20)
-                .offset((currentPage - 1) * 20);
+        Constraints<C> constraints = new Constraints<>();
+        for (Map.Entry<C, Type> column : columns.entrySet())
+            if (column.getValue() == Type.BOOLEAN && parameters.isBoolean(column.getKey().getMysqlName()))
+                constraints.where(eq(column.getKey(), parameters.getBoolean(column.getKey().getMysqlName())));
+            else
+                constraints.where(like(column.getKey(), '%' + parameters.value(column.getKey().getMysqlName()) + '%'));
+        return constraints;
     }
 }

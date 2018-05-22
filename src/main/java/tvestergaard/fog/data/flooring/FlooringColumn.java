@@ -3,14 +3,13 @@ package tvestergaard.fog.data.flooring;
 import tvestergaard.fog.data.constraints.Column;
 import tvestergaard.fog.data.constraints.MysqlColumn;
 
-public enum FlooringColumn implements Column<FlooringColumn>, MysqlColumn
+public enum FlooringColumn implements Column<FlooringColumn>, MysqlColumn<FlooringColumn>
 {
 
     ID,
     NAME,
     DESCRIPTION,
-    ACTIVE,
-    SEARCH;
+    ACTIVE;
 
     /**
      * Returns the name of the column in MySQL.

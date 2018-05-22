@@ -53,8 +53,7 @@ public class MysqlOfferDAO extends AbstractMysqlDAO implements OfferDAO
         final String SQL = generator.generate(
                 "SELECT *, (SELECT count(*) FROM offers WHERE `order` = o.id) AS `o.offers`, " +
                         "(SELECT count(offers.id) FROM offers WHERE offers.order = o.id AND offers.status = 'OPEN') as `o.open_offers`, " +
-                        "(SELECT GROUP_CONCAT(roles.role SEPARATOR ',') FROM roles WHERE employee = employees.id) as `employees.roles`, " +
-                        "CONCAT_WS('.', customers.name, roofings.name, employees.name, employees.username, claddings.name, offers.status) as `offers.search` " +
+                        "(SELECT GROUP_CONCAT(roles.role SEPARATOR ',') FROM roles WHERE employee = employees.id) as `employees.roles` " +
                         "FROM offers " +
                         "INNER JOIN orders o ON offers.order = o.id " +
                         "INNER JOIN customers ON o.customer = customers.id " +

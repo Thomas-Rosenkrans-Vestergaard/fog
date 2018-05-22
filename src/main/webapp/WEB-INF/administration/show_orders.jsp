@@ -13,7 +13,6 @@
             reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus asperiores repellat.</p>
     </div>
 </div>
-<%@ include file="../includes/table_controls.jspf" %>
 <div class="row">
     <div class="col s12">
         <table class="bordered highlight">
@@ -23,12 +22,12 @@
                 <th>Bredde</th>
                 <th>Længde</th>
                 <th>Højde</th>
-                <th>Tag</th>
                 <th>Hældning</th>
                 <th>Spær</th>
                 <th>Oprettet</th>
                 <th>Redskabsskur</th>
             </tr>
+            <%@ include file="../includes/table_controls.jspf" %>
             </thead>
             <tbody>
             <c:forEach items="${orders}" var="order">
@@ -41,10 +40,6 @@
                     <td>${order.getWidth()}</td>
                     <td>${order.getLength()}</td>
                     <td>${order.getHeight()}</td>
-                    <c:set var="roofing" value="${order.getRoofing()}"/>
-                    <td>
-                        <a href="roofings?action=update&id=${roofing.getId()}"><c:out value="${roofing.getName()}"/>
-                        </a></td>
                     <td>${order.getSlope()}</td>
                     <td>${order.getRafterChoice()}</td>
                     <td>${f:formatDatetime(order.getCreatedAt())}</td>

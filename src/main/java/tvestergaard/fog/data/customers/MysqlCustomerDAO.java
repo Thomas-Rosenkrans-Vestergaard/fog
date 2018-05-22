@@ -47,8 +47,7 @@ public class MysqlCustomerDAO extends AbstractMysqlDAO implements CustomerDAO
     @Override public List<Customer> get(Constraints<CustomerColumn> constraints) throws MysqlDataAccessException
     {
         final List<Customer> customers = new ArrayList<>();
-        final String SQL = generator.generate(
-                "SELECT *, CONCAT_WS('.', name, address, email, phone) as search FROM customers", constraints);
+        final String         SQL       = generator.generate("SELECT * FROM customers", constraints);
         try (PreparedStatement statement = getConnection().prepareStatement(SQL)) {
             binder.bind(statement, constraints);
             ResultSet resultSet = statement.executeQuery();

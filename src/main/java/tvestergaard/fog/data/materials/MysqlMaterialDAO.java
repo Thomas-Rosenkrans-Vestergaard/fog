@@ -56,10 +56,7 @@ public class MysqlMaterialDAO extends AbstractMysqlDAO implements MaterialDAO
 
         final List<Material> materials = new ArrayList<>();
 
-        final String SQL = generator.generate(
-                "SELECT *, " +
-                        "CONCAT_WS('.', materials.number, materials.description, materials.price, materials.unit, categories.name) as `materials.search` " +
-                        "FROM materials INNER JOIN categories ON materials.category = categories.id", constraints);
+        final String SQL = generator.generate("SELECT * FROM materials INNER JOIN categories ON materials.category = categories.id", constraints);
         try (PreparedStatement statement = getConnection().prepareStatement(SQL)) {
             binder.bind(statement, constraints);
             ResultSet resultSet = statement.executeQuery();

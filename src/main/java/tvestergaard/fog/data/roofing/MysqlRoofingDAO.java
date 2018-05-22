@@ -56,8 +56,7 @@ public class MysqlRoofingDAO extends AbstractMysqlDAO implements RoofingDAO
     @Override public List<Roofing> get(Constraints<RoofingColumn> constraints) throws MysqlDataAccessException
     {
         final List<Roofing> roofings = new ArrayList<>();
-        final String SQL = generator.generate(
-                "SELECT *, CONCAT_WS('.', name, description) as search FROM roofings", constraints);
+        final String        SQL      = generator.generate("SELECT * FROM roofings", constraints);
         try (PreparedStatement statement = getConnection().prepareStatement(SQL)) {
             binder.bind(statement, constraints);
             ResultSet resultSet = statement.executeQuery();

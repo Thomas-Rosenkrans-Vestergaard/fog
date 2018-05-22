@@ -12,9 +12,7 @@
             semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo. Quisque sit amet est et sapien
             ullamcorper pharetra. Vestibulum erat wisi, condimentum sed, commodo vitae, ornare sit amet, wisi. Aenean
             fermentum, elit eget tincidunt condimentum, eros ipsum rutrum orci, sagittis tempus lacus enim ac dui. Donec
-            non enim in turpis pulvinar facilisis. Ut felis. Praesent dapibus, neque id cursus faucibus, tortor neque
-            egestas augue, eu vulputate magna eros eu erat. Aliquam erat volutpat. Nam dui mi, tincidunt quis, accumsan
-            porttitor, facilisis luctus, metus</p>
+            non enim in turpis pulvinar facilisis. Ut felis.</p>
     </div>
 </div>
 <div class="row">
@@ -28,12 +26,13 @@
                 <th>Oprettet</th>
                 <th style="width: 120px">Aktioner</th>
             </tr>
+            <%@ include file="includes/table_controls.jspf" %>
             </thead>
             <tbody>
             <c:forEach items="${offers}" var="offer">
                 <tr>
                     <c:set var="order" value="${offer.getOrder()}"/>
-                    <td><a href="order?id=${order.getId()}">Ordre</a></td>
+                    <td><a href="order?id=${order.getId()}">${order.getId()}</a></td>
                     <td>${f:formatPrice(offer.getPrice())}</td>
                     <th>${offer.getStatus()}</th>
                     <td>${f:formatDatetime(offer.getCreatedAt())}</td>

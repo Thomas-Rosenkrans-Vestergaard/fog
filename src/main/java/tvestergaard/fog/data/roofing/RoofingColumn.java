@@ -1,16 +1,15 @@
 package tvestergaard.fog.data.roofing;
 
-import tvestergaard.fog.data.constraints.Column;
 import tvestergaard.fog.data.constraints.MysqlColumn;
 
-public enum RoofingColumn implements Column<RoofingColumn>, MysqlColumn
+public enum RoofingColumn implements MysqlColumn<RoofingColumn>
 {
 
     ID,
     NAME,
     DESCRIPTION,
     ACTIVE,
-    SEARCH;
+    TYPE;
 
     /**
      * Returns the name of the column in MySQL.

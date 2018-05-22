@@ -215,3 +215,26 @@ table table td {
 tr[data-link] {
     cursor: pointer;
 }
+
+tr#table-controls {
+
+}
+
+tr#table-controls td {
+    padding: 0 !important;
+}
+
+tr#table-controls td .controls-input {
+    margin-bottom: 0;
+    margin-left: 5px;
+    border-bottom: none;
+}
+
+tr#table-controls td .select-dropdown {
+    border-bottom: none;
+    margin: 0 0px 0 5px;
+}
+
+tr#table-controls td .select-wrapper {
+    margin-right: 10px;
+}

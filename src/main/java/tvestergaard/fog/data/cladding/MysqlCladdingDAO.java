@@ -44,8 +44,7 @@ public class MysqlCladdingDAO extends AbstractMysqlDAO implements CladdingDAO
     @Override public List<Cladding> get(Constraints<CladdingColumn> constraints) throws MysqlDataAccessException
     {
         final List<Cladding> floors = new ArrayList<>();
-        final String SQL = generator.generate(
-                "SELECT *, CONCAT_WS('.', name, description) as search FROM claddings", constraints);
+        final String         SQL    = generator.generate("SELECT * FROM claddings", constraints);
         try (PreparedStatement statement = getConnection().prepareStatement(SQL)) {
             binder.bind(statement, constraints);
             ResultSet resultSet = statement.executeQuery();

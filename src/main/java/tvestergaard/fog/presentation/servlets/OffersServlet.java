@@ -2,16 +2,14 @@ package tvestergaard.fog.presentation.servlets;
 
 import tvestergaard.fog.data.customers.Customer;
 import tvestergaard.fog.data.offers.Offer;
+import tvestergaard.fog.data.offers.OfferColumn;
 import tvestergaard.fog.logic.customers.InactiveCustomerException;
 import tvestergaard.fog.logic.employees.InsufficientPermissionsException;
 import tvestergaard.fog.logic.offers.OfferFacade;
 import tvestergaard.fog.logic.offers.OfferNotOpenException;
 import tvestergaard.fog.logic.offers.UnknownOfferException;
 import tvestergaard.fog.logic.purchases.PurchaseFacade;
-import tvestergaard.fog.presentation.Authentication;
-import tvestergaard.fog.presentation.Facades;
-import tvestergaard.fog.presentation.Notifications;
-import tvestergaard.fog.presentation.Parameters;
+import tvestergaard.fog.presentation.*;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -23,8 +21,7 @@ import java.io.IOException;
 import static tvestergaard.fog.data.constraints.Constraint.eq;
 import static tvestergaard.fog.data.constraints.Constraint.where;
 import static tvestergaard.fog.data.constraints.OrderDirection.DESC;
-import static tvestergaard.fog.data.offers.OfferColumn.CREATED_AT;
-import static tvestergaard.fog.data.offers.OfferColumn.ID;
+import static tvestergaard.fog.data.offers.OfferColumn.*;
 import static tvestergaard.fog.data.orders.OrderColumn.CUSTOMER;
 import static tvestergaard.fog.presentation.PresentationFunctions.*;
 
@@ -51,12 +48,18 @@ public class OffersServlet extends HttpServlet
 
         Customer customer = authentication.getCustomer();
 
+        TableControls<OfferColumn> controls = new TableControls<>(req, where(eq(CUSTOMER, customer.getId())).order(CREATED_AT, DESC));
+        controls.add(ORDER, TableControls.Type.INT);
+        controls.add(PRICE, TableControls.Type.INT);
+        controls.add(STATUS, TableControls.Type.TEXT);
+        controls.add(CREATED_AT, TableControls.Type.TEXT);
+
         req.setAttribute("context", ".");
         req.setAttribute("title", "Mine ordre");
         req.setAttribute("navigation", "offers");
         req.setAttribute("csrf", csrf(req));
         req.setAttribute("customer", customer);
-        req.setAttribute("offers", offerFacade.get(where(eq(CUSTOMER, customer.getId())).order(CREATED_AT, DESC)));
+        req.setAttribute("offers", offerFacade.get(controls.constraints()));
         req.getRequestDispatcher("/WEB-INF/offers.jsp").forward(req, resp);
     }
 

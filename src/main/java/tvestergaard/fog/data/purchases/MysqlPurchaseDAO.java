@@ -53,8 +53,7 @@ public class MysqlPurchaseDAO extends AbstractMysqlDAO implements PurchaseDAO
         final List<Purchase> purchases = new ArrayList<>();
         final String SQL = generator.generate("SELECT *, (SELECT count(*) FROM offers WHERE `order` = o.id) AS `o.offers`, " +
                 "(SELECT count(offers.id) FROM offers WHERE offers.order = o.id AND offers.status = 'OPEN') as `o.open_offers`, " +
-                "(SELECT GROUP_CONCAT(roles.role SEPARATOR ',') FROM roles WHERE employee = o_emp.id) as `o_emp.roles`, " +
-                "CONCAT_WS('.', customers.name, customers.email, roofings.name, claddings.name, floorings.name, o_emp.name, o_emp.username, offers.price) as `purchases.search` " +
+                "(SELECT GROUP_CONCAT(roles.role SEPARATOR ',') FROM roles WHERE employee = employees.id) as `employees.roles` " +
                 "FROM purchases " +
                 "INNER JOIN bom ON purchases.bom = bom.id " +
                 "INNER JOIN offers ON purchases.offer = offers.id " +
@@ -64,13 +63,13 @@ public class MysqlPurchaseDAO extends AbstractMysqlDAO implements PurchaseDAO
                 "LEFT  JOIN sheds ON o.shed = sheds.id " +
                 "LEFT  JOIN claddings ON sheds.cladding = claddings.id " +
                 "LEFT  JOIN floorings ON sheds.flooring = floorings.id " +
-                "INNER JOIN employees o_emp ON offers.employee = o_emp.id", constraints);
+                "INNER JOIN employees ON offers.employee = employees.id", constraints);
         try (PreparedStatement statement = getConnection().prepareStatement(SQL)) {
             binder.bind(statement, constraints);
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next())
                 purchases.add(createPurchase(resultSet, "purchases", "offers", "o", "customers", "roofings",
-                        "sheds", "claddings", "floorings", "o_emp"));
+                        "sheds", "claddings", "floorings", "employees"));
             return purchases;
         } catch (SQLException e) {
             throw new MysqlDataAccessException(e);

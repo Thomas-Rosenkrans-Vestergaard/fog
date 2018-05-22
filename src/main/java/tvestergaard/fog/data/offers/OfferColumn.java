@@ -3,16 +3,18 @@ package tvestergaard.fog.data.offers;
 import tvestergaard.fog.data.constraints.Column;
 import tvestergaard.fog.data.constraints.MysqlColumn;
 
-public enum OfferColumn implements Column<OfferColumn>, MysqlColumn
+public enum OfferColumn implements Column<OfferColumn>, MysqlColumn<OfferColumn>
 {
 
     ID,
     ORDER,
     EMPLOYEE,
+    EMPLOYEE_NAME,
+    CUSTOMER,
+    CUSTOMER_NAME,
     PRICE,
     STATUS,
-    CREATED_AT,
-    SEARCH;
+    CREATED_AT;
 
     /**
      * Returns the name of the column in MySQL.
@@ -21,23 +23,12 @@ public enum OfferColumn implements Column<OfferColumn>, MysqlColumn
      */
     @Override public String getMysqlName()
     {
-        return "offers." + this.name().toLowerCase();
-    }
-
-    /**
-     * Returns the column, that should be used in ORDER BY clauses. Used to order when using foreign keys.
-     *
-     * @return The column, that should be used in ORDER BY clauses.
-     */
-    @Override public String getForeignColumn()
-    {
-        if(this == ORDER)
-            return "o.id";
-
-        if(this == EMPLOYEE)
+        if (this == EMPLOYEE_NAME)
             return "employees.name";
+        if (this == CUSTOMER_NAME)
+            return "customers.name";
 
-        return getMysqlName();
+        return "offers." + this.name().toLowerCase();
     }
 
     /**
@@ -47,9 +38,6 @@ public enum OfferColumn implements Column<OfferColumn>, MysqlColumn
      */
     @Override public boolean useBacktick()
     {
-        if (this == SEARCH)
-            return true;
-
         return false;
     }
 }

@@ -4,7 +4,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-public class StatementGenerator<C extends Column<C> & MysqlColumn>
+public class StatementGenerator<C extends Column<C> & MysqlColumn<C>>
 {
 
     public String generate(String statement, Constraints<C> constraints)
@@ -215,7 +215,7 @@ public class StatementGenerator<C extends Column<C> & MysqlColumn>
         builder.append(' ');
         if (column.useBacktick())
             builder.append('`');
-        builder.append(column.getForeignColumn());
+        builder.append(column.getMysqlName());
         if (column.useBacktick())
             builder.append('`');
         builder.append(" ");

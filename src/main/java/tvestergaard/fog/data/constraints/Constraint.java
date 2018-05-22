@@ -52,7 +52,7 @@ public interface Constraint
      * @param value  The value to use in the {@link EqualsCondition}.
      * @return The newly created instance of {@link EqualsCondition}.
      */
-    static <C extends Column<C>> EqualsCondition eq(C column, Object value)
+    static <C extends Column<C>> EqualsCondition eq(Column<C> column, Object value)
     {
         return new EqualsCondition(column, value);
     }
@@ -65,7 +65,7 @@ public interface Constraint
      * @param value  The value to use in the {@link NotCondition}.
      * @return The newly created instance of {@link NotCondition}.
      */
-    static <C extends Column<C>> NotCondition not(C column, Object value)
+    static <C extends Column<C>> NotCondition not(Column<C> column, Object value)
     {
         return new NotCondition(column, value);
     }
@@ -77,7 +77,7 @@ public interface Constraint
      * @param value  The value to use in the {@link LikeCondition}.
      * @return The newly created instance of {@link LikeCondition}.
      */
-    static <C extends Column<C>> LikeCondition like(C column, String value)
+    static <C extends Column<C>> LikeCondition like(Column<C> column, String value)
     {
         return new LikeCondition(column, value);
     }

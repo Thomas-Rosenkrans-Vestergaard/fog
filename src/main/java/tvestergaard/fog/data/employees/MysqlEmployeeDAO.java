@@ -50,7 +50,7 @@ public class MysqlEmployeeDAO extends AbstractMysqlDAO implements EmployeeDAO
         final List<Employee> employees = new ArrayList<>();
         final String SQL = generator.generate(
                 "SELECT * , (SELECT GROUP_CONCAT(roles.role SEPARATOR ',') FROM roles WHERE employee = employees.id) " +
-                        "as `employees.roles`, CONCAT_WS('.', name, username) as search FROM employees", constraints);
+                        "as `employees.roles` FROM employees", constraints);
         try (PreparedStatement statement = getConnection().prepareStatement(SQL)) {
             binder.bind(statement, constraints);
             ResultSet resultSet = statement.executeQuery();
