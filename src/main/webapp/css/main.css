@@ -216,25 +216,50 @@ tr[data-link] {
     cursor: pointer;
 }
 
-tr#table-controls {
+tr#table-filters {
 
 }
 
-tr#table-controls td {
+tr#table-filters td {
     padding: 0 !important;
 }
 
-tr#table-controls td .controls-input {
+tr#table-filters td .table-filter {
     margin-bottom: 0;
     margin-left: 5px;
     border-bottom: none;
 }
 
-tr#table-controls td .select-dropdown {
+tr#table-filters td .select-dropdown {
     border-bottom: none;
     margin: 0 0px 0 5px;
 }
 
-tr#table-controls td .select-wrapper {
+tr#table-filters td .select-wrapper {
     margin-right: 10px;
+}
+
+tr#table-pagination td p {
+    float: left;
+    font-size: 1.6rem;
+    padding-top: 10px;
+}
+
+tr#table-pagination td i {
+    padding-top: 10px;
+    cursor: pointer;
+    float: left;
+    font-size: 2rem;
+}
+
+tr#table-pagination td input {
+    display: inline-block;
+}
+
+tr#table-pagination td {
+    padding: 10px 0 0 0 !important;
+}
+
+tr#table-pagination {
+    border-bottom: none;
 }

@@ -29,7 +29,7 @@
                 <th>Købspris</th>
                 <th>Oprettet</th>
             </tr>
-            <%@ include file="../includes/table_controls.jspf" %>
+            <%@ include file="../includes/table_filters.jspf" %>
             </thead>
             <tbody>
             <c:forEach items="${purchases}" var="purchase">
@@ -48,6 +48,7 @@
                     <td>${f:formatDatetime(offer.getCreatedAt())}</td>
                 </tr>
             </c:forEach>
+            <%@ include file="../includes/table_pagination.jspf" %>
             </tbody>
         </table>
     </div>

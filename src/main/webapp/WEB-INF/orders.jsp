@@ -31,7 +31,7 @@
                 <th>Aktiv</th>
                 <th>Redskabsskur</th>
             </tr>
-            <%@ include file="includes/table_controls.jspf" %>
+            <%@ include file="includes/table_filters.jspf" %>
             </thead>
             <tbody>
             <c:forEach items="${orders}" var="order">
@@ -70,6 +70,7 @@
                     </c:if>
                 </tr>
             </c:forEach>
+            <%@ include file="includes/table_pagination.jspf" %>
             </tbody>
         </table>
     </div>

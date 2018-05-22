@@ -1,0 +1,9 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page pageEncoding="UTF-8" %>
+<tr id="table-pagination">
+    <td>
+        <i class="material-icons small" id="page-left">chevron_left</i>
+        <p id="page-number">${current_page}</p>
+        <i class="material-icons small" id="page-right">chevron_right</i>
+    </td>
+</tr>

@@ -25,7 +25,7 @@
                 <th>Beskrivelse</th>
                 <th>Aktiv</th>
             </tr>
-            <%@ include file="../includes/table_controls.jspf" %>
+            <%@ include file="../includes/table_filters.jspf" %>
             </thead>
             <tbody>
             <c:forEach items="${floorings}" var="flooring">
@@ -35,6 +35,7 @@
                     <td><c:out value="${f:formatBoolean(flooring.isActive())}"/></td>
                 </tr>
             </c:forEach>
+            <%@ include file="../includes/table_pagination.jspf" %>
             </tbody>
         </table>
     </div>

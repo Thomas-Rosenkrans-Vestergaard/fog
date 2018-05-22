@@ -1,0 +1,80 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page pageEncoding="UTF-8" %>
+<tr id="table-filters">
+    <c:forEach items="${columns}" var="entry">
+        <c:set var="column" value="${entry.getKey()}"/>
+        <c:set var="type" value="${entry.getValue()}"/>
+        <c:if test="${type.name().equals('INT')}">
+            <td>
+                <input class="table-filter" type="number" step="1" name="${column.name()}"
+                       value="${parameters.value(column.name())}">
+            </td>
+        </c:if>
+        <c:if test="${type.name().equals('TEXT')}">
+            <td>
+                <input class="table-filter" type="text" name="${column.name()}"
+                       value="${parameters.value(column.name())}">
+            </td>
+        </c:if>
+        <c:if test="${type.name().equals('TIMESTAMP')}">
+            <td>
+                <input class="table-filter" type="text" name="${column.name()}"
+                       value="${parameters.value(column.name())}">
+            </td>
+        </c:if>
+        <c:if test="${type.name().equals('BOOLEAN')}">
+            <td>
+                <select class="table-filter" name="${column.name()}">
+                    <option value="">Begge</option>
+                    <option ${parameters.value(column.name()) == 'true' ? 'selected' : ''}
+                            value="true">Ja
+                    </option>
+                    <option ${parameters.value(column.name()) == 'false' ? 'selected' : ''}
+                            value="false">Nej
+                    </option>
+                </select>
+            </td>
+        </c:if>
+    </c:forEach>
+</tr>
+<script>
+
+    $(document).ready(function () {
+
+        $('input.table-filter').on('keypress', function (e) {
+            if (e.keyCode == 13) {
+                $('#page-number').text('1');
+                submitForm();
+            }
+        });
+
+        $('select.table-filter').on('change', function (e) {
+            $('#page-number').text('1');
+            submitForm();
+        });
+
+        $('#page-left').click(function () {
+            $("#page-number").text(parseInt($('#page-number').text()) - 1);
+            submitForm();
+        });
+
+        $('#page-right').click(function () {
+            $("#page-number").text(parseInt($('#page-number').text()) + 1);
+            submitForm();
+        })
+    });
+
+    function submitForm() {
+        var form = '';
+        $('#table-filters').find('input.table-filter, select.table-filter').each(function (x, input) {
+            input = $(input);
+            form += '<input type="hidden" name="' + input.attr('name') + '" value="' + input.val() + '">';
+        });
+
+        form += '<input type="hidden" name="search" value="_">';
+        form += '<input type="hidden" name="page" value="' + $('#page-number').text() + '">';
+
+        $('<form>' + form + '</form>').appendTo($(document.body)).submit();
+    }
+
+</script>

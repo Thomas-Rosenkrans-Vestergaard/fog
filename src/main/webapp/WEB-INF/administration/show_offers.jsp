@@ -25,7 +25,7 @@
                 <th>Medarbejder</th>
                 <th>Tilbud pris</th>
             </tr>
-            <%@ include file="../includes/table_controls.jspf" %>
+            <%@ include file="../includes/table_filters.jspf" %>
             </thead>
             <tbody>
             <c:forEach items="${offers}" var="offer">
@@ -50,6 +50,7 @@
                     <td>${f:formatPrice(offer.getPrice())}</td>
                 </tr>
             </c:forEach>
+            <%@ include file="../includes/table_pagination.jspf" %>
             </tbody>
         </table>
     </div>

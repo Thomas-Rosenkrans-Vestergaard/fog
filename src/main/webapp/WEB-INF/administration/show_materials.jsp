@@ -46,7 +46,7 @@
                 <th>Enhed</th>
                 <th>Kategori</th>
             </tr>
-            <%@ include file="../includes/table_controls.jspf" %>
+            <%@ include file="../includes/table_filters.jspf" %>
             </thead>
             <tbody>
             <c:forEach items="${materials}" var="material">
@@ -58,6 +58,7 @@
                     <td><c:out value="${material.getCategory().getName()}"/></td>
                 </tr>
             </c:forEach>
+            <%@ include file="../includes/table_pagination.jspf" %>
             </tbody>
         </table>
     </div>

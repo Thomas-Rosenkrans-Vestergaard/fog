@@ -43,7 +43,7 @@
                 <th>Aktiv</th>
                 <th>Type</th>
             </tr>
-            <%@ include file="../includes/table_controls.jspf" %>
+            <%@ include file="../includes/table_filters.jspf" %>
             </thead>
             <tbody>
             <c:forEach items="${roofings}" var="roofing">
@@ -54,6 +54,7 @@
                     <td><c:out value="${roofing.getType()}"/></td>
                 </tr>
             </c:forEach>
+            <%@ include file="../includes/table_pagination.jspf" %>
             </tbody>
         </table>
     </div>

@@ -25,7 +25,7 @@
                 <th>Aktiv</th>
                 <th>Oprettet</th>
             </tr>
-            <%@ include file="../includes/table_controls.jspf" %>
+            <%@ include file="../includes/table_filters.jspf" %>
             </thead>
             <tbody>
             <c:forEach items="${customers}" var="customer">
@@ -38,6 +38,7 @@
                     <td><c:out value="${f:formatDatetime(customer.getCreatedAt())}"/></td>
                 </tr>
             </c:forEach>
+            <%@ include file="../includes/table_pagination.jspf" %>
             </tbody>
         </table>
     </div>

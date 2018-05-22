@@ -26,7 +26,7 @@
                 <th>Oprettet</th>
                 <th style="width: 120px">Aktioner</th>
             </tr>
-            <%@ include file="includes/table_controls.jspf" %>
+            <%@ include file="includes/table_filters.jspf" %>
             </thead>
             <tbody>
             <c:forEach items="${offers}" var="offer">
@@ -59,6 +59,7 @@
                     </c:if>
                 </tr>
             </c:forEach>
+            <%@ include file="includes/table_filters.jspf" %>
             </tbody>
         </table>
     </div>
