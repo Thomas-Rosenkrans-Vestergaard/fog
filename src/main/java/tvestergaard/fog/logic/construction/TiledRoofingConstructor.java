@@ -240,13 +240,11 @@ public class TiledRoofingConstructor extends DrawingUtilities implements Roofing
         Component component = components.from("ROOF_GABLE_CLADDING");
         Material  material  = component.getMaterial();
 
-        int roofHeightMM = roofHeight * 10;
         int roofWidthMM  = roofWidth * 10;
 
-//        int plankLength = material.getAttribute("LENGTH_MM").getInt();
-//        int plankWidth  = material.getAttribute("WIDTH_MM").getInt();
+        int plankWidth = material.getAttribute("WIDTH_MM").getInt();
 
-        materials.add(material, /*roofHeightMM * roofWidthMM / (plankLength * plankWidth) * 2*/ 0, component.getNotes());
+        materials.add(material, up(roofWidthMM / plankWidth) * 2, component.getNotes());
     }
 
     /**

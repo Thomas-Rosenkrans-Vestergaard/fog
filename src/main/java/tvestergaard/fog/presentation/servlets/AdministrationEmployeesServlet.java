@@ -60,6 +60,7 @@ public class AdministrationEmployeesServlet extends AdministrationServlet
         }
 
         req.setAttribute("navigation", "administration_employees");
+        req.setAttribute("csrf", csrf(req));
         return true;
     }
 
@@ -75,7 +76,6 @@ public class AdministrationEmployeesServlet extends AdministrationServlet
             notifications(request);
             request.setAttribute("title", "Medarbejdere");
             request.setAttribute("employees", facade.get(controls.constraints()));
-            request.setAttribute("csrf", csrf(request));
             request.getRequestDispatcher("/WEB-INF/administration/show_employees.jsp").forward(request, response);
         }
     }
