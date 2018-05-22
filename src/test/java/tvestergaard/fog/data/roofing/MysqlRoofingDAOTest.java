@@ -43,8 +43,6 @@ public class MysqlRoofingDAOTest
     public void after() throws Exception
     {
         Connection connection = TestDataSource.getSource().getConnection();
-        connection.createStatement().executeUpdate("DELETE FROM roofing_component_attribute_values");
-        connection.createStatement().executeUpdate("DELETE FROM roofing_component_attribute_definitions");
         connection.createStatement().executeUpdate("DELETE FROM roofing_component_values");
         connection.createStatement().executeUpdate("DELETE FROM roofing_component_definitions");
         connection.createStatement().executeUpdate("DELETE FROM roofings");

@@ -59,7 +59,7 @@
                     </c:if>
                 </tr>
             </c:forEach>
-            <%@ include file="includes/table_filters.jspf" %>
+            <%@ include file="includes/table_pagination.jspf" %>
             </tbody>
         </table>
     </div>
