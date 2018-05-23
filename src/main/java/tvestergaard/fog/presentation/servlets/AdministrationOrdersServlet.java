@@ -7,9 +7,7 @@ import tvestergaard.fog.data.orders.*;
 import tvestergaard.fog.logic.claddings.CladdingFacade;
 import tvestergaard.fog.logic.floorings.FlooringFacade;
 import tvestergaard.fog.logic.offers.OfferFacade;
-import tvestergaard.fog.logic.orders.OrderError;
-import tvestergaard.fog.logic.orders.OrderFacade;
-import tvestergaard.fog.logic.orders.OrderValidatorException;
+import tvestergaard.fog.logic.orders.*;
 import tvestergaard.fog.logic.roofings.RoofingFacade;
 import tvestergaard.fog.presentation.Facades;
 import tvestergaard.fog.presentation.Notifications;
@@ -31,8 +29,7 @@ import static tvestergaard.fog.data.constraints.OrderDirection.ASC;
 import static tvestergaard.fog.data.constraints.OrderDirection.DESC;
 import static tvestergaard.fog.data.orders.OrderColumn.*;
 import static tvestergaard.fog.logic.orders.OrderError.*;
-import static tvestergaard.fog.presentation.PresentationFunctions.csrf;
-import static tvestergaard.fog.presentation.PresentationFunctions.notifications;
+import static tvestergaard.fog.presentation.PresentationFunctions.*;
 
 @WebServlet(name = "AdministrationOrders", urlPatterns = "/administration/orders")
 public class AdministrationOrdersServlet extends AdministrationServlet
@@ -50,6 +47,7 @@ public class AdministrationOrdersServlet extends AdministrationServlet
         dispatcher.get(null, new ShowTableCommand());
         dispatcher.get("update", new ShowUpdateCommand());
         dispatcher.post("update", new HandleUpdateCommand());
+        dispatcher.post("cancel", new HandleCancelCommand());
 
         errors.put(INCOMPLETE_ORDER, "Incomplete order.");
         errors.put(UNKNOWN_CUSTOMER, "Ukendt kunde");
@@ -212,5 +210,46 @@ public class AdministrationOrdersServlet extends AdministrationServlet
                 null,
                 parameters.getInt("shed-flooring"),
                 null);
+    }
+
+    private class HandleCancelCommand implements Command
+    {
+
+        /**
+         * Delegates the request and response objects to this command.
+         *
+         * @param request  The request.
+         * @param response The response.
+         */
+        @Override public void dispatch(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
+        {
+            Parameters    parameters    = new Parameters(request);
+            Notifications notifications = notifications(request);
+
+            if (!parameters.isInt("id")) {
+                notifications.error("No provided id.");
+                response.sendRedirect("orders");
+                return;
+            }
+
+            if (!vefiry(request)) {
+                notifications.error("Token udløbet.");
+                response.sendRedirect("orders?action=update&id=" + parameters.getInt("id"));
+                return;
+            }
+
+            try {
+                orderFacade.cancel(parameters.getInt("id"));
+                notifications.success("Ordren blev aflyst.");
+                response.sendRedirect("orders?action=update&id=" + parameters.getInt("id"));
+                return;
+            } catch (UnknownOrderException e) {
+                notifications.error("Ukendt order");
+            } catch (InactiveOrderException e) {
+                notifications.error("Denne ordre er allerede aflyst eller købt.");
+            }
+
+            response.sendRedirect("orders?action=update&id=" + parameters.getInt("id"));
+        }
     }
 }

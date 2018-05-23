@@ -18,6 +18,7 @@
     <div class="col s12 no-padding">
         <form method="post">
             <div class="row">
+                ${csrf}
                 <div class="col s12 input-field">
                     <input type="text" name="username" id="username" class="validate" value="admin" required>
                     <label for="username">Brugernavn</label>

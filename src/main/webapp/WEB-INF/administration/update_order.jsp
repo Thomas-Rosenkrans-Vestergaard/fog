@@ -7,9 +7,13 @@
 </div>
 <div class="row">
     <div class="col s12">
-        <a href="offers?action=create&order=${order.getId()}" ${order.isActive() ? '' : 'disabled'} class="btn-large">
-            <i class="material-icons right">add</i>OPRET TILBUD
-        </a>
+        <form method="post" action="orders">
+            ${csrf}
+            <input type="hidden" name="id" value="${order.getId()}">
+            <button class="btn-large" type="submit" name="action" value="cancel"
+            ${order.isActive() ? '' : 'disabled'}><i class="material-icons right">clear</i>Aflys
+            </button>
+        </form>
     </div>
 </div>
 <div class="row">
@@ -26,6 +30,13 @@
     </div>
 </div>
 <div class="row">
+    <div class="col 12">
+        <a href="offers?action=create&order=${order.getId()}" ${order.isActive() ? '' : 'disabled'} class="btn-large">
+            <i class="material-icons right">add</i>OPRET TILBUD
+        </a>
+    </div>
+</div>
+<div class="row">
     <div class="col s12">
         <table class="bordered highlight">
             <thead>
@@ -35,6 +46,7 @@
                 <th>Status</th>
                 <th>Oprettet</th>
             </tr>
+            <%@ include file="../includes/table_filters.jspf" %>
             </thead>
             <tbody>
             <c:forEach items="${offers}" var="offer">

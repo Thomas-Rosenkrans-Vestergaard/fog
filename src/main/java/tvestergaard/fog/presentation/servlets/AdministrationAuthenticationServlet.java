@@ -15,8 +15,7 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.net.URLDecoder;
 
-import static tvestergaard.fog.presentation.PresentationFunctions.csrf;
-import static tvestergaard.fog.presentation.PresentationFunctions.notifications;
+import static tvestergaard.fog.presentation.PresentationFunctions.*;
 
 @WebServlet(urlPatterns = "/administration/authenticate")
 public class AdministrationAuthenticationServlet extends AdministrationServlet
@@ -36,7 +35,7 @@ public class AdministrationAuthenticationServlet extends AdministrationServlet
     {
         req.setAttribute("title", "Medarbejderlogin");
         req.setAttribute("context", "..");
-        req.setAttribute("token", csrf(req));
+        req.setAttribute("csrf", csrf(req));
         req.getRequestDispatcher("/WEB-INF/administration/authentication.jsp").forward(req, resp);
     }
 
@@ -54,6 +53,13 @@ public class AdministrationAuthenticationServlet extends AdministrationServlet
         Notifications notifications = notifications(req);
 
         if (!parameters.isPresent("username") || !parameters.isPresent("password")) {
+            notifications.error("Not enough information.");
+            resp.sendRedirect("authenticate");
+            return;
+        }
+
+        if (!vefiry(req)) {
+            notifications.error("Token udløbet.");
             resp.sendRedirect("authenticate");
             return;
         }

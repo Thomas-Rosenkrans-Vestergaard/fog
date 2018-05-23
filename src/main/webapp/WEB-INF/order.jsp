@@ -8,9 +8,10 @@
 <div class="row">
     <div class="col s12">
         <form method="post">
+            ${csrf}
             <input type="hidden" name="id" value="${order.getId()}">
             <button class="btn-large" type="submit" name="action" value="cancel"
-            ${order.isActive() ? '' : 'disabled'}>Aflys
+            ${order.isActive() ? '' : 'disabled'}><i class="material-icons right">clear</i>Aflys
             </button>
         </form>
     </div>
