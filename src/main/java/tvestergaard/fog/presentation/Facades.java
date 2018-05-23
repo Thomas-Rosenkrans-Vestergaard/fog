@@ -85,7 +85,7 @@ public class Facades
     public static final  MaterialFacade     materialFacade     = new MaterialFacade(materialDAO);
     public static final  OrderFacade        orderFacade        = new OrderFacade(new OrderPlacer(orderDAO, customerDAO, mailer), orderDAO, new OrderValidator());
     public static final  RoofingFacade      roofingFacade      = new RoofingFacade(roofingDAO, new RoofingValidator());
-    public static final  OfferFacade        offerFacade        = new OfferFacade(offerDAO, orderDAO, employeeDAO, mailer, tokenIssuer, tokenAuthenticator, websiteContext);
+    public static final  OfferFacade        offerFacade        = new OfferFacade(offerDAO, orderDAO, employeeDAO, mailer, tokenIssuer, tokenAuthenticator);
     public static final  ConstructionFacade constructionFacade = new ConstructionFacade(modelDAO, roofingDAO);
     public static final  PurchaseFacade     purchaseFacade     = new PurchaseFacade(purchaseDAO, offerDAO, bomDAO, constructionFacade);
     public static final  ModelFacade        skeletonFacade     = new ModelFacade(modelDAO);

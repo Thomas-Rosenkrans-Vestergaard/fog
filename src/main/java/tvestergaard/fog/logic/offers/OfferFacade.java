@@ -14,7 +14,6 @@ import tvestergaard.fog.data.orders.Order;
 import tvestergaard.fog.data.orders.OrderDAO;
 import tvestergaard.fog.data.tokens.TokenUse;
 import tvestergaard.fog.logic.ApplicationException;
-import tvestergaard.fog.logic.WebsiteContext;
 import tvestergaard.fog.logic.customers.InactiveCustomerException;
 import tvestergaard.fog.logic.email.ApplicationMailer;
 import tvestergaard.fog.logic.employees.InactiveEmployeeException;
@@ -70,11 +69,6 @@ public class OfferFacade
     private final TokenAuthenticator tokenAuthenticator;
 
     /**
-     * Information about the fog website.
-     */
-    private final WebsiteContext websiteContext;
-
-    /**
      * Creates a new {@link OfferFacade}.
      *
      * @param offerDAO           The offer dao used to access the data storage in the application.
@@ -83,7 +77,6 @@ public class OfferFacade
      * @param mailer             The object responsible for sending offer notification emails to customers.
      * @param tokenIssuer        The object responsible for creating one-time tokens for the offer email sent to customers.
      * @param tokenAuthenticator The object responsible for authenticating one-time tokens for the offer email sent to customers.
-     * @param websiteContext     Information about the fog website.
      */
     public OfferFacade(
             OfferDAO offerDAO,
@@ -91,8 +84,7 @@ public class OfferFacade
             EmployeeDAO employeeDAO,
             ApplicationMailer mailer,
             TokenIssuer tokenIssuer,
-            TokenAuthenticator tokenAuthenticator,
-            WebsiteContext websiteContext)
+            TokenAuthenticator tokenAuthenticator)
     {
         this.offerDAO = offerDAO;
         this.orderDAO = orderDAO;
@@ -100,7 +92,6 @@ public class OfferFacade
         this.mailer = mailer;
         this.tokenIssuer = tokenIssuer;
         this.tokenAuthenticator = tokenAuthenticator;
-        this.websiteContext = websiteContext;
     }
 
     /**
