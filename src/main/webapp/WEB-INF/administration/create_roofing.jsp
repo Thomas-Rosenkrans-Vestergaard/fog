@@ -9,8 +9,7 @@
     <div class="col s12">
         <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Nulla non lectus sed nisl molestie malesuada.
             Mauris dolor felis, sagittis at, luctus sed, aliquam non, tellus. Vivamus luctus egestas leo. Sed elit dui,
-            pellentesque a, faucibus vel, interdum nec, diam. Itaque earum rerum hic tenetur a sapiente delectus, ut aut
-            reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus asperiores repellat.</p>
+            pellentesque a, faucibus vel, interdum nec, diam.</p>
     </div>
 </div>
 <div class="row">
