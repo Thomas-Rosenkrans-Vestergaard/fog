@@ -130,9 +130,9 @@
         <li class="${"administration_models".equals(navigation) ? 'active' : '' }">
             <a href="${context}/administration/models">Modeller</a></li>
         <li class="${"administration_roofings".equals(navigation) ? 'active' : '' }">
-            <a href="${context}/administration/roofings">Tagbeklædninger</a></li>
+            <a href="${context}/administration/roofings">Tage</a></li>
         <li class="${"administration_claddings".equals(navigation) ? 'active' : '' }">
-            <a href="${context}/administration/claddings">Facadebekældninger</a></li>
+            <a href="${context}/administration/claddings">Facader</a></li>
         <li class="${"administration_floorings".equals(navigation) ? 'active' : '' }">
             <a href="${context}/administration/floorings">Gulve</a></li>
         <li class="${"administration_materials".equals(navigation) ? 'active' : '' }">
@@ -140,7 +140,7 @@
         <li><a href="${context}/administration/logout">Log ud</a></li>
         <% } %>
         <% } else { %>
-        <li><a href="${context}/administration/authenticate">Authntificer</a></li>
+        <li><a href="${context}/administration/authenticate">Autentificer</a></li>
         <% } %>
     </div>
 </ul>
