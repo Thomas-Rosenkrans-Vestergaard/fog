@@ -285,7 +285,7 @@ public abstract class AbstractMysqlDAO
                 results.getBoolean(tMaterial + ".active"),
                 results.getInt(tCategory + ".id"),
                 createCategory(results, tCategory),
-                null
+                new HashSet<>()
         );
     }
 
