@@ -90,7 +90,7 @@ public class OrderServlet extends HttpServlet
         int order = parameters.getInt("id");
 
         try {
-            orderFacade.cancel(order);
+            orderFacade.cancel(order, false);
             notifications.success("Ordren blev aflyst.");
         } catch (UnknownOrderException e) {
             notifications.error("Ukendt order.");

@@ -6,6 +6,7 @@ import tvestergaard.fog.data.customers.UnknownCustomerException;
 import tvestergaard.fog.data.orders.*;
 import tvestergaard.fog.logic.ApplicationException;
 import tvestergaard.fog.logic.customers.InactiveCustomerException;
+import tvestergaard.fog.logic.email.ApplicationMailer;
 
 import java.util.List;
 import java.util.Set;
@@ -33,17 +34,24 @@ public class OrderFacade
     private final OrderValidator validator;
 
     /**
+     * The object responsible for sending emails to customers.
+     */
+    private final ApplicationMailer mailer;
+
+    /**
      * Creates a new {@link OrderFacade}.
      *
      * @param orderPlacer The object responsible for creating new orders.
      * @param dao         The dao used to access the order storage.
      * @param validator   The validator used to validate information about orders.
+     * @param mailer      The object responsible for sending emails to customers.
      */
-    public OrderFacade(OrderPlacer orderPlacer, OrderDAO dao, OrderValidator validator)
+    public OrderFacade(OrderPlacer orderPlacer, OrderDAO dao, OrderValidator validator, ApplicationMailer mailer)
     {
         this.placer = orderPlacer;
         this.dao = dao;
         this.validator = validator;
+        this.mailer = mailer;
     }
 
     /**
@@ -107,12 +115,12 @@ public class OrderFacade
      * @param shed     The shed to add to the order.
      * @param comment  The comment provided by the customer about the order.
      * @return The new order.
-     * @throws OrderValidatorException      When the provided information is considered invalid.
-     * @throws UnknownCustomerException     When the customer placing the order is unknown to the application.
-     * @throws InactiveCustomerException    When the customer is inactive, and can therefor not place new orders.
+     * @throws OrderValidatorException     When the provided information is considered invalid.
+     * @throws UnknownCustomerException    When the customer placing the order is unknown to the application.
+     * @throws InactiveCustomerException   When the customer is inactive, and can therefor not place new orders.
      * @throws UnverifiedCustomerException When the customer has not confirmed their email address, and can therefor
-     *                                      not place new orders.
-     * @throws ApplicationException         When a data storage exception occurs while performing the operation.
+     *                                     not place new orders.
+     * @throws ApplicationException        When a data storage exception occurs while performing the operation.
      */
     public Order create(
             int customer,
@@ -189,13 +197,14 @@ public class OrderFacade
     /**
      * Attempts to cancel the order with the provided id.
      *
-     * @param orderId The id of the order to cancel.
+     * @param orderId   The id of the order to cancel.
+     * @param sendEmail Whether or an email should be sent to the customer.
      * @return {@code true} if the order was canceled.
      * @throws ApplicationException   When an exception occurs while performing the operation.
      * @throws UnknownOrderException  When no order with the provided id exists in the application.
      * @throws InactiveOrderException When the order with the provided id is inactive, and can therefor not be canceled.
      */
-    public boolean cancel(int orderId) throws UnknownOrderException, InactiveOrderException
+    public boolean cancel(int orderId, boolean sendEmail) throws UnknownOrderException, InactiveOrderException
     {
 
         try {
@@ -205,7 +214,12 @@ public class OrderFacade
             if (!order.isActive())
                 throw new InactiveOrderException();
 
-            return dao.cancel(orderId);
+            boolean result = dao.cancel(orderId);
+
+            if (result && sendEmail)
+                mailer.send(new OrderCanceledEmail(order));
+
+            return result;
 
         } catch (DataAccessException e) {
             throw new ApplicationException(e);

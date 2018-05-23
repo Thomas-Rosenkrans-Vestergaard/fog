@@ -245,7 +245,7 @@ public class AdministrationOrdersServlet extends AdministrationServlet
             }
 
             try {
-                orderFacade.cancel(parameters.getInt("id"));
+                orderFacade.cancel(parameters.getInt("id"), true);
                 notifications.success("Ordren blev aflyst.");
                 response.sendRedirect("orders?action=update&id=" + parameters.getInt("id"));
                 return;
