@@ -29,8 +29,7 @@ import static tvestergaard.fog.data.constraints.Constraint.eq;
 import static tvestergaard.fog.data.constraints.Constraint.where;
 import static tvestergaard.fog.data.roofing.RoofingColumn.*;
 import static tvestergaard.fog.logic.roofings.RoofingError.*;
-import static tvestergaard.fog.presentation.PresentationFunctions.csrf;
-import static tvestergaard.fog.presentation.PresentationFunctions.notifications;
+import static tvestergaard.fog.presentation.PresentationFunctions.*;
 
 @WebServlet(urlPatterns = "/administration/roofings")
 public class AdministrationRoofingsServlet extends AdministrationServlet
@@ -137,6 +136,12 @@ public class AdministrationRoofingsServlet extends AdministrationServlet
                 return;
             }
 
+            if (!vefiry(request)) {
+                notifications.error("Token udløbet.");
+                response.sendRedirect("?action=update&id=" + parameters.getInt("id"));
+                return;
+            }
+
             List<ComponentReference>  values     = new ArrayList<>();
             List<ComponentDefinition> components = roofingFacade.getComponentDefinitions(parameters.getEnum("type", RoofingType.class));
             for (ComponentDefinition definition : components) {
@@ -205,6 +210,12 @@ public class AdministrationRoofingsServlet extends AdministrationServlet
         {
             Parameters    parameters    = new Parameters(request);
             Notifications notifications = notifications(request);
+
+            if (!vefiry(request)) {
+                notifications.error("Token udløbet.");
+                response.sendRedirect("?action=create");
+                return;
+            }
 
             if (!parameters.isPresent("name") ||
                     !parameters.isPresent("description") ||
@@ -291,6 +302,12 @@ public class AdministrationRoofingsServlet extends AdministrationServlet
 
             if (!parameters.isEnum("roofing", RoofingType.class)) {
                 notifications.error("No roofing type provided.");
+                response.sendRedirect("roofings");
+                return;
+            }
+
+            if (!vefiry(request)) {
+                notifications.error("Token udløbet.");
                 response.sendRedirect("roofings");
                 return;
             }

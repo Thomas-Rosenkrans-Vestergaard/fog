@@ -22,8 +22,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import static tvestergaard.fog.presentation.PresentationFunctions.csrf;
-import static tvestergaard.fog.presentation.PresentationFunctions.notifications;
+import static tvestergaard.fog.presentation.PresentationFunctions.*;
 
 @WebServlet("/administration/models")
 public class AdministrationModelsServlet extends AdministrationServlet
@@ -113,6 +112,12 @@ public class AdministrationModelsServlet extends AdministrationServlet
                 return;
             }
 
+            if (!vefiry(request)) {
+                notifications.error("Token udløbet.");
+                response.sendRedirect("?action=update&id=" + parameters.getInt("id"));
+                return;
+            }
+
             List<ComponentReference>  values     = new ArrayList<>();
             List<ComponentDefinition> components = modelFacade.getComponentDefinitions(parameters.getInt("id"));
             for (ComponentDefinition definition : components) {
@@ -183,6 +188,12 @@ public class AdministrationModelsServlet extends AdministrationServlet
 
             if (!parameters.isInt("model")) {
                 notifications.error("No model id provided.");
+                response.sendRedirect("models");
+                return;
+            }
+
+            if (!vefiry(request)) {
+                notifications.error("Token udløbet.");
                 response.sendRedirect("models");
                 return;
             }

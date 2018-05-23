@@ -25,8 +25,7 @@ import static tvestergaard.fog.data.cladding.CladdingColumn.ID;
 import static tvestergaard.fog.data.constraints.Constraint.eq;
 import static tvestergaard.fog.data.constraints.Constraint.where;
 import static tvestergaard.fog.logic.employees.EmployeeError.*;
-import static tvestergaard.fog.presentation.PresentationFunctions.csrf;
-import static tvestergaard.fog.presentation.PresentationFunctions.notifications;
+import static tvestergaard.fog.presentation.PresentationFunctions.*;
 
 @WebServlet(urlPatterns = "/administration/employees")
 public class AdministrationEmployeesServlet extends AdministrationServlet
@@ -124,6 +123,12 @@ public class AdministrationEmployeesServlet extends AdministrationServlet
                 return;
             }
 
+            if (!vefiry(request)) {
+                notifications.error("Token udløbet.");
+                response.sendRedirect("?action=update&id=" + parameters.getInt("id"));
+                return;
+            }
+
             try {
                 facade.update(parameters.getInt("id"),
                         parameters.value("name"),
@@ -166,6 +171,12 @@ public class AdministrationEmployeesServlet extends AdministrationServlet
         {
             Parameters    parameters    = new Parameters(request);
             Notifications notifications = notifications(request);
+
+            if (!vefiry(request)) {
+                notifications.error("Token udløbet.");
+                response.sendRedirect("?action=create");
+                return;
+            }
 
             if (!parameters.isPresent("name") ||
                     !parameters.isPresent("username") ||

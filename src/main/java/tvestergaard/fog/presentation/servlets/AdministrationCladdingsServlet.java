@@ -25,8 +25,7 @@ import static tvestergaard.fog.data.cladding.CladdingColumn.ID;
 import static tvestergaard.fog.data.constraints.Constraint.eq;
 import static tvestergaard.fog.data.constraints.Constraint.where;
 import static tvestergaard.fog.logic.claddings.CladdingError.*;
-import static tvestergaard.fog.presentation.PresentationFunctions.csrf;
-import static tvestergaard.fog.presentation.PresentationFunctions.notifications;
+import static tvestergaard.fog.presentation.PresentationFunctions.*;
 
 @WebServlet(urlPatterns = "/administration/claddings")
 public class AdministrationCladdingsServlet extends AdministrationServlet
@@ -65,7 +64,7 @@ public class AdministrationCladdingsServlet extends AdministrationServlet
     {
         @Override public void dispatch(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
         {
-            TableControls<CladdingColumn> controls = new TableControls<>(request, null);
+            TableControls<CladdingColumn> controls = new TableControls<>(request);
             controls.add(CladdingColumn.NAME, TableControls.Type.TEXT);
             controls.add(CladdingColumn.DESCRIPTION, TableControls.Type.TEXT);
             controls.add(CladdingColumn.ACTIVE, TableControls.Type.BOOLEAN);
@@ -119,6 +118,12 @@ public class AdministrationCladdingsServlet extends AdministrationServlet
                 return;
             }
 
+            if (!vefiry(request)) {
+                notifications.error("Token udløbet.");
+                response.sendRedirect("?action=update&id=" + parameters.getInt("id"));
+                return;
+            }
+
             try {
                 facade.update(parameters.getInt("id"),
                         parameters.value("name"),
@@ -156,6 +161,12 @@ public class AdministrationCladdingsServlet extends AdministrationServlet
         {
             Parameters    parameters    = new Parameters(request);
             Notifications notifications = notifications(request);
+
+            if (!vefiry(request)) {
+                notifications.error("Token udløbet.");
+                response.sendRedirect("?action=create");
+                return;
+            }
 
             if (!parameters.isPresent("name") ||
                     !parameters.isPresent("description") ||

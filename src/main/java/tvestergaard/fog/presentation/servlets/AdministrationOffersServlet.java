@@ -30,8 +30,7 @@ import java.util.Map;
 
 import static tvestergaard.fog.data.constraints.Constraint.eq;
 import static tvestergaard.fog.data.constraints.Constraint.where;
-import static tvestergaard.fog.presentation.PresentationFunctions.csrf;
-import static tvestergaard.fog.presentation.PresentationFunctions.notifications;
+import static tvestergaard.fog.presentation.PresentationFunctions.*;
 
 @WebServlet(urlPatterns = "/administration/offers")
 public class AdministrationOffersServlet extends AdministrationServlet
@@ -124,6 +123,12 @@ public class AdministrationOffersServlet extends AdministrationServlet
             Authentication authentication = new Authentication(request);
             Notifications  notifications  = notifications(request);
             Parameters     parameters     = new Parameters(request);
+
+            if (!vefiry(request)) {
+                notifications.error("Token udløbet.");
+                response.sendRedirect("?action=create");
+                return;
+            }
 
             if (!parameters.isInt("order") || !parameters.isFloat("price")) {
                 notifications.error("Incorrect form submit");

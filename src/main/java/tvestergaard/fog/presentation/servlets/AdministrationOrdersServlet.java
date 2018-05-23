@@ -152,6 +152,12 @@ public class AdministrationOrdersServlet extends AdministrationServlet
                 return;
             }
 
+            if (!vefiry(request)) {
+                notifications.error("Token udløbet.");
+                response.sendRedirect("?action=update&id=" + parameters.getInt("id"));
+                return;
+            }
+
             if (parameters.isPresent("shed")) {
                 if ("create".equals(parameters.value("shed-action"))) {
                     if (!parameters.isInt("shed-depth") ||

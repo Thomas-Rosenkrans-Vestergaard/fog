@@ -28,8 +28,7 @@ import java.util.Map;
 import java.util.Set;
 
 import static tvestergaard.fog.logic.materials.MaterialError.*;
-import static tvestergaard.fog.presentation.PresentationFunctions.csrf;
-import static tvestergaard.fog.presentation.PresentationFunctions.notifications;
+import static tvestergaard.fog.presentation.PresentationFunctions.*;
 
 @WebServlet(urlPatterns = "/administration/materials")
 public class AdministrationMaterialsServlet extends AdministrationServlet
@@ -114,6 +113,12 @@ public class AdministrationMaterialsServlet extends AdministrationServlet
         {
             Parameters    parameters    = new Parameters(request);
             Notifications notifications = notifications(request);
+
+            if (!vefiry(request)) {
+                notifications.error("Token udløbet.");
+                response.sendRedirect("?action=create");
+                return;
+            }
 
             if (!parameters.isPresent("number") ||
                     !parameters.isPresent("description") ||
@@ -202,6 +207,12 @@ public class AdministrationMaterialsServlet extends AdministrationServlet
                     !parameters.isInt("category")) {
                 notifications.error("Cannot format parameters.");
                 response.sendRedirect("materials");
+                return;
+            }
+
+            if (!vefiry(request)) {
+                notifications.error("Token udløbet.");
+                response.sendRedirect("?action=update&id=" + parameters.getInt("id"));
                 return;
             }
 
