@@ -50,11 +50,6 @@ public abstract class AbstractMysqlDAO
     private final MysqlDataSource source;
 
     /**
-     * The cached connection for reuse.
-     */
-    private Connection connection = null;
-
-    /**
      * Creates a new {@link AbstractMysqlDAO}.
      *
      * @param source The {@link MysqlDataSource} to perform operations upon.
@@ -72,11 +67,8 @@ public abstract class AbstractMysqlDAO
      */
     protected final Connection getConnection() throws SQLException
     {
-        if (connection == null) {
-            connection = source.getConnection();
-            connection.setAutoCommit(false);
-        }
-
+        Connection connection = source.getConnection();
+        connection.setAutoCommit(false);
         return connection;
     }
 
@@ -302,11 +294,11 @@ public abstract class AbstractMysqlDAO
      * @throws SQLException When the factory could not access a required column.
      */
     protected Material createMaterial(ResultSet results,
-                                      String tMaterial,
-                                      String tCategory,
-                                      ResultSet attributes,
-                                      String tAttributeDefinition,
-                                      String tAttributeValues) throws SQLException
+            String tMaterial,
+            String tCategory,
+            ResultSet attributes,
+            String tAttributeDefinition,
+            String tAttributeValues) throws SQLException
     {
         return new MaterialRecord(
                 results.getInt(tMaterial + ".id"),
@@ -473,12 +465,12 @@ public abstract class AbstractMysqlDAO
      * @throws SQLException When the factory could not access a required column.
      */
     protected Component createComponent(ResultSet results,
-                                        String tComponentDefinition,
-                                        String tMaterial,
-                                        String tCategory,
-                                        ResultSet attributes,
-                                        String tAttributeDefinition,
-                                        String tAttributeValue) throws SQLException
+            String tComponentDefinition,
+            String tMaterial,
+            String tCategory,
+            ResultSet attributes,
+            String tAttributeDefinition,
+            String tAttributeValue) throws SQLException
     {
         ComponentDefinition definition = createComponentDefinition(results, tComponentDefinition, tCategory);
         Material            material   = createMaterial(results, tMaterial, tCategory, attributes, tAttributeDefinition, tAttributeValue);
@@ -538,12 +530,12 @@ public abstract class AbstractMysqlDAO
      * @throws SQLException When the factory could not access a required column.
      */
     protected Order createOrder(ResultSet results,
-                                String tOrder,
-                                String tCustomer,
-                                String tRoofing,
-                                String tShed,
-                                String tCladding,
-                                String tFlooring) throws SQLException
+            String tOrder,
+            String tCustomer,
+            String tRoofing,
+            String tShed,
+            String tCladding,
+            String tFlooring) throws SQLException
     {
         Shed shed = results.getInt("shed") == 0 ? null : createShed(results, tShed, tCladding, tFlooring);
 
@@ -585,14 +577,14 @@ public abstract class AbstractMysqlDAO
      * @throws SQLException When the factory could not access a required column.
      */
     protected Offer createOffer(ResultSet results,
-                                String tOffer,
-                                String tEmployee,
-                                String tOrder,
-                                String tCustomer,
-                                String tRoofing,
-                                String tShed,
-                                String tCladding,
-                                String tFlooring) throws SQLException
+            String tOffer,
+            String tEmployee,
+            String tOrder,
+            String tCustomer,
+            String tRoofing,
+            String tShed,
+            String tCladding,
+            String tFlooring) throws SQLException
     {
         Order    order    = createOrder(results, tOrder, tCustomer, tRoofing, tShed, tCladding, tFlooring);
         Employee employee = createEmployee(results, tEmployee);
@@ -625,15 +617,15 @@ public abstract class AbstractMysqlDAO
      * @throws SQLException When the factory could not access a required column.
      */
     protected Purchase createPurchase(ResultSet results,
-                                      String tPurchase,
-                                      String tOffer,
-                                      String tEmployee,
-                                      String tOrder,
-                                      String tCustomer,
-                                      String tRoofing,
-                                      String tShed,
-                                      String tCladding,
-                                      String tFlooring) throws SQLException
+            String tPurchase,
+            String tOffer,
+            String tEmployee,
+            String tOrder,
+            String tCustomer,
+            String tRoofing,
+            String tShed,
+            String tCladding,
+            String tFlooring) throws SQLException
     {
         Offer offer = createOffer(
                 results,
