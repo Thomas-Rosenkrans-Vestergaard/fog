@@ -549,7 +549,6 @@ public abstract class AbstractMysqlDAO
                 results.getInt(tOrder + ".roofing"),
                 createRoofing(results, tRoofing),
                 results.getInt(tOrder + ".slope"),
-                RafterChoice.from(results.getInt(tOrder + ".rafters")),
                 shed,
                 shed,
                 shed,

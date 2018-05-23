@@ -58,7 +58,7 @@ public class MysqlOrderDAOTest
     public void setUp() throws Exception
     {
         ShedBlueprint shedBlueprint = ShedBlueprint.from(10, cladding1.getId(), flooring1.getId());
-        this.order1 = dao.create(OrderBlueprint.from(customer1.getId(), 1, 2, 3, roofing1.getId(), 6, RafterChoice.PREBUILT, true, shedBlueprint, "Some comment"));
+        this.order1 = dao.create(OrderBlueprint.from(customer1.getId(), 1, 2, 3, roofing1.getId(), 6, true, shedBlueprint, "Some comment"));
     }
 
     @After
@@ -89,12 +89,11 @@ public class MysqlOrderDAOTest
         int           expectedHeight   = 15;
         Roofing       expectedRoofing  = roofing2;
         int           expectedSlope    = 20;
-        RafterChoice  expectedRafters  = RafterChoice.BUILD_SELF;
         boolean       expectedActive   = true;
         ShedBlueprint expectedShed     = ShedBlueprint.from(200, cladding1.getId(), flooring1.getId());
 
         Order actual = dao.create(OrderBlueprint.from(expectedCustomer.getId(), expectedWidth, expectedLength,
-                                                      expectedHeight, expectedRoofing.getId(), expectedSlope, expectedRafters, expectedActive, expectedShed, "Some comment"));
+                expectedHeight, expectedRoofing.getId(), expectedSlope, expectedActive, expectedShed, "Some comment"));
 
         assertEquals(expectedCustomer, actual.getCustomer());
         assertEquals(expectedWidth, actual.getWidth());
@@ -102,7 +101,6 @@ public class MysqlOrderDAOTest
         assertEquals(expectedHeight, actual.getHeight());
         assertEquals(expectedRoofing, actual.getRoofing());
         assertEquals(expectedSlope, actual.getSlope());
-        assertEquals(expectedRafters, actual.getRafterChoice());
         assertEquals(expectedShed.getDepth(), actual.getShed().getDepth());
         assertEquals(cladding1, actual.getShed().getCladding());
         assertEquals(flooring1, actual.getShed().getFlooring());
@@ -136,7 +134,7 @@ public class MysqlOrderDAOTest
     public void getNumberOfNewOrders() throws Exception
     {
         assertEquals(1, dao.getNumberOfNewOrders());
-        dao.create(OrderBlueprint.from(customer1.getId(), 1, 2, 3, roofing1.getId(), 4, RafterChoice.BUILD_SELF, true, null, "Some comment"));
+        dao.create(OrderBlueprint.from(customer1.getId(), 1, 2, 3, roofing1.getId(), 4, true, null, "Some comment"));
         assertEquals(2, dao.getNumberOfNewOrders());
     }
 }

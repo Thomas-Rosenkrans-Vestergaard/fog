@@ -26,7 +26,6 @@
                 <th>Højde</th>
                 <th>Tag</th>
                 <th>Hældning</th>
-                <th>Spær</th>
                 <th>Oprettet</th>
                 <th>Aktiv</th>
                 <th>Redskabsskur</th>
@@ -41,7 +40,6 @@
                     <td>${order.getHeight()}</td>
                     <td><c:out value="${order.getRoofing().getName()}"/></td>
                     <td>${order.getSlope()}</td>
-                    <td>${order.getRafterChoice()}</td>
                     <td>${f:formatDatetime(order.getCreatedAt())}</td>
                     <td>${f:formatBoolean(order.isActive())}</td>
                     <c:if test="${order.getShed() == null}">
@@ -50,7 +48,6 @@
                     <c:if test="${order.getShed() != null}">
                         <td>
                             <table class="inner-table bordered">
-                                <thead>
                                 <tbody>
                                 <tr>
                                     <th>Dybde</th>

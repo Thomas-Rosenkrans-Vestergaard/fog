@@ -47,7 +47,6 @@ public class OrdersServlet extends HttpServlet
         controls.add(HEIGHT, TableControls.Type.INT);
         controls.add(ROOFING_NAME, TableControls.Type.TEXT);
         controls.add(SLOPE, TableControls.Type.INT);
-        controls.add(RAFTERS, TableControls.Type.TEXT);
         controls.add(CREATED_AT, TableControls.Type.TEXT);
         controls.add(ACTIVE, TableControls.Type.BOOLEAN);
 

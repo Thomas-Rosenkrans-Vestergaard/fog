@@ -55,10 +55,6 @@
                 <td>${order.getSlope()}</td>
             </tr>
             <tr>
-                <th>Spær</th>
-                <td>${order.getRafterChoice()}</td>
-            </tr>
-            <tr>
                 <th>Kommentar</th>
                 <td><c:out value="${order.getComment()}"/></td>
             </tr>

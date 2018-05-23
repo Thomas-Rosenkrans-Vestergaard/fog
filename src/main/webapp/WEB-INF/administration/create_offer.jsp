@@ -53,10 +53,6 @@
                 <td>${order.getSlope()}</td>
             </tr>
             <tr>
-                <th>Spær</th>
-                <td>${order.getRafterChoice()}</td>
-            </tr>
-            <tr>
                 <th>Oprettet</th>
                 <td>${f:formatDatetime(order.getCreatedAt())}</td>
             </tr>

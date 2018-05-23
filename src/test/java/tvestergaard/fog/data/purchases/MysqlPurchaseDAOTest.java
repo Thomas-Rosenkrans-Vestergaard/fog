@@ -19,7 +19,10 @@ import tvestergaard.fog.data.offers.MysqlOfferDAO;
 import tvestergaard.fog.data.offers.Offer;
 import tvestergaard.fog.data.offers.OfferBlueprint;
 import tvestergaard.fog.data.offers.OfferStatus;
-import tvestergaard.fog.data.orders.*;
+import tvestergaard.fog.data.orders.MysqlOrderDAO;
+import tvestergaard.fog.data.orders.Order;
+import tvestergaard.fog.data.orders.OrderBlueprint;
+import tvestergaard.fog.data.orders.ShedBlueprint;
 import tvestergaard.fog.data.purchases.bom.BomBlueprint;
 import tvestergaard.fog.data.purchases.bom.BomDrawingBlueprint;
 import tvestergaard.fog.data.purchases.bom.BomLineBlueprint;
@@ -70,7 +73,7 @@ public class MysqlPurchaseDAOTest
         roofing1 = roofingDAO.create(RoofingBlueprint.from("name1", "description1", true, RoofingType.TILED), new ArrayList<>());
         flooring1 = flooringDAO.create(FlooringBlueprint.from("name1", "description1", true));
         ShedBlueprint shedBlueprint = ShedBlueprint.from(10, cladding1.getId(), flooring1.getId());
-        order1 = orderDAO.create(OrderBlueprint.from(customer1.getId(), 1, 2, 3, roofing1.getId(), 6, RafterChoice.PREBUILT, true, shedBlueprint, "Some comment"));
+        order1 = orderDAO.create(OrderBlueprint.from(customer1.getId(), 1, 2, 3, roofing1.getId(), 6, true, shedBlueprint, "Some comment"));
     }
 
     @Before

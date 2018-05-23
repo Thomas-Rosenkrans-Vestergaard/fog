@@ -12,7 +12,6 @@ public interface OrderBlueprint
      * @param height        The height of the order to specify in the blueprint.
      * @param roofing       The roofing of the order to specify in the blueprint.
      * @param slope         The slope of the order to specify in the blueprint.
-     * @param rafterChoice  The choice of rafters on the order to specify in the blueprint.
      * @param active        Whether or not the order is currently active.
      * @param shedBlueprint The shed to include in the order. {@code null} for no shed.
      * @param comment       The comment left by the customer about the order.
@@ -24,12 +23,11 @@ public interface OrderBlueprint
                                int height,
                                int roofing,
                                int slope,
-                               RafterChoice rafterChoice,
                                boolean active,
                                ShedBlueprint shedBlueprint,
                                String comment)
     {
-        return new OrderRecord(-1, customer, null, width, length, height, roofing, null, slope, rafterChoice,
+        return new OrderRecord(-1, customer, null, width, length, height, roofing, null, slope,
                 shedBlueprint, null, null, comment, active, -1, -1, null);
     }
 
@@ -102,13 +100,6 @@ public interface OrderBlueprint
      * @param slope The new slope.
      */
     void setSlope(int slope);
-
-    /**
-     * Returns the choice of rafters made by the customer who placed the order.
-     *
-     * @return The choice of rafters made by the customer who placed the order.
-     */
-    RafterChoice getRafterChoice();
 
     /**
      * Returns the shed included in the order. {@code null} means no shed is included.

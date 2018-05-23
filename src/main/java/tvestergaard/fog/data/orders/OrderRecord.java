@@ -55,11 +55,6 @@ public class OrderRecord implements Order
     private int slope;
 
     /**
-     * The type of rafters chosen by the customer who placed the order.
-     */
-    private RafterChoice rafters;
-
-    /**
      * The information about the shed when creating the order.
      */
     private ShedBlueprint shedBlueprint;
@@ -107,7 +102,6 @@ public class OrderRecord implements Order
      * @param roofingId      The id of the roofing used on the order.
      * @param roofing        The roofing used on the order.
      * @param slope          The slope of the roofing.
-     * @param rafters        The type of rafters chosen by the customer who placed the order.
      * @param shedBlueprint  The shed included with the order.
      * @param active         Whether or not the order is considered active.
      * @param numberOfOffers The number of offers that have been made regarding this order.
@@ -122,7 +116,6 @@ public class OrderRecord implements Order
                        int roofingId,
                        Roofing roofing,
                        int slope,
-                       RafterChoice rafters,
                        ShedBlueprint shedBlueprint,
                        ShedUpdater shedUpdater,
                        Shed shed,
@@ -141,7 +134,6 @@ public class OrderRecord implements Order
         this.roofingId = roofingId;
         this.roofing = roofing;
         this.slope = slope;
-        this.rafters = rafters;
         this.shedBlueprint = shedBlueprint;
         this.shedUpdater = shedUpdater;
         this.shed = shed;
@@ -273,16 +265,6 @@ public class OrderRecord implements Order
     }
 
     /**
-     * Returns the choice of rafters made by the customer who placed the order.
-     *
-     * @return The choice of rafters made by the customer who placed the order.
-     */
-    @Override public RafterChoice getRafterChoice()
-    {
-        return rafters;
-    }
-
-    /**
      * Returns the shed included in the order. {@code null} means no shed is included.
      *
      * @return The shed included in the order.
@@ -374,7 +356,6 @@ public class OrderRecord implements Order
                 getSlope() == that.getSlope() &&
                 Objects.equals(getCustomer(), that.getCustomer()) &&
                 Objects.equals(getRoofing(), that.getRoofing()) &&
-                getRafterChoice() == that.getRafterChoice() &&
                 Objects.equals(getShedBlueprint(), that.getShedBlueprint()) &&
                 Objects.equals(getCreatedAt(), that.getCreatedAt());
     }
@@ -396,7 +377,6 @@ public class OrderRecord implements Order
                 ", roofing=" + roofing +
                 ", roofingId=" + roofingId +
                 ", slope=" + slope +
-                ", rafters=" + rafters +
                 ", shedBlueprint=" + shedBlueprint +
                 ", shedUpdater=" + shedUpdater +
                 ", shed=" + shed +

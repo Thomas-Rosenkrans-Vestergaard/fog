@@ -95,8 +95,8 @@ public class MysqlOrderDAO extends AbstractMysqlDAO implements OrderDAO
     @Override public Order create(OrderBlueprint blueprint) throws DataAccessException
     {
         String orderSQL = "INSERT INTO orders " +
-                "(customer, width, `length`, height, roofing, slope, rafters, shed, `comment`) " +
-                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                "(customer, width, `length`, height, roofing, slope, shed, `comment`) " +
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
         String shedSQL = "INSERT INTO sheds (depth, cladding, flooring) VALUES (?, ?, ?)";
 
         try {
@@ -129,12 +129,11 @@ public class MysqlOrderDAO extends AbstractMysqlDAO implements OrderDAO
                     orderStatement.setInt(4, blueprint.getHeight());
                     orderStatement.setInt(5, blueprint.getRoofingId());
                     orderStatement.setInt(6, blueprint.getSlope());
-                    orderStatement.setInt(7, blueprint.getRafterChoice().getId());
                     if (shedId != -1)
-                        orderStatement.setInt(8, shedId);
+                        orderStatement.setInt(7, shedId);
                     else
-                        orderStatement.setNull(8, Types.INTEGER);
-                    orderStatement.setString(9, blueprint.getComment());
+                        orderStatement.setNull(7, Types.INTEGER);
+                    orderStatement.setString(8, blueprint.getComment());
                     orderStatement.executeUpdate();
                     ResultSet resultSet = orderStatement.getGeneratedKeys();
                     resultSet.first();
@@ -199,7 +198,7 @@ public class MysqlOrderDAO extends AbstractMysqlDAO implements OrderDAO
     {
         try {
             final String orderSQL = "UPDATE orders SET width = ?, `length` = ?, height = ?, " +
-                    "roofing = ?, slope = ?, rafters = ?, active = ?, shed = ?, `comment` = ? WHERE id = ?";
+                    "roofing = ?, slope = ?, active = ?, shed = ?, `comment` = ? WHERE id = ?";
             Connection connection = getConnection();
 
             ShedUpdater shed = updater.getShedUpdater();
@@ -211,14 +210,13 @@ public class MysqlOrderDAO extends AbstractMysqlDAO implements OrderDAO
                     orderStatement.setInt(3, updater.getHeight());
                     orderStatement.setInt(4, updater.getRoofingId());
                     orderStatement.setInt(5, updater.getSlope());
-                    orderStatement.setInt(6, updater.getRafterChoice().getId());
-                    orderStatement.setBoolean(7, updater.isActive());
+                    orderStatement.setBoolean(6, updater.isActive());
                     if (shed != null && shed.getId() > 0)
-                        orderStatement.setInt(8, shed.getId());
+                        orderStatement.setInt(7, shed.getId());
                     else
-                        orderStatement.setNull(8, Types.INTEGER);
-                    orderStatement.setString(9, updater.getComment());
-                    orderStatement.setInt(10, updater.getId());
+                        orderStatement.setNull(7, Types.INTEGER);
+                    orderStatement.setString(8, updater.getComment());
+                    orderStatement.setInt(9, updater.getId());
                     orderStatement.executeUpdate();
                 }
 

@@ -16,7 +16,6 @@ public enum OrderColumn implements Column<OrderColumn>, MysqlColumn<OrderColumn>
     ROOFING,
     ROOFING_NAME,
     SLOPE,
-    RAFTERS,
     ACTIVE,
     OPEN_OFFERS,
     CREATED_AT;

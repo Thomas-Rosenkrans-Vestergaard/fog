@@ -23,7 +23,6 @@
                 <th>Længde</th>
                 <th>Højde</th>
                 <th>Hældning</th>
-                <th>Spær</th>
                 <th>Oprettet</th>
                 <th>Redskabsskur</th>
             </tr>
@@ -41,7 +40,6 @@
                     <td>${order.getLength()}</td>
                     <td>${order.getHeight()}</td>
                     <td>${order.getSlope()}</td>
-                    <td>${order.getRafterChoice()}</td>
                     <td>${f:formatDatetime(order.getCreatedAt())}</td>
                     <c:if test="${order.getShed() == null}">
                         <td>Intet skur</td>

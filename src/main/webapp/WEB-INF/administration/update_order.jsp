@@ -157,16 +157,6 @@
                 <label for="slope">Taghældning</label>
             </div>
         </div>
-        <div class="row">
-            <div class="col s12">
-                <input name="rafters" type="radio" id="rafters-premade" value="PREBUILT" checked="checked" required/>
-                <label for="rafters-premade">Færdiglavet spær</label>
-            </div>
-            <div class="col s12">
-                <input name="rafters" type="radio" id="rafters-self" value="BUILD_SELF" required/>
-                <label for="rafters-self">Byg selv spær</label>
-            </div>
-        </div>
         <div class="class row">
             <div class="col s12">
                 <input name="active" type="radio" id="active-true" value="true"

@@ -5,7 +5,10 @@ import tvestergaard.fog.data.customers.Customer;
 import tvestergaard.fog.data.customers.CustomerColumn;
 import tvestergaard.fog.data.customers.CustomerDAO;
 import tvestergaard.fog.data.customers.UnknownCustomerException;
-import tvestergaard.fog.data.orders.*;
+import tvestergaard.fog.data.orders.Order;
+import tvestergaard.fog.data.orders.OrderBlueprint;
+import tvestergaard.fog.data.orders.OrderDAO;
+import tvestergaard.fog.data.orders.ShedBlueprint;
 import tvestergaard.fog.logic.customers.InactiveCustomerException;
 import tvestergaard.fog.logic.email.ApplicationMailer;
 
@@ -64,16 +67,15 @@ public class OrderPlacer
      * @param height     The height of the order in centimeters.
      * @param roofing    The roofing to be applied to the order.
      * @param slope      The slope of the roofing.
-     * @param rafters    The choice of rafters.
      * @param shed       The shed to include in the order.
      * @param comment    The comment provided by the customer about the order.
      * @return The object representing the newly created order.
-     * @throws OrderValidatorException      When the provided information is considered invalid.
-     * @throws UnknownCustomerException     When the customer placing the order is unknown to the application.
-     * @throws InactiveCustomerException    When the customer is inactive, and can therefor not place new orders.
+     * @throws OrderValidatorException     When the provided information is considered invalid.
+     * @throws UnknownCustomerException    When the customer placing the order is unknown to the application.
+     * @throws InactiveCustomerException   When the customer is inactive, and can therefor not place new orders.
      * @throws UnverifiedCustomerException When the customer has not confirmed their email address, and can therefor
-     *                                      not place new orders.
-     * @throws DataAccessException          When a data storage exception occurs while performing the operation.
+     *                                     not place new orders.
+     * @throws DataAccessException         When a data storage exception occurs while performing the operation.
      */
     public Order place(
             int customerId,
@@ -82,7 +84,6 @@ public class OrderPlacer
             int height,
             int roofing,
             int slope,
-            RafterChoice rafters,
             ShedBlueprint shed,
             String comment) throws OrderValidatorException,
                                    UnknownCustomerException,
@@ -116,7 +117,6 @@ public class OrderPlacer
                 height,
                 roofing,
                 slope,
-                rafters,
                 true,
                 shed,
                 comment));

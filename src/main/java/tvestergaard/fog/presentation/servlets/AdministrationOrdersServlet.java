@@ -3,7 +3,10 @@ package tvestergaard.fog.presentation.servlets;
 import tvestergaard.fog.data.constraints.Constraints;
 import tvestergaard.fog.data.employees.Employee;
 import tvestergaard.fog.data.employees.Role;
-import tvestergaard.fog.data.orders.*;
+import tvestergaard.fog.data.orders.Order;
+import tvestergaard.fog.data.orders.OrderColumn;
+import tvestergaard.fog.data.orders.ShedRecord;
+import tvestergaard.fog.data.orders.ShedUpdater;
 import tvestergaard.fog.logic.claddings.CladdingFacade;
 import tvestergaard.fog.logic.floorings.FlooringFacade;
 import tvestergaard.fog.logic.offers.OfferFacade;
@@ -80,7 +83,6 @@ public class AdministrationOrdersServlet extends AdministrationServlet
             controls.add(LENGTH, TableControls.Type.INT);
             controls.add(HEIGHT, TableControls.Type.INT);
             controls.add(SLOPE, TableControls.Type.INT);
-            controls.add(RAFTERS, TableControls.Type.TEXT);
             controls.add(CREATED_AT, TableControls.Type.TIMESTAMP);
             notifications(request);
             request.setAttribute("title", "Ordre");
@@ -145,7 +147,6 @@ public class AdministrationOrdersServlet extends AdministrationServlet
                     !parameters.isInt("height") ||
                     !parameters.isInt("roofing") ||
                     !parameters.isInt("slope") ||
-                    !parameters.isEnum("rafters", RafterChoice.class) ||
                     !parameters.isPresent("shed-action")) {
                 notifications.error("The provided data is invalid.");
                 response.sendRedirect("orders?action=update&id=" + parameters.getInt("id"));
@@ -187,7 +188,6 @@ public class AdministrationOrdersServlet extends AdministrationServlet
                         parameters.getInt("height"),
                         parameters.getInt("roofing"),
                         parameters.getInt("slope"),
-                        parameters.getEnum("rafters", RafterChoice.class),
                         createShed(parameters),
                         parameters.value("comment"));
 

@@ -111,7 +111,6 @@ public class OrderFacade
      * @param height   The height of the order to create.
      * @param roofing  The id of the roofing used on the order to create.
      * @param slope    The slope of the roofing used on the order to create.
-     * @param rafters  The rafters construction delivered with the order to create.
      * @param shed     The shed to add to the order.
      * @param comment  The comment provided by the customer about the order.
      * @return The new order.
@@ -129,7 +128,6 @@ public class OrderFacade
             int height,
             int roofing,
             int slope,
-            RafterChoice rafters,
             ShedBlueprint shed,
             String comment) throws OrderValidatorException,
                                    UnknownCustomerException,
@@ -137,7 +135,7 @@ public class OrderFacade
                                    UnverifiedCustomerException
     {
         try {
-            return placer.place(customer, width, length, height, roofing, slope, rafters, shed, comment);
+            return placer.place(customer, width, length, height, roofing, slope, shed, comment);
         } catch (DataAccessException e) {
             throw new ApplicationException(e);
         }
@@ -167,7 +165,6 @@ public class OrderFacade
      * @param height      The new height of the order.
      * @param roofing     The new roofing of the order.
      * @param slope       The new slope of the roofing on the order.
-     * @param rafters     The rafter choice on the order.
      * @param shedUpdater The shed built into the order.
      * @return {@code true} if the order was updated.
      * @throws ApplicationException    When an exception occurs while performing the operation.
@@ -179,7 +176,6 @@ public class OrderFacade
                           int height,
                           int roofing,
                           int slope,
-                          RafterChoice rafters,
                           ShedUpdater shedUpdater,
                           String comment) throws OrderValidatorException
     {
@@ -188,7 +184,7 @@ public class OrderFacade
             if (!reasons.isEmpty())
                 throw new OrderValidatorException(reasons);
 
-            return dao.update(OrderUpdater.from(id, -1, width, length, height, roofing, slope, rafters, false, shedUpdater, comment));
+            return dao.update(OrderUpdater.from(id, -1, width, length, height, roofing, slope, false, shedUpdater, comment));
         } catch (DataAccessException e) {
             throw new ApplicationException(e);
         }

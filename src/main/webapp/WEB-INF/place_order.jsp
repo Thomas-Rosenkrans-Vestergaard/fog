@@ -128,28 +128,6 @@
         </div>
         <div class="row">
             <div class="col s12">
-                <h5>Spær</h5>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col s12">
-                <p>Nibh purus, eu eget amet sed semper, nisl pede donec pede, fusce libero blandit augue est. Ipsum
-                    enim, et elit congue erat nisl. Metus sit adipiscing vitae libero, augue tincidunt sed lorem
-                    praesent in, non sed, lacus dignissim vulputate vel erat vestibulum iaculis.</p>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col s12">
-                <input name="rafters" type="radio" id="rafters-premade" value="PREBUILT" checked="checked" required/>
-                <label for="rafters-premade">Færdiglavet</label>
-            </div>
-            <div class="col s12">
-                <input name="rafters" type="radio" id="rafters-self" value="BUILD_SELF" required/>
-                <label for="rafters-self">Byg selv</label>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col s12">
                 <h5>Redskabsskur</h5>
             </div>
         </div>

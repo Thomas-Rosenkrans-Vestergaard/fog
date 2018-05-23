@@ -5,7 +5,6 @@ import tvestergaard.fog.data.customers.Customer;
 import tvestergaard.fog.data.customers.UnknownCustomerException;
 import tvestergaard.fog.data.flooring.FlooringColumn;
 import tvestergaard.fog.data.orders.Order;
-import tvestergaard.fog.data.orders.RafterChoice;
 import tvestergaard.fog.data.orders.ShedBlueprint;
 import tvestergaard.fog.data.orders.ShedRecord;
 import tvestergaard.fog.data.roofing.RoofingColumn;
@@ -97,7 +96,6 @@ public class PlaceOrderServlet extends HttpServlet
                 !parameters.isInt("height") ||
                 !parameters.isInt("roofing") ||
                 !parameters.isInt("slope") ||
-                !parameters.isEnum("rafters", RafterChoice.class) ||
                 !parameters.isPresent("comment")) {
 
             notifications.error("Invalid design data.");
@@ -141,7 +139,6 @@ public class PlaceOrderServlet extends HttpServlet
                     parameters.getInt("height"),
                     parameters.getInt("roofing"),
                     parameters.getInt("slope"),
-                    parameters.getEnum("rafters", RafterChoice.class),
                     createShed(parameters),
                     parameters.value("comment"));
 
