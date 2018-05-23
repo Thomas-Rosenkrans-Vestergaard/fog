@@ -87,10 +87,23 @@ public class OrderServlet extends HttpServlet
             return;
         }
 
-        int order = parameters.getInt("id");
+        int   orderId = parameters.getInt("id");
+        Order order   = orderFacade.first(where(eq(ID, orderId)));
+
+        if (order == null) {
+            notifications.error("Ukendt ordre.");
+            resp.sendRedirect("orders");
+            return;
+        }
+
+        if (order.getCustomer().getId() != authentication.getCustomer().getId()) {
+            notifications.error("Denne ordre tilhører ikke dig.");
+            resp.sendRedirect("orders");
+            return;
+        }
 
         try {
-            orderFacade.cancel(order, false);
+            orderFacade.cancel(orderId, false);
             notifications.success("Ordren blev aflyst.");
         } catch (UnknownOrderException e) {
             notifications.error("Ukendt order.");
