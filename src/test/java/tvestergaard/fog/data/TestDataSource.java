@@ -10,7 +10,7 @@ public class TestDataSource
     public static MysqlDataSource getSource()
     {
         if (source == null) {
-            source = new MysqlDataSource();
+            source = new CachedMysqlDataSource();
             source.setDatabaseName("fog-test");
             source.setUser("fog");
         }
