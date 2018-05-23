@@ -8,10 +8,17 @@ import org.pmw.tinylog.writers.FileWriter;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import javax.servlet.annotation.WebListener;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 @WebListener()
 public class StartUp implements ServletContextListener
 {
+
+    /**
+     * The relative direction where log files are placed.
+     */
+    private final String logDirectory = "logs";
 
     /**
      * Receives notification that the web application initialization
@@ -22,10 +29,14 @@ public class StartUp implements ServletContextListener
     @Override public void contextInitialized(ServletContextEvent sce)
     {
         String realPath = sce.getServletContext().getRealPath("/");
+        String time     = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy_MM_dd_HH_mm"));
+
+        String errorFile = String.format("%s%s\\%s_%s.txt", realPath, logDirectory, time, "errors");
+        String infoFile  = String.format("%s%s\\%s_%s.txt", realPath, logDirectory, time, "info");
 
         Configurator.defaultConfig()
-                    .writer(new FileWriter(realPath + "log\\log.txt"))
-                    .level(Level.WARNING)
+                    .writer(new FileWriter(errorFile), Level.ERROR)
+                    .addWriter(new FileWriter(infoFile), Level.INFO)
                     .activate();
     }
 
