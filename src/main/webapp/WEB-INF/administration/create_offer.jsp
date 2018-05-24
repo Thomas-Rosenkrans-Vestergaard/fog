@@ -232,6 +232,7 @@
 
                 </script>
                 <div class="col s2">
+                    ${csrf}
                     <button class="btn-large waves-effect waves-light" type="submit" name="action"
                             style="display:block;width: 100%">
                         Opret<i class="material-icons right">send</i>
