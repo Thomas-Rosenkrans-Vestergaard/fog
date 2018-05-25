@@ -91,7 +91,12 @@
 
             if (employee != null) {
 
+                if (employee.is(Role.SALESMAN) || employee.is(Role.HEAD_OF_CENTER)) {
+
         %>
+        <li class="${"administration_construct".equals(navigation) ? 'active' : ''}">
+            <a href="${context}/administration/construct">Konstruer carport</a>
+        </li>
         <li class="${"administration_orders".equals(navigation) ? 'active' : '' }">
             <a href="${context}/administration/orders"><span id="new-orders-counter">0</span> Ordre</a>
         </li>
@@ -122,6 +127,7 @@
                 setInterval(updateNewOrdersCounter, 60 * 1000);
             });
         </script>
+        <% } %>
         <li class="${"administration_customers".equals(navigation) ? 'active' : '' }">
             <a href="${context}/administration/customers">Kunder</a></li>
         <li class="${"administration_employees".equals(navigation) ? 'active' : '' }">

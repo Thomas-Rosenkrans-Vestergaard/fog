@@ -46,7 +46,7 @@ public abstract class AdministrationServlet extends HttpServlet
         dispatcher.dispatch(req, resp);
     }
 
-    private boolean isAuthenticated(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException
+    protected final boolean isAuthenticated(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException
     {
         HttpSession   session       = req.getSession();
         Notifications notifications = notifications(req);
@@ -59,7 +59,7 @@ public abstract class AdministrationServlet extends HttpServlet
         return true;
     }
 
-    private String getFromUrl(HttpServletRequest req)
+    protected final String getFromUrl(HttpServletRequest req)
     {
         String servletPath = req.getServletPath();
         String relative    = servletPath.replaceAll("/administration/", "");

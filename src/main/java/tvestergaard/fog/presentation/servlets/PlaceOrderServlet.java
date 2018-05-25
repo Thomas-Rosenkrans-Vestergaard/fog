@@ -6,7 +6,6 @@ import tvestergaard.fog.data.customers.UnknownCustomerException;
 import tvestergaard.fog.data.flooring.FlooringColumn;
 import tvestergaard.fog.data.orders.Order;
 import tvestergaard.fog.data.orders.ShedBlueprint;
-import tvestergaard.fog.data.orders.ShedRecord;
 import tvestergaard.fog.data.roofing.RoofingColumn;
 import tvestergaard.fog.logic.claddings.CladdingFacade;
 import tvestergaard.fog.logic.customers.CustomerAuthenticationException;
@@ -167,13 +166,9 @@ public class PlaceOrderServlet extends HttpServlet
         if (!parameters.isPresent("shed"))
             return null;
 
-        return new ShedRecord(
-                -1,
+        return ShedBlueprint.from(
                 parameters.getInt("shed-depth"),
                 parameters.getInt("shed-cladding"),
-                null,
-                parameters.getInt("shed-flooring"),
-                null
-        );
+                parameters.getInt("shed-flooring"));
     }
 }

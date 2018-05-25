@@ -4,7 +4,6 @@ import tvestergaard.fog.data.employees.Employee;
 import tvestergaard.fog.data.employees.Role;
 import tvestergaard.fog.data.offers.OfferColumn;
 import tvestergaard.fog.data.orders.Order;
-import tvestergaard.fog.data.orders.OrderColumn;
 import tvestergaard.fog.logic.construction.ConstructionFacade;
 import tvestergaard.fog.logic.construction.GarageConstructionSummary;
 import tvestergaard.fog.logic.customers.InactiveCustomerException;
@@ -30,6 +29,7 @@ import java.util.Map;
 
 import static tvestergaard.fog.data.constraints.Constraint.eq;
 import static tvestergaard.fog.data.constraints.Constraint.where;
+import static tvestergaard.fog.data.orders.OrderColumn.ID;
 import static tvestergaard.fog.presentation.PresentationFunctions.*;
 
 @WebServlet(urlPatterns = "/administration/offers")
@@ -97,21 +97,22 @@ public class AdministrationOffersServlet extends AdministrationServlet
                 return;
             }
 
-            Order order = orderFacade.first(where(eq(OrderColumn.ID, parameters.getInt("order"))));
+            try {
 
-            if (order == null) {
+                GarageConstructionSummary summary = constructionFacade.construct(parameters.getInt("order"));
+                Order                     order   = orderFacade.first(where(eq(ID, parameters.getInt("order"))));
+
+                request.setAttribute("title", "Opret tilbud");
+                request.setAttribute("order", order);
+                request.setAttribute("summary", summary);
+                request.setAttribute("csrf", csrf(request));
+                request.getRequestDispatcher("/WEB-INF/administration/create_offer.jsp").forward(request, response);
+
+            } catch (UnknownOrderException e) {
                 notifications.error("No order with provided id.");
                 response.sendRedirect("offers");
                 return;
             }
-
-            GarageConstructionSummary summary = constructionFacade.construct(order);
-
-            request.setAttribute("title", "Opret tilbud");
-            request.setAttribute("order", order);
-            request.setAttribute("summary", summary);
-            request.setAttribute("csrf", csrf(request));
-            request.getRequestDispatcher("/WEB-INF/administration/create_offer.jsp").forward(request, response);
         }
     }
 

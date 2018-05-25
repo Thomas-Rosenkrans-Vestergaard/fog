@@ -4,10 +4,16 @@ import tvestergaard.fog.data.DataAccessException;
 import tvestergaard.fog.data.components.Component;
 import tvestergaard.fog.data.models.ModelDAO;
 import tvestergaard.fog.data.orders.Order;
+import tvestergaard.fog.data.orders.OrderDAO;
 import tvestergaard.fog.data.roofing.RoofingDAO;
 import tvestergaard.fog.logic.ApplicationException;
+import tvestergaard.fog.logic.orders.UnknownOrderException;
 
 import java.util.List;
+
+import static tvestergaard.fog.data.constraints.Constraint.eq;
+import static tvestergaard.fog.data.constraints.Constraint.where;
+import static tvestergaard.fog.data.orders.OrderColumn.ID;
 
 public class ConstructionFacade
 {
@@ -28,12 +34,18 @@ public class ConstructionFacade
     private final RoofingDAO roofingDAO;
 
     /**
+     * The dao to use to access the orders known to the application.
+     */
+    private final OrderDAO orderDAO;
+
+    /**
      * Creates a new {@link ConstructionFacade}.
      *
      * @param modelDAO   The dao to use to access model components.
      * @param roofingDAO The dao to use to access the possible roofings.
+     * @param orderDAO   The dao to use to access the orders known to the application.
      */
-    public ConstructionFacade(ModelDAO modelDAO, RoofingDAO roofingDAO)
+    public ConstructionFacade(ModelDAO modelDAO, RoofingDAO roofingDAO, OrderDAO orderDAO)
     {
         SkeletonConstructor skeletonConstructor = new CarportSkeletonConstructor();
         RoofingConstructor  roofConstructor     = new TiledRoofingConstructor();
@@ -41,14 +53,36 @@ public class ConstructionFacade
         garageConstructor.register(roofConstructor);
         this.modelDAO = modelDAO;
         this.roofingDAO = roofingDAO;
+        this.orderDAO = orderDAO;
     }
 
     /**
-     * Constructs a garage from the provided specifications.
+     * Constructs the order with the provided id.
      *
-     * @param order The specifications for the garage to construct.
+     * @param orderId The id of the order to construct.
      * @return The summary of the construction.
-     * @throws ApplicationException When a DataAccessException occurs.
+     * @throws ApplicationException  When a DataAccessException occurs.
+     * @throws UnknownOrderException When the order with the provided id is unknown to the application.
+     */
+    public GarageConstructionSummary construct(int orderId) throws UnknownOrderException
+    {
+        try {
+            Order order = orderDAO.first(where(eq(ID, orderId)));
+
+            if (order == null)
+                throw new UnknownOrderException();
+
+            return construct(order);
+        } catch (DataAccessException e) {
+            throw new ApplicationException(e);
+        }
+    }
+
+    /**
+     * Constructs the provided order.
+     *
+     * @param order The order to construct.
+     * @return The summary of the construction.
      */
     public GarageConstructionSummary construct(Order order)
     {
@@ -56,8 +90,18 @@ public class ConstructionFacade
             ConstructionSpecification specification      = ConstructionSpecification.from(order);
             List<Component>           skeletonComponents = modelDAO.getComponents(1);
             List<Component>           roofingComponents  = roofingDAO.getComponents(order.getRoofing().getId());
-            return garageConstructor.construct(specification, new ComponentMap(skeletonComponents), new ComponentMap(roofingComponents));
+            return construct(specification);
+        } catch (DataAccessException e) {
+            throw new ApplicationException(e);
+        }
+    }
 
+    public GarageConstructionSummary construct(ConstructionSpecification specification)
+    {
+        try {
+            List<Component> skeletonComponents = modelDAO.getComponents(1);
+            List<Component> roofingComponents  = roofingDAO.getComponents(specification.getRoofing().getId());
+            return garageConstructor.construct(specification, new ComponentMap(skeletonComponents), new ComponentMap(roofingComponents));
         } catch (DataAccessException e) {
             throw new ApplicationException(e);
         }
