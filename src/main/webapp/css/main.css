@@ -117,14 +117,6 @@ hr {
     color: white;
 }
 
-#slide-out {
-    overflow: hidden;
-}
-
-#slide-out:hover {
-    overflow: auto;
-}
-
 #new-orders-counter {
     background: #0D47A1;
     color: white;
