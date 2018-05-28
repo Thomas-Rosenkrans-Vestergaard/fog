@@ -33,3 +33,4 @@ endwhile (false)
 |Kunde|
 : Afhent materialer;
 : Byg carport;
+@enduml
