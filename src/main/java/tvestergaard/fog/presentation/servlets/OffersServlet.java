@@ -3,6 +3,7 @@ package tvestergaard.fog.presentation.servlets;
 import tvestergaard.fog.data.customers.Customer;
 import tvestergaard.fog.data.offers.Offer;
 import tvestergaard.fog.data.offers.OfferColumn;
+import tvestergaard.fog.data.purchases.Purchase;
 import tvestergaard.fog.logic.customers.InactiveCustomerException;
 import tvestergaard.fog.logic.employees.InsufficientPermissionsException;
 import tvestergaard.fog.logic.offers.OfferFacade;
@@ -96,9 +97,9 @@ public class OffersServlet extends HttpServlet
         try {
 
             if ("accept".equals(action)) {
-                purchaseFacade.create(offer.getId());
+                Purchase purchase = purchaseFacade.create(offer.getId());
                 notifications.success("Tilbudet blev accepteret.");
-                resp.sendRedirect("purchases");
+                resp.sendRedirect("purchase?id=" + purchase.getId());
                 return;
             }
 
