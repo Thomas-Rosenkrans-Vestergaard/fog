@@ -352,6 +352,7 @@ CREATE TABLE `orders` (
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`),
+  UNIQUE KEY `shed_UNIQUE` (`shed`),
   KEY `customer` (`customer`),
   KEY `cladding` (`roofing`),
   KEY `fk_sheds_idx` (`shed`),
@@ -506,4 +507,4 @@ CREATE TABLE `tokens` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-05-28 15:57:51
+-- Dump completed on 2018-05-28 17:27:06
