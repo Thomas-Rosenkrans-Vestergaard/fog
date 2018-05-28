@@ -12,6 +12,7 @@ import tvestergaard.fog.data.offers.OfferColumn;
 import tvestergaard.fog.data.offers.OfferDAO;
 import tvestergaard.fog.data.orders.Order;
 import tvestergaard.fog.data.orders.OrderDAO;
+import tvestergaard.fog.data.purchases.Purchase;
 import tvestergaard.fog.data.tokens.TokenUse;
 import tvestergaard.fog.logic.ApplicationException;
 import tvestergaard.fog.logic.customers.InactiveCustomerException;
@@ -279,6 +280,7 @@ public class OfferFacade
      * @param offer       The if of the offer being accepted.
      * @param tokenId     The token id to use when accepting the offer.
      * @param tokenSecret The token secret to use when accepting the offer.
+     * @return The purchase record.
      * @throws ApplicationException             When some data storage exception occurs.
      * @throws ExpiredTokenException            When the provided token has expired.
      * @throws IncorrectTokenException          When the provided token is invalid.
@@ -287,18 +289,18 @@ public class OfferFacade
      * @throws UnknownOfferException            WHen the provided offer id is unknown to the application.
      * @throws InactiveCustomerException        When the customer accepting the offer, is not active.
      */
-    public void accept(int offer, int tokenId, String tokenSecret) throws ExpiredTokenException,
-                                                                          IncorrectTokenException,
-                                                                          InsufficientPermissionsException,
-                                                                          OfferNotOpenException,
-                                                                          UnknownOfferException,
-                                                                          InactiveCustomerException
+    public Purchase accept(int offer, int tokenId, String tokenSecret) throws ExpiredTokenException,
+                                                                              IncorrectTokenException,
+                                                                              InsufficientPermissionsException,
+                                                                              OfferNotOpenException,
+                                                                              UnknownOfferException,
+                                                                              InactiveCustomerException
     {
         try {
             if (!tokenAuthenticator.authenticate(new TokenPair(tokenId, tokenSecret), TokenUse.OFFER_EMAIL))
                 throw new IncorrectTokenException();
 
-            Facades.purchaseFacade.create(offer);
+            return Facades.purchaseFacade.create(offer);
 
         } catch (DataAccessException e) {
             throw new ApplicationException(e);
