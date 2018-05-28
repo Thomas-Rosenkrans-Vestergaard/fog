@@ -1,5 +1,6 @@
 package tvestergaard.fog.presentation.servlets;
 
+import tvestergaard.fog.data.purchases.Purchase;
 import tvestergaard.fog.logic.customers.InactiveCustomerException;
 import tvestergaard.fog.logic.employees.InsufficientPermissionsException;
 import tvestergaard.fog.logic.offers.OfferFacade;
@@ -123,9 +124,9 @@ public class ApiServlet extends HttpServlet
             }
 
             try {
-                Facades.offerFacade.accept(parameters.getInt("offer"), parameters.getInt("tokenId"), parameters.value("tokenSecret"));
+                Purchase purchase = Facades.offerFacade.accept(parameters.getInt("offer"), parameters.getInt("tokenId"), parameters.value("tokenSecret"));
                 notifications.success("Tilbudet blev accepteret.");
-                response.sendRedirect("offers");
+                response.sendRedirect("purchase?id=" + purchase.getId());
                 return;
             } catch (ExpiredTokenException e) {
                 notifications.error("Udløbet token.");
