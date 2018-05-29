@@ -25,6 +25,8 @@ while (Tilbud ikke accepteret) is (true)
 |Kunde|
 : Accepter eller afvis tilbud;
 endwhile (false)
+|Salgsmedarbejder|
+: Marker som accepteret;
 |Lageransvarlig|
 : Opdatér forældet stykliste;
 : Saml materialer på stykliste;
