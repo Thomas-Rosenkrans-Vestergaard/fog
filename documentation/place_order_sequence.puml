@@ -1,14 +1,44 @@
 @startuml
 
-actor Kunde
-collections "/place-order"
-control PlaceOrderServlet
-entity Foo4
+title Order placement by authorized users.
+
+actor Kunde as Customer
+collections "/place-order" as PLACE_JSP
+collections "/order" as ORDER_JSP
+control PlaceOrderServlet as Servlet
+control CsrfProtector as Csrf
+entity Notifications
+entity OrderFacade
+entity OrderPlacer
+entity OrderValidator
+entity OrderDAO
 database Database
 
-Kunde -> "/place-order" : Gå til ordre siden.
-"/place-order" -> PlaceOrderServlet : send information
+Customer -> PLACE_JSP : Indtast information.
+PLACE_JSP -> Servlet : doPost()
+Servlet -> Csrf : verify()
+Csrf --> Servlet : boolean
 
-Alice -> Bob: Another authentication Request
-Alice <-- Bob: another authentication Response
+alt Csrf error
+Servlet -> Notifications : error()
+Notifications --> Servlet : void
+Servlet --> PLACE_JSP : sendRedirect()
+else No Csrf error
+    Servlet -> OrderFacade : create()
+    OrderFacade -> OrderPlacer : place()
+    OrderPlacer -> OrderValidator : validate()
+    OrderValidator --> OrderPlacer : errors
+    break !errors.isEmpty()
+        OrderValidator --> Servlet : throw OrderValidationException;
+        Servlet --> PLACE_JSP : sendRedirect()
+    end
+    OrderPlacer -> OrderDAO : create()
+    OrderDAO -> Database : INSERT
+    Database --> OrderDAO : Results
+    OrderDAO --> OrderPlacer : Order
+    OrderPlacer --> OrderFacade : Order
+    OrderFacade --> Servlet : Order
+    Servlet --> ORDER_JSP : sendRedirect()
+end
+
 @enduml
