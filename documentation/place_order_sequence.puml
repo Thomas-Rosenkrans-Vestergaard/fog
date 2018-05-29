@@ -1,0 +1,14 @@
+@startuml
+
+actor Kunde
+collections "/place-order"
+control PlaceOrderServlet
+entity Foo4
+database Database
+
+Kunde -> "/place-order" : Gå til ordre siden.
+"/place-order" -> PlaceOrderServlet : send information
+
+Alice -> Bob: Another authentication Request
+Alice <-- Bob: another authentication Response
+@enduml

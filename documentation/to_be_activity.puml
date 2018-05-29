@@ -19,17 +19,18 @@ endwhile (false)
 |It-system|
 : Beregner stykliste;
 |Salgsmedarbejder|
-while (Tilbud ikke accepteret) is (true)
+while (tilbud ikke accepteret) is (nej)
 : Send tilbud til kunde;
 |Kunde|
-: Accepter eller afvis tilbud;
-endwhile (false)
-|Salgsmedarbejder|
+if ("acceptér tilbud") then (ja)
+|It-system|
 : Marker som accepteret;
+: Send information til lageransvarlig;
 |Lageransvarlig|
-: Opdatér forældet stykliste;
 : Saml materialer på stykliste;
 |Kunde|
 : Afhent materialer;
 : Byg carport;
+end
+endif
 @enduml
