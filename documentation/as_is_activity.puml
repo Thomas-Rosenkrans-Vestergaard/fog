@@ -10,10 +10,10 @@ start
  via email;
 |Salgsmedarbejder|
 : Læs ordre;
-while (problemer med ordre, eller manglende information?) is (true)
+while (problemer eller manglende information?) is (true)
     : Send email om problemet til kunden;
     |Kunde|
-    :Besvar spørgsmål givet af salgsmedarbejder;
+    :Besvar salgsmedarbejder;
     |Salgsmedarbejder|
     : Læs svar givet af kunde;
 endwhile (false)
@@ -24,12 +24,6 @@ while (Tilbud ikke accepteret) is (true)
 : Send tilbud til kunde;
 |Kunde|
 : Accepter eller afvis tilbud;
-endwhile (false)
-|Salgsmedarbejder|
-while (Betaling ikke godkendt) is (true)
-: Send faktura;
-|Kunde|
-: Betal;
 endwhile (false)
 |Lageransvarlig|
 : Opdatér forældet stykliste;
