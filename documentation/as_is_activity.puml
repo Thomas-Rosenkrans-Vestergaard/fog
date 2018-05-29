@@ -1,6 +1,6 @@
 @startuml
 
-title Activitetsdiagram over nuv?rende bestillingsprocess \n
+title Activitetsdiagram over nuværende bestillingsprocess \n
 
 |Kunde|
 start
@@ -9,27 +9,31 @@ start
 : Vidresend ordre til salgsmedarbejder
  via email;
 |Salgsmedarbejder|
-: L?s ordre;
+: Læs ordre;
 while (problemer med ordre, eller manglende information?) is (true)
     : Send email om problemet til kunden;
     |Kunde|
-    :Besvar sp?rgsm?l givet af salgsmedarbejder;
+    :Besvar spørgsmål givet af salgsmedarbejder;
     |Salgsmedarbejder|
-    : L?s svar givet af kunde;
+    : Læs svar givet af kunde;
 endwhile (false)
 |It-system|
 : Beregner stykliste;
+|Salgsmedarbejder|
+while (Tilbud ikke accepteret) is (true)
+: Send tilbud til kunde;
+|Kunde|
+: Accepter eller afvis tilbud;
+endwhile (false)
 |Salgsmedarbejder|
 while (Betaling ikke godkendt) is (true)
 : Send faktura;
 |Kunde|
 : Betal;
 endwhile (false)
-|Salgsmedarbejder|
-: Giv information vidre til lageransvarlig;
 |Lageransvarlig|
-: Fix for?ldet stykliste;
-: Saml materialer p? stykliste;
+: Opdatér forældet stykliste;
+: Saml materialer på stykliste;
 |Kunde|
 : Afhent materialer;
 : Byg carport;
