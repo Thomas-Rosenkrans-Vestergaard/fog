@@ -10,10 +10,10 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @WebServlet(urlPatterns = {"/administration", "/administration/index"})
-public class AdministrationIndex extends AdministrationServlet
+public class AdministrationIndexServlet extends AdministrationServlet
 {
 
-    public AdministrationIndex()
+    public AdministrationIndexServlet()
     {
         dispatcher.get(null, new IndexCommand());
     }

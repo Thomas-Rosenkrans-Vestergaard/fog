@@ -31,7 +31,7 @@ import static tvestergaard.fog.presentation.PresentationFunctions.csrf;
 import static tvestergaard.fog.presentation.PresentationFunctions.notifications;
 
 @WebServlet(urlPatterns = "/administration/construct")
-public class AdministrationConstruct extends AdministrationServlet
+public class AdministrationConstructServlet extends AdministrationServlet
 {
 
     private final ConstructionFacade constructionFacade = Facades.constructionFacade;
