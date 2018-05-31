@@ -19,7 +19,7 @@ endwhile (false)
 |It-system|
 : Beregner stykliste;
 |Salgsmedarbejder|
-while (tilbud ikke accepteret) is (nej)
+repeat
 : Send tilbud til kunde;
 |Kunde|
 if ("acceptér tilbud") then (ja)
@@ -31,6 +31,7 @@ if ("acceptér tilbud") then (ja)
 |Kunde|
 : Afhent materialer;
 : Byg carport;
-end
+else (nej)
 endif
+end
 @enduml
