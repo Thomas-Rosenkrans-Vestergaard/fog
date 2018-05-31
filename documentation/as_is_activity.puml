@@ -17,17 +17,20 @@ endwhile (false)
 |It-system|
 : Beregn stykliste;
 |Salgsmedarbejder|
-while (Tilbud ikke accepteret) is (true)
+while (Tilbud accepteret?) is (false)
+|Salgsmedarbejder|
+: Beregn stykliste;
 : Send tilbud til kunde;
 |Kunde|
 : Accepter eller afvis tilbud;
-endwhile (false)
+endwhile (true)
 |Salgsmedarbejder|
+: Beregn stykliste;
 : Videresend information\n
  til lageransvarlig;
 |Lageransvarlig|
 : Opdatér forældet stykliste;
-: Saml materialer på stykliste;
+: Samle materialer på stykliste;
 |Kunde|
 : Afhent materialer;
 : Byg carport;

@@ -15,20 +15,25 @@ while (problemer eller manglende information?) is (true)
     : Læs svar givet af kunde;
 endwhile (false)
 |It-system|
+repeat
+|It-system|
 : Beregn stykliste;
 |Salgsmedarbejder|
-repeat
+while (Tilbud accepteret?) is (false)
+|Salgsmedarbejder|
+: Beregn stykliste;
 : Send tilbud til kunde;
 |Kunde|
-if ("acceptér tilbud") then (ja)
+: Accepter eller afvis tilbud;
+endwhile (true)
 |It-system|
-: Send information til lageransvarlig;
+: Beregn stykliste;
+: Videresend information\n
+ til lageransvarlig;
 |Lageransvarlig|
-: Saml materialer på stykliste;
+: Samle materialer på stykliste;
 |Kunde|
 : Afhent materialer;
 : Byg carport;
-else (nej)
-endif
 end
 @enduml
