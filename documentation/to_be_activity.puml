@@ -4,7 +4,7 @@
 start
 : Send ordre;
 |It-system|
-: Vidresend ordre til salgsmedarbejder via email;
+: Gem ordre;
 |Salgsmedarbejder|
 : Læs ordre;
 while (problemer eller manglende information?) is (true)
@@ -15,7 +15,7 @@ while (problemer eller manglende information?) is (true)
     : Læs svar givet af kunde;
 endwhile (false)
 |It-system|
-: Beregner stykliste;
+: Beregn stykliste;
 |Salgsmedarbejder|
 repeat
 : Send tilbud til kunde;

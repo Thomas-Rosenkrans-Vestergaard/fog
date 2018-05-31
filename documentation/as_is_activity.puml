@@ -15,7 +15,7 @@ while (problemer eller manglende information?) is (true)
     : Læs svar givet af kunde;
 endwhile (false)
 |It-system|
-: Beregner stykliste;
+: Beregn stykliste;
 |Salgsmedarbejder|
 while (Tilbud ikke accepteret) is (true)
 : Send tilbud til kunde;
