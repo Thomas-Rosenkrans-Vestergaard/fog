@@ -1,0 +1,11 @@
+@startuml
+
+class Ordre
+class Tilbud
+class Køb
+
+Ordre "1" -right- "*" Tilbud
+Tilbud "1" -right- "1" Køb
+Ordre "1" -right- "1" Køb
+
+@enduml
