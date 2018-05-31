@@ -1,7 +1,5 @@
 @startuml
 
-title Activitetsdiagram over nuværende bestillingsprocess \n
-
 |Kunde|
 start
 : Send ordre;
