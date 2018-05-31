@@ -23,7 +23,6 @@ while (Tilbud ikke accepteret) is (true)
 : Accepter eller afvis tilbud;
 endwhile (false)
 |Salgsmedarbejder|
-: Marker som accepteret;
 : Videresend information\n
  til lageransvarlig;
 |Lageransvarlig|

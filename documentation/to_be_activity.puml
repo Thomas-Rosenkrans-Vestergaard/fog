@@ -22,7 +22,6 @@ repeat
 |Kunde|
 if ("acceptér tilbud") then (ja)
 |It-system|
-: Marker som accepteret;
 : Send information til lageransvarlig;
 |Lageransvarlig|
 : Saml materialer på stykliste;
