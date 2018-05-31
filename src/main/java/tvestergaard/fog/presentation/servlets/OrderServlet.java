@@ -111,6 +111,6 @@ public class OrderServlet extends HttpServlet
             notifications.error("Ordren er inaktiv, or kan derfor ikke aflyses.");
         }
 
-        resp.sendRedirect("order?id=" + order);
+        resp.sendRedirect("order?id=" + order.getId());
     }
 }
