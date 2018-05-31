@@ -29,7 +29,11 @@ else No Csrf error
     OrderPlacer -> OrderValidator : validate()
     OrderValidator --> OrderPlacer : errors
     break !errors.isEmpty()
-        OrderPlacer --> Servlet : throw OrderValidationException;
+        OrderPlacer --> Servlet : throw OrderValidationException
+        loop foreach Error
+            Servlet -> Notifications : .error(Error)
+            Notifications --> Servlet
+        end
         Servlet --> PLACE_JSP : sendRedirect()
     end
     OrderPlacer -> OrderDAO : create()
