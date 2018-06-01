@@ -112,7 +112,7 @@ public class AdministrationModelsServlet extends AdministrationServlet
                 return;
             }
 
-            if (!vefiry(request)) {
+            if (!verify(request)) {
                 notifications.error("Token udløbet.");
                 response.sendRedirect("?action=update&id=" + parameters.getInt("id"));
                 return;
@@ -192,7 +192,7 @@ public class AdministrationModelsServlet extends AdministrationServlet
                 return;
             }
 
-            if (!vefiry(request)) {
+            if (!verify(request)) {
                 notifications.error("Token udløbet.");
                 response.sendRedirect("models");
                 return;

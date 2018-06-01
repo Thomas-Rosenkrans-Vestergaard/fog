@@ -1,0 +1,52 @@
+@startuml
+
+    left to right direction
+    actor Byggecenterchef as hoc
+    actor Materialeansvarlig as hom
+actor Salgsmedarbejder as salesman
+
+    (Generer stykliste) as (generate)
+    (Se ordre) as (view_orders)
+    (Opdater ordre) as (update_order)
+    (Afvis ordre) as (reject_order)
+    (Opret tilbud) as (create_offer)
+    (Se tilbud) as (view_offers)
+
+    salesman -up-> generate
+    salesman -up-> view_orders
+    salesman -up-> update_order
+    salesman -up-> reject_order
+    salesman -up-> create_offer
+    salesman -up-> view_offers
+
+
+    (Opret material) as (add_material)
+    (Opdater material) as (update_material)
+    (Opret beklædning) as (create_cladding)
+    (Opdater beklædning) as (update_cladding)
+    (Opret tag) as (create_roofing)
+    (Opdater tag) as (update_roofing)
+    (Opret gulv) as (create_flooring)
+    (Opdater gulv) as (update_flooring)
+    (Opdater model) as (update_model)
+
+    hom --> add_material
+    hom --> update_material
+    hom --> create_cladding
+    hom --> update_cladding
+    hom --> create_roofing
+    hom --> update_roofing
+    hom --> create_flooring
+    hom --> update_flooring
+    hom --> update_model
+
+
+    (Opret medarbejder) as (create_employee)
+    (Opdater medarbejder) as (update_employee)
+
+    hoc -up-> create_employee
+    hoc -up-> update_employee
+
+
+
+@enduml

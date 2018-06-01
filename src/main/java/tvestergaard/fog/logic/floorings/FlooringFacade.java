@@ -104,10 +104,11 @@ public class FlooringFacade
     /**
      * Updates the entity in the data storage to match the provided {@code flooring}.
      *
-     * @param id     The id of the flooring to update.
-     * @param name   The new name.
-     * @param active The new active status.
-     * @return {@link true} if the record was updated.
+     * @param id          The id of the flooring to update.
+     * @param name        The new name of the flooring.
+     * @param description The new description of the flooring.
+     * @param active      The new active status.
+     * @return {@code true} if the record was updated.
      * @throws ApplicationException       When an exception occurs while performing the operation.
      * @throws FlooringValidatorException When the provided information is considered invalid.
      */

@@ -26,7 +26,7 @@ import static tvestergaard.fog.data.constraints.Constraint.where;
 import static tvestergaard.fog.logic.customers.CustomerError.*;
 import static tvestergaard.fog.presentation.PresentationFunctions.csrf;
 import static tvestergaard.fog.presentation.PresentationFunctions.notifications;
-import static tvestergaard.fog.presentation.PresentationFunctions.vefiry;
+import static tvestergaard.fog.presentation.PresentationFunctions.verify;
 
 @WebServlet(urlPatterns = "/administration/customers")
 public class AdministrationCustomersServlet extends AdministrationServlet
@@ -165,7 +165,7 @@ public class AdministrationCustomersServlet extends AdministrationServlet
             Parameters    parameters    = new Parameters(request);
             Notifications notifications = notifications(request);
 
-            if (!vefiry(request)) {
+            if (!verify(request)) {
                 notifications.error("Token udløbet.");
                 response.sendRedirect("?action=create");
                 return;

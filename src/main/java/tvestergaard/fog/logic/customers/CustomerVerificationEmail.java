@@ -48,7 +48,7 @@ public class CustomerVerificationEmail implements ApplicationEmail
      */
     @Override public String getSubject(WebsiteContext websiteContext)
     {
-        return "Bekrædt medlemsskab";
+        return "Bekræft medlemsskab";
     }
 
     /**
@@ -64,7 +64,7 @@ public class CustomerVerificationEmail implements ApplicationEmail
         builder.append("<p>For at fortsætte med din kundekonto, skal du først bekræfte din registration.</p>");
         builder.append("<p>Klik <a target='_blank' href='");
         builder.append(websiteContext.getBase());
-        builder.append("fog/confirm-membership?id=");
+        builder.append("confirm-membership?id=");
         builder.append(token.id);
         builder.append("&token=");
         builder.append(token.secret);

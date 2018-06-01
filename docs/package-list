@@ -1,6 +1,5 @@
 tvestergaard.fog
 tvestergaard.fog.data
-tvestergaard.fog.data.bom
 tvestergaard.fog.data.cladding
 tvestergaard.fog.data.components
 tvestergaard.fog.data.constraints
@@ -13,6 +12,7 @@ tvestergaard.fog.data.models
 tvestergaard.fog.data.offers
 tvestergaard.fog.data.orders
 tvestergaard.fog.data.purchases
+tvestergaard.fog.data.purchases.bom
 tvestergaard.fog.data.roofing
 tvestergaard.fog.data.tokens
 tvestergaard.fog.logic

@@ -330,18 +330,18 @@ public abstract class AbstractMysqlDAO
     }
 
     /**
-     * Creates a new set of {@link AttributeValue}s.
+     * Creates a new set of {@link Attribute}s.
      *
      * @param results               The result set containing the information.
      * @param tAttributesDefinition The name of the table containing the attribute definitions.
      * @param tAttributeValues      The name of the table containing the attribute values.
-     * @return The resulting set of {@link AttributeValue}s.
+     * @return The resulting set of {@link Attribute}s.
      * @throws SQLException When the factory could not access a required column.
      */
-    protected Set<AttributeValue> createAttributeSet(ResultSet results, String tAttributesDefinition, String tAttributeValues)
+    protected Set<Attribute> createAttributeSet(ResultSet results, String tAttributesDefinition, String tAttributeValues)
             throws SQLException
     {
-        Set<AttributeValue> result = new HashSet<>();
+        Set<Attribute> result = new HashSet<>();
         while (results.next())
             result.add(createAttributeValue(results, tAttributesDefinition, tAttributeValues));
 
@@ -367,19 +367,19 @@ public abstract class AbstractMysqlDAO
     }
 
     /**
-     * Creates a new {@link AttributeValue} from the provided information.
+     * Creates a new {@link Attribute} from the provided information.
      *
      * @param results              The result set containing the information.
      * @param tAttributeDefinition The name of the table containing the attribute definitions.
      * @param tAttributeValues     The name of the table containing the attributes values.
-     * @return The resulting {@link AttributeValue}.
+     * @return The resulting {@link Attribute}.
      * @throws SQLException When the factory could not access a required column.
      */
-    protected AttributeValue createAttributeValue(ResultSet results, String tAttributeDefinition, String tAttributeValues) throws SQLException
+    protected Attribute createAttributeValue(ResultSet results, String tAttributeDefinition, String tAttributeValues) throws SQLException
     {
         AttributeDefinition definition = createAttributeDefinition(results, tAttributeDefinition);
 
-        return new DefaultAttributeValue(
+        return new DefaultAttribute(
                 createAttributeDefinition(results, tAttributeDefinition),
                 getAttributeValue(results, tAttributeValues, definition.getDataType())
         );
@@ -406,14 +406,14 @@ public abstract class AbstractMysqlDAO
     }
 
     /**
-     * Sets the parameter with the provided index to the value in the provided {@link AttributeValue}.
+     * Sets the parameter with the provided index to the value in the provided {@link Attribute}.
      *
      * @param statement      The statement to set the parameter of.
      * @param parameterIndex The index of the parameter to set on the statement.
      * @param attribute      The attribute containing the value to set.
      * @throws SQLException When the factory could not access a required column.
      */
-    protected void setAttributeValue(PreparedStatement statement, int parameterIndex, AttributeValue attribute)
+    protected void setAttributeValue(PreparedStatement statement, int parameterIndex, Attribute attribute)
             throws SQLException
     {
         DataType dataType = attribute.getDefinition().getDataType();

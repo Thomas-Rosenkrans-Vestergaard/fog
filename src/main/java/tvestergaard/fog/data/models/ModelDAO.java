@@ -35,7 +35,7 @@ public interface ModelDAO
      *
      * @param definitions The definitions to update.
      * @return {@code true} if the component definitions was successfully updated.
-     * @throws DataAccessException
+     * @throws DataAccessException When a data storage exception occurs while performing the operation.
      */
     boolean update(List<ComponentDefinition> definitions) throws DataAccessException;
 

@@ -38,7 +38,7 @@ public interface FlooringBlueprint
     String getDescription();
 
     /**
-     * Sets the description of the {@lilnk Flooring}.
+     * Sets the description of the {@link Flooring}.
      *
      * @param description The new description.
      */
@@ -47,7 +47,7 @@ public interface FlooringBlueprint
     /**
      * Returns {@code true} if the flooring can currently be applied to new orders.
      *
-     * @return {@link true} if the flooring can currently be applied to new orders.
+     * @return {@code true} if the flooring can currently be applied to new orders.
      */
     boolean isActive();
 

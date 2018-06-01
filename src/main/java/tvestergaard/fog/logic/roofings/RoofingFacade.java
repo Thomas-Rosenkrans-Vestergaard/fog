@@ -27,7 +27,8 @@ public class RoofingFacade
     /**
      * Creates a new {@link RoofingDAO}.
      *
-     * @param dao The {@link RoofingDAO} used to query the data storage of the application.
+     * @param dao       The {@link RoofingDAO} used to query the data storage of the application.
+     * @param validator The object responsible for validating roofings.
      */
     public RoofingFacade(RoofingDAO dao, RoofingValidator validator)
     {

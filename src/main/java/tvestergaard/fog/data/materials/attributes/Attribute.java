@@ -1,6 +1,6 @@
 package tvestergaard.fog.data.materials.attributes;
 
-public interface AttributeValue
+public interface Attribute
 {
 
     /**

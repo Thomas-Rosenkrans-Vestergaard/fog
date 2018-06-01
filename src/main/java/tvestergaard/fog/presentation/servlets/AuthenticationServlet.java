@@ -56,7 +56,7 @@ public class AuthenticationServlet extends HttpServlet
         Parameters    parameters    = new Parameters(req);
         Notifications notifications = notifications(req);
 
-        if (!vefiry(req)) {
+        if (!verify(req)) {
             resp.sendRedirect("authenticate");
             return;
         }

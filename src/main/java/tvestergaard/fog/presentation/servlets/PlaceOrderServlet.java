@@ -85,7 +85,7 @@ public class PlaceOrderServlet extends HttpServlet
         Parameters     parameters     = new Parameters(req);
         Authentication authentication = new Authentication(req);
 
-        if (!vefiry(req)) {
+        if (!verify(req)) {
             resp.sendRedirect("place-order");
             return;
         }

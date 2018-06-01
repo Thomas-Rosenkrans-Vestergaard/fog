@@ -1,10 +1,10 @@
 package tvestergaard.fog.data.materials;
 
 import org.junit.Test;
-import tvestergaard.fog.data.materials.attributes.AttributeValue;
+import tvestergaard.fog.data.materials.attributes.Attribute;
 import tvestergaard.fog.data.materials.attributes.DataType;
 import tvestergaard.fog.data.materials.attributes.DefaultAttributeDefinition;
-import tvestergaard.fog.data.materials.attributes.DefaultAttributeValue;
+import tvestergaard.fog.data.materials.attributes.DefaultAttribute;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -113,10 +113,10 @@ public class MaterialRecordTest
     @Test
     public void getAttributes() throws Exception
     {
-        Set<AttributeValue> attributes = new HashSet<>();
+        Set<Attribute> attributes = new HashSet<>();
 
-        attributes.add(new DefaultAttributeValue(new DefaultAttributeDefinition(1, "ATTR_A", DataType.INT), 1));
-        attributes.add(new DefaultAttributeValue(new DefaultAttributeDefinition(2, "ATTR_B", DataType.INT), 2));
+        attributes.add(new DefaultAttribute(new DefaultAttributeDefinition(1, "ATTR_A", DataType.INT), 1));
+        attributes.add(new DefaultAttribute(new DefaultAttributeDefinition(2, "ATTR_B", DataType.INT), 2));
 
         MaterialRecord instance = new MaterialRecord(-1, null, null, -1, -1, false, -1, null, attributes);
         assertEquals(attributes, instance.getAttributes());
@@ -125,13 +125,13 @@ public class MaterialRecordTest
     @Test
     public void getAttribute() throws Exception
     {
-        Set<AttributeValue> attributes = new HashSet<>();
+        Set<Attribute> attributes = new HashSet<>();
 
-        AttributeValue expected1 = new DefaultAttributeValue(
+        Attribute expected1 = new DefaultAttribute(
                 new DefaultAttributeDefinition(-1, "ATTRIBUTE_ONE", DataType.INT),
                 randomInt());
 
-        AttributeValue expected2 = new DefaultAttributeValue(
+        Attribute expected2 = new DefaultAttribute(
                 new DefaultAttributeDefinition(-1, "ATTRIBUTE_TWO", DataType.INT),
                 randomInt());
 

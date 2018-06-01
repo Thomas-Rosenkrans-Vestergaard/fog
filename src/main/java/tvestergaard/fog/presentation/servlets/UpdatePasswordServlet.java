@@ -50,7 +50,7 @@ public class UpdatePasswordServlet extends HttpServlet
         Parameters    parameters    = new Parameters(req);
         Notifications notifications = notifications(req);
 
-        if (!vefiry(req)) {
+        if (!verify(req)) {
             resp.sendRedirect("update-password");
             return;
         }

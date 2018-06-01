@@ -118,7 +118,7 @@ public class AdministrationCladdingsServlet extends AdministrationServlet
                 return;
             }
 
-            if (!vefiry(request)) {
+            if (!verify(request)) {
                 notifications.error("Token udløbet.");
                 response.sendRedirect("?action=update&id=" + parameters.getInt("id"));
                 return;
@@ -162,7 +162,7 @@ public class AdministrationCladdingsServlet extends AdministrationServlet
             Parameters    parameters    = new Parameters(request);
             Notifications notifications = notifications(request);
 
-            if (!vefiry(request)) {
+            if (!verify(request)) {
                 notifications.error("Token udløbet.");
                 response.sendRedirect("?action=create");
                 return;

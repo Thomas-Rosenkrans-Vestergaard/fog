@@ -3,6 +3,8 @@ package tvestergaard.fog.data.offers;
 import tvestergaard.fog.data.DataAccessException;
 import tvestergaard.fog.data.constraints.Constraints;
 import tvestergaard.fog.data.purchases.PurchaseBlueprint;
+import tvestergaard.fog.data.purchases.PurchaseDAO;
+import tvestergaard.fog.data.purchases.bom.BomBlueprint;
 
 import java.util.List;
 
@@ -49,7 +51,7 @@ public interface OfferDAO
     /**
      * Rejects the offer with the provided id.
      * <p>
-     * To accept an offer, use the {@link tvestergaard.fog.data.purchases.PurchaseDAO#create(PurchaseBlueprint)} method,
+     * To accept an offer, use the {@link PurchaseDAO#create(PurchaseBlueprint, BomBlueprint)} method,
      * that will mark the provided offer accepted.
      *
      * @param offerId The id of the offer to mark reject.

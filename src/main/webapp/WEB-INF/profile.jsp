@@ -42,7 +42,14 @@
             </tr>
             <tr>
                 <th>Bekræftet</th>
-                <td>${f:formatBoolean(customer.isVerified())}</td>
+                <td>
+                    <p style="float:left">${f:formatBoolean(customer.isVerified())}</p>
+                    <form method="post" style="float:right">
+                        <input type="hidden" name="action" value="resend-confimation">
+                        <input class="btn" type="submit" value="Gensend" ${customer.isVerified() ? 'disabled' :
+                                ''}>
+                    </form>
+                </td>
             </tr>
         </table>
     </div>

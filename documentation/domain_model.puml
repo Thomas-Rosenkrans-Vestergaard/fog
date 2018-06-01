@@ -1,0 +1,71 @@
+@startuml
+
+
+hide circle
+hide members
+skinparam padding 10
+
+class Customer
+
+class "Bill of materials" as Bom
+
+class Employee {
+    + role
+}
+
+show Employee fields
+
+class Order
+
+
+class Offer {
+ + price
+}
+
+
+show Offer fields
+
+
+class Purchase
+class "CarportSpecifications" as Specs
+class Model
+class Inventory
+class Shed
+class Roofing
+class Flooring
+class Material {
+    +nummer
+    +beskrivelse
+}
+
+
+show Material fields
+
+class Cladding
+class Calculator
+class Payment {
+
+}
+
+class Instructions
+
+Customer "1" --* "0..*" Order
+Order "1" --* "1" Specs
+Order "1" --* "0..*" Offer
+Offer "1" --* "0..1" Purchase
+Specs "1" --* "1" Model
+Specs "1" --* "0..1" Shed
+Offer "1" --* "1" Employee
+Specs "1" --* "1" Roofing
+Shed "1" --* "1" Flooring
+Shed "1" --* "1" Cladding
+Inventory "1" --* "0..*" Material
+Bom "1" --* "0..*" Material
+Purchase "1" --* "1" Payment
+Purchase "1" --* "1" Instructions
+
+Calculator --> Specs : accepts
+Calculator --> Bom : produces
+Purchase "1" --* "1" Bom
+
+@enduml

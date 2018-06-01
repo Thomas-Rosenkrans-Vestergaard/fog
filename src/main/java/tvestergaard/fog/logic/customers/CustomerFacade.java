@@ -270,6 +270,27 @@ public class CustomerFacade
     }
 
     /**
+     * Re-sends a email confirmation email to the user with the provided id.
+     *
+     * @param customerId The id of the customer to send the confirmation email to.
+     * @throws ApplicationException     When a data storage exception occurs during the operation.
+     * @throws UnknownCustomerException When a customer with the provided id does not exist.
+     */
+    public void resendConfirmation(int customerId) throws ApplicationException, UnknownCustomerException
+    {
+        try {
+            Customer customer = customerDAO.first(where(eq(ID, customerId)));
+            if (customer == null)
+                throw new UnknownCustomerException();
+
+            emailChallenger.challenge(customer);
+
+        } catch (DataAccessException e) {
+            throw new ApplicationException(e);
+        }
+    }
+
+    /**
      * Returns the hash of the provided password using bcrypt.
      *
      * @param password The password to hash.
