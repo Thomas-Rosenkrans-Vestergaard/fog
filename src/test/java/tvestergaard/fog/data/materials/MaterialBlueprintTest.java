@@ -10,7 +10,8 @@ import java.util.HashSet;
 import java.util.Set;
 
 import static org.junit.Assert.assertEquals;
-import static tvestergaard.fog.Helpers.*;
+import static tvestergaard.fog.Helpers.randomInt;
+import static tvestergaard.fog.Helpers.randomString;
 
 public class MaterialBlueprintTest
 {
@@ -24,7 +25,7 @@ public class MaterialBlueprintTest
         int            expectedUnit        = randomInt();
         int            expectedCategory    = randomInt();
         Set<Attribute> expectedAttributes  = new HashSet<>();
-        expectedAttributes.add(new DefaultAttribute(new DefaultAttributeDefinition(randomInt(), randomString(), randomEnum(DataType.class)), randomString()));
+        expectedAttributes.add(new DefaultAttribute(new DefaultAttributeDefinition(randomInt(), randomString(), DataType.STRING), randomString()));
 
         MaterialBlueprint instance = MaterialBlueprint.from(expectedNumber, expectedDescription, expectedPrice, expectedUnit, expectedCategory, expectedAttributes);
 

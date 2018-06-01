@@ -1,6 +1,10 @@
 package tvestergaard.fog.presentation.servlets;
 
+import tvestergaard.fog.data.customers.UnknownCustomerException;
+import tvestergaard.fog.logic.customers.CustomerFacade;
 import tvestergaard.fog.presentation.Authentication;
+import tvestergaard.fog.presentation.Facades;
+import tvestergaard.fog.presentation.Notifications;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -9,9 +13,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+import static tvestergaard.fog.presentation.PresentationFunctions.notifications;
+
 @WebServlet(urlPatterns = "/profile")
 public class ProfileServlet extends HttpServlet
 {
+
+    private final CustomerFacade customerFacade = Facades.customerFacade;
 
     /**
      * Displays the /profile page, where customers can see their order history.
@@ -32,5 +40,30 @@ public class ProfileServlet extends HttpServlet
         req.setAttribute("navigation", "profile");
         req.setAttribute("customer", authentication.getCustomer());
         req.getRequestDispatcher("/WEB-INF/profile.jsp").forward(req, resp);
+    }
+
+    @Override protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException
+    {
+        Authentication authentication = new Authentication(req);
+        if (authentication.redirect(resp))
+            return;
+
+        Notifications notifications = notifications(req);
+        String        action        = req.getParameter("action");
+
+        if ("resend-confimation".equals(action)) {
+
+            try {
+                customerFacade.resendConfirmation(authentication.getCustomer().getId());
+                notifications.success("En ny bekræftelsesemail er blevet sendt.");
+                resp.sendRedirect("profile");
+            } catch (UnknownCustomerException e) {
+                notifications.error("Det skete en fejl.");
+                resp.sendRedirect("profile");
+                return;
+            }
+
+            return;
+        }
     }
 }
