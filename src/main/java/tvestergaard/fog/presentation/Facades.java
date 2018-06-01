@@ -54,7 +54,7 @@ import tvestergaard.fog.logic.tokens.TokenIssuer;
 public class Facades
 {
 
-    private static final WebsiteContext websiteContext = new WebsiteContext("http://159.89.107.247/fog");
+    private static final WebsiteContext websiteContext = new WebsiteContext("http://159.89.107.247/fog/");
     private static final EmailTemplate  emailTemplate  = new CurrentEmailTemplate(websiteContext);
 
     private static final ApplicationMailer mailer = new DefaultApplicationMailer(emailTemplate, websiteContext);
