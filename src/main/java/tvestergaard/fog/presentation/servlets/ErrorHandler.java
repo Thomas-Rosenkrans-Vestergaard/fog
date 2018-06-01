@@ -24,9 +24,10 @@ public class ErrorHandler extends HttpServlet
 
         resp.setContentType("text");
         resp.setCharacterEncoding("UTF-8");
-        writer.write("<pre>");
-        exception.printStackTrace(printWriter);
-        writer.write("</pre>");
+//        writer.write("<pre>");
+//        exception.printStackTrace(printWriter);
+//        writer.write("</pre>");
+        writer.write("Der skete en fejl.");
         writer.flush();
         writer.close();
     }
