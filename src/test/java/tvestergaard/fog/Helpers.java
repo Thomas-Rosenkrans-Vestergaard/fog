@@ -18,6 +18,13 @@ public class Helpers
         return builder.toString();
     }
 
+    public static <T> T randomEnum(Class<T> type)
+    {
+        T[] values = type.getEnumConstants();
+
+        return values[random.nextInt(values.length)];
+    }
+
     public static String randomString()
     {
         return randomString(10);

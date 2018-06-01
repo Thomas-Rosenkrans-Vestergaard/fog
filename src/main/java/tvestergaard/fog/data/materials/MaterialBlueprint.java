@@ -1,6 +1,6 @@
 package tvestergaard.fog.data.materials;
 
-import tvestergaard.fog.data.materials.attributes.AttributeValue;
+import tvestergaard.fog.data.materials.attributes.Attribute;
 
 import java.util.Set;
 
@@ -18,7 +18,7 @@ public interface MaterialBlueprint
      * @param attributes  The attributes of the material specified in the blueprint.
      * @return The resulting blueprint.
      */
-    static MaterialBlueprint from(String number, String description, int price, int unit, int category, Set<AttributeValue> attributes)
+    static MaterialBlueprint from(String number, String description, int price, int unit, int category, Set<Attribute> attributes)
     {
         return new MaterialRecord(-1, number, description, price, unit, false, category, null, attributes);
     }
@@ -84,7 +84,7 @@ public interface MaterialBlueprint
      *
      * @return The complete set.
      */
-    Set<AttributeValue> getAttributes();
+    Set<Attribute> getAttributes();
 
     /**
      * Returns the attribute with the provided name.
@@ -92,5 +92,5 @@ public interface MaterialBlueprint
      * @param name The name of the attribute to return.
      * @return The attribute with the provided name. Returns null if an attribute with the provided name does not exist.
      */
-    AttributeValue getAttribute(String name);
+    Attribute getAttribute(String name);
 }

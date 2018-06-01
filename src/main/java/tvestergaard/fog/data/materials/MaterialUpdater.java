@@ -1,6 +1,6 @@
 package tvestergaard.fog.data.materials;
 
-import tvestergaard.fog.data.materials.attributes.AttributeValue;
+import tvestergaard.fog.data.materials.attributes.Attribute;
 
 import java.util.Set;
 
@@ -19,7 +19,7 @@ public interface MaterialUpdater extends MaterialBlueprint
      * @param attributes  The attributes to add to the material.
      * @return The resulting updater.
      */
-    static MaterialUpdater from(int id, String number, String description, int price, int unit, int category, Set<AttributeValue> attributes)
+    static MaterialUpdater from(int id, String number, String description, int price, int unit, int category, Set<Attribute> attributes)
     {
         return new MaterialRecord(id, number, description, price, unit, true, category, null, attributes);
     }

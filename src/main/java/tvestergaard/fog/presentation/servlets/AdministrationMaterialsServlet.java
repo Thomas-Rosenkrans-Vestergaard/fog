@@ -5,9 +5,9 @@ import tvestergaard.fog.data.employees.Role;
 import tvestergaard.fog.data.materials.Material;
 import tvestergaard.fog.data.materials.MaterialColumn;
 import tvestergaard.fog.data.materials.attributes.AttributeDefinition;
-import tvestergaard.fog.data.materials.attributes.AttributeValue;
+import tvestergaard.fog.data.materials.attributes.Attribute;
 import tvestergaard.fog.data.materials.attributes.DataType;
-import tvestergaard.fog.data.materials.attributes.DefaultAttributeValue;
+import tvestergaard.fog.data.materials.attributes.DefaultAttribute;
 import tvestergaard.fog.logic.materials.MaterialError;
 import tvestergaard.fog.logic.materials.MaterialFacade;
 import tvestergaard.fog.logic.materials.MaterialValidatorException;
@@ -131,18 +131,18 @@ public class AdministrationMaterialsServlet extends AdministrationServlet
             }
 
             Set<AttributeDefinition> attributeDefinitions = materialsFacade.getAttributesFor(parameters.getInt("category"));
-            Set<AttributeValue>      attributes           = new HashSet<>();
+            Set<Attribute>           attributes           = new HashSet<>();
             for (AttributeDefinition definition : attributeDefinitions) {
                 DataType dataType      = definition.getDataType();
                 String   attributeName = "attribute_" + definition.getName();
                 if (dataType == DataType.INT) {
                     if (!parameters.isInt(attributeName))
                         notifications.error("Bad format for attribute " + definition.getName());
-                    attributes.add(new DefaultAttributeValue(definition, parameters.getInt(attributeName)));
+                    attributes.add(new DefaultAttribute(definition, parameters.getInt(attributeName)));
                 } else {
                     if (!parameters.isPresent(attributeName))
                         notifications.error("Bad format for attribute " + definition.getName());
-                    attributes.add(new DefaultAttributeValue(definition, parameters.value(attributeName)));
+                    attributes.add(new DefaultAttribute(definition, parameters.value(attributeName)));
                 }
             }
 
@@ -217,18 +217,18 @@ public class AdministrationMaterialsServlet extends AdministrationServlet
             }
 
             Set<AttributeDefinition> attributeDefinitions = materialsFacade.getAttributesFor(parameters.getInt("category"));
-            Set<AttributeValue>      attributes           = new HashSet<>();
+            Set<Attribute>           attributes           = new HashSet<>();
             for (AttributeDefinition definition : attributeDefinitions) {
                 DataType dataType      = definition.getDataType();
                 String   attributeName = "attribute_" + definition.getName();
                 if (dataType == DataType.INT) {
                     if (!parameters.isInt(attributeName))
                         notifications.error("Bad format for attribute " + definition.getName());
-                    attributes.add(new DefaultAttributeValue(definition, parameters.getInt(attributeName)));
+                    attributes.add(new DefaultAttribute(definition, parameters.getInt(attributeName)));
                 } else {
                     if (!parameters.isPresent(attributeName))
                         notifications.error("Bad format for attribute " + definition.getName());
-                    attributes.add(new DefaultAttributeValue(definition, parameters.value(attributeName)));
+                    attributes.add(new DefaultAttribute(definition, parameters.value(attributeName)));
                 }
             }
 

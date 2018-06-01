@@ -5,7 +5,7 @@ import tvestergaard.fog.data.DataAccessException;
 import tvestergaard.fog.data.constraints.Constraints;
 import tvestergaard.fog.data.materials.*;
 import tvestergaard.fog.data.materials.attributes.AttributeDefinition;
-import tvestergaard.fog.data.materials.attributes.AttributeValue;
+import tvestergaard.fog.data.materials.attributes.Attribute;
 import tvestergaard.fog.logic.ApplicationException;
 
 import java.util.List;
@@ -100,7 +100,7 @@ public class MaterialFacade
      * @throws ApplicationException       When an exception occurs while performing the operation.
      * @throws MaterialValidatorException When the provided information is considered invalid.
      */
-    public Material create(String number, String description, int price, int unit, int category, Set<AttributeValue> attributes)
+    public Material create(String number, String description, int price, int unit, int category, Set<Attribute> attributes)
             throws MaterialValidatorException
     {
         try {
@@ -114,7 +114,7 @@ public class MaterialFacade
     }
 
     public Material update(int id, String number, String description, int price, int unit, int category,
-                           Set<AttributeValue> attributes) throws MaterialValidatorException
+                           Set<Attribute> attributes) throws MaterialValidatorException
     {
         try {
             Set<MaterialError> reasons = validator.validate(number, description, price, unit);

@@ -1,6 +1,6 @@
 package tvestergaard.fog.data.materials.attributes;
 
-public class DefaultAttributeValue implements AttributeValue
+public class DefaultAttribute implements Attribute
 {
 
     /**
@@ -14,13 +14,13 @@ public class DefaultAttributeValue implements AttributeValue
     private Object value;
 
     /**
-     * Creates a new {@link AttributeValue}.
+     * Creates a new {@link Attribute}.
      *
      * @param definition The definition of the attribute value.
      * @param value      The attribute value.
      * @throws IncorrectDataTypeException When the provided value is not permitted by the attribute definition.
      */
-    public DefaultAttributeValue(AttributeDefinition definition, Object value)
+    public DefaultAttribute(AttributeDefinition definition, Object value)
     {
         if (!validate(value, definition.getDataType()))
             throw new IncorrectDataTypeException();
@@ -129,7 +129,7 @@ public class DefaultAttributeValue implements AttributeValue
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        DefaultAttributeValue that = (DefaultAttributeValue) o;
+        DefaultAttribute that = (DefaultAttribute) o;
 
         if (!definition.equals(that.definition)) return false;
         return value.equals(that.value);

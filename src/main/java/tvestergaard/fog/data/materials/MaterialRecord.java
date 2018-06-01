@@ -1,6 +1,6 @@
 package tvestergaard.fog.data.materials;
 
-import tvestergaard.fog.data.materials.attributes.AttributeValue;
+import tvestergaard.fog.data.materials.attributes.Attribute;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -53,7 +53,7 @@ public class MaterialRecord implements Material
     /**
      * The attributes assigned to the material.
      */
-    private final HashMap<String, AttributeValue> attributes = new HashMap<>();
+    private final HashMap<String, Attribute> attributes = new HashMap<>();
 
     /**
      * Creates a new {@link MaterialRecord}.
@@ -69,7 +69,7 @@ public class MaterialRecord implements Material
      * @param attributes  The attribute to add to the material.
      */
     public MaterialRecord(int id, String number, String description, int price, int unit, boolean active,
-                          int categoryId, Category category, Set<AttributeValue> attributes)
+                          int categoryId, Category category, Set<Attribute> attributes)
     {
         this.id = id;
         this.number = number;
@@ -79,7 +79,7 @@ public class MaterialRecord implements Material
         this.active = active;
         this.categoryId = categoryId;
         this.category = category;
-        for (AttributeValue attribute : attributes)
+        for (Attribute attribute : attributes)
             this.attributes.put(attribute.getDefinition().getName(), attribute);
     }
 
@@ -198,7 +198,7 @@ public class MaterialRecord implements Material
      *
      * @return The complete list.
      */
-    @Override public Set<AttributeValue> getAttributes()
+    @Override public Set<Attribute> getAttributes()
     {
         return new HashSet<>(attributes.values());
     }
@@ -209,7 +209,7 @@ public class MaterialRecord implements Material
      * @param name The name of the attribute to return.
      * @return The attribute with the provided name. Returns null if an attribute with the provided name does not exist.
      */
-    @Override public AttributeValue getAttribute(String name)
+    @Override public Attribute getAttribute(String name)
     {
         return attributes.get(name);
     }

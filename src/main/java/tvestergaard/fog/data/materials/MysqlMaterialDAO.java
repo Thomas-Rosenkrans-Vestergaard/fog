@@ -10,7 +10,7 @@ import tvestergaard.fog.data.constraints.Constraints;
 import tvestergaard.fog.data.constraints.StatementBinder;
 import tvestergaard.fog.data.constraints.StatementGenerator;
 import tvestergaard.fog.data.materials.attributes.AttributeDefinition;
-import tvestergaard.fog.data.materials.attributes.AttributeValue;
+import tvestergaard.fog.data.materials.attributes.Attribute;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -140,7 +140,7 @@ public class MysqlMaterialDAO extends AbstractMysqlDAO implements MaterialDAO
                 String attributeSQL = "INSERT INTO attribute_values (attribute, material, `value`) VALUES (?, ?, ?)";
                 try (PreparedStatement attributeStatement = connection.prepareStatement(attributeSQL)) {
                     attributeStatement.setInt(2, materialId);
-                    for (AttributeValue attribute : blueprint.getAttributes()) {
+                    for (Attribute attribute : blueprint.getAttributes()) {
                         attributeStatement.setInt(1, attribute.getDefinition().getId());
                         setAttributeValue(attributeStatement, 3, attribute);
                         attributeStatement.executeUpdate();
@@ -194,7 +194,7 @@ public class MysqlMaterialDAO extends AbstractMysqlDAO implements MaterialDAO
                 String attributeSQL = "INSERT INTO attribute_values (attribute, material, `value`) VALUES (?, ?, ?)";
                 try (PreparedStatement attributeStatement = connection.prepareStatement(attributeSQL)) {
                     attributeStatement.setInt(2, materialId);
-                    for (AttributeValue attribute : updater.getAttributes()) {
+                    for (Attribute attribute : updater.getAttributes()) {
                         attributeStatement.setInt(1, attribute.getDefinition().getId());
                         setAttributeValue(attributeStatement, 3, attribute);
                         attributeStatement.executeUpdate();
