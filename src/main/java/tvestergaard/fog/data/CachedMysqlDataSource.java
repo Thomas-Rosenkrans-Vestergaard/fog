@@ -22,7 +22,7 @@ public class CachedMysqlDataSource extends MysqlDataSource
      */
     @Override public Connection getConnection() throws SQLException
     {
-        if (cachedConnection == null) {
+        if (cachedConnection == null || cachedConnection.isClosed()) {
             cachedConnection = super.getConnection();
             cachedConnection.setAutoCommit(false);
         }

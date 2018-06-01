@@ -16,7 +16,7 @@ public class ProductionDataSource
             source = new CachedMysqlDataSource();
             source.setDatabaseName("fog");
             source.setUser("fog");
-            source.setURL("jdbc:mysql://localhost:3306/fog?user=fog&useUnicode=yes&characterEncoding=UTF8");
+            source.setURL("jdbc:mysql://localhost:3306/fog?user=fog&useUnicode=yes&characterEncoding=UTF8&autoReconnect=true");
         }
 
         return source;
