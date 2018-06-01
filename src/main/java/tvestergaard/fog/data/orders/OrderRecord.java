@@ -93,37 +93,41 @@ public class OrderRecord implements Order
     /**
      * Creates a new {@link OrderRecord}.
      *
-     * @param id             The unique identifier of the order.
-     * @param customerId     The id of the customer who placed the order.
-     * @param customer       The customer who placed the order.
-     * @param width          The width of the order.
-     * @param length         The length of the order.
-     * @param height         The height of the order.
-     * @param roofingId      The id of the roofing used on the order.
-     * @param roofing        The roofing used on the order.
-     * @param slope          The slope of the roofing.
-     * @param shedBlueprint  The shed included with the order.
-     * @param active         Whether or not the order is considered active.
-     * @param numberOfOffers The number of offers that have been made regarding this order.
-     * @param createdAt      The time when the order was placed.
+     * @param id                 The unique identifier of the order.
+     * @param customerId         The id of the customer who placed the order.
+     * @param customer           The customer who placed the order.
+     * @param width              The width of the order.
+     * @param length             The length of the order.
+     * @param height             The height of the order.
+     * @param roofingId          The id of the roofing used on the order.
+     * @param roofing            The roofing used on the order.
+     * @param slope              The slope of the roofing.
+     * @param shedBlueprint      The shed included with the order.
+     * @param shedUpdater        The shed included with the order.
+     * @param shed               The shed included with the order.
+     * @param comment            The comment about the order provided by the customer.
+     * @param active             Whether or not the order is considered active.
+     * @param numberOfOffers     The number of offers that have been made regarding this order.
+     * @param numberOfOpenOffers The number of offers that are both OPEN and active.
+     * @param createdAt          The time when the order was placed.
      */
     public OrderRecord(int id,
-                       int customerId,
-                       Customer customer,
-                       int width,
-                       int length,
-                       int height,
-                       int roofingId,
-                       Roofing roofing,
-                       int slope,
-                       ShedBlueprint shedBlueprint,
-                       ShedUpdater shedUpdater,
-                       Shed shed,
-                       String comment,
-                       boolean active,
-                       int numberOfOffers,
-                       int numberOfOpenOffers,
-                       LocalDateTime createdAt)
+            int customerId,
+            Customer customer,
+            int width,
+            int length,
+            int height,
+            int roofingId,
+            Roofing roofing,
+            int slope,
+            ShedBlueprint shedBlueprint,
+            ShedUpdater shedUpdater,
+            Shed shed,
+            String comment,
+            boolean active,
+            int numberOfOffers,
+            int numberOfOpenOffers,
+            LocalDateTime createdAt)
     {
         this.id = id;
         this.customerId = customerId;
@@ -350,14 +354,14 @@ public class OrderRecord implements Order
         if (!(o instanceof Order)) return false;
         Order that = (Order) o;
         return getId() == that.getId() &&
-                getWidth() == that.getWidth() &&
-                getLength() == that.getLength() &&
-                getHeight() == that.getHeight() &&
-                getSlope() == that.getSlope() &&
-                Objects.equals(getCustomer(), that.getCustomer()) &&
-                Objects.equals(getRoofing(), that.getRoofing()) &&
-                Objects.equals(getShedBlueprint(), that.getShedBlueprint()) &&
-                Objects.equals(getCreatedAt(), that.getCreatedAt());
+               getWidth() == that.getWidth() &&
+               getLength() == that.getLength() &&
+               getHeight() == that.getHeight() &&
+               getSlope() == that.getSlope() &&
+               Objects.equals(getCustomer(), that.getCustomer()) &&
+               Objects.equals(getRoofing(), that.getRoofing()) &&
+               Objects.equals(getShedBlueprint(), that.getShedBlueprint()) &&
+               Objects.equals(getCreatedAt(), that.getCreatedAt());
     }
 
     @Override public int hashCode()
@@ -368,23 +372,23 @@ public class OrderRecord implements Order
     @Override public String toString()
     {
         return "OrderRecord{" +
-                "id=" + id +
-                ", customerId=" + customerId +
-                ", customer=" + customer +
-                ", width=" + width +
-                ", length=" + length +
-                ", height=" + height +
-                ", roofing=" + roofing +
-                ", roofingId=" + roofingId +
-                ", slope=" + slope +
-                ", shedBlueprint=" + shedBlueprint +
-                ", shedUpdater=" + shedUpdater +
-                ", shed=" + shed +
-                ", comment='" + comment + '\'' +
-                ", active=" + active +
-                ", numberOfOffers=" + numberOfOffers +
-                ", numberOfOpenOffers=" + numberOfOpenOffers +
-                ", createdAt=" + createdAt +
-                '}';
+               "id=" + id +
+               ", customerId=" + customerId +
+               ", customer=" + customer +
+               ", width=" + width +
+               ", length=" + length +
+               ", height=" + height +
+               ", roofing=" + roofing +
+               ", roofingId=" + roofingId +
+               ", slope=" + slope +
+               ", shedBlueprint=" + shedBlueprint +
+               ", shedUpdater=" + shedUpdater +
+               ", shed=" + shed +
+               ", comment='" + comment + '\'' +
+               ", active=" + active +
+               ", numberOfOffers=" + numberOfOffers +
+               ", numberOfOpenOffers=" + numberOfOpenOffers +
+               ", createdAt=" + createdAt +
+               '}';
     }
 }

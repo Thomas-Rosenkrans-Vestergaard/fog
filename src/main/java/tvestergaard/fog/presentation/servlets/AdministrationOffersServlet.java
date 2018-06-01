@@ -125,7 +125,7 @@ public class AdministrationOffersServlet extends AdministrationServlet
             Notifications  notifications  = notifications(request);
             Parameters     parameters     = new Parameters(request);
 
-            if (!vefiry(request)) {
+            if (!verify(request)) {
                 notifications.error("Token udløbet.");
                 response.sendRedirect("?action=create");
                 return;

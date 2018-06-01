@@ -94,12 +94,6 @@ public class PresentationFunctions
         return customerErrors.get(error);
     }
 
-    /**
-     * Creates and returns a html input containing a generated token.
-     *
-     * @param request
-     * @return
-     */
     public static String csrf(HttpServletRequest request)
     {
         HttpSession session = request.getSession();
@@ -116,13 +110,7 @@ public class PresentationFunctions
         return String.format("<input type='hidden' name='csrf' value='%s'/>", token);
     }
 
-    /**
-     * Verifies a sent csrf protected token.
-     *
-     * @param request
-     * @return
-     */
-    public static boolean vefiry(HttpServletRequest request)
+    public static boolean verify(HttpServletRequest request)
     {
         String sentToken = request.getParameter("csrf");
 

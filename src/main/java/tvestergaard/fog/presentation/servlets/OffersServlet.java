@@ -70,7 +70,7 @@ public class OffersServlet extends HttpServlet
         if (authentication.redirect(resp))
             return;
 
-        if (!vefiry(req)) {
+        if (!verify(req)) {
             resp.sendRedirect("offers");
             return;
         }

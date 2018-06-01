@@ -35,8 +35,8 @@ public class Authentication
 
     /**
      * Redirects to the login page if the customer is not authenticated.
-     *
-     * @param response
+     *s
+     * @param response The respones object.
      * @return {@code true} if the customer was redirected.
      * @throws IOException
      */

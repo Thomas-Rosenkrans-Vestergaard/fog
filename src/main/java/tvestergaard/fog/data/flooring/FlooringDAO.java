@@ -40,7 +40,7 @@ public interface FlooringDAO
      * Updates the entity in the data storage to match the provided {@code flooring}.
      *
      * @param updater The flooring updater that contains the information necessary to create the flooring.
-     * @return {@link true} if the record was updated.
+     * @return {@code true} if the record was updated.
      * @throws DataAccessException When a data storage exception occurs while performing the operation.
      */
     boolean update(FlooringUpdater updater) throws DataAccessException;

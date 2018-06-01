@@ -82,7 +82,7 @@ public class FlooringRecord implements Flooring
     }
 
     /**
-     * Sets the description of the {@lilnk Flooring}.
+     * Sets the description of the {@link Flooring}.
      *
      * @param description The new description.
      */
@@ -94,7 +94,7 @@ public class FlooringRecord implements Flooring
     /**
      * Returns {@code true} if the flooring can currently be applied to new orders.
      *
-     * @return {@link true} if the flooring can currently be applied to new orders.
+     * @return {@code true} if the flooring can currently be applied to new orders.
      */
     @Override public boolean isActive()
     {

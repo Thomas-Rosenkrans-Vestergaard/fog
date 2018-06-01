@@ -50,6 +50,7 @@ public interface Constraint
      *
      * @param column The column used in the {@link EqualsCondition}.
      * @param value  The value to use in the {@link EqualsCondition}.
+     * @param <C> The type of the column to operate upon.
      * @return The newly created instance of {@link EqualsCondition}.
      */
     static <C extends Column<C>> EqualsCondition eq(Column<C> column, Object value)
@@ -63,6 +64,7 @@ public interface Constraint
      *
      * @param column The column used in the {@link NotCondition}.
      * @param value  The value to use in the {@link NotCondition}.
+     * @param <C> The type of the column to operate upon.
      * @return The newly created instance of {@link NotCondition}.
      */
     static <C extends Column<C>> NotCondition not(Column<C> column, Object value)
@@ -75,6 +77,7 @@ public interface Constraint
      *
      * @param column The column used in the {@link LikeCondition}.
      * @param value  The value to use in the {@link LikeCondition}.
+     * @param <C> The type of the column to operate upon.
      * @return The newly created instance of {@link LikeCondition}.
      */
     static <C extends Column<C>> LikeCondition like(Column<C> column, String value)
@@ -87,6 +90,7 @@ public interface Constraint
      *
      * @param left  The left operand.
      * @param right The right operand.
+     * @param <C> The type of the column to operate upon.
      * @return The newly created {@link BinaryAndCondition}.
      */
     static <C extends Column<C>> BinaryAndCondition and(WhereCondition<C> left, WhereCondition<C> right)
@@ -98,6 +102,7 @@ public interface Constraint
      * Creates a new {@link UnaryAndCondition}.
      *
      * @param operand The operand provided to the {@link UnaryAndCondition}.
+     * @param <C> The type of the column to operate upon.
      * @return The newly created instance of {@link UnaryAndCondition}.
      */
     static <C extends Column<C>> UnaryAndCondition and(WhereCondition<C> operand)
@@ -110,6 +115,7 @@ public interface Constraint
      *
      * @param left  The left operand.
      * @param right The right operand.
+     * @param <C> The type of the column to operate upon.
      * @return The newly created {@link BinaryOrCondition}.
      */
     static <C extends Column<C>> BinaryOrCondition or(WhereCondition<C> left, WhereCondition<C> right)
@@ -122,6 +128,7 @@ public interface Constraint
      * Creates a new {@link UnaryOrCondition}.
      *
      * @param operand The operand provided to the {@link UnaryOrCondition}.
+     * @param <C> The type of the column to operate upon.
      * @return The newly created instance of {@link UnaryOrCondition}.
      */
     static <C extends Column<C>> UnaryOrCondition or(WhereCondition<C> operand)

@@ -124,7 +124,7 @@ public class MysqlModelDAO extends AbstractMysqlDAO implements ModelDAO
      *
      * @param definitions The definitions to update.
      * @return {@code true} if the component definitions was successfully updated.
-     * @throws MysqlDataAccessException
+     * @throws MysqlDataAccessException When a data storage exception occurs while performing the operation.
      */
     @Override public boolean update(List<ComponentDefinition> definitions) throws MysqlDataAccessException
     {

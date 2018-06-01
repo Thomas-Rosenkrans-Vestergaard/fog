@@ -76,7 +76,7 @@ public class MaterialFacade
      *
      * @param id The id of the material to return.
      * @return The ApplicationException with the provided id. {@code null} in case a material with the provided id does not exist.
-     * @throws DataAccessException When a data storage exception occurs while performing the operation.
+     * @throws ApplicationException When a data storage exception occurs while performing the operation.
      */
     public Material get(int id)
     {

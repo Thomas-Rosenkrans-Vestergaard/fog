@@ -58,7 +58,7 @@ public class AdministrationAuthenticationServlet extends AdministrationServlet
             return;
         }
 
-        if (!vefiry(req)) {
+        if (!verify(req)) {
             notifications.error("Token udløbet.");
             resp.sendRedirect("authenticate");
             return;

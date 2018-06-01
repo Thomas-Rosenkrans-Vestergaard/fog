@@ -130,9 +130,9 @@ public class OrderFacade
             int slope,
             ShedBlueprint shed,
             String comment) throws OrderValidatorException,
-                                   UnknownCustomerException,
-                                   InactiveCustomerException,
-                                   UnverifiedCustomerException
+            UnknownCustomerException,
+            InactiveCustomerException,
+            UnverifiedCustomerException
     {
         try {
             return placer.place(customer, width, length, height, roofing, slope, shed, comment);
@@ -166,18 +166,19 @@ public class OrderFacade
      * @param roofing     The new roofing of the order.
      * @param slope       The new slope of the roofing on the order.
      * @param shedUpdater The shed built into the order.
+     * @param comment     The comment about the order, by the customer.
      * @return {@code true} if the order was updated.
      * @throws ApplicationException    When an exception occurs while performing the operation.
      * @throws OrderValidatorException When the provided information is not valid.
      */
     public boolean update(int id,
-                          int width,
-                          int length,
-                          int height,
-                          int roofing,
-                          int slope,
-                          ShedUpdater shedUpdater,
-                          String comment) throws OrderValidatorException
+            int width,
+            int length,
+            int height,
+            int roofing,
+            int slope,
+            ShedUpdater shedUpdater,
+            String comment) throws OrderValidatorException
     {
         try {
             Set<OrderError> reasons = validator.validate(width, length, height, slope, shedUpdater);

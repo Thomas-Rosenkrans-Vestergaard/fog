@@ -16,7 +16,7 @@ import java.io.IOException;
 
 import static tvestergaard.fog.presentation.PresentationFunctions.csrf;
 import static tvestergaard.fog.presentation.PresentationFunctions.notifications;
-import static tvestergaard.fog.presentation.PresentationFunctions.vefiry;
+import static tvestergaard.fog.presentation.PresentationFunctions.verify;
 
 @WebServlet(urlPatterns = "/reset-password")
 public class ResetPasswordServlet extends HttpServlet
@@ -64,7 +64,7 @@ public class ResetPasswordServlet extends HttpServlet
         Parameters    parameters    = new Parameters(req);
         Notifications notifications = notifications(req);
 
-        if (!vefiry(req)) {
+        if (!verify(req)) {
             resp.sendRedirect("reset-password");
             return;
         }

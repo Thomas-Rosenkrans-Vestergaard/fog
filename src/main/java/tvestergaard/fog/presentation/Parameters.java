@@ -417,7 +417,9 @@ public class Parameters
      * Checks that the value of the provided parameter can safely be extracted to an array of enums using the {@link
      * Parameters#getEnums(String, Class)} method.
      *
-     * @param parameter The name of the parameter to test the format of.
+     * @param parameter   The name of the parameter to test the format of.
+     * @param enumeration The class of the enumeration to check.
+     * @param <T>         The type of the enumeration to check.
      * @return {@code true} if the value of the provided parameter can safely be extracted to an array of enums using
      * the {@link Parameters#getEnums(String, Class)} method.
      */
@@ -453,7 +455,9 @@ public class Parameters
      * This method will not throw an exception when the {@link Parameters#isEnums(String, Class)} method returns true
      * for the same parameter name.
      *
-     * @param parameter The name of the parameter to extract the time value from.
+     * @param parameter   The name of the parameter to extract the enum values from.
+     * @param enumeration The class of the enumeration to return.
+     * @param <T>         The type of the enumeration to return.
      * @return The resulting array of enums from the provided parameter.
      * @throws ParametersConversionException When an error occurs while extracting the time value.
      */
