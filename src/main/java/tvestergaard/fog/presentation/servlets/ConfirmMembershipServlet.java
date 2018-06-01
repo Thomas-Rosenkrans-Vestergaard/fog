@@ -44,7 +44,10 @@ public class ConfirmMembershipServlet extends HttpServlet
         try {
             customerFacade.confirm(parameters.getInt("id"), parameters.value("token"));
             notifications.success("Din kundekonto blev bekræftet.");
-            resp.sendRedirect("authenticate");
+            if (req.getSession().getAttribute("customer") == null)
+                resp.sendRedirect("authenticate");
+            else
+                resp.sendRedirect("profile");
         } catch (IncorrectTokenException e) {
             notifications.error("The token was incorrect.");
             resp.sendRedirect("profile");
