@@ -120,39 +120,6 @@ public class MysqlModelDAO extends AbstractMysqlDAO implements ModelDAO
     }
 
     /**
-     * Updates the component definitions for a model.
-     *
-     * @param definitions The definitions to update.
-     * @return {@code true} if the component definitions was successfully updated.
-     * @throws MysqlDataAccessException When a data storage exception occurs while performing the operation.
-     */
-    @Override public boolean update(List<ComponentDefinition> definitions) throws MysqlDataAccessException
-    {
-        try {
-
-            String     SQL        = "UPDATE component_definitions cd SET cd.notes = ? WHERE cd.id = ?";
-            Connection connection = getConnection();
-            try (PreparedStatement statement = connection.prepareStatement(SQL)) {
-                for (ComponentDefinition definition : definitions) {
-                    statement.setString(1, definition.getNotes());
-                    statement.setInt(2, definition.getId());
-                    statement.executeUpdate();
-                }
-
-                connection.commit();
-                return true;
-
-            } catch (SQLException e) {
-                connection.rollback();
-                throw e;
-            }
-
-        } catch (SQLException e) {
-            throw new MysqlDataAccessException(e);
-        }
-    }
-
-    /**
      * Returns the component definitions for the provided garage model.
      *
      * @param model The garage model to return the component definitions for.

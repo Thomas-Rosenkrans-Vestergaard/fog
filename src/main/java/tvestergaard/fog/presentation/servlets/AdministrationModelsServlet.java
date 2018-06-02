@@ -1,12 +1,13 @@
 package tvestergaard.fog.presentation.servlets;
 
 import tvestergaard.fog.data.components.Component;
-import tvestergaard.fog.data.components.ComponentDefinition;
 import tvestergaard.fog.data.components.ComponentConnection;
+import tvestergaard.fog.data.components.ComponentDefinition;
 import tvestergaard.fog.data.employees.Employee;
 import tvestergaard.fog.data.employees.Role;
 import tvestergaard.fog.data.models.Model;
 import tvestergaard.fog.logic.ApplicationException;
+import tvestergaard.fog.logic.ComponentFacade;
 import tvestergaard.fog.logic.ModelFacade;
 import tvestergaard.fog.logic.materials.MaterialFacade;
 import tvestergaard.fog.presentation.Facades;
@@ -28,8 +29,9 @@ import static tvestergaard.fog.presentation.PresentationFunctions.*;
 public class AdministrationModelsServlet extends AdministrationServlet
 {
 
-    private final ModelFacade    modelFacade    = Facades.skeletonFacade;
-    private final MaterialFacade materialFacade = Facades.materialFacade;
+    private final ModelFacade     modelFacade     = Facades.skeletonFacade;
+    private final ComponentFacade componentFacade = Facades.componentFacade;
+    private final MaterialFacade  materialFacade  = Facades.materialFacade;
 
     public AdministrationModelsServlet()
     {
@@ -210,7 +212,7 @@ public class AdministrationModelsServlet extends AdministrationServlet
                 definition.setNotes(parameters.value(inputName));
             }
 
-            modelFacade.update(definitions);
+            componentFacade.update(definitions);
             notifications.success("Komponenterne blev opdateret med success.");
             response.sendRedirect("?action=update_components&model=" + parameters.getInt("model"));
         }

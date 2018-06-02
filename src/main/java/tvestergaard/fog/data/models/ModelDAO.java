@@ -31,15 +31,6 @@ public interface ModelDAO
     boolean update(ModelUpdater updater, List<ComponentConnection> components) throws DataAccessException;
 
     /**
-     * Updates the component definitions for a model.
-     *
-     * @param definitions The definitions to update.
-     * @return {@code true} if the component definitions was successfully updated.
-     * @throws DataAccessException When a data storage exception occurs while performing the operation.
-     */
-    boolean update(List<ComponentDefinition> definitions) throws DataAccessException;
-
-    /**
      * Returns the model with the provided id.
      *
      * @param id The id of the model to find.

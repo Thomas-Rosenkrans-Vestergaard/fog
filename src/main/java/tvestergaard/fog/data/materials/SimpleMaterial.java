@@ -9,4 +9,11 @@ public interface SimpleMaterial extends MaterialUpdater
      * @return {@code true} if the material is currently active. Or {@code false} or has been replaced with a newer version.
      */
     boolean isActive();
+
+    /**
+     * Returns the category the material belongs to.
+     *
+     * @return The category the material belongs to.
+     */
+    Category getCategory();
 }

@@ -217,19 +217,35 @@ public class MaterialRecord implements Material
     @Override public boolean equals(Object o)
     {
         if (this == o) return true;
+
+        if (o instanceof SimpleMaterial) {
+            SimpleMaterial that = (SimpleMaterial) o;
+            return getId() == that.getId() &&
+                    getPrice() == that.getPrice() &&
+                    getUnit() == that.getUnit() &&
+                    getCategoryId() == that.getCategoryId() &&
+                    isActive() == that.isActive() &&
+                    Objects.equals(getNumber(), that.getNumber()) &&
+                    Objects.equals(getDescription(), that.getDescription()) &&
+                    Objects.equals(getCategory(), that.getCategory());
+        }
+
         if (!(o instanceof Material)) return false;
         Material that = (Material) o;
         return getId() == that.getId() &&
                 getPrice() == that.getPrice() &&
                 getUnit() == that.getUnit() &&
+                getCategoryId() == that.getCategoryId() &&
+                isActive() == that.isActive() &&
                 Objects.equals(getNumber(), that.getNumber()) &&
                 Objects.equals(getDescription(), that.getDescription()) &&
-                getCategory() == that.getCategory();
+                Objects.equals(getCategory(), that.getCategory()) &&
+                Objects.equals(getAttributes(), that.getAttributes());
     }
 
     @Override public int hashCode()
     {
-        return Objects.hash(getId(), getNumber(), getDescription(), getPrice(), getUnit(), getCategory());
+        return Objects.hash(getId(), getNumber(), getDescription(), getPrice(), getUnit(), getCategoryId(), isActive(), getCategory(), getAttributes());
     }
 
     @Override public String toString()
@@ -240,7 +256,10 @@ public class MaterialRecord implements Material
                 ", description='" + description + '\'' +
                 ", price=" + price +
                 ", unit=" + unit +
+                ", categoryId=" + categoryId +
+                ", active=" + active +
                 ", category=" + category +
+                ", attributes=" + attributes +
                 '}';
     }
 }

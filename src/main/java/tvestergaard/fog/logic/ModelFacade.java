@@ -79,22 +79,6 @@ public class ModelFacade
     }
 
     /**
-     * Updates the component definitions for a model.
-     *
-     * @param definitions The definitions to update.
-     * @return {@code true} if the component definitions was successfully updated.
-     * @throws ApplicationException When a data storage exception occurs while performing the operation.
-     */
-    public boolean update(List<ComponentDefinition> definitions)
-    {
-        try {
-            return modelDAO.update(definitions);
-        } catch (DataAccessException e) {
-            throw new ApplicationException(e);
-        }
-    }
-
-    /**
      * Returns the component definitions for the provided garage model.
      *
      * @param model The garage model to return the component definitions for.
