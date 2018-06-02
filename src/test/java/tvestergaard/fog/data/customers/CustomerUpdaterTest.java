@@ -18,9 +18,10 @@ public class CustomerUpdaterTest
         String  expectedPhone    = randomString();
         String  expectedPassword = randomString();
         boolean expectedActive   = randomBoolean();
+        boolean expectedVerified = randomBoolean();
 
         CustomerUpdater instance = CustomerUpdater.from(expectedId, expectedName, expectedAddress, expectedEmail,
-                expectedPhone, expectedPassword, expectedActive);
+                expectedPhone, expectedPassword, expectedActive, expectedVerified);
 
         assertEquals(expectedId, instance.getId());
         assertEquals(expectedName, instance.getName());
@@ -29,5 +30,6 @@ public class CustomerUpdaterTest
         assertEquals(expectedPhone, instance.getPhone());
         assertEquals(expectedPassword, instance.getPassword());
         assertEquals(expectedActive, instance.isActive());
+        assertEquals(expectedVerified, instance.isVerified());
     }
 }
