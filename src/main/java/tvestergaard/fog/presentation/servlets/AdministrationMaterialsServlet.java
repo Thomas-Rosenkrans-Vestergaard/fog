@@ -165,7 +165,7 @@ public class AdministrationMaterialsServlet extends AdministrationServlet
                 response.sendRedirect("?action=create");
             } catch (DuplicateMaterialNumberException e){
                 notifications.error("Et materiale med de nummer er allerede i systemet.");
-                return;.System.err.println("?action=create");
+                response.sendRedirect("?action=create");
             }
         }
     }
