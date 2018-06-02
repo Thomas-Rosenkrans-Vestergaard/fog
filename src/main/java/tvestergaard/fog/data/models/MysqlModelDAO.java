@@ -40,11 +40,11 @@ public class MysqlModelDAO extends AbstractMysqlDAO implements ModelDAO
     @Override public List<Model> get() throws MysqlDataAccessException
     {
         List<Model> models = new ArrayList<>();
-        String      SQL    = "SELECT * FROM garage_models gm";
+        String      SQL    = "SELECT * FROM models";
         try (PreparedStatement statement = getConnection().prepareStatement(SQL)) {
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next())
-                models.add(createModel(resultSet, "gm"));
+                models.add(createModel(resultSet, "models"));
 
             return models;
         } catch (SQLException e) {
@@ -61,14 +61,14 @@ public class MysqlModelDAO extends AbstractMysqlDAO implements ModelDAO
      */
     @Override public Model get(int id) throws MysqlDataAccessException
     {
-        String SQL = "SELECT * FROM garage_models gm WHERE gm.id = ?";
+        String SQL = "SELECT * FROM models WHERE id = ?";
         try (PreparedStatement statement = getConnection().prepareStatement(SQL)) {
             statement.setInt(1, id);
             ResultSet resultSet = statement.executeQuery();
             if (!resultSet.first())
                 return null;
 
-            return createModel(resultSet, "gm");
+            return createModel(resultSet, "models");
         } catch (SQLException e) {
             throw new MysqlDataAccessException(e);
         }
@@ -85,7 +85,7 @@ public class MysqlModelDAO extends AbstractMysqlDAO implements ModelDAO
     @Override public boolean update(ModelUpdater updater, List<ComponentConnection> components) throws MysqlDataAccessException
     {
         try {
-            final String SQL        = "UPDATE garage_models SET name = ? WHERE id = ?";
+            final String SQL        = "UPDATE models SET name = ? WHERE id = ?";
             Connection   connection = getConnection();
             try (PreparedStatement statement = connection.prepareStatement(SQL)) {
                 statement.setString(1, updater.getName());
@@ -95,8 +95,8 @@ public class MysqlModelDAO extends AbstractMysqlDAO implements ModelDAO
 
                 String componentSQL = "UPDATE component_values cv SET material = ? " +
                         "WHERE definition = ? " +
-                        "AND id IN (SELECT component FROM garage_component_values gcv " +
-                        "INNER JOIN garage_component_definitions gcd ON gcv.definition = gcd.id WHERE gcd.model = ?)";
+                        "AND id IN (SELECT component FROM model_component_values mcv " +
+                        "INNER JOIN model_component_definitions gcd ON gcv.definition = gcd.id WHERE gcd.model = ?)";
                 try (PreparedStatement componentStatement = connection.prepareStatement(componentSQL)) {
                     componentStatement.setInt(3, updater.getId());
                     for (ComponentConnection component : components) {
@@ -163,10 +163,10 @@ public class MysqlModelDAO extends AbstractMysqlDAO implements ModelDAO
     {
         List<ComponentDefinition> definitions = new ArrayList<>();
 
-        String SQL = "SELECT * FROM garage_component_definitions gcd " +
-                "INNER JOIN component_definitions cd ON gcd.definition = cd.id " +
+        String SQL = "SELECT * FROM model_component_definitions mcd " +
+                "INNER JOIN component_definitions cd ON mcd.definition = cd.id " +
                 "INNER JOIN categories ON categories.id = cd.category " +
-                "WHERE gcd.model = ?";
+                "WHERE mcd.model = ?";
         try (PreparedStatement statement = getConnection().prepareStatement(SQL)) {
             statement.setInt(1, model);
             ResultSet componentResults = statement.executeQuery();
@@ -190,8 +190,8 @@ public class MysqlModelDAO extends AbstractMysqlDAO implements ModelDAO
     {
         List<Component> components = new ArrayList<>();
 
-        String SQL = "SELECT * FROM garage_component_values gcv " +
-                "INNER JOIN component_values cv ON gcv.component = cv.id " +
+        String SQL = "SELECT * FROM model_component_values mcv " +
+                "INNER JOIN component_values cv ON mcv.component = cv.id " +
                 "INNER JOIN component_definitions cd ON cv.definition = cd.id " +
                 "INNER JOIN materials ON cv.material = materials.id " +
                 "INNER JOIN categories ON materials.category = categories.id";
@@ -230,7 +230,7 @@ public class MysqlModelDAO extends AbstractMysqlDAO implements ModelDAO
         String SQL = "SELECT * FROM materials " +
                 "INNER JOIN categories ON materials.category = categories.id " +
                 "INNER JOIN component_definitions cd ON cd.category = categories.id " +
-                "INNER JOIN garage_component_definitions gcd ON gcd.definition = cd.id";
+                "INNER JOIN model_component_definitions mcd ON mcd.definition = cd.id";
         try (PreparedStatement statement = getConnection().prepareStatement(SQL)) {
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next())

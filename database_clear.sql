@@ -10,9 +10,9 @@ DELETE FROM sheds;
 
 DELETE FROM attribute_definitions;
 DELETE FROM attribute_values;
-DELETE FROM garage_component_values;
-DELETE FROM garage_component_definitions;
-DELETE FROM garage_models;
+DELETE FROM model_component_values;
+DELETE FROM model_component_definitions;
+DELETE FROM models;
 DELETE FROM roofing_component_values;
 DELETE FROM roofing_component_definitions;
 DELETE FROM component_values;

@@ -239,13 +239,13 @@ CREATE TABLE `floorings` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Table structure for table `garage_component_definitions`
+-- Table structure for table `model_component_definitions`
 --
 
-DROP TABLE IF EXISTS `garage_component_definitions`;
+DROP TABLE IF EXISTS `model_component_definitions`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `garage_component_definitions` (
+CREATE TABLE `model_component_definitions` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `definition` int(11) unsigned NOT NULL,
   `model` int(11) unsigned NOT NULL,
@@ -253,18 +253,18 @@ CREATE TABLE `garage_component_definitions` (
   UNIQUE KEY `id_UNIQUE` (`id`),
   KEY `definition` (`definition`),
   KEY `skeleton_model_fk_idx` (`model`),
-  CONSTRAINT `garage_component_definitions_ibfk_1` FOREIGN KEY (`definition`) REFERENCES `component_definitions` (`id`)
+  CONSTRAINT `model_component_definitions_ibfk_1` FOREIGN KEY (`definition`) REFERENCES `component_definitions` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Table structure for table `garage_component_values`
+-- Table structure for table `model_component_values`
 --
 
-DROP TABLE IF EXISTS `garage_component_values`;
+DROP TABLE IF EXISTS `model_component_values`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `garage_component_values` (
+CREATE TABLE `model_component_values` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `component` int(11) unsigned NOT NULL,
   `definition` int(11) unsigned NOT NULL,
@@ -272,18 +272,18 @@ CREATE TABLE `garage_component_values` (
   UNIQUE KEY `id_UNIQUE` (`id`),
   KEY `skeleton_component_values_ibfk_2_idx` (`component`),
   KEY `fk_definition_idx` (`definition`),
-  CONSTRAINT `garage_component_values_ibfk_2` FOREIGN KEY (`component`) REFERENCES `component_values` (`id`)
+  CONSTRAINT `model_component_values_ibfk_2` FOREIGN KEY (`component`) REFERENCES `component_values` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Table structure for table `garage_models`
+-- Table structure for table `models`
 --
 
-DROP TABLE IF EXISTS `garage_models`;
+DROP TABLE IF EXISTS `models`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `garage_models` (
+CREATE TABLE `models` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(10) CHARACTER SET utf8 NOT NULL,
   PRIMARY KEY (`id`),

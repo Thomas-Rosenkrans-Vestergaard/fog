@@ -1,16 +1,18 @@
 package tvestergaard.fog.data.models;
 
+import org.junit.Before;
 import org.junit.Test;
 import tvestergaard.fog.data.TestDataSource;
+
+import java.sql.Connection;
 
 public class MysqlModelDAOTest
 {
 
-    private MysqlModelDAO dao = new MysqlModelDAO(TestDataSource.getSource());
-
     @Test
     public void get() throws Exception
     {
+
     }
 
     @Test

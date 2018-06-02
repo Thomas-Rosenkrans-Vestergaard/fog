@@ -138,33 +138,33 @@ INSERT INTO `floorings` VALUES (1,'Betongulv','Integer imperdiet lectus quis jus
 UNLOCK TABLES;
 
 --
--- Dumping data for table `garage_component_definitions`
+-- Dumping data for table `model_component_definitions`
 --
 
-LOCK TABLES `garage_component_definitions` WRITE;
-/*!40000 ALTER TABLE `garage_component_definitions` DISABLE KEYS */;
-INSERT INTO `garage_component_definitions` VALUES (1,7,1),(2,8,1),(3,9,1),(4,10,1),(5,11,1),(6,14,1),(7,15,1);
-/*!40000 ALTER TABLE `garage_component_definitions` ENABLE KEYS */;
+LOCK TABLES `model_component_definitions` WRITE;
+/*!40000 ALTER TABLE `model_component_definitions` DISABLE KEYS */;
+INSERT INTO `model_component_definitions` VALUES (1,7,1),(2,8,1),(3,9,1),(4,10,1),(5,11,1),(6,14,1),(7,15,1);
+/*!40000 ALTER TABLE `model_component_definitions` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
--- Dumping data for table `garage_component_values`
+-- Dumping data for table `model_component_values`
 --
 
-LOCK TABLES `garage_component_values` WRITE;
-/*!40000 ALTER TABLE `garage_component_values` DISABLE KEYS */;
-INSERT INTO `garage_component_values` VALUES (1,7,1),(2,8,2),(3,9,3),(4,10,4),(5,11,5),(6,12,6),(7,13,7);
-/*!40000 ALTER TABLE `garage_component_values` ENABLE KEYS */;
+LOCK TABLES `model_component_values` WRITE;
+/*!40000 ALTER TABLE `model_component_values` DISABLE KEYS */;
+INSERT INTO `model_component_values` VALUES (1,7,1),(2,8,2),(3,9,3),(4,10,4),(5,11,5),(6,12,6),(7,13,7);
+/*!40000 ALTER TABLE `model_component_values` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
--- Dumping data for table `garage_models`
+-- Dumping data for table `models`
 --
 
-LOCK TABLES `garage_models` WRITE;
-/*!40000 ALTER TABLE `garage_models` DISABLE KEYS */;
-INSERT INTO `garage_models` VALUES (1,'Carport');
-/*!40000 ALTER TABLE `garage_models` ENABLE KEYS */;
+LOCK TABLES `models` WRITE;
+/*!40000 ALTER TABLE `models` DISABLE KEYS */;
+INSERT INTO `models` VALUES (1,'Carport');
+/*!40000 ALTER TABLE `models` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
