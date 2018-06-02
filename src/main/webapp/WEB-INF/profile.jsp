@@ -58,6 +58,12 @@
 </div>
 <div class="row">
     <div class="col s12">
+        <p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum
+            tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante.</p>
+    </div>
+</div>
+<div class="row">
+    <div class="col s12">
         <form method="POST">
             ${csrf}
                 <input type="hidden" name="action" value="update-information">
