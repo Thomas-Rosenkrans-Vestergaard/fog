@@ -34,7 +34,16 @@
                     <td><c:out value="${customer.getAddress()}"/></td>
                     <td><c:out value="${customer.getEmail()}"/></td>
                     <td><c:out value="${customer.getPhone()}"/></td>
-                    <td><c:out value="${f:formatBoolean(customer.isActive())}"/></td>
+                    <td>
+                        <form method="POST">
+                                ${csrf}
+                            <input type="hidden" name="id" value="${customer.getId()}">
+                            <input type="hidden" name="action"
+                                   value="${customer.isActive() ? 'inactivate' : 'activate'}">
+                            <input class="btn" type="submit" value="${customer.isActive() ? 'Inaktiver' : 'Aktiver'}">
+                        </form>
+                        </form>
+                    </td>
                     <td><c:out value="${f:formatDatetime(customer.getCreatedAt())}"/></td>
                 </tr>
             </c:forEach>

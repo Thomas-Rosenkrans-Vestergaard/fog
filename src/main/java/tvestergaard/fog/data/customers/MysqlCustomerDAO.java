@@ -146,6 +146,64 @@ public class MysqlCustomerDAO extends AbstractMysqlDAO implements CustomerDAO
     }
 
     /**
+     * Marks the customer active.
+     *
+     * @param customerId The id of the customer to mark active.
+     * @return {@link true} if the record was updated.
+     * @throws MysqlDataAccessException When a data storage exception occurs while performing the operation.
+     * @throws UnknownCustomerException When a customer with the provided id does not exist.
+     */
+    @Override public boolean activate(int customerId) throws MysqlDataAccessException, UnknownCustomerException
+    {
+        try {
+
+            String     SQL        = "UPDATE customers SET active = true WHERE id = ?";
+            Connection connection = getConnection();
+            try (PreparedStatement statement = connection.prepareStatement(SQL)) {
+                statement.setInt(1, customerId);
+                int updated = statement.executeUpdate();
+                connection.commit();
+                return updated > 0;
+            } catch (SQLException e) {
+                connection.rollback();
+                throw e;
+            }
+
+        } catch (SQLException e) {
+            throw new MysqlDataAccessException(e);
+        }
+    }
+
+    /**
+     * Marks the customer inactive.
+     *
+     * @param customerId The id of the customer to mark inactive.
+     * @return {@link true} if the record was updated.
+     * @throws MysqlDataAccessException When a data storage exception occurs while performing the operation.
+     * @throws UnknownCustomerException When a customer with the provided id does not exist.
+     */
+    @Override public boolean inactivate(int customerId) throws MysqlDataAccessException, UnknownCustomerException
+    {
+        try {
+
+            String     SQL        = "UPDATE customers SET active = false WHERE id = ?";
+            Connection connection = getConnection();
+            try (PreparedStatement statement = connection.prepareStatement(SQL)) {
+                statement.setInt(1, customerId);
+                int updated = statement.executeUpdate();
+                connection.commit();
+                return updated > 0;
+            } catch (SQLException e) {
+                connection.rollback();
+                throw e;
+            }
+
+        } catch (SQLException e) {
+            throw new MysqlDataAccessException(e);
+        }
+    }
+
+    /**
      * Resets the password of the customer the provided token was issued to. The token is then deleted.
      *
      * @param tokenId     The token identifying the customer to reset the password of.

@@ -167,6 +167,40 @@ public class CustomerFacade
     }
 
     /**
+     * Marks the customer active.
+     *
+     * @param customerId The id of the customer to mark active.
+     * @return {@link true} if the record was updated.
+     * @throws ApplicationException     When a data storage exception occurs while performing the operation.
+     * @throws UnknownCustomerException When a customer with the provided id does not exist.
+     */
+    public boolean activate(int customerId) throws ApplicationException, UnknownCustomerException
+    {
+        try {
+            return customerDAO.activate(customerId);
+        } catch (DataAccessException e) {
+            throw new ApplicationException(e);
+        }
+    }
+
+    /**
+     * Marks the customer inactive.
+     *
+     * @param customerId The id of the customer to mark inactive.
+     * @return {@link true} if the record was updated.
+     * @throws ApplicationException     When a data storage exception occurs while performing the operation.
+     * @throws UnknownCustomerException When a customer with the provided id does not exist.
+     */
+    public boolean inactivate(int customerId) throws ApplicationException, UnknownCustomerException
+    {
+        try {
+            return customerDAO.inactivate(customerId);
+        } catch (DataAccessException e) {
+            throw new ApplicationException(e);
+        }
+    }
+
+    /**
      * Inserts a new customer into the application.
      *
      * @param name     The name of the customer to create.
@@ -174,7 +208,6 @@ public class CustomerFacade
      * @param email    The email address of the customer to create.
      * @param phone    The phone number of the customer to create.
      * @param password The password of the customer to create.
-     * @param active   Whether or not the customer can be applied to orders.
      * @return The customer instance representing the newly created customer.
      * @throws CustomerValidatorException When the provided details are invalid.
      * @throws ApplicationException       When an exception occurs while performing the operation.

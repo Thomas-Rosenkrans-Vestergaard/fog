@@ -155,4 +155,20 @@ public class MysqlCustomersDAOTest
         List<Customer> actual = dao.get(where(eq(ID, customer1.getId())));
         assertEquals(customer1, actual.get(0));
     }
+
+    @Test
+    public void activate() throws Exception
+    {
+        assertFalse(customer2.isActive());
+        assertTrue(dao.activate(customer2.getId()));
+        assertTrue(dao.first(where(eq(ID, customer2.getId()))).isActive());
+    }
+
+    @Test
+    public void inactivate() throws Exception
+    {
+        assertTrue(customer1.isActive());
+        assertTrue(dao.inactivate(customer1.getId()));
+        assertFalse(dao.first(where(eq(ID, customer1.getId()))).isActive());
+    }
 }

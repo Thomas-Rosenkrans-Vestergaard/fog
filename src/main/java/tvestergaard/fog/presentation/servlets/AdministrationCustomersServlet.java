@@ -2,6 +2,7 @@ package tvestergaard.fog.presentation.servlets;
 
 import tvestergaard.fog.data.customers.Customer;
 import tvestergaard.fog.data.customers.CustomerColumn;
+import tvestergaard.fog.data.customers.UnknownCustomerException;
 import tvestergaard.fog.data.employees.Employee;
 import tvestergaard.fog.logic.customers.CustomerError;
 import tvestergaard.fog.logic.customers.CustomerFacade;
@@ -20,13 +21,8 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-import static tvestergaard.fog.data.cladding.CladdingColumn.ID;
-import static tvestergaard.fog.data.constraints.Constraint.eq;
-import static tvestergaard.fog.data.constraints.Constraint.where;
 import static tvestergaard.fog.logic.customers.CustomerError.*;
-import static tvestergaard.fog.presentation.PresentationFunctions.csrf;
-import static tvestergaard.fog.presentation.PresentationFunctions.notifications;
-import static tvestergaard.fog.presentation.PresentationFunctions.verify;
+import static tvestergaard.fog.presentation.PresentationFunctions.*;
 
 @WebServlet(urlPatterns = "/administration/customers")
 public class AdministrationCustomersServlet extends AdministrationServlet
@@ -40,6 +36,8 @@ public class AdministrationCustomersServlet extends AdministrationServlet
         dispatcher.get(null, new ShowTableCommand());
         dispatcher.get("create", new ShowCreateCommand());
         dispatcher.post("create", new HandleCreateCommand());
+        dispatcher.post("activate", new HandleActivateCommand());
+        dispatcher.post("inactivate", new HandleInactivateCommand());
 
         errors.put(NAME_EMPTY, "Navnet der blev sendt var tomt.");
         errors.put(NAME_LONGER_THAN_255, "Navnet der blev sendt var længere end 255 tegn.");
@@ -73,6 +71,7 @@ public class AdministrationCustomersServlet extends AdministrationServlet
 
             notifications(request);
             request.setAttribute("title", "Kunder");
+            request.setAttribute("csrf", csrf(request));
             request.setAttribute("customers", facade.get(controls.constraints()));
             request.getRequestDispatcher("/WEB-INF/administration/show_customers.jsp").forward(request, response);
         }
@@ -128,6 +127,80 @@ public class AdministrationCustomersServlet extends AdministrationServlet
                 for (CustomerError error : e.getErrors())
                     notifications.error(errors.get(error));
                 response.sendRedirect("?action=create");
+            }
+        }
+    }
+
+    private class HandleActivateCommand implements Command
+    {
+        /**
+         * Delegates the request and response objects to this command.
+         *
+         * @param request  The request.
+         * @param response The response.
+         */
+        @Override public void dispatch(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
+        {
+            Parameters    parameters    = new Parameters(request);
+            Notifications notifications = notifications(request);
+
+
+            if (!verify(request)) {
+                notifications.error("Token udløbet.");
+                response.sendRedirect("?action=create");
+                return;
+            }
+
+            if (!parameters.isPresent("id")) {
+                notifications.error("No id provided.");
+                response.sendRedirect("customers");
+                return;
+            }
+
+            try {
+                facade.activate(parameters.getInt("id"));
+                notifications.success("Kunden blev aktiveret.");
+                response.sendRedirect("customers");
+            } catch (UnknownCustomerException e) {
+                notifications.error("Ukendt kunde.");
+                response.sendRedirect("customers");
+            }
+        }
+    }
+
+    private class HandleInactivateCommand implements Command
+    {
+        /**
+         * Delegates the request and response objects to this command.
+         *
+         * @param request  The request.
+         * @param response The response.
+         */
+        @Override public void dispatch(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
+        {
+            Parameters    parameters    = new Parameters(request);
+            Notifications notifications = notifications(request);
+
+
+            if (!verify(request)) {
+                notifications.error("Token udløbet.");
+                response.sendRedirect("?action=create");
+                return;
+            }
+
+            if (!parameters.isPresent("id")) {
+                notifications.error("No id provided.");
+                response.sendRedirect("customers");
+                return;
+            }
+
+            try {
+                facade.inactivate(parameters.getInt("id"));
+                notifications.success("Kunden blev inaktiveret.");
+                response.sendRedirect("customers");
+            } catch (UnknownCustomerException e) {
+                notifications.error("Ukendt kunde.");
+                response.sendRedirect("customers");
             }
         }
     }
