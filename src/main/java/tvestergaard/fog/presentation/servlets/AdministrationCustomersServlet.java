@@ -39,9 +39,7 @@ public class AdministrationCustomersServlet extends AdministrationServlet
     {
         dispatcher.get(null, new ShowTableCommand());
         dispatcher.get("create", new ShowCreateCommand());
-        dispatcher.get("update", new ShowUpdateCommand());
         dispatcher.post("create", new HandleCreateCommand());
-        dispatcher.post("update", new HandleUpdateCommand());
 
         errors.put(NAME_EMPTY, "Navnet der blev sendt var tomt.");
         errors.put(NAME_LONGER_THAN_255, "Navnet der blev sendt var længere end 255 tegn.");
@@ -77,71 +75,6 @@ public class AdministrationCustomersServlet extends AdministrationServlet
             request.setAttribute("title", "Kunder");
             request.setAttribute("customers", facade.get(controls.constraints()));
             request.getRequestDispatcher("/WEB-INF/administration/show_customers.jsp").forward(request, response);
-        }
-    }
-
-    class ShowUpdateCommand implements Command
-    {
-        @Override public void dispatch(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
-        {
-            Parameters    parameters    = new Parameters(request);
-            Notifications notifications = notifications(request);
-
-            if (!parameters.isInt("id")) {
-                notifications.error("No identifier provided.");
-                response.sendRedirect("customers");
-                return;
-            }
-
-            Customer customer = facade.first(where(eq(ID, parameters.getInt("id"))));
-            if (customer == null) {
-                notifications.error("Unknown customer.");
-                response.sendRedirect("customers");
-                return;
-            }
-
-            request.setAttribute("title", "Opdater kunder");
-            request.setAttribute("csrf", csrf(request));
-            request.setAttribute("customer", customer);
-            request.getRequestDispatcher("/WEB-INF/administration/update_customer.jsp").forward(request, response);
-        }
-    }
-
-    private class HandleUpdateCommand implements Command
-    {
-        @Override public void dispatch(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
-        {
-            Parameters    parameters    = new Parameters(request);
-            Notifications notifications = notifications(request);
-
-            if (!parameters.isInt("id") ||
-                    !parameters.isPresent("name") ||
-                    !parameters.isPresent("address") ||
-                    !parameters.isPresent("email") ||
-                    !parameters.isPresent("phone") ||
-                    !parameters.isBoolean("active")) {
-                notifications.error("Cannot format parameters.");
-                response.sendRedirect("customers");
-                return;
-            }
-
-            try {
-                facade.update(parameters.getInt("id"),
-                        parameters.value("name"),
-                        parameters.value("address"),
-                        parameters.value("email"),
-                        parameters.value("phone"),
-                        parameters.value("password"),
-                        parameters.getBoolean("active"));
-
-                notifications.success("Kunden blev opdateret.");
-                response.sendRedirect("?action=update&id=" + parameters.getInt("id"));
-
-            } catch (CustomerValidatorException e) {
-                for (CustomerError error : e.getErrors())
-                    notifications.error(errors.get(error));
-                response.sendRedirect("?action=update&id=" + parameters.getInt("id"));
-            }
         }
     }
 
