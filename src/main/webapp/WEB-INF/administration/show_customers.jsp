@@ -29,7 +29,7 @@
             </thead>
             <tbody>
             <c:forEach items="${customers}" var="customer">
-                <tr data-link="?action=update&id=${customer.getId()}">
+                <tr>
                     <td><c:out value="${customer.getName()}"/></td>
                     <td><c:out value="${customer.getAddress()}"/></td>
                     <td><c:out value="${customer.getEmail()}"/></td>
