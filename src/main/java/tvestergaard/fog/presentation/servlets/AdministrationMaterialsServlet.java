@@ -8,6 +8,7 @@ import tvestergaard.fog.data.materials.attributes.AttributeDefinition;
 import tvestergaard.fog.data.materials.attributes.Attribute;
 import tvestergaard.fog.data.materials.attributes.DataType;
 import tvestergaard.fog.data.materials.attributes.DefaultAttribute;
+import tvestergaard.fog.logic.materials.DuplicateMaterialNumberException;
 import tvestergaard.fog.logic.materials.MaterialError;
 import tvestergaard.fog.logic.materials.MaterialFacade;
 import tvestergaard.fog.logic.materials.MaterialValidatorException;
@@ -162,6 +163,9 @@ public class AdministrationMaterialsServlet extends AdministrationServlet
                 for (MaterialError error : e.getErrors())
                     notifications.error(errors.get(error));
                 response.sendRedirect("?action=create");
+            } catch (DuplicateMaterialNumberException e){
+                notifications.error("Et materiale med de nummer er allerede i systemet.");
+                return;.System.err.println("?action=create");
             }
         }
     }

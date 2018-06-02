@@ -9,8 +9,8 @@ import tvestergaard.fog.data.MysqlDataAccessException;
 import tvestergaard.fog.data.constraints.Constraints;
 import tvestergaard.fog.data.constraints.StatementBinder;
 import tvestergaard.fog.data.constraints.StatementGenerator;
-import tvestergaard.fog.data.materials.attributes.AttributeDefinition;
 import tvestergaard.fog.data.materials.attributes.Attribute;
+import tvestergaard.fog.data.materials.attributes.AttributeDefinition;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -110,6 +110,20 @@ public class MysqlMaterialDAO extends AbstractMysqlDAO implements MaterialDAO
         } catch (SQLException e) {
             throw new MysqlDataAccessException(e);
         }
+    }
+
+    /**
+     * Returns the first record matching the constraints.
+     *
+     * @param constraints The constraints to match.
+     * @return The first record matching the constraints. Returns {@code null} if no match was found.
+     * @throws MysqlDataAccessException When a data storage exception occurs while performing the operation.
+     */
+    @Override public Material first(Constraints<MaterialColumn> constraints) throws MysqlDataAccessException
+    {
+        List<Material> materials = get(constraints.limit(1));
+
+        return materials.isEmpty() ? null : materials.get(0);
     }
 
     /**

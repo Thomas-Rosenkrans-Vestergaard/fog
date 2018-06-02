@@ -4,15 +4,17 @@ import com.google.common.collect.Multimap;
 import tvestergaard.fog.data.DataAccessException;
 import tvestergaard.fog.data.constraints.Constraints;
 import tvestergaard.fog.data.materials.*;
-import tvestergaard.fog.data.materials.attributes.AttributeDefinition;
 import tvestergaard.fog.data.materials.attributes.Attribute;
+import tvestergaard.fog.data.materials.attributes.AttributeDefinition;
 import tvestergaard.fog.logic.ApplicationException;
 
 import java.util.List;
 import java.util.Set;
 
 import static tvestergaard.fog.data.constraints.Constraint.eq;
+import static tvestergaard.fog.data.constraints.Constraint.where;
 import static tvestergaard.fog.data.materials.MaterialColumn.ACTIVE;
+import static tvestergaard.fog.data.materials.MaterialColumn.NUMBER;
 
 public class MaterialFacade
 {
@@ -97,16 +99,22 @@ public class MaterialFacade
      * @param category    The category of the material to create.
      * @param attributes  The attributes of the material to create.
      * @return The material instance representing the newly created material.
-     * @throws ApplicationException       When an exception occurs while performing the operation.
-     * @throws MaterialValidatorException When the provided information is considered invalid.
+     * @throws ApplicationException             When an exception occurs while performing the operation.
+     * @throws MaterialValidatorException       When the provided information is considered invalid.
+     * @throws DuplicateMaterialNumberException When a material with the provided number already exists in the application.
      */
     public Material create(String number, String description, int price, int unit, int category, Set<Attribute> attributes)
-            throws MaterialValidatorException
+            throws MaterialValidatorException, DuplicateMaterialNumberException
     {
         try {
             Set<MaterialError> reasons = validator.validate(number, description, price, unit);
             if (!reasons.isEmpty())
                 throw new MaterialValidatorException(reasons);
+
+            Material material = dao.first(where(eq(NUMBER, number)));
+            if (material != null)
+                throw new DuplicateMaterialNumberException();
+
             return dao.create(MaterialBlueprint.from(number, description, price, unit, category, attributes));
         } catch (DataAccessException e) {
             throw new ApplicationException(e);

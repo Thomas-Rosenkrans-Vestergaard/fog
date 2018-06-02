@@ -4,13 +4,17 @@ import com.mysql.cj.jdbc.MysqlDataSource;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import tvestergaard.fog.data.MysqlDataAccessException;
 import tvestergaard.fog.data.TestDataSource;
 import tvestergaard.fog.data.constraints.OrderDirection;
 
 import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.List;
 
 import static org.junit.Assert.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 import static tvestergaard.fog.Helpers.randomBoolean;
 import static tvestergaard.fog.Helpers.randomString;
 import static tvestergaard.fog.data.cladding.CladdingColumn.ID;
@@ -57,6 +61,15 @@ public class MysqlCladdingDAOTest
         assertEquals(cladding3, claddings.get(2));
         assertEquals(cladding4, claddings.get(3));
         assertEquals(cladding5, claddings.get(4));
+    }
+
+    @Test(expected = MysqlDataAccessException.class)
+    public void getThrowsMysqlDataAccessException() throws Exception
+    {
+        MysqlDataSource source = mock(MysqlDataSource.class);
+        when(source.getConnection()).thenThrow(SQLException.class);
+        MysqlCladdingDAO dao = new MysqlCladdingDAO(source);
+        dao.get(null);
     }
 
     @Test

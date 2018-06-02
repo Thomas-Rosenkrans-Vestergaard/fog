@@ -30,6 +30,15 @@ public interface MaterialDAO
     Material get(int id) throws DataAccessException;
 
     /**
+     * Returns the first record matching the constraints.
+     *
+     * @param constraints The constraints to match.
+     * @return The first record matching the constraints. Returns {@code null} if no match was found.
+     * @throws DataAccessException When a data storage exception occurs while performing the operation.
+     */
+    Material first(Constraints<MaterialColumn> constraints) throws DataAccessException;
+
+    /**
      * Inserts a new material into the data storage.
      *
      * @param blueprint The material blueprint that contains the information necessary to create the material.

@@ -47,8 +47,9 @@ public class CustomerFacade
     /**
      * Creates a new {@link CustomerFacade}.
      *
-     * @param customerDAO The {@link CustomerDAO} used to access and make changes to the data storage used by the
-     *                    application.
+     * @param customerDAO The {@link CustomerDAO} used to access and make changes to the customers in the application.
+     * @param tokenDAO    The {@link TokenDAO} used to access and make changes to the tokens in the application.
+     * @param mailer      The object responsible for sending emails to customers.
      */
     public CustomerFacade(CustomerDAO customerDAO, TokenDAO tokenDAO, ApplicationMailer mailer)
     {
