@@ -1,9 +1,16 @@
 package tvestergaard.fog.data.components;
 
-public interface ComponentReference
+public interface ComponentConnection
 {
 
-    static ComponentReference from(int definition, int material)
+    /**
+     * Creates a new component blueprint from the provided definition id and material id.
+     *
+     * @param definition The definition of the blueprint.
+     * @param material   The material of the blueprint.
+     * @return The resulting Component blueprint.
+     */
+    static ComponentConnection from(int definition, int material)
     {
         return new ComponentRecord(definition, null, material, null);
     }

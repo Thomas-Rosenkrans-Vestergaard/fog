@@ -21,7 +21,10 @@ import tvestergaard.fog.data.models.ModelRecord;
 import tvestergaard.fog.data.offers.Offer;
 import tvestergaard.fog.data.offers.OfferRecord;
 import tvestergaard.fog.data.offers.OfferStatus;
-import tvestergaard.fog.data.orders.*;
+import tvestergaard.fog.data.orders.Order;
+import tvestergaard.fog.data.orders.OrderRecord;
+import tvestergaard.fog.data.orders.Shed;
+import tvestergaard.fog.data.orders.ShedRecord;
 import tvestergaard.fog.data.purchases.Purchase;
 import tvestergaard.fog.data.purchases.PurchaseRecord;
 import tvestergaard.fog.data.purchases.bom.BomDrawing;
@@ -294,11 +297,11 @@ public abstract class AbstractMysqlDAO
      * @throws SQLException When the factory could not access a required column.
      */
     protected Material createMaterial(ResultSet results,
-            String tMaterial,
-            String tCategory,
-            ResultSet attributes,
-            String tAttributeDefinition,
-            String tAttributeValues) throws SQLException
+                                      String tMaterial,
+                                      String tCategory,
+                                      ResultSet attributes,
+                                      String tAttributeDefinition,
+                                      String tAttributeValues) throws SQLException
     {
         return new MaterialRecord(
                 results.getInt(tMaterial + ".id"),
@@ -443,11 +446,15 @@ public abstract class AbstractMysqlDAO
     protected ComponentDefinition createComponentDefinition(ResultSet results, String tComponentDefinition, String tCategory)
             throws SQLException
     {
+
+        Category category = createCategory(results, tCategory);
+
         return new ComponentDefinitionRecord(
                 results.getInt(tComponentDefinition + ".id"),
                 results.getString(tComponentDefinition + ".identifier"),
                 results.getString(tComponentDefinition + ".notes"),
-                createCategory(results, tCategory)
+                category.getId(),
+                category
         );
     }
 
@@ -465,12 +472,12 @@ public abstract class AbstractMysqlDAO
      * @throws SQLException When the factory could not access a required column.
      */
     protected Component createComponent(ResultSet results,
-            String tComponentDefinition,
-            String tMaterial,
-            String tCategory,
-            ResultSet attributes,
-            String tAttributeDefinition,
-            String tAttributeValue) throws SQLException
+                                        String tComponentDefinition,
+                                        String tMaterial,
+                                        String tCategory,
+                                        ResultSet attributes,
+                                        String tAttributeDefinition,
+                                        String tAttributeValue) throws SQLException
     {
         ComponentDefinition definition = createComponentDefinition(results, tComponentDefinition, tCategory);
         Material            material   = createMaterial(results, tMaterial, tCategory, attributes, tAttributeDefinition, tAttributeValue);
@@ -530,12 +537,12 @@ public abstract class AbstractMysqlDAO
      * @throws SQLException When the factory could not access a required column.
      */
     protected Order createOrder(ResultSet results,
-            String tOrder,
-            String tCustomer,
-            String tRoofing,
-            String tShed,
-            String tCladding,
-            String tFlooring) throws SQLException
+                                String tOrder,
+                                String tCustomer,
+                                String tRoofing,
+                                String tShed,
+                                String tCladding,
+                                String tFlooring) throws SQLException
     {
         Shed shed = results.getInt("shed") == 0 ? null : createShed(results, tShed, tCladding, tFlooring);
 
@@ -576,14 +583,14 @@ public abstract class AbstractMysqlDAO
      * @throws SQLException When the factory could not access a required column.
      */
     protected Offer createOffer(ResultSet results,
-            String tOffer,
-            String tEmployee,
-            String tOrder,
-            String tCustomer,
-            String tRoofing,
-            String tShed,
-            String tCladding,
-            String tFlooring) throws SQLException
+                                String tOffer,
+                                String tEmployee,
+                                String tOrder,
+                                String tCustomer,
+                                String tRoofing,
+                                String tShed,
+                                String tCladding,
+                                String tFlooring) throws SQLException
     {
         Order    order    = createOrder(results, tOrder, tCustomer, tRoofing, tShed, tCladding, tFlooring);
         Employee employee = createEmployee(results, tEmployee);
@@ -616,15 +623,15 @@ public abstract class AbstractMysqlDAO
      * @throws SQLException When the factory could not access a required column.
      */
     protected Purchase createPurchase(ResultSet results,
-            String tPurchase,
-            String tOffer,
-            String tEmployee,
-            String tOrder,
-            String tCustomer,
-            String tRoofing,
-            String tShed,
-            String tCladding,
-            String tFlooring) throws SQLException
+                                      String tPurchase,
+                                      String tOffer,
+                                      String tEmployee,
+                                      String tOrder,
+                                      String tCustomer,
+                                      String tRoofing,
+                                      String tShed,
+                                      String tCladding,
+                                      String tFlooring) throws SQLException
     {
         Offer offer = createOffer(
                 results,

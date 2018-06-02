@@ -3,7 +3,7 @@ package tvestergaard.fog.logic;
 import tvestergaard.fog.data.DataAccessException;
 import tvestergaard.fog.data.components.Component;
 import tvestergaard.fog.data.components.ComponentDefinition;
-import tvestergaard.fog.data.components.ComponentReference;
+import tvestergaard.fog.data.components.ComponentConnection;
 import tvestergaard.fog.data.models.Model;
 import tvestergaard.fog.data.models.ModelDAO;
 import tvestergaard.fog.data.models.ModelUpdater;
@@ -68,7 +68,7 @@ public class ModelFacade
      * @return {@code true} if the model was successfully updated.
      * @throws ApplicationException When a data storage exception occurs while performing the operation.
      */
-    public boolean update(int id, String name, List<ComponentReference> components)
+    public boolean update(int id, String name, List<ComponentConnection> components)
     {
         try {
             ModelUpdater updater = ModelUpdater.from(id, name);

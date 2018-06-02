@@ -2,7 +2,7 @@ package tvestergaard.fog.presentation.servlets;
 
 import tvestergaard.fog.data.components.Component;
 import tvestergaard.fog.data.components.ComponentDefinition;
-import tvestergaard.fog.data.components.ComponentReference;
+import tvestergaard.fog.data.components.ComponentConnection;
 import tvestergaard.fog.data.employees.Employee;
 import tvestergaard.fog.data.employees.Role;
 import tvestergaard.fog.data.models.Model;
@@ -118,7 +118,7 @@ public class AdministrationModelsServlet extends AdministrationServlet
                 return;
             }
 
-            List<ComponentReference>  values     = new ArrayList<>();
+            List<ComponentConnection> values     = new ArrayList<>();
             List<ComponentDefinition> components = modelFacade.getComponentDefinitions(parameters.getInt("id"));
             for (ComponentDefinition definition : components) {
                 String parameterName = "component_" + definition.getIdentifier();
@@ -128,7 +128,7 @@ public class AdministrationModelsServlet extends AdministrationServlet
                     return;
                 }
 
-                values.add(ComponentReference.from(definition.getId(), parameters.getInt(parameterName)));
+                values.add(ComponentConnection.from(definition.getId(), parameters.getInt(parameterName)));
             }
 
             try {

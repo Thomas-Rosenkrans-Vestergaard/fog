@@ -3,7 +3,7 @@ package tvestergaard.fog.data.components;
 import tvestergaard.fog.data.materials.Category;
 import tvestergaard.fog.data.materials.Material;
 
-public interface Component extends ComponentReference, ComponentDefinition
+public interface Component extends ComponentConnection, ComponentDefinition
 {
 
     /**
@@ -41,6 +41,16 @@ public interface Component extends ComponentReference, ComponentDefinition
     default String getNotes()
     {
         return getDefinition().getNotes();
+    }
+
+    /**
+     * Returns id of the material category that the component must be of.
+     *
+     * @return The id of the material category that the component must be of.
+     */
+    @Override default int getCategoryId()
+    {
+        return getDefinition().getCategoryId();
     }
 
     /**

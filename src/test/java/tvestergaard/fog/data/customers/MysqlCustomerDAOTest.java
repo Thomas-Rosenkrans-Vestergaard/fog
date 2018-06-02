@@ -172,4 +172,15 @@ public class MysqlCustomerDAOTest
         assertTrue(dao.inactivate(customer1.getId()));
         assertFalse(dao.first(where(eq(ID, customer1.getId()))).isActive());
     }
+
+    @Test
+    public void resetPassword() throws Exception
+    {
+
+    }
+
+    @Test
+    public void confirmMembership() throws Exception
+    {
+    }
 }

@@ -65,11 +65,4 @@ public interface RoofingBlueprint
      * @return The type of the roofing.
      */
     RoofingType getType();
-
-    /**
-     * Sets the type of the roofing.
-     *
-     * @param type The new roofing type.
-     */
-    void setType(RoofingType type);
 }

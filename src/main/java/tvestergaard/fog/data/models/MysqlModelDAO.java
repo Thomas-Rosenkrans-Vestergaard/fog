@@ -8,7 +8,7 @@ import tvestergaard.fog.data.DataAccessException;
 import tvestergaard.fog.data.MysqlDataAccessException;
 import tvestergaard.fog.data.components.Component;
 import tvestergaard.fog.data.components.ComponentDefinition;
-import tvestergaard.fog.data.components.ComponentReference;
+import tvestergaard.fog.data.components.ComponentConnection;
 import tvestergaard.fog.data.materials.SimpleMaterial;
 
 import java.sql.Connection;
@@ -82,7 +82,7 @@ public class MysqlModelDAO extends AbstractMysqlDAO implements ModelDAO
      * @return {@code true} if the model was successfully updated.
      * @throws MysqlDataAccessException When a data storage exception occurs while performing the operation.
      */
-    @Override public boolean update(ModelUpdater updater, List<ComponentReference> components) throws MysqlDataAccessException
+    @Override public boolean update(ModelUpdater updater, List<ComponentConnection> components) throws MysqlDataAccessException
     {
         try {
             final String SQL        = "UPDATE garage_models SET name = ? WHERE id = ?";
@@ -99,7 +99,7 @@ public class MysqlModelDAO extends AbstractMysqlDAO implements ModelDAO
                         "INNER JOIN garage_component_definitions gcd ON gcv.definition = gcd.id WHERE gcd.model = ?)";
                 try (PreparedStatement componentStatement = connection.prepareStatement(componentSQL)) {
                     componentStatement.setInt(3, updater.getId());
-                    for (ComponentReference component : components) {
+                    for (ComponentConnection component : components) {
                         componentStatement.setInt(1, component.getMaterialId());
                         componentStatement.setInt(2, component.getDefinitionId());
                         updated += componentStatement.executeUpdate();

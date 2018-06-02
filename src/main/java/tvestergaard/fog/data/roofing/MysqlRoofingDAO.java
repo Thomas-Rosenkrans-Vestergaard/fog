@@ -6,7 +6,7 @@ import tvestergaard.fog.data.DataAccessException;
 import tvestergaard.fog.data.MysqlDataAccessException;
 import tvestergaard.fog.data.components.Component;
 import tvestergaard.fog.data.components.ComponentDefinition;
-import tvestergaard.fog.data.components.ComponentReference;
+import tvestergaard.fog.data.components.ComponentConnection;
 import tvestergaard.fog.data.constraints.Constraints;
 import tvestergaard.fog.data.constraints.StatementBinder;
 import tvestergaard.fog.data.constraints.StatementGenerator;
@@ -92,7 +92,7 @@ public class MysqlRoofingDAO extends AbstractMysqlDAO implements RoofingDAO
      * @return The roofing instance representing the newly created roofing.
      * @throws MysqlDataAccessException When a data storage exception occurs while performing the operation.
      */
-    @Override public Roofing create(RoofingBlueprint blueprint, List<ComponentReference> components) throws MysqlDataAccessException
+    @Override public Roofing create(RoofingBlueprint blueprint, List<ComponentConnection> components) throws MysqlDataAccessException
     {
         try {
             final String SQL        = "INSERT INTO roofings (`name`, description, active, `type`) VALUES (?, ?, ?, ?)";
@@ -111,7 +111,7 @@ public class MysqlRoofingDAO extends AbstractMysqlDAO implements RoofingDAO
                 List<Integer> insertedComponents = new ArrayList<>();
                 String        componentSQL       = "INSERT INTO component_values (definition, material) VALUES (?, ?)";
                 try (PreparedStatement componentStatement = connection.prepareStatement(componentSQL, RETURN_GENERATED_KEYS)) {
-                    for (ComponentReference component : components) {
+                    for (ComponentConnection component : components) {
                         componentStatement.setInt(1, component.getDefinitionId());
                         componentStatement.setInt(2, component.getMaterialId());
                         componentStatement.executeUpdate();
@@ -149,7 +149,7 @@ public class MysqlRoofingDAO extends AbstractMysqlDAO implements RoofingDAO
      * @return {@code true} if the record was updated.
      * @throws MysqlDataAccessException When a data storage exception occurs while performing the operation.
      */
-    @Override public boolean update(RoofingUpdater updater, List<ComponentReference> components) throws MysqlDataAccessException
+    @Override public boolean update(RoofingUpdater updater, List<ComponentConnection> components) throws MysqlDataAccessException
     {
         try {
             final String SQL        = "UPDATE roofings SET name = ?, description = ?, active = ? WHERE id = ?";
@@ -167,7 +167,7 @@ public class MysqlRoofingDAO extends AbstractMysqlDAO implements RoofingDAO
                         "AND id IN (SELECT component FROM roofing_component_values rcv WHERE roofing = ?)";
                 try (PreparedStatement componentStatement = connection.prepareStatement(componentSQL)) {
                     componentStatement.setInt(3, updater.getId());
-                    for (ComponentReference component : components) {
+                    for (ComponentConnection component : components) {
                         componentStatement.setInt(1, component.getMaterialId());
                         componentStatement.setInt(2, component.getDefinitionId());
                         updated += componentStatement.executeUpdate();
@@ -182,39 +182,6 @@ public class MysqlRoofingDAO extends AbstractMysqlDAO implements RoofingDAO
                 connection.rollback();
                 throw e;
             }
-        } catch (SQLException e) {
-            throw new MysqlDataAccessException(e);
-        }
-    }
-
-    /**
-     * Updates the component definitions for a roofing.
-     *
-     * @param definitions The definitions to update.
-     * @return {@code true} if the component definitions was successfully updated.
-     * @throws DataAccessException When a data storage exception occurs while performing the operation.
-     */
-    @Override public boolean update(List<ComponentDefinition> definitions) throws DataAccessException
-    {
-        try {
-
-            String     SQL        = "UPDATE component_definitions cd SET cd.notes = ? WHERE cd.id = ?";
-            Connection connection = getConnection();
-            try (PreparedStatement statement = connection.prepareStatement(SQL)) {
-                for (ComponentDefinition definition : definitions) {
-                    statement.setString(1, definition.getNotes());
-                    statement.setInt(2, definition.getId());
-                    statement.executeUpdate();
-                }
-
-                connection.commit();
-                return true;
-
-            } catch (SQLException e) {
-                connection.rollback();
-                throw e;
-            }
-
         } catch (SQLException e) {
             throw new MysqlDataAccessException(e);
         }
@@ -258,7 +225,7 @@ public class MysqlRoofingDAO extends AbstractMysqlDAO implements RoofingDAO
     {
         List<Component> components = new ArrayList<>();
 
-        String SQL = "SELECT * FROM fog.roofing_component_definitions rcd " +
+        String SQL = "SELECT * FROM roofing_component_definitions rcd " +
                 "INNER JOIN component_definitions cd ON rcd.definition = cd.id " +
                 "INNER JOIN component_values cv ON cv.definition = cd.id " +
                 "INNER JOIN roofing_component_values rcv ON rcv.component = cv.id " +

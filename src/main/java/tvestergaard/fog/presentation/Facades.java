@@ -4,6 +4,8 @@ import com.mysql.cj.jdbc.MysqlDataSource;
 import tvestergaard.fog.data.ProductionDataSource;
 import tvestergaard.fog.data.cladding.CladdingDAO;
 import tvestergaard.fog.data.cladding.MysqlCladdingDAO;
+import tvestergaard.fog.data.components.ComponentDAO;
+import tvestergaard.fog.data.components.MysqlComponentDAO;
 import tvestergaard.fog.data.customers.CustomerDAO;
 import tvestergaard.fog.data.customers.MysqlCustomerDAO;
 import tvestergaard.fog.data.employees.EmployeeDAO;
@@ -26,6 +28,7 @@ import tvestergaard.fog.data.roofing.MysqlRoofingDAO;
 import tvestergaard.fog.data.roofing.RoofingDAO;
 import tvestergaard.fog.data.tokens.MysqlTokenDAO;
 import tvestergaard.fog.data.tokens.TokenDAO;
+import tvestergaard.fog.logic.ComponentFacade;
 import tvestergaard.fog.logic.ModelFacade;
 import tvestergaard.fog.logic.WebsiteContext;
 import tvestergaard.fog.logic.claddings.CladdingFacade;
@@ -59,19 +62,20 @@ public class Facades
 
     private static final ApplicationMailer mailer = new DefaultApplicationMailer(emailTemplate, websiteContext);
 
-    private static final MysqlDataSource source      = ProductionDataSource.getSource();
-    private static final CladdingDAO     claddingDAO = new MysqlCladdingDAO(source);
-    private static final CustomerDAO     customerDAO = new MysqlCustomerDAO(source);
-    private static final TokenDAO        tokenDAO    = new MysqlTokenDAO(source);
-    private static final EmployeeDAO     employeeDAO = new MysqlEmployeeDAO(source);
-    private static final FlooringDAO     flooringDAO = new MysqlFlooringDAO(source);
-    private static final MaterialDAO     materialDAO = new MysqlMaterialDAO(source);
-    private static final OrderDAO        orderDAO    = new MysqlOrderDAO(source);
-    private static final RoofingDAO      roofingDAO  = new MysqlRoofingDAO(source);
-    private static final OfferDAO        offerDAO    = new MysqlOfferDAO(source);
-    private static final PurchaseDAO     purchaseDAO = new MysqlPurchaseDAO(source);
-    private static final ModelDAO        modelDAO    = new MysqlModelDAO(source);
-    private static final BomDAO          bomDAO      = new MysqlBomDAO(source);
+    private static final MysqlDataSource source       = ProductionDataSource.getSource();
+    private static final CladdingDAO     claddingDAO  = new MysqlCladdingDAO(source);
+    private static final CustomerDAO     customerDAO  = new MysqlCustomerDAO(source);
+    private static final TokenDAO        tokenDAO     = new MysqlTokenDAO(source);
+    private static final EmployeeDAO     employeeDAO  = new MysqlEmployeeDAO(source);
+    private static final FlooringDAO     flooringDAO  = new MysqlFlooringDAO(source);
+    private static final MaterialDAO     materialDAO  = new MysqlMaterialDAO(source);
+    private static final OrderDAO        orderDAO     = new MysqlOrderDAO(source);
+    private static final RoofingDAO      roofingDAO   = new MysqlRoofingDAO(source);
+    private static final OfferDAO        offerDAO     = new MysqlOfferDAO(source);
+    private static final PurchaseDAO     purchaseDAO  = new MysqlPurchaseDAO(source);
+    private static final ModelDAO        modelDAO     = new MysqlModelDAO(source);
+    private static final BomDAO          bomDAO       = new MysqlBomDAO(source);
+    private static final ComponentDAO    componentDAO = new MysqlComponentDAO(source);
 
 
     private static final TokenIssuer        tokenIssuer        = new TokenIssuer(tokenDAO, new TokenGenerator());
@@ -89,4 +93,5 @@ public class Facades
     public static final  ConstructionFacade constructionFacade = new ConstructionFacade(modelDAO, roofingDAO, orderDAO);
     public static final  PurchaseFacade     purchaseFacade     = new PurchaseFacade(purchaseDAO, offerDAO, bomDAO, constructionFacade);
     public static final  ModelFacade        skeletonFacade     = new ModelFacade(modelDAO);
+    public static final  ComponentFacade    componentFacade    = new ComponentFacade(componentDAO);
 }

@@ -3,7 +3,7 @@ package tvestergaard.fog.data.roofing;
 import tvestergaard.fog.data.DataAccessException;
 import tvestergaard.fog.data.components.Component;
 import tvestergaard.fog.data.components.ComponentDefinition;
-import tvestergaard.fog.data.components.ComponentReference;
+import tvestergaard.fog.data.components.ComponentConnection;
 import tvestergaard.fog.data.constraints.Constraints;
 
 import java.util.List;
@@ -38,7 +38,7 @@ public interface RoofingDAO
      * @return The roofing instance representing the newly created roofing.
      * @throws DataAccessException When a data storage exception occurs while performing the operation.
      */
-    Roofing create(RoofingBlueprint blueprint, List<ComponentReference> components) throws DataAccessException;
+    Roofing create(RoofingBlueprint blueprint, List<ComponentConnection> components) throws DataAccessException;
 
     /**
      * Updates the entity in the data storage to match the provided {@code roofing}.
@@ -48,16 +48,7 @@ public interface RoofingDAO
      * @return {@code true} if the record was updated.
      * @throws DataAccessException When a data storage exception occurs while performing the operation.
      */
-    boolean update(RoofingUpdater updater, List<ComponentReference> components) throws DataAccessException;
-
-    /**
-     * Updates the component definitions for a roofing.
-     *
-     * @param definitions The definitions to update.
-     * @return {@code true} if the component definitions was successfully updated.
-     * @throws DataAccessException When a data storage exception occurs while performing the operation.
-     */
-    boolean update(List<ComponentDefinition> definitions) throws DataAccessException;
+    boolean update(RoofingUpdater updater, List<ComponentConnection> components) throws DataAccessException;
 
     /**
      * Returns the components definitions for the provided roofing type.

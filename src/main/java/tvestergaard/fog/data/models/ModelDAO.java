@@ -4,7 +4,7 @@ import com.google.common.collect.Multimap;
 import tvestergaard.fog.data.DataAccessException;
 import tvestergaard.fog.data.components.Component;
 import tvestergaard.fog.data.components.ComponentDefinition;
-import tvestergaard.fog.data.components.ComponentReference;
+import tvestergaard.fog.data.components.ComponentConnection;
 import tvestergaard.fog.data.materials.SimpleMaterial;
 
 import java.util.List;
@@ -28,7 +28,7 @@ public interface ModelDAO
      * @return {@code true} if the model was successfully updated.
      * @throws DataAccessException When a data storage exception occurs while performing the operation.
      */
-    boolean update(ModelUpdater updater, List<ComponentReference> components) throws DataAccessException;
+    boolean update(ModelUpdater updater, List<ComponentConnection> components) throws DataAccessException;
 
     /**
      * Updates the component definitions for a model.

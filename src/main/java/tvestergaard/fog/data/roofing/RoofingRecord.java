@@ -109,16 +109,6 @@ public class RoofingRecord implements Roofing
     }
 
     /**
-     * Sets the type of the roofing.
-     *
-     * @param type The new roofing type.
-     */
-    @Override public void setType(RoofingType type)
-    {
-        this.type = type;
-    }
-
-    /**
      * Returns {@code true} if the roofing can currently be applied to new orders.
      *
      * @return {@code true} if the roofing can currently be applied to new orders.

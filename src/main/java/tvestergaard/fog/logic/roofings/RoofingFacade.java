@@ -3,7 +3,7 @@ package tvestergaard.fog.logic.roofings;
 import tvestergaard.fog.data.DataAccessException;
 import tvestergaard.fog.data.components.Component;
 import tvestergaard.fog.data.components.ComponentDefinition;
-import tvestergaard.fog.data.components.ComponentReference;
+import tvestergaard.fog.data.components.ComponentConnection;
 import tvestergaard.fog.data.constraints.Constraints;
 import tvestergaard.fog.data.roofing.*;
 import tvestergaard.fog.logic.ApplicationException;
@@ -96,7 +96,7 @@ public class RoofingFacade
      * @throws ApplicationException      When an exception occurs while performing the operation.
      * @throws RoofingValidatorException When the provided roofing information is considered invalid.
      */
-    public Roofing create(String name, String description, RoofingType type, boolean active, List<ComponentReference> components)
+    public Roofing create(String name, String description, RoofingType type, boolean active, List<ComponentConnection> components)
             throws RoofingValidatorException
     {
         try {
@@ -122,7 +122,7 @@ public class RoofingFacade
      * @throws ApplicationException      When an exception occurs while performing the operation.
      * @throws RoofingValidatorException When the provided roofing information is considered invalid.
      */
-    public boolean update(int id, String name, String description, boolean active, List<ComponentReference> components)
+    public boolean update(int id, String name, String description, boolean active, List<ComponentConnection> components)
             throws RoofingValidatorException
     {
         try {
@@ -147,22 +147,6 @@ public class RoofingFacade
     {
         try {
             return dao.getComponentDefinitions(roofingType);
-        } catch (DataAccessException e) {
-            throw new ApplicationException(e);
-        }
-    }
-
-    /**
-     * Updates the component definitions for a roofing.
-     *
-     * @param definitions The definitions to update.
-     * @return {@code true} if the component definitions was successfully updated.
-     * @throws ApplicationException When a data storage exception occurs while performing the operation.
-     */
-    public boolean update(List<ComponentDefinition> definitions)
-    {
-        try {
-            return dao.update(definitions);
         } catch (DataAccessException e) {
             throw new ApplicationException(e);
         }

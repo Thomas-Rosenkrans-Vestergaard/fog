@@ -2,12 +2,13 @@ package tvestergaard.fog.presentation.servlets;
 
 import tvestergaard.fog.data.components.Component;
 import tvestergaard.fog.data.components.ComponentDefinition;
-import tvestergaard.fog.data.components.ComponentReference;
+import tvestergaard.fog.data.components.ComponentConnection;
 import tvestergaard.fog.data.employees.Employee;
 import tvestergaard.fog.data.employees.Role;
 import tvestergaard.fog.data.roofing.Roofing;
 import tvestergaard.fog.data.roofing.RoofingColumn;
 import tvestergaard.fog.data.roofing.RoofingType;
+import tvestergaard.fog.logic.ComponentFacade;
 import tvestergaard.fog.logic.materials.MaterialFacade;
 import tvestergaard.fog.logic.roofings.RoofingError;
 import tvestergaard.fog.logic.roofings.RoofingFacade;
@@ -37,6 +38,7 @@ public class AdministrationRoofingsServlet extends AdministrationServlet
 
     private final RoofingFacade             roofingFacade  = Facades.roofingFacade;
     private final MaterialFacade            materialFacade = Facades.materialFacade;
+    private final ComponentFacade componentFacade = Facades.componentFacade;
     private final Map<RoofingError, String> errors         = new HashMap<>();
 
     public AdministrationRoofingsServlet()
@@ -142,7 +144,7 @@ public class AdministrationRoofingsServlet extends AdministrationServlet
                 return;
             }
 
-            List<ComponentReference>  values     = new ArrayList<>();
+            List<ComponentConnection> values     = new ArrayList<>();
             List<ComponentDefinition> components = roofingFacade.getComponentDefinitions(parameters.getEnum("type", RoofingType.class));
             for (ComponentDefinition definition : components) {
                 String parameterName = "component_" + definition.getIdentifier();
@@ -152,7 +154,7 @@ public class AdministrationRoofingsServlet extends AdministrationServlet
                     return;
                 }
 
-                values.add(ComponentReference.from(definition.getId(), parameters.getInt(parameterName)));
+                values.add(ComponentConnection.from(definition.getId(), parameters.getInt(parameterName)));
             }
 
             try {
@@ -226,7 +228,7 @@ public class AdministrationRoofingsServlet extends AdministrationServlet
                 return;
             }
 
-            List<ComponentReference>  values     = new ArrayList<>();
+            List<ComponentConnection> values     = new ArrayList<>();
             List<ComponentDefinition> components = roofingFacade.getComponentDefinitions(parameters.getEnum("type", RoofingType.class));
             for (ComponentDefinition definition : components) {
                 String parameterName = "component_" + definition.getIdentifier();
@@ -236,7 +238,7 @@ public class AdministrationRoofingsServlet extends AdministrationServlet
                     return;
                 }
 
-                values.add(ComponentReference.from(definition.getId(), parameters.getInt(parameterName)));
+                values.add(ComponentConnection.from(definition.getId(), parameters.getInt(parameterName)));
             }
 
             try {
@@ -324,7 +326,7 @@ public class AdministrationRoofingsServlet extends AdministrationServlet
                 definition.setNotes(parameters.value(inputName));
             }
 
-            roofingFacade.update(definitions);
+            componentFacade.update(definitions);
             notifications.success("Komponenterne blev opdateret med success.");
             response.sendRedirect("?action=update_components&roofing=" + parameters.value("roofing"));
         }

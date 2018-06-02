@@ -21,7 +21,7 @@ public class ComponentMapTest
     public void before() throws Exception
     {
         components = new ArrayList<>();
-        components.add(new ComponentRecord(-1, new ComponentDefinitionRecord(-1, "IDENTIFIER", "", null), -1, null));
+        components.add(new ComponentRecord(-1, new ComponentDefinitionRecord(-1, "IDENTIFIER", "", 1, null), -1, null));
 
         componentMap = new ComponentMap(components);
     }
