@@ -133,28 +133,31 @@ public class CustomerFacade
     /**
      * Updates the entity in the application to match the provided {@code customer}.
      *
-     * @param id       The id of the customer to update.
-     * @param name     The new name.
-     * @param address  The new address.
-     * @param email    The new email.
-     * @param phone    The new phone.
-     * @param password The new password.
-     * @param active   The new active status.
+     * @param id      The id of the customer to update.
+     * @param name    The new name.
+     * @param address The new address.
+     * @param email   The new email.
+     * @param phone   The new phone.
      * @return {@code true} if the record was updated.
      * @throws ApplicationException       When an exception occurs while performing the operation.
+     * @throws UnknownCustomerException   When a customer with the provided id does not exist.
      * @throws CustomerValidatorException When the provided customer information is considered invalid.
      */
     public boolean update(int id,
                           String name,
                           String address,
                           String email,
-                          String phone,
-                          String password,
-                          boolean active) throws CustomerValidatorException
+                          String phone) throws UnknownCustomerException, CustomerValidatorException
     {
         try {
-            CustomerUpdater    updater = CustomerUpdater.from(id, name, address, email, phone, password, active);
-            Set<CustomerError> reasons = validator.validateUpdate(id, name, address, email, phone, password);
+
+            Customer customer = customerDAO.first(where(eq(ID, id)));
+
+            if (customer == null)
+                throw new UnknownCustomerException();
+
+            CustomerUpdater    updater = CustomerUpdater.from(id, name, address, email, phone, customer.getPassword(), customer.isActive());
+            Set<CustomerError> reasons = validator.validateUpdate(id, name, address, email, phone, customer.getPassword());
             if (!reasons.isEmpty())
                 throw new CustomerValidatorException(reasons);
             return customerDAO.update(updater);

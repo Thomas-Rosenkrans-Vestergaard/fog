@@ -11,10 +11,7 @@
             tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas
             semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo. Quisque sit amet est et sapien
             ullamcorper pharetra. Vestibulum erat wisi, condimentum sed, commodo vitae, ornare sit amet, wisi. Aenean
-            fermentum, elit eget tincidunt condimentum, eros ipsum rutrum orci, sagittis tempus lacus enim ac dui. Donec
-            non enim in turpis pulvinar facilisis. Ut felis. Praesent dapibus, neque id cursus faucibus, tortor neque
-            egestas augue, eu vulputate magna eros eu erat. Aliquam erat volutpat. Nam dui mi, tincidunt quis, accumsan
-            porttitor, facilisis luctus, metus</p>
+            fermentum, elit eget tincidunt condimentum, eros ipsum rutrum orci, sagittis tempus lacus enim ac dui.</p>
     </div>
 </div>
 <div class="row">
@@ -45,13 +42,59 @@
                 <td>
                     <p style="float:left">${f:formatBoolean(customer.isVerified())}</p>
                     <form method="post" style="float:right">
-                        <input type="hidden" name="action" value="resend-confimation">
+                        <input type="hidden" name="action" value="resend-confirmation">
                         <input class="btn" type="submit" value="Gensend" ${customer.isVerified() ? 'disabled' :
                                 ''}>
                     </form>
                 </td>
             </tr>
         </table>
+    </div>
+</div>
+<div class="row">
+    <div class="col s12">
+        <h3>Opdater informationer</h3>
+    </div>
+</div>
+<div class="row">
+    <div class="col s12">
+        <form method="POST">
+            ${csrf}
+                <input type="hidden" name="action" value="update-information">
+            <div class="row">
+                <div class="col s12 input-field">
+                    <input type="text" name="name" id="name" class="validate" value="${customer.getName()}"
+                           data-length="255" required>
+                    <label for="name">Navn</label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col s12 input-field">
+                    <input type="text" name="address" id="address" class="validate" value="${customer.getAddress()}"
+                           data-length="255" required>
+                    <label for="address">Adresse</label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col s12 input-field">
+                    <input type="text" name="email" id="email" class="validate" value="${customer.getEmail()}"
+                           data-length="255" required>
+                    <label for="email">Email</label>
+                </div>
+            </div>
+                <div class="row">
+                    <div class="col s12 input-field">
+                        <input type="text" name="phone" id="phone" class="validate" value="${customer.getPhone()}"
+                               data-length="30" required>
+                        <label for="phone">Telefon</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col s12">
+                        <input type="submit" class="btn-large" value="Opdater">
+                    </div>
+                </div>
+        </form>
     </div>
 </div>
 <%@ include file="includes/bottom.jspf" %>
