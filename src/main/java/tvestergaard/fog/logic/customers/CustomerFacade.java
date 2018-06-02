@@ -156,11 +156,18 @@ public class CustomerFacade
             if (customer == null)
                 throw new UnknownCustomerException();
 
-            CustomerUpdater    updater = CustomerUpdater.from(id, name, address, email, phone, customer.getPassword(), customer.isActive());
-            Set<CustomerError> reasons = validator.validateUpdate(id, name, address, email, phone, customer.getPassword());
+            boolean            verified = email.equals(customer.getEmail());
+            CustomerUpdater    updater  = CustomerUpdater.from(id, name, address, email, phone, customer.getPassword(), customer.isActive(), verified);
+            Set<CustomerError> reasons  = validator.validateUpdate(id, name, address, email, phone, customer.getPassword());
             if (!reasons.isEmpty())
                 throw new CustomerValidatorException(reasons);
-            return customerDAO.update(updater);
+            boolean result = customerDAO.update(updater);
+            if (result == true && !email.equals(customer.getEmail())) {
+                emailChallenger.challenge(customerDAO.first(where(eq(ID, customer.getId()))));
+            }
+
+            return result;
+
         } catch (DataAccessException e) {
             throw new ApplicationException(e);
         }

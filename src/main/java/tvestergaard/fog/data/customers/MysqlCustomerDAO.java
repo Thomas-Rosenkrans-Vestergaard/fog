@@ -123,7 +123,7 @@ public class MysqlCustomerDAO extends AbstractMysqlDAO implements CustomerDAO
     {
         try {
 
-            String     SQL        = "UPDATE customers SET name = ?, address = ?, email = ?, phone = ?, active = ?, password = ? WHERE id = ?";
+            String     SQL        = "UPDATE customers SET name = ?, address = ?, email = ?, phone = ?, active = ?, password = ?, verified = ? WHERE id = ?";
             Connection connection = getConnection();
             try (PreparedStatement statement = connection.prepareStatement(SQL)) {
                 statement.setString(1, updater.getName());
@@ -132,7 +132,8 @@ public class MysqlCustomerDAO extends AbstractMysqlDAO implements CustomerDAO
                 statement.setString(4, updater.getPhone());
                 statement.setBoolean(5, updater.isActive());
                 statement.setString(6, updater.getPassword());
-                statement.setInt(7, updater.getId());
+                statement.setBoolean(7, updater.isVerified());
+                statement.setInt(8, updater.getId());
                 int updated = statement.executeUpdate();
                 connection.commit();
                 return updated != 0;
@@ -157,7 +158,7 @@ public class MysqlCustomerDAO extends AbstractMysqlDAO implements CustomerDAO
     {
         try {
 
-            String     SQL        = "UPDATE customers SET active = true WHERE id = ?";
+            String     SQL        = "UPDATE customers SET active = TRUE WHERE id = ?";
             Connection connection = getConnection();
             try (PreparedStatement statement = connection.prepareStatement(SQL)) {
                 statement.setInt(1, customerId);
@@ -186,7 +187,7 @@ public class MysqlCustomerDAO extends AbstractMysqlDAO implements CustomerDAO
     {
         try {
 
-            String     SQL        = "UPDATE customers SET active = false WHERE id = ?";
+            String     SQL        = "UPDATE customers SET active = FALSE WHERE id = ?";
             Connection connection = getConnection();
             try (PreparedStatement statement = connection.prepareStatement(SQL)) {
                 statement.setInt(1, customerId);

@@ -23,6 +23,7 @@
                 <th>Email</th>
                 <th>Telefon</th>
                 <th>Aktiv</th>
+                <th>Bekræftet</th>
                 <th>Oprettet</th>
             </tr>
             <%@ include file="../includes/table_filters.jspf" %>
@@ -44,6 +45,7 @@
                         </form>
                         </form>
                     </td>
+                    <td>${f:formatBoolean(customer.isVerified())}</td>
                     <td><c:out value="${f:formatDatetime(customer.getCreatedAt())}"/></td>
                 </tr>
             </c:forEach>
