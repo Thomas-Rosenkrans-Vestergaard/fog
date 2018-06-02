@@ -52,11 +52,15 @@ public class Constraints<C extends Column<C>>
         if (havingConditions == null)
             havingConditions = new ArrayList<>();
 
-        for (WhereCondition<C> condition : conditions)
-            if (havingConditions.isEmpty())
+        for (WhereCondition<C> condition : conditions) {
+            if (havingConditions.isEmpty() || condition instanceof BinaryOrCondition ||
+                    condition instanceof BinaryAndCondition ||
+                    condition instanceof UnaryAndCondition ||
+                    condition instanceof UnaryOrCondition)
                 havingConditions.add(condition);
             else
                 havingConditions.add(and(condition));
+        }
 
         return this;
     }

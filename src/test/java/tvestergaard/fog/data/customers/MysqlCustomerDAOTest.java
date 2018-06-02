@@ -4,6 +4,7 @@ import com.mysql.cj.jdbc.MysqlDataSource;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import tvestergaard.fog.data.MysqlDataAccessException;
 import tvestergaard.fog.data.TestDataSource;
 import tvestergaard.fog.data.constraints.OrderDirection;
 

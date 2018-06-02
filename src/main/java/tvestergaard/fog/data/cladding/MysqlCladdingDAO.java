@@ -90,8 +90,6 @@ public class MysqlCladdingDAO extends AbstractMysqlDAO implements CladdingDAO
                 statement.setBoolean(3, blueprint.isActive());
                 int updated = statement.executeUpdate();
                 connection.commit();
-                if (updated == 0)
-                    return null;
                 ResultSet generated = statement.getGeneratedKeys();
                 generated.first();
                 return new CladdingRecord(

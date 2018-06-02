@@ -20,6 +20,14 @@ public class StatementGeneratorTest
     }
 
     @Test
+    public void havingEquals() throws Exception
+    {
+        String expected = "HAVING `column_one` = ?";
+        String actual   = generator.generate(having(eq(COLUMN_ONE, "")));
+        assertEquals(clean(expected), clean(actual));
+    }
+
+    @Test
     public void whereLike() throws Exception
     {
         String expected = "WHERE `column_two` LIKE ?";
@@ -28,10 +36,26 @@ public class StatementGeneratorTest
     }
 
     @Test
+    public void havingLike() throws Exception
+    {
+        String expected = "HAVING `column_two` LIKE ?";
+        String actual   = generator.generate(having(like(COLUMN_TWO, "")));
+        assertEquals(clean(expected), clean(actual));
+    }
+
+    @Test
     public void whereEqualsAndLike() throws Exception
     {
         String expected = "WHERE (`column_one` = ? AND `column_two` LIKE ?)";
         String actual   = generator.generate(where(and(eq(COLUMN_ONE, ""), like(COLUMN_TWO, ""))));
+        assertEquals(clean(expected), clean(actual));
+    }
+
+    @Test
+    public void havingEqualsAndLike() throws Exception
+    {
+        String expected = "HAVING (`column_one` = ? AND `column_two` LIKE ?)";
+        String actual   = generator.generate(having(and(eq(COLUMN_ONE, ""), like(COLUMN_TWO, ""))));
         assertEquals(clean(expected), clean(actual));
     }
 
@@ -45,6 +69,15 @@ public class StatementGeneratorTest
     }
 
     @Test
+    public void havingEqualsOrLike() throws Exception
+    {
+        String expected = "HAVING (`column_two` = ? OR `column_three` LIKE ?)";
+        String actual = generator.generate(
+                having(or(eq(COLUMN_TWO, ""), like(COLUMN_THREE, ""))));
+        assertEquals(clean(expected), clean(actual));
+    }
+
+    @Test
     public void whereEqualsAndUnaryLike() throws Exception
     {
         String expected = "WHERE `column_one` = ? AND `column_three` LIKE ?";
@@ -54,11 +87,29 @@ public class StatementGeneratorTest
     }
 
     @Test
+    public void havingEqualsAndUnaryLike() throws Exception
+    {
+        String expected = "HAVING `column_one` = ? AND `column_three` LIKE ?";
+        String actual = generator.generate(
+                having(eq(COLUMN_ONE, ""), and(like(COLUMN_THREE, ""))));
+        assertEquals(clean(expected), clean(actual));
+    }
+
+    @Test
     public void whereEqualsOrUnaryLike() throws Exception
     {
         String expected = "WHERE `column_one` = ? OR `column_three` LIKE ?";
         String actual = generator.generate(
                 where(eq(COLUMN_ONE, ""), or(like(COLUMN_THREE, ""))));
+        assertEquals(clean(expected), clean(actual));
+    }
+
+    @Test
+    public void havingEqualsOrUnaryLike() throws Exception
+    {
+        String expected = "HAVING `column_one` = ? OR `column_three` LIKE ?";
+        String actual = generator.generate(
+                having(eq(COLUMN_ONE, ""), or(like(COLUMN_THREE, ""))));
         assertEquals(clean(expected), clean(actual));
     }
 
@@ -75,6 +126,14 @@ public class StatementGeneratorTest
     {
         String expected = "ORDER BY `column_three` ASC";
         String actual   = generator.generate(order(COLUMN_THREE, OrderDirection.ASC));
+        assertEquals(clean(expected), clean(actual));
+    }
+
+    @Test
+    public void groupBy() throws Exception
+    {
+        String expected = "GROUP BY `column_one`, `column_three`, `column_two`";
+        String actual   = generator.generate(Constraint.groupBy(COLUMN_ONE, COLUMN_THREE, COLUMN_TWO));
         assertEquals(clean(expected), clean(actual));
     }
 
