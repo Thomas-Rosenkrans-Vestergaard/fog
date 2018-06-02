@@ -119,7 +119,7 @@ public class ProfileServlet extends HttpServlet
                         parameters.value("email"),
                         parameters.value("phone"));
 
-                notifications.success("Dine informationer var opdateret.");
+                notifications.success("Dine informationer blev opdateret.");
                 resp.sendRedirect("profile");
 
             } catch (CustomerValidatorException e) {

@@ -16,7 +16,7 @@ import static tvestergaard.fog.Helpers.randomString;
 import static tvestergaard.fog.data.cladding.CladdingColumn.ID;
 import static tvestergaard.fog.data.constraints.Constraint.*;
 
-public class MysqlCustomersDAOTest
+public class MysqlCustomerDAOTest
 {
 
     private static final MysqlDataSource  source = TestDataSource.getSource();
