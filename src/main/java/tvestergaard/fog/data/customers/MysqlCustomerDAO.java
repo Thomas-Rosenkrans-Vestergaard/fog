@@ -260,7 +260,7 @@ public class MysqlCustomerDAO extends AbstractMysqlDAO implements CustomerDAO
                     statement.executeUpdate();
                 }
 
-                final String deleteSQL = "DELETE FROM tokens WHERE id = ?";
+                final String deleteSQL = "DELETE FROM tokens WHERE customer = (SELECT customer FROM (SELECT * FROM tokens) as sub WHERE sub.id = ?) AND `use` = 'EMAIL_VERIFICATION'";
                 try (PreparedStatement statement = connection.prepareStatement(deleteSQL)) {
                     statement.setInt(1, token);
                     statement.executeUpdate();
