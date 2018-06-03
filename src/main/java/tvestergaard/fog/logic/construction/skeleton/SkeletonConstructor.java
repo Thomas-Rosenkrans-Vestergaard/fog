@@ -1,4 +1,7 @@
-package tvestergaard.fog.logic.construction;
+package tvestergaard.fog.logic.construction.skeleton;
+
+import tvestergaard.fog.logic.construction.ComponentMap;
+import tvestergaard.fog.logic.construction.ConstructionSpecification;
 
 public interface SkeletonConstructor
 {

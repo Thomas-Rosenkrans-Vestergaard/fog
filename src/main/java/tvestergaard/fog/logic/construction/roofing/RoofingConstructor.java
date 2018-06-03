@@ -1,6 +1,9 @@
-package tvestergaard.fog.logic.construction;
+package tvestergaard.fog.logic.construction.roofing;
 
 import tvestergaard.fog.data.roofing.RoofingType;
+import tvestergaard.fog.logic.construction.ComponentMap;
+import tvestergaard.fog.logic.construction.ConstructionSpecification;
+import tvestergaard.fog.logic.construction.skeleton.SkeletonConstructionSummary;
 
 public interface RoofingConstructor
 {

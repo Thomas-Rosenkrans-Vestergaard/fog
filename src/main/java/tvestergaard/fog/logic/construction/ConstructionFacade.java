@@ -7,6 +7,10 @@ import tvestergaard.fog.data.orders.Order;
 import tvestergaard.fog.data.orders.OrderDAO;
 import tvestergaard.fog.data.roofing.RoofingDAO;
 import tvestergaard.fog.logic.ApplicationException;
+import tvestergaard.fog.logic.construction.roofing.RoofingConstructor;
+import tvestergaard.fog.logic.construction.roofing.TiledRoofingConstructor;
+import tvestergaard.fog.logic.construction.skeleton.Car01SkeletonConstructor;
+import tvestergaard.fog.logic.construction.skeleton.SkeletonConstructor;
 import tvestergaard.fog.logic.orders.UnknownOrderException;
 
 import java.util.List;
@@ -47,7 +51,7 @@ public class ConstructionFacade
      */
     public ConstructionFacade(ModelDAO modelDAO, RoofingDAO roofingDAO, OrderDAO orderDAO)
     {
-        SkeletonConstructor skeletonConstructor = new CarportSkeletonConstructor();
+        SkeletonConstructor skeletonConstructor = new Car01SkeletonConstructor();
         RoofingConstructor  roofConstructor     = new TiledRoofingConstructor();
         this.garageConstructor = new DelegatorGarageConstructor(skeletonConstructor);
         garageConstructor.register(roofConstructor);

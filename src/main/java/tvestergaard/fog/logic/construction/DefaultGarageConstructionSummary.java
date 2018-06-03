@@ -1,5 +1,8 @@
 package tvestergaard.fog.logic.construction;
 
+import tvestergaard.fog.logic.construction.roofing.RoofingConstructionSummary;
+import tvestergaard.fog.logic.construction.skeleton.SkeletonConstructionSummary;
+
 public class DefaultGarageConstructionSummary implements GarageConstructionSummary
 {
 

@@ -1,9 +1,11 @@
-package tvestergaard.fog.logic.construction;
+package tvestergaard.fog.logic.construction.roofing;
 
 import org.w3c.dom.Document;
 import tvestergaard.fog.data.components.Component;
 import tvestergaard.fog.data.materials.Material;
 import tvestergaard.fog.data.roofing.RoofingType;
+import tvestergaard.fog.logic.construction.*;
+import tvestergaard.fog.logic.construction.skeleton.SkeletonConstructionSummary;
 
 import static tvestergaard.fog.data.roofing.RoofingType.TILED;
 

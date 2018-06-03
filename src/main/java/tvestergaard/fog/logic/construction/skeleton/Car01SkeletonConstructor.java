@@ -1,14 +1,18 @@
-package tvestergaard.fog.logic.construction;
+package tvestergaard.fog.logic.construction.skeleton;
 
 import org.w3c.dom.Document;
 import tvestergaard.fog.data.components.Component;
 import tvestergaard.fog.data.materials.Material;
 import tvestergaard.fog.data.orders.Shed;
+import tvestergaard.fog.logic.construction.*;
+import tvestergaard.fog.logic.construction.skeleton.DefaultSkeletonConstructionSummary;
+import tvestergaard.fog.logic.construction.skeleton.SkeletonConstructionSummary;
+import tvestergaard.fog.logic.construction.skeleton.SkeletonConstructor;
 
 import static tvestergaard.fog.logic.construction.DrawingUtilities.Rotation.HORIZONTAL;
 import static tvestergaard.fog.logic.construction.DrawingUtilities.Rotation.VERTICAL;
 
-public class CarportSkeletonConstructor extends DrawingUtilities implements SkeletonConstructor
+public class Car01SkeletonConstructor extends DrawingUtilities implements SkeletonConstructor
 {
 
     /**

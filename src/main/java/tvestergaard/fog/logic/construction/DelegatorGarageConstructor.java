@@ -2,6 +2,10 @@ package tvestergaard.fog.logic.construction;
 
 import tvestergaard.fog.data.roofing.Roofing;
 import tvestergaard.fog.data.roofing.RoofingType;
+import tvestergaard.fog.logic.construction.roofing.RoofingConstructionSummary;
+import tvestergaard.fog.logic.construction.roofing.RoofingConstructor;
+import tvestergaard.fog.logic.construction.skeleton.SkeletonConstructionSummary;
+import tvestergaard.fog.logic.construction.skeleton.SkeletonConstructor;
 
 import java.util.HashMap;
 import java.util.Map;
