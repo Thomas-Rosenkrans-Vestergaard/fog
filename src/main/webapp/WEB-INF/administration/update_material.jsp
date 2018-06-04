@@ -47,13 +47,14 @@
                     <label for="unit">Enhed</label>
                 </div>
             </div>
-            <c:if test="${not attributes.isEmpty()}">
+                <c:set var="attributes" value="${material.getAttributes()}"/>
+                <c:if test="${not attributes.isEmpty()}">
                 <div class="row">
                     <div class="col s12">
                         <h2>Attributter</h2>
                     </div>
                 </div>
-                <c:forEach items="${material.getAttributes()}" var="attribute">
+                <c:forEach items="${attributes}" var="attribute">
                     <div class="row">
                         <div class="col s12 input-field">
                             <c:set var="definition" value="${attribute.getDefinition()}"/>

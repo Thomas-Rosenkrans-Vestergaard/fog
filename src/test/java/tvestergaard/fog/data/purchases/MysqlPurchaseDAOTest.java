@@ -15,6 +15,7 @@ import tvestergaard.fog.data.employees.MysqlEmployeeDAO;
 import tvestergaard.fog.data.flooring.Flooring;
 import tvestergaard.fog.data.flooring.FlooringBlueprint;
 import tvestergaard.fog.data.flooring.MysqlFlooringDAO;
+import tvestergaard.fog.data.materials.MysqlMaterialDAO;
 import tvestergaard.fog.data.offers.MysqlOfferDAO;
 import tvestergaard.fog.data.offers.Offer;
 import tvestergaard.fog.data.offers.OfferBlueprint;

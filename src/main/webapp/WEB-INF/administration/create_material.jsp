@@ -46,7 +46,7 @@
                     <label for="unit">Enhed</label>
                 </div>
             </div>
-            <c:if test="${not attributes.isEmpty()}">
+            <c:if test="${!attributes.isEmpty()}">
                 <div class="row">
                     <div class="col s12">
                         <h2>Attributter</h2>
