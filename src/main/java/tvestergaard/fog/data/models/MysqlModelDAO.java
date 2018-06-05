@@ -183,10 +183,10 @@ public class MysqlModelDAO extends AbstractMysqlDAO implements ModelDAO
     }
 
     /**
-     * Returns the material choices for the provided garage model.
+     * Returns the materials that can be chosen for garage model components.
      *
      * @param model The garage model to return the material choices for.
-     * @return Returns the material choices for the components of the garage skeleton.The material is then mapped to the
+     * @return Returns the material choices for the components of the garage skeleton. The material is then mapped to the
      * id of the component.
      * @throws DataAccessException When a data storage exception occurs while performing the operation.
      */
