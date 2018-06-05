@@ -19,8 +19,8 @@
             <input type="hidden" name="category" value="${material.getCategoryId()}">
             <div class="row">
                 <div class="col s12 input-field">
-                    <input type="text" name="number" id="number" data-length="12" class="input-length validate"
-                           value="${material.getNumber()}" readonly required>
+                    <input type="text" name="number" id="number" data-length="12" class="input-length"
+                           value="${material.getNumber()}" readonly>
                     <label for="number">Nummer</label>
                 </div>
             </div>
@@ -36,7 +36,7 @@
                 <div class="col s12 input-field">
                     <input type="number" name="price" id="price" min="0" pattern="^[0-9]+([\,][0-9]{0,2})?$"
                            class="validate price-input"
-                           value="${material.getPrice()}" required>
+                           value="${f:toDouble(material.getPrice())}" required>
                     <label for="price">Pris</label>
                 </div>
             </div>

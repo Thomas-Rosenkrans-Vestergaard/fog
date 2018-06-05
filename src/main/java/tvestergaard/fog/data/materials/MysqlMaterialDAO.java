@@ -61,11 +61,14 @@ public class MysqlMaterialDAO extends AbstractMysqlDAO implements MaterialDAO
             binder.bind(statement, constraints);
             ResultSet resultSet = statement.executeQuery();
             String attributeSQL = "SELECT * FROM attribute_definitions ad " +
-                    "INNER JOIN attribute_values av ON ad.id = av.attribute " +
-                    "WHERE av.material = ?";
+                    "LEFT JOIN attribute_values av ON ad.id = av.attribute " +
+                    "WHERE ad.category = (SELECT category FROM materials WHERE materials.id = ?) " +
+                    "AND (av.material = ? || av.material IS NULL) " +
+                    "GROUP BY ad.id";
             try (PreparedStatement attributeStatement = getConnection().prepareStatement(attributeSQL)) {
                 while (resultSet.next()) {
                     attributeStatement.setInt(1, resultSet.getInt("materials.id"));
+                    attributeStatement.setInt(2, resultSet.getInt("materials.id"));
                     ResultSet attributes = attributeStatement.executeQuery();
                     materials.add(createMaterial(resultSet, "materials", "categories", attributes, "ad", "av"));
                 }
@@ -97,6 +100,7 @@ public class MysqlMaterialDAO extends AbstractMysqlDAO implements MaterialDAO
             String attributeSQL = "SELECT * FROM attribute_definitions ad " +
                     "LEFT JOIN attribute_values av ON ad.id = av.attribute " +
                     "WHERE ad.category = (SELECT category FROM materials WHERE materials.id = ?) " +
+                    "AND (av.material = ? || av.material is null) " +
                     "GROUP BY ad.id";
 
             if (!resultSet.first())
@@ -104,6 +108,7 @@ public class MysqlMaterialDAO extends AbstractMysqlDAO implements MaterialDAO
 
             try (PreparedStatement attributeStatement = getConnection().prepareStatement(attributeSQL)) {
                 attributeStatement.setInt(1, resultSet.getInt("materials.id"));
+                attributeStatement.setInt(2, resultSet.getInt("materials.id"));
                 ResultSet attributes = attributeStatement.executeQuery();
                 return createMaterial(resultSet, "materials", "categories", attributes, "ad", "av");
             }
