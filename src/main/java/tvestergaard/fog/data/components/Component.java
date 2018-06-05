@@ -2,8 +2,11 @@ package tvestergaard.fog.data.components;
 
 import tvestergaard.fog.data.materials.Category;
 import tvestergaard.fog.data.materials.Material;
+import tvestergaard.fog.data.materials.attributes.Attribute;
 
-public interface Component extends ComponentConnection, ComponentDefinition
+import java.util.Set;
+
+public interface Component extends ComponentConnection, ComponentDefinition, Material
 {
 
     /**
@@ -69,4 +72,105 @@ public interface Component extends ComponentConnection, ComponentDefinition
      * @return The material assigned to the component definition.
      */
     Material getMaterial();
+
+    /**
+     * Checks if the material is currently active.
+     *
+     * @return {@code true} if the material is currently active. Or {@code false} or has been replaced with a newer version.
+     */
+    @Override default boolean isActive()
+    {
+        return getMaterial().isActive();
+    }
+
+    /**
+     * Returns the material number.
+     *
+     * @return The material number.
+     */
+    @Override default String getNumber()
+    {
+        return getMaterial().getNumber();
+    }
+
+    /**
+     * Returns the description of the material.
+     *
+     * @return The description of the material.
+     */
+    @Override default String getDescription()
+    {
+        return getMaterial().getDescription();
+    }
+
+    /**
+     * Sets the description of the material.
+     *
+     * @param description The new description.
+     */
+    @Override default void setDescription(String description)
+    {
+        getMaterial().setDescription(description);
+    }
+
+    /**
+     * Returns the price of the material.
+     *
+     * @return The price of the material.
+     */
+    @Override default int getPrice()
+    {
+        return getMaterial().getPrice();
+    }
+
+    /**
+     * Sets the price of the material.
+     *
+     * @param price The new price.
+     */
+    @Override default void setPrice(int price)
+    {
+        getMaterial().setPrice(price);
+    }
+
+    /**
+     * Returns the unit size of the material.
+     *
+     * @return the unit size of the material.
+     */
+    @Override default int getUnit()
+    {
+        return getMaterial().getUnit();
+    }
+
+    /**
+     * Sets the unit size of the material.
+     *
+     * @param unit The new unit size of the material.
+     */
+    @Override default void setUnit(int unit)
+    {
+        getMaterial().setUnit(unit);
+    }
+
+    /**
+     * Returns a complete set of the attributes describing the material.
+     *
+     * @return The complete set.
+     */
+    @Override default Set<Attribute> getAttributes()
+    {
+        return getMaterial().getAttributes();
+    }
+
+    /**
+     * Returns the attribute with the provided name.
+     *
+     * @param name The name of the attribute to return.
+     * @return The attribute with the provided name. Returns null if an attribute with the provided name does not exist.
+     */
+    @Override default Attribute getAttribute(String name)
+    {
+        return getMaterial().getAttribute(name);
+    }
 }
