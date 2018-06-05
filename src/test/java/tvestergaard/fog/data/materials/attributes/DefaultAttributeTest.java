@@ -83,7 +83,7 @@ public class DefaultAttributeTest
     public void setIntThrowsIncorrectDataTypeException() throws Exception
     {
         AttributeDefinition definition = new DefaultAttributeDefinition(randomInt(), randomString(), DataType.STRING);
-        DefaultAttribute    instance   = new DefaultAttribute(definition, randomInt());
+        DefaultAttribute    instance   = new DefaultAttribute(definition, randomString());
         instance.setInt(randomInt());
     }
 

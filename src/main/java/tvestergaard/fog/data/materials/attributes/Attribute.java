@@ -47,7 +47,7 @@ public interface Attribute
      * Returns the value of the attribute as a string.
      *
      * @return The value of the attribute as a string.
-     * @throws AttributeFormatException    When the value attribute value could not be converted to a string.
+     * @throws IncorrectDataTypeException  When the value attribute value could not be converted to a string.
      * @throws AttributeValueNullException When the value attribute is {@code null}.
      */
     String getString();
@@ -56,7 +56,7 @@ public interface Attribute
      * Returns the value of the attribute as an integer.
      *
      * @return The value of the attribute as a int.
-     * @throws AttributeFormatException    When the value attribute value could not be converted to an integer.
+     * @throws IncorrectDataTypeException  When the value attribute value could not be converted to an integer.
      * @throws AttributeValueNullException When the value attribute is {@code null}.
      */
     Integer getInt();
