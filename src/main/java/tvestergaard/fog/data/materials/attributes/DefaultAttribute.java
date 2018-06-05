@@ -24,7 +24,7 @@ public class DefaultAttribute implements Attribute
      */
     public DefaultAttribute(AttributeDefinition definition, Object value)
     {
-        if (!validate(value, definition.getDataType()))
+        if (value != null && !validate(value, definition.getDataType()))
             throw new IncorrectDataTypeException();
 
         this.definition = definition;
@@ -46,9 +46,9 @@ public class DefaultAttribute implements Attribute
      *
      * @return The value of the attribute.
      */
-    @Override public String getValue()
+    @Override public Object getValue()
     {
-        return value.toString();
+        return value;
     }
 
     /**

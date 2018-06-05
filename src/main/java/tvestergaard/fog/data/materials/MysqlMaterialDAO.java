@@ -95,8 +95,9 @@ public class MysqlMaterialDAO extends AbstractMysqlDAO implements MaterialDAO
             statement.setInt(1, id);
             ResultSet resultSet = statement.executeQuery();
             String attributeSQL = "SELECT * FROM attribute_definitions ad " +
-                    "INNER JOIN attribute_values av ON ad.id = av.attribute " +
-                    "WHERE av.material = ?";
+                    "LEFT JOIN attribute_values av ON ad.id = av.attribute " +
+                    "WHERE ad.category = (SELECT category FROM materials WHERE materials.id = ?) " +
+                    "GROUP BY ad.id";
 
             if (!resultSet.first())
                 return null;

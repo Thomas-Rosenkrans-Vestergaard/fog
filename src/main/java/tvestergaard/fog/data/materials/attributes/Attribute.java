@@ -18,6 +18,16 @@ public interface Attribute
     Object getValue();
 
     /**
+     * Returns {@code true} if the value in the attribute is {@code null}.
+     *
+     * @return {@code true} if the value in the attribute is {@code null}.
+     */
+    default boolean isNull()
+    {
+        return getValue() == null;
+    }
+
+    /**
      * Sets the value of the attribute.
      *
      * @param attributeValue The new attribute value.

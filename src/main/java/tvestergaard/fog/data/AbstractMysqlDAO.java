@@ -346,7 +346,7 @@ public abstract class AbstractMysqlDAO
     {
         Set<Attribute> result = new HashSet<>();
         while (results.next())
-            result.add(createAttributeValue(results, tAttributesDefinition, tAttributeValues));
+            result.add(createAttribute(results, tAttributesDefinition, tAttributeValues));
 
         return result;
     }
@@ -378,7 +378,7 @@ public abstract class AbstractMysqlDAO
      * @return The resulting {@link Attribute}.
      * @throws SQLException When the factory could not access a required column.
      */
-    protected Attribute createAttributeValue(ResultSet results, String tAttributeDefinition, String tAttributeValues) throws SQLException
+    protected Attribute createAttribute(ResultSet results, String tAttributeDefinition, String tAttributeValues) throws SQLException
     {
         AttributeDefinition definition = createAttributeDefinition(results, tAttributeDefinition);
 
@@ -399,6 +399,12 @@ public abstract class AbstractMysqlDAO
      */
     private Object getAttributeValue(ResultSet results, String tAttributeValue, DataType attributeType) throws SQLException
     {
+
+        // Check for null value.
+        Object o = results.getObject(tAttributeValue + ".value");
+        if (o == null)
+            return null;
+
         if (attributeType == DataType.INT)
             return results.getInt(tAttributeValue + ".value");
 
