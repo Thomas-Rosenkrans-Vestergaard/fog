@@ -56,10 +56,28 @@ public class MutableMaterials implements Materials
     public static class LineImpl implements MaterialLine
     {
 
+        /**
+         * The material specified in the line.
+         */
         private final Material material;
-        private final int      amount;
-        private final String   notes;
 
+        /**
+         * The amount of material needed.
+         */
+        private final int amount;
+
+        /**
+         * The notes on the usage of the material.
+         */
+        private final String notes;
+
+        /**
+         * Creates a new {@link LineImpl}.
+         *
+         * @param material The material specified in the line.
+         * @param amount   The amount of material needed.
+         * @param notes    The notes on the usage of the material.
+         */
         public LineImpl(Material material, int amount, String notes)
         {
             this.material = material;
