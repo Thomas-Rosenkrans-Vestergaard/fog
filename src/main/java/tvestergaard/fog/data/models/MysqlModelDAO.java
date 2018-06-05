@@ -190,7 +190,7 @@ public class MysqlModelDAO extends AbstractMysqlDAO implements ModelDAO
      * id of the component.
      * @throws DataAccessException When a data storage exception occurs while performing the operation.
      */
-    @Override public Multimap<Integer, SimpleMaterial> getMaterialChoices(int model) throws DataAccessException
+    @Override public Multimap<Integer, SimpleMaterial> getComponentMaterials(int model) throws DataAccessException
     {
         Multimap<Integer, SimpleMaterial> results = ArrayListMultimap.create();
 

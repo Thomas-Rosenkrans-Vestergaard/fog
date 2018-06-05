@@ -65,5 +65,5 @@ public interface ModelDAO
      * id of the component.
      * @throws DataAccessException When a data storage exception occurs while performing the operation.
      */
-    Multimap<Integer, SimpleMaterial> getMaterialChoices(int model) throws DataAccessException;
+    Multimap<Integer, SimpleMaterial> getComponentMaterials(int model) throws DataAccessException;
 }

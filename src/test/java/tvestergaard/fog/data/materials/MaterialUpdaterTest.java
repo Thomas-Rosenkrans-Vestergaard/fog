@@ -14,6 +14,7 @@ import static tvestergaard.fog.Helpers.*;
 
 public class MaterialUpdaterTest
 {
+
     @Test
     public void from() throws Exception
     {
