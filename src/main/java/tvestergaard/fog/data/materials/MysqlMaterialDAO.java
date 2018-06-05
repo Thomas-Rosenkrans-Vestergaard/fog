@@ -18,6 +18,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import static tvestergaard.fog.data.constraints.Constraint.eq;
+import static tvestergaard.fog.data.constraints.Constraint.where;
+
 public class MysqlMaterialDAO extends AbstractMysqlDAO implements MaterialDAO
 {
 
@@ -89,33 +92,7 @@ public class MysqlMaterialDAO extends AbstractMysqlDAO implements MaterialDAO
      */
     @Override public Material get(int id) throws MysqlDataAccessException
     {
-        final String SQL = "SELECT * FROM materials " +
-                "INNER JOIN categories ON materials.category = categories.id " +
-                "WHERE materials.id = ? " +
-                "GROUP BY materials.number " +
-                "ORDER BY max(materials.id) DESC ";
-        try (PreparedStatement statement = getConnection().prepareStatement(SQL)) {
-            statement.setInt(1, id);
-            ResultSet resultSet = statement.executeQuery();
-            String attributeSQL = "SELECT * FROM attribute_definitions ad " +
-                    "LEFT JOIN attribute_values av ON ad.id = av.attribute " +
-                    "WHERE ad.category = (SELECT category FROM materials WHERE materials.id = ?) " +
-                    "AND (av.material = ? || av.material is null) " +
-                    "GROUP BY ad.id";
-
-            if (!resultSet.first())
-                return null;
-
-            try (PreparedStatement attributeStatement = getConnection().prepareStatement(attributeSQL)) {
-                attributeStatement.setInt(1, resultSet.getInt("materials.id"));
-                attributeStatement.setInt(2, resultSet.getInt("materials.id"));
-                ResultSet attributes = attributeStatement.executeQuery();
-                return createMaterial(resultSet, "materials", "categories", attributes, "ad", "av");
-            }
-
-        } catch (SQLException e) {
-            throw new MysqlDataAccessException(e);
-        }
+        return first(where(eq(MaterialColumn.ID, id)));
     }
 
     /**

@@ -70,7 +70,7 @@ public class EmployeeFacade
     public List<Employee> get()
     {
         try {
-            return employeeDAO.get(null);
+            return employeeDAO.get();
         } catch (DataAccessException e) {
             throw new ApplicationException(e);
         }

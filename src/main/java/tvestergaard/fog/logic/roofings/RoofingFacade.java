@@ -61,7 +61,7 @@ public class RoofingFacade
     public List<Roofing> get()
     {
         try {
-            return dao.get(null);
+            return dao.get();
         } catch (DataAccessException e) {
             throw new ApplicationException(e);
         }

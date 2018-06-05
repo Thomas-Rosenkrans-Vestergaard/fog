@@ -98,7 +98,7 @@ public class MysqlOfferDAOTest
     @Test
     public void get() throws Exception
     {
-        List<Offer> offers = offerDAO.get(null);
+        List<Offer> offers = offerDAO.get();
         assertEquals(1, offers.size());
         assertEquals(offer1, offers.get(0));
     }

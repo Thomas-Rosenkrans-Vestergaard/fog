@@ -56,7 +56,7 @@ public class CladdingFacade
     public List<Cladding> get()
     {
         try {
-            return dao.get(null);
+            return dao.get();
         } catch (DataAccessException e) {
             throw new ApplicationException(e);
         }

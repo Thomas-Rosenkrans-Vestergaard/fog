@@ -50,7 +50,7 @@ public class MysqlCustomerDAOTest
     @Test
     public void get() throws Exception
     {
-        List<Customer> customers = dao.get(null);
+        List<Customer> customers = dao.get();
 
         assertEquals(5, customers.size());
         assertEquals(customer1, customers.get(0));

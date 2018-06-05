@@ -9,6 +9,17 @@ public interface CustomerDAO
 {
 
     /**
+     * Returns the customers in the data storage.
+     *
+     * @return The complete list of customers in data storage.
+     * @throws DataAccessException When a data storage exception occurs while performing the operation.
+     */
+    default List<Customer> get() throws DataAccessException
+    {
+        return get(new Constraints<>());
+    }
+
+    /**
      * Returns the customers in the data storage. The results can be constrained using the provided constraints.
      *
      * @param constraints The constraints that modify the resulting list.

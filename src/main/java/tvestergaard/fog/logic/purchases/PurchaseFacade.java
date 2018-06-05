@@ -91,7 +91,7 @@ public class PurchaseFacade
     public List<Purchase> get()
     {
         try {
-            return purchaseDAO.get(null);
+            return purchaseDAO.get();
         } catch (DataAccessException e) {
             throw new ApplicationException(e);
         }

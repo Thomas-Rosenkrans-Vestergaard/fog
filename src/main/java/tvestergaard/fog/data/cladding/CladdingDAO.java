@@ -9,10 +9,21 @@ public interface CladdingDAO
 {
 
     /**
+     * Returns the claddings in the data storage.
+     *
+     * @return The complete list of the claddings in the data storage.
+     * @throws DataAccessException When a data storage exception occurs while performing the operation.
+     */
+    default List<Cladding> get() throws DataAccessException
+    {
+        return get(new Constraints<>());
+    }
+
+    /**
      * Returns the claddings in the data storage. The results can be constrained using the provided constraints.
      *
      * @param constraints The constraints that modify the resulting list.
-     * @return The complete list of the claddings in the data storage.
+     * @return The list of the claddings in the data storage.
      * @throws DataAccessException When a data storage exception occurs while performing the operation.
      */
     List<Cladding> get(Constraints<CladdingColumn> constraints) throws DataAccessException;

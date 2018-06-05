@@ -61,7 +61,7 @@ public class MysqlEmployeeDAOTest
     @Test
     public void get() throws Exception
     {
-        List<Employee> employees = dao.get(null);
+        List<Employee> employees = dao.get();
 
         assertEquals(5, employees.size());
         assertEquals(employee1, employees.get(0));

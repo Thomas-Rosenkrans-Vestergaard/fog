@@ -34,9 +34,9 @@
             </div>
             <div class="row">
                 <div class="col s12 input-field">
-                    <input type="number" name="price" id="price" min="0" pattern="^[0-9]+([\,][0-9]{0,2})?$"
+                    <input type="text" name="price" id="price" pattern="^\d+(\.\d{1,2})?$"
                            class="validate price-input"
-                           value="${f:toDouble(material.getPrice())}" required>
+                           value="${f:toPriceFormat(material.getPrice())}" required>
                     <label for="price">Pris</label>
                 </div>
             </div>

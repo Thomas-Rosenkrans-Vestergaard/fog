@@ -113,7 +113,7 @@ public class MysqlPurchaseDAOTest
     @Test
     public void get() throws Exception
     {
-        List<Purchase> actual = purchaseDAO.get(null);
+        List<Purchase> actual = purchaseDAO.get();
         assertEquals(1, actual.size());
         assertEquals(purchase1, actual.get(0));
     }

@@ -9,6 +9,17 @@ public interface FlooringDAO
 {
 
     /**
+     * Returns the floorings in the data storage.
+     *
+     * @return The resulting floorings.
+     * @throws DataAccessException When a data storage exception occurs while performing the operation.
+     */
+    default List<Flooring> get() throws DataAccessException
+    {
+        return get(new Constraints<>());
+    }
+
+    /**
      * Returns the floorings in the data storage. The results can be constrained using the provided constraints.
      *
      * @param constraints The constraints that modify the resulting list.

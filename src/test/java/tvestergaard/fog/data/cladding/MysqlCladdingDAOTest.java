@@ -53,7 +53,7 @@ public class MysqlCladdingDAOTest
     @Test
     public void get() throws Exception
     {
-        List<Cladding> claddings = dao.get(null);
+        List<Cladding> claddings = dao.get();
 
         assertEquals(5, claddings.size());
         assertEquals(cladding1, claddings.get(0));
@@ -69,7 +69,7 @@ public class MysqlCladdingDAOTest
         MysqlDataSource source = mock(MysqlDataSource.class);
         when(source.getConnection()).thenThrow(SQLException.class);
         MysqlCladdingDAO dao = new MysqlCladdingDAO(source);
-        dao.get(null);
+        dao.get();
     }
 
     @Test

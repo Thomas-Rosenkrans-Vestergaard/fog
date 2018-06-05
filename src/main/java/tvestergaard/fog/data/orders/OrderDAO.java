@@ -9,6 +9,17 @@ public interface OrderDAO
 {
 
     /**
+     * Returns the orders in the data storage.
+     *
+     * @return The resulting orders.
+     * @throws DataAccessException When a data storage exception occurs while performing the operation.
+     */
+    default List<Order> get() throws DataAccessException
+    {
+        return get(new Constraints<>());
+    }
+
+    /**
      * Returns the orders in the data storage. The results can be constrained using the provided constraints.
      *
      * @param constraints The constraints that modify the resulting list.

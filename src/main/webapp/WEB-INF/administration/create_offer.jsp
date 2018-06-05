@@ -216,7 +216,7 @@
                 </div>
                 <div class="col s8 input-field">
                     ${csrf}
-                    <input type="number" class="validate" pattern="^[0-9]+([\,][0-9]{0,2})?$" min="0" name="price"
+                    <input type="text" class="validate" pattern="^\d+(\.\d{1,2})?$" name="price"
                            id="price" required>
                     <label for="price">Tilbud pris</label>
                 </div>

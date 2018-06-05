@@ -5,9 +5,9 @@
     <tlib-version>1.0</tlib-version>
     <uri>/WEB-INF/tld/functions</uri>
     <function>
-        <name>toDouble</name>
+        <name>toPriceFormat</name>
         <function-class>tvestergaard.fog.presentation.PresentationFunctions</function-class>
-        <function-signature>java.lang.String toDouble(java.lang.Integer)</function-signature>
+        <function-signature>java.lang.String toPriceFormat(java.lang.Integer)</function-signature>
     </function>
     <function>
         <name>formatBoolean</name>

@@ -120,7 +120,7 @@ public class OfferFacade
     public List<Offer> get()
     {
         try {
-            return offerDAO.get(null);
+            return offerDAO.get();
         } catch (DataAccessException e) {
             throw new ApplicationException(e);
         }

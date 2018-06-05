@@ -34,8 +34,8 @@
             </div>
             <div class="row">
                 <div class="col s12 input-field">
-                    <input type="number" class="validate" min="0" name="price" id="price"
-                           pattern="^[0-9]+([\,][0-9]{0,2})?$"
+                    <input type="text" class="validate" name="price" id="price"
+                           pattern="^\d+(\.\d{1,2})?$"
                            required>
                     <label for="price">Pris</label>
                 </div>

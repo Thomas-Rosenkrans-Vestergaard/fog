@@ -12,10 +12,21 @@ public interface MaterialDAO
 {
 
     /**
+     * Returns the materials in the data storage.
+     *
+     * @return The complete list of the materials in the data storage.
+     * @throws DataAccessException When a data storage exception occurs while performing the operation.
+     */
+    default List<Material> get() throws DataAccessException
+    {
+        return get(new Constraints<>());
+    }
+
+    /**
      * Returns the materials in the data storage. The results can be constrained using the provided constraints.
      *
      * @param constraints The constraints that restrict the results returned from the query.
-     * @return The complete list of the materials in the data storage.
+     * @return The materials in the data storage.
      * @throws DataAccessException When a data storage exception occurs while performing the operation.
      */
     List<Material> get(Constraints<MaterialColumn> constraints) throws DataAccessException;

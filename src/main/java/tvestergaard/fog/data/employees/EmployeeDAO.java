@@ -9,6 +9,17 @@ public interface EmployeeDAO
 {
 
     /**
+     * Returns the employees in the data storage.
+     *
+     * @return The resulting employees.
+     * @throws DataAccessException When a data storage exception occurs while performing the operation.
+     */
+    default List<Employee> get() throws DataAccessException
+    {
+        return get(new Constraints<>());
+    }
+
+    /**
      * Returns the employees in the data storage. The results can be constrained using the provided constraints.
      *
      * @param constraints The constraints that modify the resulting list.

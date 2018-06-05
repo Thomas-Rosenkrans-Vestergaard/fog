@@ -90,7 +90,7 @@ public class CustomerFacade
     public List<Customer> get()
     {
         try {
-            return customerDAO.get(null);
+            return customerDAO.get();
         } catch (DataAccessException e) {
             throw new ApplicationException(e);
         }

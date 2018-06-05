@@ -47,7 +47,7 @@ public class MysqlFlooringDAOTest
     @Test
     public void get() throws Exception
     {
-        List<Flooring> floorings = dao.get(null);
+        List<Flooring> floorings = dao.get();
 
         assertEquals(5, floorings.size());
         assertEquals(flooring1, floorings.get(0));

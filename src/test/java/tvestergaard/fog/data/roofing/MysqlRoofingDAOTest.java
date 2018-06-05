@@ -86,7 +86,7 @@ public class MysqlRoofingDAOTest
     @Test
     public void get() throws Exception
     {
-        List<Roofing> roofings = dao.get(null);
+        List<Roofing> roofings = dao.get();
 
         assertEquals(5, roofings.size());
         assertEquals(roofing1, roofings.get(0));

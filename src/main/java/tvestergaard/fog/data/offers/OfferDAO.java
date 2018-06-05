@@ -12,6 +12,17 @@ public interface OfferDAO
 {
 
     /**
+     * Returns the offers in the data storage.
+     *
+     * @return The resulting offers.
+     * @throws DataAccessException When a data storage exception occurs while performing the operation.
+     */
+    default List<Offer> get() throws DataAccessException
+    {
+        return get(new Constraints<>());
+    }
+
+    /**
      * Returns the offers in the data storage. The results can be constrained using the provided constraints.
      *
      * @param constraints The constraints that modify the resulting list.

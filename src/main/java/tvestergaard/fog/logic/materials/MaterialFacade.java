@@ -67,7 +67,7 @@ public class MaterialFacade
     public List<Material> get()
     {
         try {
-            return dao.get(null);
+            return dao.get();
         } catch (DataAccessException e) {
             throw new ApplicationException(e);
         }

@@ -72,7 +72,7 @@ public class MysqlMaterialDAOTest
     @Test
     public void get() throws Exception
     {
-        List<Material> materials = dao.get(null);
+        List<Material> materials = dao.get();
 
         assertEquals(5, materials.size());
         assertEquals(material1, materials.get(4));
@@ -114,6 +114,14 @@ public class MysqlMaterialDAOTest
         assertEquals(material3, materials.get(2));
         assertEquals(material2, materials.get(3));
         assertEquals(material1, materials.get(4));
+    }
+
+    @Test
+    public void first() throws Exception
+    {
+        assertEquals(material1, dao.first(where(eq(ID, material1.getId()))));
+        assertEquals(material2, dao.first(where(eq(ID, material2.getId()))));
+        assertEquals(null, dao.first(where(eq(ID, 0))));
     }
 
     @Test

@@ -79,7 +79,7 @@ public class OrderFacade
     public List<Order> get()
     {
         try {
-            return dao.get(null);
+            return dao.get();
         } catch (DataAccessException e) {
             throw new ApplicationException(e);
         }
