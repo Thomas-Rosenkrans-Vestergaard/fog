@@ -20,10 +20,10 @@
                     <option value="${category.getId()}"><c:out value="${category.getName()}"/></option>
                 </c:forEach>
             </select>
-            <label for="category">Materiale at oprette.</label>
+            <label for="category">Materialetypen.</label>
         </div>
-        <div class="col s2">
-            <input type="submit" name="submit" value="OPRET" class="btn-large waves-effect waves-light">
+        <div class="col s2 input-field">
+            <input style="width: 100%" type="submit" name="submit" value="OPRET" class="btn-large">
         </div>
     </div>
 </form>

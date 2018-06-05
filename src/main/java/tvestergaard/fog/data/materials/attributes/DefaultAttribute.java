@@ -71,7 +71,7 @@ public class DefaultAttribute implements Attribute
      * @param attributeValue The new attribute value.
      * @throws IncorrectDataTypeException When the attribute does not accept an int.
      */
-    @Override public void setInt(int attributeValue)
+    @Override public void setInt(Integer attributeValue)
     {
         if (definition.getDataType() != DataType.INT)
             throw new IncorrectDataTypeException();
@@ -83,13 +83,16 @@ public class DefaultAttribute implements Attribute
      * Returns the value of the attribute as a string.
      *
      * @return The value of the attribute as a string.
-     * @throws AttributeFormatException When the value associated with the attribute could not be converted to a the
-     *                                  result format.
+     * @throws AttributeValueNullException When the value attribute is {@code null}.
+     * @throws IncorrectDataTypeException  When the value attribute value could not be converted to a string.
      */
     @Override public String getString()
     {
+        if (value == null)
+            throw new AttributeValueNullException();
+
         if (definition.getDataType() != DataType.STRING)
-            throw new AttributeFormatException();
+            throw new IncorrectDataTypeException();
 
         return (String) value;
     }
@@ -98,15 +101,18 @@ public class DefaultAttribute implements Attribute
      * Returns the value of the attribute as a int.
      *
      * @return The value of the attribute as a int.
-     * @throws AttributeFormatException When the value associated with the attribute could not be converted to a the
-     *                                  result format.
+     * @throws AttributeValueNullException When the value attribute is {@code null}.
+     * @throws IncorrectDataTypeException  When the value attribute value could not be converted to an integer.
      */
-    @Override public int getInt()
+    @Override public Integer getInt()
     {
-        if (definition.getDataType() != DataType.INT)
-            throw new AttributeFormatException();
+        if (value == null)
+            throw new AttributeValueNullException();
 
-        return (int) value;
+        if (definition.getDataType() != DataType.INT)
+            throw new IncorrectDataTypeException();
+
+        return (Integer) value;
     }
 
     /**

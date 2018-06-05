@@ -41,23 +41,23 @@ public interface Attribute
      * @param attributeValue The new attribute value.
      * @throws IncorrectDataTypeException When the attribute does not accept an int.
      */
-    void setInt(int attributeValue);
+    void setInt(Integer attributeValue);
 
     /**
      * Returns the value of the attribute as a string.
      *
      * @return The value of the attribute as a string.
-     * @throws AttributeFormatException When the value associated with the attribute could not be converted to a the
-     *                                  result format.
+     * @throws AttributeFormatException    When the value attribute value could not be converted to a string.
+     * @throws AttributeValueNullException When the value attribute is {@code null}.
      */
     String getString();
 
     /**
-     * Returns the value of the attribute as a int.
+     * Returns the value of the attribute as an integer.
      *
      * @return The value of the attribute as a int.
-     * @throws AttributeFormatException When the value associated with the attribute could not be converted to a the
-     *                                  result format.
+     * @throws AttributeFormatException    When the value attribute value could not be converted to an integer.
+     * @throws AttributeValueNullException When the value attribute is {@code null}.
      */
-    int getInt();
+    Integer getInt();
 }
