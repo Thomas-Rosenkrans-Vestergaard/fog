@@ -281,7 +281,7 @@ public class AdministrationRoofingsServlet extends AdministrationServlet
                 return;
             }
 
-            request.setAttribute("title", "Opdater roofing componenter");
+            request.setAttribute("title", "Opdater roofing komponenter");
             request.setAttribute("definitions", roofingFacade.getComponentDefinitions(parameters.getEnum("roofing", RoofingType.class)));
             request.setAttribute("csrf", csrf(request));
             request.getRequestDispatcher("/WEB-INF/administration/update_roofing_components.jsp").forward(request, response);

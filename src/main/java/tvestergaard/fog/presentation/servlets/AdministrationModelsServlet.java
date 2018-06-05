@@ -167,7 +167,7 @@ public class AdministrationModelsServlet extends AdministrationServlet
                 return;
             }
 
-            request.setAttribute("title", "Opdater model componenter");
+            request.setAttribute("title", "Opdater model komponenter");
             request.setAttribute("definitions", modelFacade.getComponentDefinitions(parameters.getInt("model")));
             request.setAttribute("csrf", csrf(request));
             request.getRequestDispatcher("/WEB-INF/administration/update_model_components.jsp").forward(request, response);
