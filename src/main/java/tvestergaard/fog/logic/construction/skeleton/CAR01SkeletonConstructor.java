@@ -251,14 +251,4 @@ public class CAR01SkeletonConstructor extends DrawingUtilities implements Skelet
         filledRect(aerialDocument, thickness, thickness, x, topRow);
         filledRect(aerialDocument, thickness, thickness, x, bottomRow);
     }
-
-    private static class Components {
-
-        private final ComponentMap components;
-
-        public Components(ComponentMap components)
-        {
-            this.components = components;
-        }
-    }
 }

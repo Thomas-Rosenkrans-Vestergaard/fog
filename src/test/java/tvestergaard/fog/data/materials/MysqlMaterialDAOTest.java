@@ -7,6 +7,7 @@ import org.junit.Test;
 import tvestergaard.fog.data.TestDataSource;
 import tvestergaard.fog.data.constraints.OrderDirection;
 import tvestergaard.fog.data.materials.attributes.*;
+import tvestergaard.fog.data.materials.categories.CategoryRecord;
 
 import java.sql.Connection;
 import java.util.*;

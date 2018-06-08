@@ -12,9 +12,13 @@ public class RafterWood extends AbstractWoodCategory
      * Creates a new {@link RafterWood} category.
      *
      * @param material The material to extract attributes from.
+     * @throws IncorrectCategoryException When the provided material is not of the correct category.
      */
     public RafterWood(Material material)
     {
         super(material);
+
+        if (material.getCategory().getId() != 2)
+            throw new IncorrectCategoryException();
     }
 }

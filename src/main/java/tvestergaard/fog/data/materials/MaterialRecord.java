@@ -205,7 +205,15 @@ public class MaterialRecord implements Material
         factories.put(RoofTile.class, RoofTile::new);
     }
 
-    @Override public <T extends Category> T getCategory(Class<T> category)
+    /**
+     * Returns the specific type of category the material belongs to.
+     *
+     * @param category The class of the category.
+     * @param <T>      The type of the category.
+     * @return The category instance.
+     * @throws IncorrectCategoryException When the category could not be converted.
+     */
+    public <T extends Category> T getCategory(Class<T> category) throws IncorrectCategoryException
     {
         Function<Material, Object> factory = factories.get(category);
 

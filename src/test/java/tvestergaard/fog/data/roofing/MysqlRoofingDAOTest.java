@@ -8,6 +8,7 @@ import tvestergaard.fog.data.TestDataSource;
 import tvestergaard.fog.data.components.*;
 import tvestergaard.fog.data.constraints.OrderDirection;
 import tvestergaard.fog.data.materials.*;
+import tvestergaard.fog.data.materials.categories.CategoryRecord;
 
 import java.sql.Connection;
 import java.util.ArrayList;

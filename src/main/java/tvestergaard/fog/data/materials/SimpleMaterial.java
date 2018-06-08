@@ -1,5 +1,8 @@
 package tvestergaard.fog.data.materials;
 
+import tvestergaard.fog.data.materials.categories.Category;
+import tvestergaard.fog.data.materials.categories.IncorrectCategoryException;
+
 public interface SimpleMaterial extends MaterialUpdater
 {
 
@@ -17,5 +20,13 @@ public interface SimpleMaterial extends MaterialUpdater
      */
     Category getCategory();
 
-    <T extends Category> T getCategory(Class<T> category);
+    /**
+     * Returns the specific type of category the material belongs to.
+     *
+     * @param category The class of the category.
+     * @param <T>      The type of the category.
+     * @return The category instance.
+     * @throws IncorrectCategoryException When the category could not be converted.
+     */
+    <T extends Category> T getCategory(Class<T> category) throws IncorrectCategoryException;
 }

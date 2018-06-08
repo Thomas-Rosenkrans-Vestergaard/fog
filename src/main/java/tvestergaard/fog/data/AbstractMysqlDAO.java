@@ -16,6 +16,7 @@ import tvestergaard.fog.data.flooring.Flooring;
 import tvestergaard.fog.data.flooring.FlooringRecord;
 import tvestergaard.fog.data.materials.*;
 import tvestergaard.fog.data.materials.attributes.*;
+import tvestergaard.fog.data.materials.categories.CategoryRecord;
 import tvestergaard.fog.data.models.Model;
 import tvestergaard.fog.data.models.ModelRecord;
 import tvestergaard.fog.data.offers.Offer;

@@ -1,6 +1,5 @@
 package tvestergaard.fog.data.materials.categories;
 
-import tvestergaard.fog.data.materials.Category;
 import tvestergaard.fog.data.materials.Material;
 
 public abstract class AbstractCategory implements Category

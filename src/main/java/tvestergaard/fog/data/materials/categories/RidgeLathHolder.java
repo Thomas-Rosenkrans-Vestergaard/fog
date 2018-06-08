@@ -13,10 +13,14 @@ public class RidgeLathHolder extends AbstractCategory
      * Creates a new {@link RidgeLathHolder} category.
      *
      * @param material The material to extract attributes from.
+     * @throws IncorrectCategoryException When the provided material is not of the correct category.
      */
     public RidgeLathHolder(Material material)
     {
         super(material);
+
+        if (material.getCategory().getId() != 7)
+            throw new IncorrectCategoryException();
     }
 
     /**

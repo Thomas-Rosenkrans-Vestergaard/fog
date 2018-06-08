@@ -1,6 +1,5 @@
 package tvestergaard.fog.data.materials.categories;
 
-import tvestergaard.fog.data.materials.Category;
 import tvestergaard.fog.data.materials.Material;
 import tvestergaard.fog.data.materials.attributes.Attribute;
 
@@ -14,10 +13,14 @@ public class Pole extends AbstractCategory
      * Creates a new {@link Pole} category.
      *
      * @param material The material to extract attributes from.
+     * @throws IncorrectCategoryException When the provided material is not of the correct category.
      */
     public Pole(Material material)
     {
         super(material);
+
+        if (material.getCategory().getId() != 4)
+            throw new IncorrectCategoryException();
     }
 
     /**

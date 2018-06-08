@@ -13,10 +13,14 @@ public class RoofTile extends AbstractCategory
      * Creates a new {@link RoofTile} category.
      *
      * @param material The material to extract attributes from.
+     * @throws IncorrectCategoryException When the provided material is not of the correct category.
      */
     public RoofTile(Material material)
     {
         super(material);
+
+        if (material.getCategory().getId() != 5)
+            throw new IncorrectCategoryException();
     }
 
     /**

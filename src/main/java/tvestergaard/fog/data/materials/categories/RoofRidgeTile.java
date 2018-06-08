@@ -13,10 +13,14 @@ public class RoofRidgeTile extends AbstractCategory
      * Creates a new {@link RoofRidgeTile} category.
      *
      * @param material The material to extract attributes from.
+     * @throws IncorrectCategoryException When the provided material is not of the correct category.
      */
     public RoofRidgeTile(Material material)
     {
         super(material);
+
+        if (material.getCategory().getId() != 6)
+            throw new IncorrectCategoryException();
     }
 
     /**

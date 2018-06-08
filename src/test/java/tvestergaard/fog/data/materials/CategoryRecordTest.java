@@ -1,6 +1,7 @@
 package tvestergaard.fog.data.materials;
 
 import org.junit.Test;
+import tvestergaard.fog.data.materials.categories.CategoryRecord;
 
 import static org.junit.Assert.assertEquals;
 import static tvestergaard.fog.Helpers.randomInt;
