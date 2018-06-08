@@ -67,8 +67,9 @@ public class ConstructionFacade
      * @return The summary of the construction.
      * @throws ApplicationException  When a DataAccessException occurs.
      * @throws UnknownOrderException When the order with the provided id is unknown to the application.
+     * @throws ConstructionException When an exception occurs while constructing the order.
      */
-    public GarageConstructionSummary construct(int orderId) throws UnknownOrderException
+    public GarageConstructionSummary construct(int orderId) throws UnknownOrderException, ConstructionException
     {
         try {
             Order order = orderDAO.first(where(eq(ID, orderId)));
@@ -87,8 +88,9 @@ public class ConstructionFacade
      *
      * @param order The order to construct.
      * @return The summary of the construction.
+     * @throws ConstructionException When an exception occurs while constructing the order.
      */
-    public GarageConstructionSummary construct(Order order)
+    public GarageConstructionSummary construct(Order order) throws ConstructionException
     {
         try {
             ConstructionSpecification specification      = ConstructionSpecification.from(order);

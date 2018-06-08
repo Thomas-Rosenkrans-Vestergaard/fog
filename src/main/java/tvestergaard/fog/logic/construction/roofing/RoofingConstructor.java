@@ -2,6 +2,7 @@ package tvestergaard.fog.logic.construction.roofing;
 
 import tvestergaard.fog.data.roofing.RoofingType;
 import tvestergaard.fog.logic.construction.ComponentMap;
+import tvestergaard.fog.logic.construction.ConstructionException;
 import tvestergaard.fog.logic.construction.ConstructionSpecification;
 import tvestergaard.fog.logic.construction.skeleton.SkeletonConstructionSummary;
 
@@ -22,8 +23,9 @@ public interface RoofingConstructor
      * @param components                  The components to use while constructing the roofing.
      * @param skeletonConstructionSummary The object containing information about the construction of the garage skeleton.
      * @return The summary containing information about the construction of the roofing.
+     * @throws ConstructionException When an exception occurs while constructing the order.
      */
     RoofingConstructionSummary construct(ConstructionSpecification specification,
                                          ComponentMap components,
-                                         SkeletonConstructionSummary skeletonConstructionSummary);
+                                         SkeletonConstructionSummary skeletonConstructionSummary) throws ConstructionException;
 }

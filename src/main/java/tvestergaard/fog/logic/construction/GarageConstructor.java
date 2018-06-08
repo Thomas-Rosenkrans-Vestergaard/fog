@@ -10,8 +10,9 @@ public interface GarageConstructor
      * @param skeletonComponents The components used to construct the skeleton of the garage.
      * @param roofingComponents  The components used to construct the roofing of the garage.
      * @return The summary of the construction.
+     * @throws ConstructionException When an exception occurs while constructing the order.
      */
     GarageConstructionSummary construct(ConstructionSpecification specifications,
                                         ComponentMap skeletonComponents,
-                                        ComponentMap roofingComponents);
+                                        ComponentMap roofingComponents) throws ConstructionException;
 }
