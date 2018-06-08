@@ -4,6 +4,7 @@ import tvestergaard.fog.data.customers.Customer;
 import tvestergaard.fog.data.offers.Offer;
 import tvestergaard.fog.data.offers.OfferColumn;
 import tvestergaard.fog.data.purchases.Purchase;
+import tvestergaard.fog.logic.construction.ConstructionException;
 import tvestergaard.fog.logic.customers.InactiveCustomerException;
 import tvestergaard.fog.logic.employees.InsufficientPermissionsException;
 import tvestergaard.fog.logic.offers.OfferFacade;
@@ -119,6 +120,8 @@ public class OffersServlet extends HttpServlet
             notifications.error("Unknown offer.");
         } catch (OfferNotOpenException e) {
             notifications.error("Offer not open.");
+        } catch (ConstructionException e) {
+            notifications.error(e.getClass().getCanonicalName()); // TODO: fix
         }
 
         resp.sendRedirect("order");

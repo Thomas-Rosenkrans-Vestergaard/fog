@@ -51,10 +51,12 @@ public class DelegatorGarageConstructor implements GarageConstructor
      * @param skeletonComponents The components used to construct the skeleton of the garage.
      * @param roofingComponents  The components used to construct the roofing of the garage.
      * @return The summary of the construction.
+     * @throws ConstructionException When an exception occurs while constructing the product.
      */
     @Override public GarageConstructionSummary construct(ConstructionSpecification specifications,
                                                          ComponentMap skeletonComponents,
                                                          ComponentMap roofingComponents)
+            throws ConstructionException
     {
         SkeletonConstructionSummary skeletonConstructionSummary = constructSkeleton(specifications, skeletonComponents);
         return new DefaultGarageConstructionSummary(
@@ -68,8 +70,10 @@ public class DelegatorGarageConstructor implements GarageConstructor
      * @param specification The specifications that the skeleton must satisfy.
      * @param components    The components to use while constructing the skeleton.
      * @return The object containing information about the construction of the skeleton.
+     * @throws ConstructionException When an exception occurs while constructing the product.
      */
     private SkeletonConstructionSummary constructSkeleton(ConstructionSpecification specification, ComponentMap components)
+            throws ConstructionException
     {
         return skeletonConstructor.construct(specification, components);
     }
@@ -81,10 +85,12 @@ public class DelegatorGarageConstructor implements GarageConstructor
      * @param components                  The components to use while constructing the skeleton.
      * @param skeletonConstructionSummary The object containing information about the construction of the garage skeleton.
      * @return The object containing information about the construction of the roofing of the garage.
+     * @throws ConstructionException When an exception occurs while constructing the product.
      */
     private RoofingConstructionSummary constructRoofing(ConstructionSpecification specification,
                                                         ComponentMap components,
                                                         SkeletonConstructionSummary skeletonConstructionSummary)
+            throws ConstructionException
     {
         Roofing            roofing         = specification.getRoofing();
         RoofingType        roofingType     = roofing.getType();

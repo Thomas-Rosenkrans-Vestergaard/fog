@@ -15,6 +15,7 @@ import tvestergaard.fog.data.orders.OrderDAO;
 import tvestergaard.fog.data.purchases.Purchase;
 import tvestergaard.fog.data.tokens.TokenUse;
 import tvestergaard.fog.logic.ApplicationException;
+import tvestergaard.fog.logic.construction.ConstructionException;
 import tvestergaard.fog.logic.customers.InactiveCustomerException;
 import tvestergaard.fog.logic.email.ApplicationMailer;
 import tvestergaard.fog.logic.employees.InactiveEmployeeException;
@@ -288,13 +289,15 @@ public class OfferFacade
      * @throws InsufficientPermissionsException When the employee who created the offer is no longer a salesman.l
      * @throws UnknownOfferException            WHen the provided offer id is unknown to the application.
      * @throws InactiveCustomerException        When the customer accepting the offer, is not active.
+     * @throws ConstructionException            When the garage could not be constructed.
      */
     public Purchase accept(int offer, int tokenId, String tokenSecret) throws ExpiredTokenException,
                                                                               IncorrectTokenException,
                                                                               InsufficientPermissionsException,
                                                                               OfferNotOpenException,
                                                                               UnknownOfferException,
-                                                                              InactiveCustomerException
+                                                                              InactiveCustomerException,
+                                                                              ConstructionException
     {
         try {
             if (!tokenAuthenticator.authenticate(new TokenPair(tokenId, tokenSecret), TokenUse.OFFER_EMAIL))

@@ -6,6 +6,7 @@ import tvestergaard.fog.data.constraints.Constraints;
 import tvestergaard.fog.data.materials.*;
 import tvestergaard.fog.data.materials.attributes.Attribute;
 import tvestergaard.fog.data.materials.attributes.AttributeDefinition;
+import tvestergaard.fog.data.materials.categories.Category;
 import tvestergaard.fog.logic.ApplicationException;
 
 import java.util.List;

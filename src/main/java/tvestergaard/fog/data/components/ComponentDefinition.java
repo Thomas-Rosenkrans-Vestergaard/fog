@@ -1,6 +1,6 @@
 package tvestergaard.fog.data.components;
 
-import tvestergaard.fog.data.materials.Category;
+import tvestergaard.fog.data.materials.categories.Category;
 
 /**
  * Represents some component definition.

@@ -1,6 +1,7 @@
 package tvestergaard.fog.presentation.servlets;
 
 import tvestergaard.fog.data.purchases.Purchase;
+import tvestergaard.fog.logic.construction.ConstructionException;
 import tvestergaard.fog.logic.customers.InactiveCustomerException;
 import tvestergaard.fog.logic.employees.InsufficientPermissionsException;
 import tvestergaard.fog.logic.offers.OfferFacade;
@@ -140,6 +141,8 @@ public class ApiServlet extends HttpServlet
                 notifications.error("Ukendt tilbud.");
             } catch (InactiveCustomerException e) {
                 notifications.error("Inaktiv kunde.");
+            } catch (ConstructionException e){
+                notifications.error(e.getClass().getCanonicalName()); // TODO: fix
             }
 
             response.sendRedirect("offers");

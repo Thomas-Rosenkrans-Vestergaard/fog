@@ -9,6 +9,7 @@ import tvestergaard.fog.data.orders.ShedRecord;
 import tvestergaard.fog.data.roofing.Roofing;
 import tvestergaard.fog.data.roofing.RoofingColumn;
 import tvestergaard.fog.logic.claddings.CladdingFacade;
+import tvestergaard.fog.logic.construction.ConstructionException;
 import tvestergaard.fog.logic.construction.ConstructionFacade;
 import tvestergaard.fog.logic.construction.ConstructionSpecification;
 import tvestergaard.fog.logic.construction.GarageConstructionSummary;
@@ -106,10 +107,15 @@ public class AdministrationConstructServlet extends AdministrationServlet
                 parameters.getInt("slope"),
                 createShed(parameters));
 
-        GarageConstructionSummary summary = constructionFacade.construct(specification);
-        req.setAttribute("summary", summary);
+        try {
+            GarageConstructionSummary summary = constructionFacade.construct(specification);
+            req.setAttribute("summary", summary);
+            req.getRequestDispatcher("/WEB-INF/administration/construct_summary.jsp").forward(req, resp);
+        } catch (ConstructionException e) {
+            notifications.error(e.getClass().getCanonicalName()); // TODO: fix
+        }
 
-        req.getRequestDispatcher("/WEB-INF/administration/construct_summary.jsp").forward(req, resp);
+        resp.sendRedirect("construct");
     }
 
     private Shed createShed(Parameters parameters)

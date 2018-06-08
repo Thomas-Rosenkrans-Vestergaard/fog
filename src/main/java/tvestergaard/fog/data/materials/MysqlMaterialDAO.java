@@ -11,6 +11,7 @@ import tvestergaard.fog.data.constraints.StatementBinder;
 import tvestergaard.fog.data.constraints.StatementGenerator;
 import tvestergaard.fog.data.materials.attributes.Attribute;
 import tvestergaard.fog.data.materials.attributes.AttributeDefinition;
+import tvestergaard.fog.data.materials.categories.Category;
 
 import java.sql.*;
 import java.util.ArrayList;

@@ -12,6 +12,7 @@ import tvestergaard.fog.data.purchases.PurchaseColumn;
 import tvestergaard.fog.data.purchases.PurchaseDAO;
 import tvestergaard.fog.data.purchases.bom.*;
 import tvestergaard.fog.logic.ApplicationException;
+import tvestergaard.fog.logic.construction.ConstructionException;
 import tvestergaard.fog.logic.construction.ConstructionFacade;
 import tvestergaard.fog.logic.construction.GarageConstructionSummary;
 import tvestergaard.fog.logic.construction.MaterialLine;
@@ -125,11 +126,13 @@ public class PurchaseFacade
      *                                          role {@link Role#SALESMAN}.
      * @throws UnknownOfferException            When the provided offer id is unknown to the application.
      * @throws OfferNotOpenException            When the offer is not open, and a purchase cannot be created from it.
+     * @throws ConstructionException            When an exception occurs during the construction of the product.
      */
     public Purchase create(int offerId) throws InactiveCustomerException,
                                                InsufficientPermissionsException,
                                                UnknownOfferException,
-                                               OfferNotOpenException
+                                               OfferNotOpenException,
+                                               ConstructionException
     {
         try {
             Offer offer = offerDAO.first(where(eq(ID, offerId)));

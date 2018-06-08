@@ -4,6 +4,7 @@ import tvestergaard.fog.data.employees.Employee;
 import tvestergaard.fog.data.employees.Role;
 import tvestergaard.fog.data.offers.OfferColumn;
 import tvestergaard.fog.data.orders.Order;
+import tvestergaard.fog.logic.construction.ConstructionException;
 import tvestergaard.fog.logic.construction.ConstructionFacade;
 import tvestergaard.fog.logic.construction.GarageConstructionSummary;
 import tvestergaard.fog.logic.customers.InactiveCustomerException;
@@ -107,12 +108,15 @@ public class AdministrationOffersServlet extends AdministrationServlet
                 request.setAttribute("summary", summary);
                 request.setAttribute("csrf", csrf(request));
                 request.getRequestDispatcher("/WEB-INF/administration/create_offer.jsp").forward(request, response);
+                return;
 
             } catch (UnknownOrderException e) {
                 notifications.error("No order with provided id.");
-                response.sendRedirect("offers");
-                return;
+            } catch (ConstructionException e) {
+                notifications.error(e.getClass().getCanonicalName()); // TODO: fix
             }
+
+            response.sendRedirect("offers");
         }
     }
 

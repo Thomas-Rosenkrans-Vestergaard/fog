@@ -102,7 +102,14 @@ public class ConstructionFacade
         }
     }
 
-    public GarageConstructionSummary construct(ConstructionSpecification specification)
+    /**
+     * Constructs a carport using the provided specifications.
+     *
+     * @param specification The specifications of the carport to construct.
+     * @return The result of the construction.
+     * @throws ConstructionException When an exception occurs while constructing the garage.
+     */
+    public GarageConstructionSummary construct(ConstructionSpecification specification) throws ConstructionException
     {
         try {
             List<Component> skeletonComponents = modelDAO.getComponents(1);

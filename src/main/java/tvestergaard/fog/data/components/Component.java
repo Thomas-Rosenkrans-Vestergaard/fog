@@ -1,8 +1,9 @@
 package tvestergaard.fog.data.components;
 
-import tvestergaard.fog.data.materials.Category;
 import tvestergaard.fog.data.materials.Material;
 import tvestergaard.fog.data.materials.attributes.Attribute;
+import tvestergaard.fog.data.materials.categories.Category;
+import tvestergaard.fog.data.materials.categories.IncorrectCategoryException;
 
 import java.util.Set;
 
@@ -64,6 +65,18 @@ public interface Component extends ComponentConnection, ComponentDefinition, Mat
     default Category getCategory()
     {
         return getDefinition().getCategory();
+    }
+
+    /**
+     * Returns the specific type of category the material belongs to.
+     *
+     * @param category The class of the category.
+     * @return The category instance.
+     * @throws IncorrectCategoryException When the category could not be converted.
+     */
+    default <T extends Category> T getCategory(Class<T> category) throws IncorrectCategoryException
+    {
+        return getMaterial().getCategory(category);
     }
 
     /**
