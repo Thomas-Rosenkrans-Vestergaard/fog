@@ -12,7 +12,7 @@ import tvestergaard.fog.logic.construction.skeleton.SkeletonConstructor;
 import static tvestergaard.fog.logic.construction.DrawingUtilities.Rotation.HORIZONTAL;
 import static tvestergaard.fog.logic.construction.DrawingUtilities.Rotation.VERTICAL;
 
-public class Car01SkeletonConstructor extends DrawingUtilities implements SkeletonConstructor
+public class CAR01SkeletonConstructor extends DrawingUtilities implements SkeletonConstructor
 {
 
     /**
@@ -250,5 +250,15 @@ public class Car01SkeletonConstructor extends DrawingUtilities implements Skelet
         filledRect(sideDocument, thickness, height + strapWidth, x, PADDING);
         filledRect(aerialDocument, thickness, thickness, x, topRow);
         filledRect(aerialDocument, thickness, thickness, x, bottomRow);
+    }
+
+    private static class Components {
+
+        private final ComponentMap components;
+
+        public Components(ComponentMap components)
+        {
+            this.components = components;
+        }
     }
 }

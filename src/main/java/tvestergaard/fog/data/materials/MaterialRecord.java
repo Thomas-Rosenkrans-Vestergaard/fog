@@ -1,11 +1,10 @@
 package tvestergaard.fog.data.materials;
 
 import tvestergaard.fog.data.materials.attributes.Attribute;
+import tvestergaard.fog.data.materials.categories.*;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
+import java.util.function.Function;
 
 public class MaterialRecord implements Material
 {
@@ -191,6 +190,29 @@ public class MaterialRecord implements Material
     @Override public Category getCategory()
     {
         return category;
+    }
+
+    private final static Map<Class<? extends Category>, Function<Material, Object>> factories = new HashMap<>();
+
+    static {
+        factories.put(Pole.class, Pole::new);
+        factories.put(Board.class, Board::new);
+        factories.put(RafterWood.class, RafterWood::new);
+        factories.put(Reglar.class, Reglar::new);
+        factories.put(RidgeLathHolder.class, RidgeLathHolder::new);
+        factories.put(RoofLath.class, RoofLath::new);
+        factories.put(RoofRidgeTile.class, RoofRidgeTile::new);
+        factories.put(RoofTile.class, RoofTile::new);
+    }
+
+    @Override public <T extends Category> T getCategory(Class<T> category)
+    {
+        Function<Material, Object> factory = factories.get(category);
+
+        if (factory == null)
+            throw new IllegalStateException("No factory for category " + category.getName());
+
+        return category.cast(factory.apply(this));
     }
 
     /**

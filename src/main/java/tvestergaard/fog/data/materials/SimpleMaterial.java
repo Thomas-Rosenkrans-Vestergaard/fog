@@ -16,4 +16,6 @@ public interface SimpleMaterial extends MaterialUpdater
      * @return The category the material belongs to.
      */
     Category getCategory();
+
+    <T extends Category> T getCategory(Class<T> category);
 }
