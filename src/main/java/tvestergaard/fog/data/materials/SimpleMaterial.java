@@ -28,5 +28,5 @@ public interface SimpleMaterial extends MaterialUpdater
      * @return The category instance.
      * @throws IncorrectCategoryException When the category could not be converted.
      */
-    <T extends Category> T getCategory(Class<T> category) throws IncorrectCategoryException;
+    <T extends Category> T as(Class<T> category) throws IncorrectCategoryException;
 }

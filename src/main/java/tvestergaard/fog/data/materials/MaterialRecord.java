@@ -213,7 +213,7 @@ public class MaterialRecord implements Material
      * @return The category instance.
      * @throws IncorrectCategoryException When the category could not be converted.
      */
-    public <T extends Category> T getCategory(Class<T> category) throws IncorrectCategoryException
+    public <T extends Category> T as(Class<T> category) throws IncorrectCategoryException
     {
         Function<Material, Object> factory = factories.get(category);
 

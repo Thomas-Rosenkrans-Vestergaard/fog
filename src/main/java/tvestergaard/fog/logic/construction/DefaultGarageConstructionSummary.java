@@ -17,11 +17,6 @@ public class DefaultGarageConstructionSummary implements GarageConstructionSumma
     private final RoofingConstructionSummary roofingConstructionSummary;
 
     /**
-     * The total cost of the construction.
-     */
-    private int total = 0;
-
-    /**
      * Creates a new {@link DefaultGarageConstructionSummary}.
      *
      * @param skeletonConstructionSummary The object containing information about the construction of the garage skeleton.
@@ -32,9 +27,6 @@ public class DefaultGarageConstructionSummary implements GarageConstructionSumma
     {
         this.skeletonConstructionSummary = skeletonConstructionSummary;
         this.roofingConstructionSummary = roofingConstructionSummary;
-
-        this.total += skeletonConstructionSummary.getTotal();
-        this.total += skeletonConstructionSummary.getTotal();
     }
 
     /**
@@ -64,6 +56,6 @@ public class DefaultGarageConstructionSummary implements GarageConstructionSumma
      */
     @Override public int getTotal()
     {
-        return total;
+        return roofingConstructionSummary.getTotal() + skeletonConstructionSummary.getTotal();
     }
 }

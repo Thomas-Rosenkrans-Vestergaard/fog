@@ -6,7 +6,7 @@ import tvestergaard.fog.data.materials.attributes.Attribute;
 /**
  * Provides a type safe method for extracting attributes from some material.
  */
-public class RoofRidgeTile extends AbstractCategory
+public class RoofRidgeTile extends AbstractCategoryMaterial
 {
 
     /**

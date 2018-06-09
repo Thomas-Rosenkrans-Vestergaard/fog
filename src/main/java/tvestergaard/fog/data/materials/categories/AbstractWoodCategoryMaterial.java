@@ -3,15 +3,15 @@ package tvestergaard.fog.data.materials.categories;
 import tvestergaard.fog.data.materials.Material;
 import tvestergaard.fog.data.materials.attributes.Attribute;
 
-public class AbstractWoodCategory extends AbstractCategory
+public class AbstractWoodCategoryMaterial extends AbstractCategoryMaterial
 {
 
     /**
-     * Creates a new {@link AbstractCategory}.
+     * Creates a new {@link AbstractCategoryMaterial}.
      *
      * @param material The material from which to extract attribute values.
      */
-    public AbstractWoodCategory(Material material)
+    public AbstractWoodCategoryMaterial(Material material)
     {
         super(material);
     }

@@ -111,6 +111,7 @@ public class AdministrationConstructServlet extends AdministrationServlet
             GarageConstructionSummary summary = constructionFacade.construct(specification);
             req.setAttribute("summary", summary);
             req.getRequestDispatcher("/WEB-INF/administration/construct_summary.jsp").forward(req, resp);
+            return;
         } catch (ConstructionException e) {
             notifications.error(e.getClass().getCanonicalName()); // TODO: fix
         }

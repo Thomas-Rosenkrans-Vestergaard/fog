@@ -74,9 +74,9 @@ public interface Component extends ComponentConnection, ComponentDefinition, Mat
      * @return The category instance.
      * @throws IncorrectCategoryException When the category could not be converted.
      */
-    default <T extends Category> T getCategory(Class<T> category) throws IncorrectCategoryException
+    default <T extends Category> T as(Class<T> category) throws IncorrectCategoryException
     {
-        return getMaterial().getCategory(category);
+        return getMaterial().as(category);
     }
 
     /**

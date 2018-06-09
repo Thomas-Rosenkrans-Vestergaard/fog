@@ -5,7 +5,7 @@ import tvestergaard.fog.data.materials.Material;
 /**
  * Provides a type safe method for extracting attributes from some material.
  */
-public class Board extends AbstractWoodCategory
+public class Board extends AbstractWoodCategoryMaterial
 {
 
     /**
