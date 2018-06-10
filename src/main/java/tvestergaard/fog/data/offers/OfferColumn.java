@@ -27,6 +27,8 @@ public enum OfferColumn implements Column<OfferColumn>, MysqlColumn<OfferColumn>
             return "employees.name";
         if (this == CUSTOMER_NAME)
             return "customers.name";
+        if (this == CUSTOMER)
+            return "o.customer";
 
         return "offers." + this.name().toLowerCase();
     }

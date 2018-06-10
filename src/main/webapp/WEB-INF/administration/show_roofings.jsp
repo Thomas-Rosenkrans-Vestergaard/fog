@@ -1,8 +1,19 @@
 <%@page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ include file="../includes/top.jspf" %>
 <div class="row">
-    <div class="col s12">
+    <div class="col s10">
         <h2>Tagbeklædninger</h2>
+    </div>
+    <div class="col s2">
+        <form>
+            <input type="hidden" name="action" value="create">
+            <select class="header-select" name="type" id="type" id="header-select">
+                <c:forEach items="${types}" var="type">
+                    <option value="" disabled selected>Opret tag</option>
+                    <option value="${type.name()}"><c:out value="${type.name()}"/></option>
+                </c:forEach>
+            </select>
+        </form>
     </div>
 </div>
 <div class="row">
@@ -11,26 +22,6 @@
             Mauris dolor felis, sagittis at, luctus sed, aliquam non, tellus. Vivamus luctus egestas leo. Sed elit dui,
             pellentesque a, faucibus vel, interdum nec, diam. Itaque earum rerum hic tenetur a sapiente delectus, ut aut
             reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus asperiores repellat.</p>
-    </div>
-</div>
-<div class="row">
-    <div class="col s12">
-        <form method="get">
-            <input type="hidden" name="action" value="create">
-            <div class="row">
-                <div class="col s6">
-                    <select name="type" id="type">
-                        <c:forEach items="${types}" var="type">
-                            <option value="${type.name()}"><c:out value="${type.name()}"/></option>
-                        </c:forEach>
-                    </select>
-                    <label for="type">Tagtype at oprette.</label>
-                </div>
-                <div class="col s6">
-                    <input type="submit" name="submit" value="OPRET" class="btn-large waves-effect waves-light">
-                </div>
-            </div>
-        </form>
     </div>
 </div>
 <div class="row">

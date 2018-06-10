@@ -29,4 +29,9 @@ $(document).ready(function () {
 
         location.href = $(this).attr("data-link");
     });
+
+    $('.header-select').on('change', function () {
+        console.log($(this).parents('form'));
+        $(this).parents('form').submit();
+    });
 });

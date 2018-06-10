@@ -255,3 +255,19 @@ tr#table-pagination td {
 tr#table-pagination {
     border-bottom: none;
 }
+
+.header-select {
+    background: #014785;
+    margin-top: 28px;
+    color: white;
+}
+
+.header-select .caret {
+    color: white !important;
+    right: 20px !important;
+}
+
+.header-select > input {
+    padding-left: 20px !important;
+    border-bottom: none !important;
+}
