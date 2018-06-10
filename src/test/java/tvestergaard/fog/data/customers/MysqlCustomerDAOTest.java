@@ -4,7 +4,6 @@ import com.mysql.cj.jdbc.MysqlDataSource;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import tvestergaard.fog.data.MysqlDataAccessException;
 import tvestergaard.fog.data.TestDataSource;
 import tvestergaard.fog.data.constraints.OrderDirection;
 
@@ -14,8 +13,8 @@ import java.util.List;
 import static org.junit.Assert.*;
 import static tvestergaard.fog.Helpers.randomBoolean;
 import static tvestergaard.fog.Helpers.randomString;
-import static tvestergaard.fog.data.cladding.CladdingColumn.ID;
 import static tvestergaard.fog.data.constraints.Constraint.*;
+import static tvestergaard.fog.data.customers.CustomerColumn.ID;
 
 public class MysqlCustomerDAOTest
 {
@@ -63,7 +62,7 @@ public class MysqlCustomerDAOTest
     @Test
     public void getWhereEquals() throws Exception
     {
-        List<Customer> customers = dao.get(where(eq(CustomerColumn.ID, customer1.getId())));
+        List<Customer> customers = dao.get(where(eq(ID, customer1.getId())));
 
         assertEquals(1, customers.size());
         assertEquals(customer1, customers.get(0));

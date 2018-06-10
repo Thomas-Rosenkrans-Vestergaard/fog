@@ -46,8 +46,6 @@ public class BridgerTest
         when(material2.getUnit()).thenReturn(1);
         when(material2.getId()).thenReturn(1);
 
-        BiConsumer<>
-
         Bridger<TestCategory> instance    = new Bridger<TestCategory>(materials, material -> material.getMeasurement());
         MutableMaterials      destination = new MutableMaterials();
         instance.bridge(5, destination);

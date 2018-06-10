@@ -8,7 +8,7 @@ import tvestergaard.fog.data.components.ComponentDAO;
 import tvestergaard.fog.data.components.ComponentDefinition;
 import tvestergaard.fog.data.components.ComponentDefinitionBlueprint;
 import tvestergaard.fog.data.components.MysqlComponentDAO;
-import tvestergaard.fog.data.materials.Category;
+import tvestergaard.fog.data.materials.categories.Category;
 import tvestergaard.fog.data.materials.categories.CategoryRecord;
 
 import java.sql.Connection;

@@ -3,8 +3,9 @@ package tvestergaard.fog.data.materials;
 import org.junit.Test;
 import tvestergaard.fog.data.materials.attributes.Attribute;
 import tvestergaard.fog.data.materials.attributes.DataType;
-import tvestergaard.fog.data.materials.attributes.DefaultAttributeDefinition;
 import tvestergaard.fog.data.materials.attributes.DefaultAttribute;
+import tvestergaard.fog.data.materials.attributes.DefaultAttributeDefinition;
+import tvestergaard.fog.data.materials.categories.Category;
 import tvestergaard.fog.data.materials.categories.CategoryRecord;
 
 import java.util.HashSet;

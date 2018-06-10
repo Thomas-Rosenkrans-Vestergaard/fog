@@ -7,7 +7,10 @@ import org.junit.Test;
 import tvestergaard.fog.data.TestDataSource;
 import tvestergaard.fog.data.components.*;
 import tvestergaard.fog.data.constraints.OrderDirection;
-import tvestergaard.fog.data.materials.*;
+import tvestergaard.fog.data.materials.Material;
+import tvestergaard.fog.data.materials.MaterialBlueprint;
+import tvestergaard.fog.data.materials.MysqlMaterialDAO;
+import tvestergaard.fog.data.materials.categories.Category;
 import tvestergaard.fog.data.materials.categories.CategoryRecord;
 
 import java.sql.Connection;

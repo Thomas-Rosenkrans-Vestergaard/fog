@@ -15,8 +15,8 @@ import java.util.Set;
 import static org.junit.Assert.*;
 import static tvestergaard.fog.Helpers.randomBoolean;
 import static tvestergaard.fog.Helpers.randomString;
-import static tvestergaard.fog.data.cladding.CladdingColumn.ID;
 import static tvestergaard.fog.data.constraints.Constraint.*;
+import static tvestergaard.fog.data.employees.EmployeeColumn.ID;
 import static tvestergaard.fog.data.employees.Role.*;
 
 public class MysqlEmployeeDAOTest
@@ -74,7 +74,7 @@ public class MysqlEmployeeDAOTest
     @Test
     public void getWhereEquals() throws Exception
     {
-        List<Employee> employees = dao.get(where(eq(EmployeeColumn.ID, employee1.getId())));
+        List<Employee> employees = dao.get(where(eq(ID, employee1.getId())));
 
         assertEquals(1, employees.size());
         assertEquals(employee1, employees.get(0));
