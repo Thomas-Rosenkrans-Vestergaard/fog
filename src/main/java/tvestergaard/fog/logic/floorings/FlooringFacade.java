@@ -48,6 +48,22 @@ public class FlooringFacade
     }
 
     /**
+     * Returns the flooring with the provided id.
+     *
+     * @param id The id of the flooring to return.
+     * @return The flooring with the provided id. Returns {@code null} if no such flooring exists.
+     * @throws ApplicationException When a data storage exception occurs while performing the operation.
+     */
+    public Flooring get(int id)
+    {
+        try {
+            return dao.get(id);
+        } catch (DataAccessException e) {
+            throw new ApplicationException(e);
+        }
+    }
+
+    /**
      * Returns the floorings in the data storage.
      *
      * @return The list of the floorings in the data storage.

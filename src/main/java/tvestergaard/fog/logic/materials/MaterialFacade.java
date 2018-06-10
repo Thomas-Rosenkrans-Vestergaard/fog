@@ -13,9 +13,7 @@ import java.util.List;
 import java.util.Set;
 
 import static tvestergaard.fog.data.constraints.Constraint.eq;
-import static tvestergaard.fog.data.constraints.Constraint.where;
 import static tvestergaard.fog.data.materials.MaterialColumn.ACTIVE;
-import static tvestergaard.fog.data.materials.MaterialColumn.NUMBER;
 
 public class MaterialFacade
 {
@@ -112,7 +110,7 @@ public class MaterialFacade
             if (!reasons.isEmpty())
                 throw new MaterialValidatorException(reasons);
 
-            Material material = dao.first(where(eq(NUMBER, number)));
+            Material material = dao.get(number);
             if (material != null)
                 throw new DuplicateMaterialNumberException();
 

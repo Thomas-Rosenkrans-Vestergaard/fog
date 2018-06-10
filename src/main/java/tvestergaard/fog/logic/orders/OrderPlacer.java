@@ -2,7 +2,6 @@ package tvestergaard.fog.logic.orders;
 
 import tvestergaard.fog.data.DataAccessException;
 import tvestergaard.fog.data.customers.Customer;
-import tvestergaard.fog.data.customers.CustomerColumn;
 import tvestergaard.fog.data.customers.CustomerDAO;
 import tvestergaard.fog.data.customers.UnknownCustomerException;
 import tvestergaard.fog.data.orders.Order;
@@ -13,9 +12,6 @@ import tvestergaard.fog.logic.customers.InactiveCustomerException;
 import tvestergaard.fog.logic.email.ApplicationMailer;
 
 import java.util.Set;
-
-import static tvestergaard.fog.data.constraints.Constraint.eq;
-import static tvestergaard.fog.data.constraints.Constraint.where;
 
 /**
  * Places orders for some customer.
@@ -99,7 +95,7 @@ public class OrderPlacer
         if (!reasons.isEmpty())
             throw new OrderValidatorException(reasons);
 
-        Customer customer = customerDAO.first(where(eq(CustomerColumn.ID, customerId)));
+        Customer customer = customerDAO.get(customerId);
 
         if (customer == null)
             throw new UnknownCustomerException();

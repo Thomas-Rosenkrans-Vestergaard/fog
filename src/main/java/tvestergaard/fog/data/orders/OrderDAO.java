@@ -5,6 +5,10 @@ import tvestergaard.fog.data.constraints.Constraints;
 
 import java.util.List;
 
+import static tvestergaard.fog.data.constraints.Constraint.eq;
+import static tvestergaard.fog.data.constraints.Constraint.where;
+import static tvestergaard.fog.data.orders.OrderColumn.ID;
+
 public interface OrderDAO
 {
 
@@ -17,6 +21,18 @@ public interface OrderDAO
     default List<Order> get() throws DataAccessException
     {
         return get(new Constraints<>());
+    }
+
+    /**
+     * Returns the order with the provided id.
+     *
+     * @param id The id of the order to return.
+     * @return The order with the provided id. Returns {@code null} if no such order exists.
+     * @throws DataAccessException When a data storage exception occurs while performing the operation.
+     */
+    default Order get(int id) throws DataAccessException
+    {
+        return first(where(eq(ID, id)));
     }
 
     /**

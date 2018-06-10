@@ -11,10 +11,6 @@ import tvestergaard.fog.logic.email.ApplicationMailer;
 import java.util.List;
 import java.util.Set;
 
-import static tvestergaard.fog.data.constraints.Constraint.eq;
-import static tvestergaard.fog.data.constraints.Constraint.where;
-import static tvestergaard.fog.data.orders.OrderColumn.ID;
-
 public class OrderFacade
 {
 
@@ -65,6 +61,22 @@ public class OrderFacade
     {
         try {
             return dao.get(constraints);
+        } catch (DataAccessException e) {
+            throw new ApplicationException(e);
+        }
+    }
+
+    /**
+     * Returns the order with the provided id.
+     *
+     * @param id The id of the order to return.
+     * @return The order with the provided id. Returns {@code null} if no such order exists.
+     * @throws ApplicationException When a data storage exception occurs while performing the operation.
+     */
+    public Order get(int id)
+    {
+        try {
+            return dao.get(id);
         } catch (DataAccessException e) {
             throw new ApplicationException(e);
         }
@@ -130,9 +142,9 @@ public class OrderFacade
             int slope,
             ShedBlueprint shed,
             String comment) throws OrderValidatorException,
-            UnknownCustomerException,
-            InactiveCustomerException,
-            UnverifiedCustomerException
+                                   UnknownCustomerException,
+                                   InactiveCustomerException,
+                                   UnverifiedCustomerException
     {
         try {
             return placer.place(customer, width, length, height, roofing, slope, shed, comment);
@@ -172,13 +184,13 @@ public class OrderFacade
      * @throws OrderValidatorException When the provided information is not valid.
      */
     public boolean update(int id,
-            int width,
-            int length,
-            int height,
-            int roofing,
-            int slope,
-            ShedUpdater shedUpdater,
-            String comment) throws OrderValidatorException
+                          int width,
+                          int length,
+                          int height,
+                          int roofing,
+                          int slope,
+                          ShedUpdater shedUpdater,
+                          String comment) throws OrderValidatorException
     {
         try {
             Set<OrderError> reasons = validator.validate(width, length, height, slope, shedUpdater);
@@ -205,7 +217,7 @@ public class OrderFacade
     {
 
         try {
-            Order order = dao.first(where(eq(ID, orderId)));
+            Order order = dao.get(orderId);
             if (order == null)
                 throw new UnknownOrderException();
             if (!order.isActive())

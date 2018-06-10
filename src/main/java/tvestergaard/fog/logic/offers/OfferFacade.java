@@ -3,7 +3,6 @@ package tvestergaard.fog.logic.offers;
 import tvestergaard.fog.data.DataAccessException;
 import tvestergaard.fog.data.constraints.Constraints;
 import tvestergaard.fog.data.employees.Employee;
-import tvestergaard.fog.data.employees.EmployeeColumn;
 import tvestergaard.fog.data.employees.EmployeeDAO;
 import tvestergaard.fog.data.employees.Role;
 import tvestergaard.fog.data.offers.Offer;
@@ -27,10 +26,6 @@ import tvestergaard.fog.presentation.Facades;
 
 import java.util.List;
 import java.util.Set;
-
-import static tvestergaard.fog.data.constraints.Constraint.eq;
-import static tvestergaard.fog.data.constraints.Constraint.where;
-import static tvestergaard.fog.data.orders.OrderColumn.ID;
 
 public class OfferFacade
 {
@@ -128,16 +123,32 @@ public class OfferFacade
     }
 
     /**
+     * Returns the offer with the provided id.
+     *
+     * @param id The id of the offer to return.
+     * @return The offer with the provided id. Returns {@code null} if no such offer exists.
+     * @throws ApplicationException When a data storage exception occurs while performing the operation.
+     */
+    public Offer get(int id)
+    {
+        try {
+            return offerDAO.get(id);
+        } catch (DataAccessException e) {
+            throw new ApplicationException(e);
+        }
+    }
+
+    /**
      * Returns the offers issued to the order with the provided id.
      *
      * @param order The id of the order to return the related offers of.
      * @return The offers related to the order with the provided id.
      * @throws ApplicationException When a data storage exception occurs while performing the operation.
      */
-    public List get(int order)
+    public List getByOrder(int order)
     {
         try {
-            return offerDAO.get(order);
+            return offerDAO.getByOrder(order);
         } catch (DataAccessException e) {
             throw new ApplicationException(e);
         }
@@ -194,7 +205,7 @@ public class OfferFacade
 
         try {
 
-            Order order = orderDAO.first(where(eq(ID, orderId)));
+            Order order = orderDAO.get(orderId);
             if (order == null)
                 throw new UnknownOrderException();
             if (!order.isActive())
@@ -202,7 +213,7 @@ public class OfferFacade
             if (!order.getCustomer().isActive())
                 throw new InactiveCustomerException();
 
-            Employee employee = employeeDAO.first(where(eq(EmployeeColumn.ID, employeeId)));
+            Employee employee = employeeDAO.get(employeeId);
             if (employee == null)
                 throw new UnknownEmployeeException();
             if (!employee.isActive())
@@ -235,7 +246,7 @@ public class OfferFacade
     {
         try {
 
-            Offer offer = offerDAO.first(where(eq(OfferColumn.ID, offerId)));
+            Offer offer = offerDAO.get(offerId);
             if (offer == null)
                 throw new UnknownOfferException();
             if (!offer.isOpen())

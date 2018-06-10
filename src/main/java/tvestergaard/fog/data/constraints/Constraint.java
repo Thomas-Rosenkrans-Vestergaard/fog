@@ -53,7 +53,7 @@ public interface Constraint
      * @param <C> The type of the column to operate upon.
      * @return The newly created instance of {@link EqualsCondition}.
      */
-    static <C extends Column<C>> EqualsCondition eq(Column<C> column, Object value)
+    static <C extends Column<C>> EqualsCondition<C> eq(Column<C> column, Object value)
     {
         return new EqualsCondition(column, value);
     }
@@ -67,7 +67,7 @@ public interface Constraint
      * @param <C> The type of the column to operate upon.
      * @return The newly created instance of {@link NotCondition}.
      */
-    static <C extends Column<C>> NotCondition not(Column<C> column, Object value)
+    static <C extends Column<C>> NotCondition<C> not(Column<C> column, Object value)
     {
         return new NotCondition(column, value);
     }
@@ -80,7 +80,7 @@ public interface Constraint
      * @param <C> The type of the column to operate upon.
      * @return The newly created instance of {@link LikeCondition}.
      */
-    static <C extends Column<C>> LikeCondition like(Column<C> column, String value)
+    static <C extends Column<C>> LikeCondition<C> like(Column<C> column, String value)
     {
         return new LikeCondition(column, value);
     }
@@ -93,7 +93,7 @@ public interface Constraint
      * @param <C> The type of the column to operate upon.
      * @return The newly created {@link BinaryAndCondition}.
      */
-    static <C extends Column<C>> BinaryAndCondition and(WhereCondition<C> left, WhereCondition<C> right)
+    static <C extends Column<C>> BinaryAndCondition<C> and(WhereCondition<C> left, WhereCondition<C> right)
     {
         return new BinaryAndCondition(left, right);
     }
@@ -105,7 +105,7 @@ public interface Constraint
      * @param <C> The type of the column to operate upon.
      * @return The newly created instance of {@link UnaryAndCondition}.
      */
-    static <C extends Column<C>> UnaryAndCondition and(WhereCondition<C> operand)
+    static <C extends Column<C>> UnaryAndCondition<C> and(WhereCondition<C> operand)
     {
         return new UnaryAndCondition(operand);
     }
@@ -118,7 +118,7 @@ public interface Constraint
      * @param <C> The type of the column to operate upon.
      * @return The newly created {@link BinaryOrCondition}.
      */
-    static <C extends Column<C>> BinaryOrCondition or(WhereCondition<C> left, WhereCondition<C> right)
+    static <C extends Column<C>> BinaryOrCondition<C> or(WhereCondition<C> left, WhereCondition<C> right)
     {
         return new BinaryOrCondition(left, right);
     }
@@ -131,7 +131,7 @@ public interface Constraint
      * @param <C> The type of the column to operate upon.
      * @return The newly created instance of {@link UnaryOrCondition}.
      */
-    static <C extends Column<C>> UnaryOrCondition or(WhereCondition<C> operand)
+    static <C extends Column<C>> UnaryOrCondition<C> or(WhereCondition<C> operand)
     {
         return new UnaryOrCondition(operand);
     }

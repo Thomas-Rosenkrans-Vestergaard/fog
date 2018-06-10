@@ -48,6 +48,22 @@ public class CladdingFacade
     }
 
     /**
+     * Returns the cladding with the provided id.
+     *
+     * @param id The id of the cladding to return.
+     * @return The cladding with the provided id. Returns {@code null} if no such cladding exists.
+     * @throws ApplicationException When a data storage exception occurs while performing the operation.
+     */
+    public Cladding get(int id)
+    {
+        try {
+            return dao.get(id);
+        } catch (DataAccessException e) {
+            throw new ApplicationException(e);
+        }
+    }
+
+    /**
      * Returns all the claddings in the data storage.
      *
      * @return The complete list of the claddings in the data storage.

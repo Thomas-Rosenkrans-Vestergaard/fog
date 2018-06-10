@@ -15,10 +15,6 @@ import tvestergaard.fog.logic.orders.UnknownOrderException;
 
 import java.util.List;
 
-import static tvestergaard.fog.data.constraints.Constraint.eq;
-import static tvestergaard.fog.data.constraints.Constraint.where;
-import static tvestergaard.fog.data.orders.OrderColumn.ID;
-
 public class ConstructionFacade
 {
 
@@ -72,7 +68,7 @@ public class ConstructionFacade
     public GarageConstructionSummary construct(int orderId) throws UnknownOrderException, ConstructionException
     {
         try {
-            Order order = orderDAO.first(where(eq(ID, orderId)));
+            Order order = orderDAO.get(orderId);
 
             if (order == null)
                 throw new UnknownOrderException();

@@ -21,9 +21,6 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-import static tvestergaard.fog.data.cladding.CladdingColumn.ID;
-import static tvestergaard.fog.data.constraints.Constraint.eq;
-import static tvestergaard.fog.data.constraints.Constraint.where;
 import static tvestergaard.fog.logic.claddings.CladdingError.*;
 import static tvestergaard.fog.presentation.PresentationFunctions.*;
 
@@ -88,7 +85,7 @@ public class AdministrationCladdingsServlet extends AdministrationServlet
                 return;
             }
 
-            Cladding cladding = facade.first(where(eq(ID, parameters.getInt("id"))));
+            Cladding cladding = facade.get(parameters.getInt("id"));
             if (cladding == null) {
                 notifications.error("Unknown cladding.");
                 response.sendRedirect("claddings");

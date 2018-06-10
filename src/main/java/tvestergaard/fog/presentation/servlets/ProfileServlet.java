@@ -63,7 +63,7 @@ public class ProfileServlet extends HttpServlet
         req.setAttribute("context", ".");
         req.setAttribute("title", "Profil");
         req.setAttribute("navigation", "profile");
-        req.setAttribute("customer", customerFacade.first(where(eq(ID, authentication.getCustomer().getId()))));
+        req.setAttribute("customer", customerFacade.get(authentication.getCustomer().getId()));
         req.setAttribute("csrf", csrf(req));
         req.getRequestDispatcher("/WEB-INF/profile.jsp").forward(req, resp);
     }

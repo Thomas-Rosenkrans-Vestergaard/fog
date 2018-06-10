@@ -21,9 +21,6 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-import static tvestergaard.fog.data.constraints.Constraint.eq;
-import static tvestergaard.fog.data.constraints.Constraint.where;
-import static tvestergaard.fog.data.flooring.FlooringColumn.ID;
 import static tvestergaard.fog.logic.floorings.FlooringError.*;
 import static tvestergaard.fog.presentation.PresentationFunctions.*;
 
@@ -88,7 +85,7 @@ public class AdministrationFlooringsServlet extends AdministrationServlet
                 return;
             }
 
-            Flooring flooring = facade.first(where(eq(ID, parameters.getInt("id"))));
+            Flooring flooring = facade.get(parameters.getInt("id"));
             if (flooring == null) {
                 notifications.error("Unknown flooring.");
                 response.sendRedirect("floorings");

@@ -26,8 +26,6 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-import static tvestergaard.fog.data.constraints.Constraint.eq;
-import static tvestergaard.fog.data.constraints.Constraint.where;
 import static tvestergaard.fog.data.constraints.OrderDirection.ASC;
 import static tvestergaard.fog.data.constraints.OrderDirection.DESC;
 import static tvestergaard.fog.data.orders.OrderColumn.*;
@@ -117,7 +115,7 @@ public class AdministrationOrdersServlet extends AdministrationServlet
                 return;
             }
 
-            Order order = orderFacade.first(where(eq(ID, parameters.getInt("id"))));
+            Order order = orderFacade.get(parameters.getInt("id"));
             if (order == null) {
                 notifications.error("Unknown order.");
                 response.sendRedirect("orders");
@@ -129,7 +127,7 @@ public class AdministrationOrdersServlet extends AdministrationServlet
             request.setAttribute("claddings", claddingFacade.get());
             request.setAttribute("roofings", roofingFacade.get());
             request.setAttribute("floorings", flooringFacade.get());
-            request.setAttribute("offers", offerFacade.get(order.getId()));
+            request.setAttribute("offers", offerFacade.getByOrder(order.getId()));
             request.setAttribute("csrf", csrf(request));
             request.getRequestDispatcher("/WEB-INF/administration/update_order.jsp").forward(request, response);
         }

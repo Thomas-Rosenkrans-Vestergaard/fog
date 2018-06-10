@@ -28,9 +28,6 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-import static tvestergaard.fog.data.constraints.Constraint.eq;
-import static tvestergaard.fog.data.constraints.Constraint.where;
-import static tvestergaard.fog.data.orders.OrderColumn.ID;
 import static tvestergaard.fog.presentation.PresentationFunctions.*;
 
 @WebServlet(urlPatterns = "/administration/offers")
@@ -101,7 +98,7 @@ public class AdministrationOffersServlet extends AdministrationServlet
             try {
 
                 GarageConstructionSummary summary = constructionFacade.construct(parameters.getInt("order"));
-                Order                     order   = orderFacade.first(where(eq(ID, parameters.getInt("order"))));
+                Order                     order   = orderFacade.get(parameters.getInt("order"));
 
                 request.setAttribute("title", "Opret tilbud");
                 request.setAttribute("order", order);

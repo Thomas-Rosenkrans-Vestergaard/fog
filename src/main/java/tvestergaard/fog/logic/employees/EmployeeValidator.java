@@ -37,12 +37,12 @@ public class EmployeeValidator
      * @param password The password of the employee to validate.
      * @return The errors with the provided information.
      * @throws DataAccessException When a data access exception occurs.
-     * @see EmployeeFacade#register(String, String, String, String, String, boolean)
+     * @see EmployeeFacade#register(String, String, String, Set, boolean)
      */
     public Set<EmployeeError> validateRegister(String name, String username, String password) throws DataAccessException
     {
         Set<EmployeeError> errors = validateInformation(name, username, password);
-        if (employeeDAO.first(where(eq(USERNAME, username))) != null)
+        if (employeeDAO.get(username) != null)
             errors.add(USERNAME_TAKEN);
 
         return errors;

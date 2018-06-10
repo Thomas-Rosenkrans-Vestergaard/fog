@@ -24,10 +24,6 @@ import tvestergaard.fog.logic.offers.UnknownOfferException;
 import java.util.ArrayList;
 import java.util.List;
 
-import static tvestergaard.fog.data.constraints.Constraint.eq;
-import static tvestergaard.fog.data.constraints.Constraint.where;
-import static tvestergaard.fog.data.offers.OfferColumn.ID;
-
 public class PurchaseFacade
 {
 
@@ -78,6 +74,22 @@ public class PurchaseFacade
     {
         try {
             return purchaseDAO.get(constraints);
+        } catch (DataAccessException e) {
+            throw new ApplicationException(e);
+        }
+    }
+
+    /**
+     * Returns the purchase with the provided id.
+     *
+     * @param id The id of the purchase to return.
+     * @return The purchase with the provided id. Returns {@code null} if no such purchase exists.
+     * @throws ApplicationException When a data storage exception occurs while performing the operation.
+     */
+    public Purchase get(int id)
+    {
+        try {
+            return purchaseDAO.get(id);
         } catch (DataAccessException e) {
             throw new ApplicationException(e);
         }
@@ -135,7 +147,7 @@ public class PurchaseFacade
                                                ConstructionException
     {
         try {
-            Offer offer = offerDAO.first(where(eq(ID, offerId)));
+            Offer offer = offerDAO.get(offerId);
             if (offer == null)
                 throw new UnknownOfferException();
             if (!offer.isOpen())

@@ -5,6 +5,11 @@ import tvestergaard.fog.data.constraints.Constraints;
 
 import java.util.List;
 
+import static tvestergaard.fog.data.constraints.Constraint.eq;
+import static tvestergaard.fog.data.constraints.Constraint.where;
+import static tvestergaard.fog.data.employees.EmployeeColumn.ID;
+import static tvestergaard.fog.data.employees.EmployeeColumn.USERNAME;
+
 public interface EmployeeDAO
 {
 
@@ -17,6 +22,30 @@ public interface EmployeeDAO
     default List<Employee> get() throws DataAccessException
     {
         return get(new Constraints<>());
+    }
+
+    /**
+     * Returns the employee with the provided id.
+     *
+     * @param id The id of the employee to return.
+     * @return The employee with the provided id. Returns {@code null} if no such employee exists.
+     * @throws DataAccessException When a data storage exception occurs while performing the operation.
+     */
+    default Employee get(int id) throws DataAccessException
+    {
+        return first(where(eq(ID, id)));
+    }
+
+    /**
+     * Returns the employee with the provided username.
+     *
+     * @param username The username of the employee to return.
+     * @return The employee with the provided username. Returns {@code null} if no such employee exists.
+     * @throws DataAccessException When a data storage exception occurs while performing the operation.
+     */
+    default Employee get(String username) throws DataAccessException
+    {
+        return first(where(eq(USERNAME, username)));
     }
 
     /**

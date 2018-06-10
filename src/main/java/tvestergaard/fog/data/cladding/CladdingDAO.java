@@ -5,6 +5,10 @@ import tvestergaard.fog.data.constraints.Constraints;
 
 import java.util.List;
 
+import static tvestergaard.fog.data.cladding.CladdingColumn.ID;
+import static tvestergaard.fog.data.constraints.Constraint.eq;
+import static tvestergaard.fog.data.constraints.Constraint.where;
+
 public interface CladdingDAO
 {
 
@@ -17,6 +21,18 @@ public interface CladdingDAO
     default List<Cladding> get() throws DataAccessException
     {
         return get(new Constraints<>());
+    }
+
+    /**
+     * Returns the cladding with the provided id.
+     *
+     * @param id The id of the cladding to return.
+     * @return The cladding with the provided id. Returns {@code null} if no such cladding exists.
+     * @throws DataAccessException When a data storage exception occurs while performing the operation.
+     */
+    default Cladding get(int id) throws DataAccessException
+    {
+        return first(where(eq(ID, id)));
     }
 
     /**

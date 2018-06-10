@@ -17,9 +17,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-import static tvestergaard.fog.data.constraints.Constraint.eq;
-import static tvestergaard.fog.data.constraints.Constraint.where;
-import static tvestergaard.fog.data.purchases.PurchaseColumn.ID;
 import static tvestergaard.fog.presentation.PresentationFunctions.notifications;
 
 @WebServlet(urlPatterns = "/purchase")
@@ -44,7 +41,7 @@ public class PurchaseServlet extends HttpServlet
             return;
         }
 
-        Purchase purchase = purchaseFacade.first(where(eq(ID, parameters.getInt("id"))));
+        Purchase purchase = purchaseFacade.get(parameters.getInt("id"));
 
         if (purchase == null) {
             notifications.error("No purchase with provided id.");

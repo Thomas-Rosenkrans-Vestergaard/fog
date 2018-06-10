@@ -9,10 +9,6 @@ import tvestergaard.fog.logic.ApplicationException;
 import java.util.List;
 import java.util.Set;
 
-import static tvestergaard.fog.data.constraints.Constraint.eq;
-import static tvestergaard.fog.data.constraints.Constraint.where;
-import static tvestergaard.fog.data.employees.EmployeeColumn.ID;
-
 public class EmployeeFacade
 {
 
@@ -56,6 +52,22 @@ public class EmployeeFacade
     {
         try {
             return employeeDAO.get(constraints);
+        } catch (DataAccessException e) {
+            throw new ApplicationException(e);
+        }
+    }
+
+    /**
+     * Returns the employee with the provided id.
+     *
+     * @param id The id of the employee to return.
+     * @return The employee with the provided id. Returns {@code null} if no such employee exists.
+     * @throws ApplicationException When a data storage exception occurs while performing the operation.
+     */
+    public Employee get(int id)
+    {
+        try {
+            return employeeDAO.get(id);
         } catch (DataAccessException e) {
             throw new ApplicationException(e);
         }
@@ -169,7 +181,7 @@ public class EmployeeFacade
             if (!reasons.isEmpty()) {
                 throw new EmployeeValidatorException(reasons);
             }
-            Employee employee = employeeDAO.first(where(eq(ID, id)));
+            Employee employee = employeeDAO.get(id);
             if (employee == null)
                 throw new UnknownEmployeeException();
             EmployeeUpdater updater = EmployeeUpdater.from(id, name, username, employee.getPassword(), roles, active);

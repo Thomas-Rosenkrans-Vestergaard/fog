@@ -40,12 +40,12 @@ public class CustomerValidator
      * @param password The password of the customer to validate.
      * @return The errors with the provided information.
      * @throws DataAccessException When a data access exception occurs.
-     * @see CustomerFacade#register(String, String, String, String, String, boolean)
+     * @see CustomerFacade#register(String, String, String, String, String)
      */
     public Set<CustomerError> validateRegister(String name, String address, String email, String phone, String password) throws DataAccessException
     {
         Set<CustomerError> errors = validateInformation(name, address, email, phone, password);
-        if (customerDAO.first(where(eq(EMAIL, email))) != null)
+        if (customerDAO.get(email) != null)
             errors.add(EMAIL_TAKEN);
 
         return errors;
@@ -62,7 +62,7 @@ public class CustomerValidator
      * @param password The password of the customer to validate.
      * @return The errors with the provided information.
      * @throws DataAccessException When a data access exception occurs.
-     * @see CustomerFacade#update(int, String, String, String, String, String, boolean)
+     * @see CustomerFacade#update(int, String, String, String, String)
      */
     public Set<CustomerError> validateUpdate(int id, String name, String address, String email, String phone, String password) throws DataAccessException
     {

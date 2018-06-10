@@ -12,10 +12,6 @@ import tvestergaard.fog.logic.tokens.*;
 import java.util.List;
 import java.util.Set;
 
-import static tvestergaard.fog.data.constraints.Constraint.eq;
-import static tvestergaard.fog.data.constraints.Constraint.where;
-import static tvestergaard.fog.data.customers.CustomerColumn.ID;
-
 public class CustomerFacade
 {
 
@@ -45,6 +41,11 @@ public class CustomerFacade
     private final CustomerAuthentication authentication;
 
     /**
+     * The object responsible for sending emails to customers.
+     */
+    private final ApplicationMailer mailer;
+
+    /**
      * Creates a new {@link CustomerFacade}.
      *
      * @param customerDAO The {@link CustomerDAO} used to access and make changes to the customers in the application.
@@ -63,6 +64,8 @@ public class CustomerFacade
         this.emailChallenger = new EmailVerifier(customerDAO, tokenIssuer, tokenAuthenticator, mailer);
         this.passwordResetter = new PasswordResetter(customerDAO, tokenIssuer, tokenAuthenticator, mailer);
         this.authentication = new CustomerAuthentication(customerDAO, validator, emailChallenger);
+
+        this.mailer = mailer;
     }
 
     /**
@@ -76,6 +79,22 @@ public class CustomerFacade
     {
         try {
             return customerDAO.get(constraints);
+        } catch (DataAccessException e) {
+            throw new ApplicationException(e);
+        }
+    }
+
+    /**
+     * Returns the customer with the provided id.
+     *
+     * @param id The id of the customer to return.
+     * @return The customer with the provided id. Returns {@code null} if no such customer exists.
+     * @throws ApplicationException When a data storage exception occurs while performing the operation.
+     */
+    public Customer get(int id)
+    {
+        try {
+            return customerDAO.get(id);
         } catch (DataAccessException e) {
             throw new ApplicationException(e);
         }
@@ -152,7 +171,7 @@ public class CustomerFacade
     {
         try {
 
-            Customer customer = customerDAO.first(where(eq(ID, id)));
+            Customer customer = customerDAO.get(id);
 
             if (customer == null)
                 throw new UnknownCustomerException();
@@ -164,7 +183,7 @@ public class CustomerFacade
                 throw new CustomerValidatorException(reasons);
             boolean result = customerDAO.update(updater);
             if (result == true && !email.equals(customer.getEmail())) {
-                emailChallenger.challenge(customerDAO.first(where(eq(ID, customer.getId()))));
+                emailChallenger.challenge(customerDAO.get(customer.getId()));
             }
 
             return result;
@@ -202,7 +221,13 @@ public class CustomerFacade
     public boolean inactivate(int customerId) throws ApplicationException, UnknownCustomerException
     {
         try {
-            return customerDAO.inactivate(customerId);
+            boolean result = customerDAO.inactivate(customerId);
+            if (result) {
+                InactivateEmail email = new InactivateEmail(customerDAO.get(customerId));
+                mailer.send(email);
+            }
+
+            return result;
         } catch (DataAccessException e) {
             throw new ApplicationException(e);
         }
@@ -300,7 +325,7 @@ public class CustomerFacade
                                                                                               CustomerAuthenticationException
     {
         try {
-            Customer customer = customerDAO.first(where(eq(ID, customerId)));
+            Customer customer = customerDAO.get(customerId);
             if (customer == null)
                 throw new UnknownCustomerException();
             if (!check(customer.getPassword(), oldPassword))
@@ -323,7 +348,7 @@ public class CustomerFacade
     public void resendConfirmation(int customerId) throws ApplicationException, UnknownCustomerException
     {
         try {
-            Customer customer = customerDAO.first(where(eq(ID, customerId)));
+            Customer customer = customerDAO.get(customerId);
             if (customer == null)
                 throw new UnknownCustomerException();
 

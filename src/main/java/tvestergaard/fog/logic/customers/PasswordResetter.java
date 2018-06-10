@@ -8,9 +8,6 @@ import tvestergaard.fog.logic.email.ApplicationEmail;
 import tvestergaard.fog.logic.email.ApplicationMailer;
 import tvestergaard.fog.logic.tokens.*;
 
-import static tvestergaard.fog.data.constraints.Constraint.eq;
-import static tvestergaard.fog.data.constraints.Constraint.where;
-import static tvestergaard.fog.data.customers.CustomerColumn.EMAIL;
 import static tvestergaard.fog.data.tokens.TokenUse.PASSWORD_RESET;
 
 /**
@@ -65,7 +62,7 @@ public class PasswordResetter
      */
     public void send(String email) throws DataAccessException, UnknownEmailException, InactiveCustomerException
     {
-        Customer customer = customerDAO.first(where(eq(EMAIL, email)));
+        Customer customer = customerDAO.get(email);
         if (customer == null)
             throw new UnknownEmailException();
 

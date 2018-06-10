@@ -9,6 +9,10 @@ import tvestergaard.fog.data.materials.categories.Category;
 import java.util.List;
 import java.util.Set;
 
+import static tvestergaard.fog.data.constraints.Constraint.eq;
+import static tvestergaard.fog.data.constraints.Constraint.where;
+import static tvestergaard.fog.data.materials.MaterialColumn.NUMBER;
+
 public interface MaterialDAO
 {
 
@@ -21,6 +25,18 @@ public interface MaterialDAO
     default List<Material> get() throws DataAccessException
     {
         return get(new Constraints<>());
+    }
+
+    /**
+     * Returns the material with the provided number.
+     *
+     * @param number The number of the material to return.
+     * @return The material with the provided number. Returns {@code null} if no such material exists.
+     * @throws DataAccessException When a data storage exception occurs while performing the operation.
+     */
+    default Material get(String number) throws DataAccessException
+    {
+        return first(where(eq(NUMBER, number)));
     }
 
     /**

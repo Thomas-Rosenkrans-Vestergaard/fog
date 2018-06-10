@@ -8,10 +8,6 @@ import tvestergaard.fog.data.customers.CustomerDAO;
 
 import java.util.Set;
 
-import static tvestergaard.fog.data.constraints.Constraint.eq;
-import static tvestergaard.fog.data.constraints.Constraint.where;
-import static tvestergaard.fog.data.customers.CustomerColumn.EMAIL;
-
 public class CustomerAuthentication
 {
 
@@ -83,7 +79,7 @@ public class CustomerAuthentication
                                                                        InactiveCustomerException,
                                                                        CustomerAuthenticationException
     {
-        Customer customer = customerDAO.first(where(eq(EMAIL, email)));
+        Customer customer = customerDAO.get(email);
         if (customer == null)
             throw new CustomerAuthenticationException();
 

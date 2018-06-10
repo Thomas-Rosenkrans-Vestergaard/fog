@@ -82,7 +82,7 @@ public class MysqlOfferDAO extends AbstractMysqlDAO implements OfferDAO
      * @return The offers related to the order with the provided id.
      * @throws MysqlDataAccessException When a data storage exception occurs while performing the operation.
      */
-    @Override public List<Offer> get(int order) throws MysqlDataAccessException
+    @Override public List<Offer> getByOrder(int order) throws MysqlDataAccessException
     {
         return get(where(eq(ORDER, order)));
     }

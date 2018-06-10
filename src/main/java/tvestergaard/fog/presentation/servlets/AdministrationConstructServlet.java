@@ -97,7 +97,7 @@ public class AdministrationConstructServlet extends AdministrationServlet
             }
         }
 
-        Roofing roofing = roofingFacade.first(where(eq(ID, parameters.getInt("roofing"))));
+        Roofing roofing = roofingFacade.get(parameters.getInt("roofing"));
 
         ConstructionSpecification specification = new ConstructionSpecification(
                 parameters.getInt("width"),
@@ -110,6 +110,7 @@ public class AdministrationConstructServlet extends AdministrationServlet
         try {
             GarageConstructionSummary summary = constructionFacade.construct(specification);
             req.setAttribute("summary", summary);
+            req.setAttribute("title", "Resultat");
             req.getRequestDispatcher("/WEB-INF/administration/construct_summary.jsp").forward(req, resp);
             return;
         } catch (ConstructionException e) {
@@ -124,8 +125,8 @@ public class AdministrationConstructServlet extends AdministrationServlet
         if (!parameters.isPresent("shed"))
             return null;
 
-        Cladding cladding = claddingFacade.first(where(eq(CladdingColumn.ID, parameters.getInt("shed-cladding"))));
-        Flooring flooring = flooringFacade.first(where(eq(RoofingColumn.ID, parameters.getInt("shed-roofing"))));
+        Cladding cladding = claddingFacade.get(parameters.getInt("shed-cladding"));
+        Flooring flooring = flooringFacade.get(parameters.getInt("shed-roofing"));
 
         return new ShedRecord(-1, parameters.getInt("shed-depth"), cladding.getId(), cladding, flooring.getId(), flooring);
     }

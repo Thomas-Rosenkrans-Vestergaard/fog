@@ -92,7 +92,7 @@ public class AdministrationEmployeesServlet extends AdministrationServlet
                 return;
             }
 
-            Employee employee = facade.first(where(eq(ID, parameters.getInt("id"))));
+            Employee employee = facade.get(parameters.getInt("id"));
             if (employee == null) {
                 notifications.error("Unknown employee.");
                 response.sendRedirect("employees");

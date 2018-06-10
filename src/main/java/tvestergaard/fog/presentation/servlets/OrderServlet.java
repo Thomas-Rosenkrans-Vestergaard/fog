@@ -23,7 +23,6 @@ import static tvestergaard.fog.data.constraints.Constraint.where;
 import static tvestergaard.fog.data.constraints.OrderDirection.DESC;
 import static tvestergaard.fog.data.offers.OfferColumn.CREATED_AT;
 import static tvestergaard.fog.data.offers.OfferColumn.ORDER;
-import static tvestergaard.fog.data.orders.OrderColumn.ID;
 import static tvestergaard.fog.presentation.PresentationFunctions.csrf;
 import static tvestergaard.fog.presentation.PresentationFunctions.notifications;
 
@@ -50,7 +49,7 @@ public class OrderServlet extends HttpServlet
             return;
         }
 
-        Order order = orderFacade.first(where(eq(ID, parameters.getInt("id"))));
+        Order order = orderFacade.get(parameters.getInt("id"));
 
         if (order == null) {
             notifications.error("Unknown order.");
@@ -88,7 +87,7 @@ public class OrderServlet extends HttpServlet
         }
 
         int   orderId = parameters.getInt("id");
-        Order order   = orderFacade.first(where(eq(ID, orderId)));
+        Order order   = orderFacade.get(orderId);
 
         if (order == null) {
             notifications.error("Ukendt ordre.");

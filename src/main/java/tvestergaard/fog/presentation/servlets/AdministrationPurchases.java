@@ -84,7 +84,7 @@ public class AdministrationPurchases extends AdministrationServlet
                 return;
             }
 
-            Purchase purchase = purchaseFacade.first(where(eq(ID, parameters.getInt("id"))));
+            Purchase purchase = purchaseFacade.get(parameters.getInt("id"));
 
             if (purchase == null) {
                 notifications.error("No purchase with provided id.");

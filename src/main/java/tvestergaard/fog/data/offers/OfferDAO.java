@@ -8,6 +8,10 @@ import tvestergaard.fog.data.purchases.bom.BomBlueprint;
 
 import java.util.List;
 
+import static tvestergaard.fog.data.constraints.Constraint.eq;
+import static tvestergaard.fog.data.constraints.Constraint.where;
+import static tvestergaard.fog.data.offers.OfferColumn.ID;
+
 public interface OfferDAO
 {
 
@@ -20,6 +24,18 @@ public interface OfferDAO
     default List<Offer> get() throws DataAccessException
     {
         return get(new Constraints<>());
+    }
+
+    /**
+     * Returns the offer with the provided id.
+     *
+     * @param id The id of the offer to return.
+     * @return The offer with the provided id. Returns {@code null} if no such offer exists.
+     * @throws DataAccessException When a data storage exception occurs while performing the operation.
+     */
+    default Offer get(int id) throws DataAccessException
+    {
+        return first(where(eq(ID, id)));
     }
 
     /**
@@ -38,7 +54,7 @@ public interface OfferDAO
      * @return The offers related to the order with the provided id.
      * @throws DataAccessException When a data storage exception occurs while performing the operation.
      */
-    List get(int order) throws DataAccessException;
+    List getByOrder(int order) throws DataAccessException;
 
     /**
      * Returns the first offer matching the provided constraints.

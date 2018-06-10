@@ -24,7 +24,6 @@ import static tvestergaard.fog.data.constraints.Constraint.eq;
 import static tvestergaard.fog.data.constraints.Constraint.where;
 import static tvestergaard.fog.data.constraints.OrderDirection.DESC;
 import static tvestergaard.fog.data.offers.OfferColumn.*;
-import static tvestergaard.fog.data.orders.OrderColumn.CUSTOMER;
 import static tvestergaard.fog.presentation.PresentationFunctions.*;
 
 @WebServlet(urlPatterns = "/offers")
@@ -50,7 +49,7 @@ public class OffersServlet extends HttpServlet
 
         Customer customer = authentication.getCustomer();
 
-        TableControls<OfferColumn> controls = new TableControls<>(req, where(eq(CUSTOMER, customer.getId())).order(CREATED_AT, DESC));
+        TableControls<OfferColumn> controls = new TableControls<>(req, where(eq(OfferColumn.CUSTOMER, customer.getId())).order(CREATED_AT, DESC));
         controls.add(ORDER, TableControls.Type.INT);
         controls.add(PRICE, TableControls.Type.INT);
         controls.add(STATUS, TableControls.Type.TEXT);
@@ -88,7 +87,7 @@ public class OffersServlet extends HttpServlet
         }
 
         int   offerId = parameters.getInt("offer");
-        Offer offer   = offerFacade.first(where(eq(ID, offerId)));
+        Offer offer   = offerFacade.get(offerId);
         if (offer.getOrder().getCustomer().getId() != authentication.getCustomer().getId()) {
             notifications.error("Du ejer ikke det tilbud.");
             resp.sendRedirect("offers");

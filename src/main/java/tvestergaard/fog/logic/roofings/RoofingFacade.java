@@ -2,8 +2,8 @@ package tvestergaard.fog.logic.roofings;
 
 import tvestergaard.fog.data.DataAccessException;
 import tvestergaard.fog.data.components.Component;
-import tvestergaard.fog.data.components.ComponentDefinition;
 import tvestergaard.fog.data.components.ComponentConnection;
+import tvestergaard.fog.data.components.ComponentDefinition;
 import tvestergaard.fog.data.constraints.Constraints;
 import tvestergaard.fog.data.roofing.*;
 import tvestergaard.fog.logic.ApplicationException;
@@ -47,6 +47,22 @@ public class RoofingFacade
     {
         try {
             return dao.get(constraints);
+        } catch (DataAccessException e) {
+            throw new ApplicationException(e);
+        }
+    }
+
+    /**
+     * Returns the roofing with the provided id.
+     *
+     * @param id The id of the roofing to return.
+     * @return The roofing with the provided id. Returns {@code null} if no such roofing exists.
+     * @throws ApplicationException When a data storage exception occurs while performing the operation.
+     */
+    public Roofing get(int id)
+    {
+        try {
+            return dao.get(id);
         } catch (DataAccessException e) {
             throw new ApplicationException(e);
         }

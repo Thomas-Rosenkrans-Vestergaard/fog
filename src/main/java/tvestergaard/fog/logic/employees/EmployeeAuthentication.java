@@ -9,10 +9,6 @@ import tvestergaard.fog.data.employees.Role;
 
 import java.util.Set;
 
-import static tvestergaard.fog.data.constraints.Constraint.eq;
-import static tvestergaard.fog.data.constraints.Constraint.where;
-import static tvestergaard.fog.data.employees.EmployeeColumn.USERNAME;
-
 /**
  * Contains methods for registering and authenticating customers.
  */
@@ -75,7 +71,7 @@ public class EmployeeAuthentication
      */
     public Employee authenticate(String username, String password) throws DataAccessException, InactiveEmployeeException
     {
-        Employee employee = employeeDAO.first(where(eq(USERNAME, username)));
+        Employee employee = employeeDAO.get(username);
         if (employee == null)
             return null;
 

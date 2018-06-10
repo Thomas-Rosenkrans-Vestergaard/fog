@@ -17,8 +17,6 @@ import java.io.IOException;
 import static tvestergaard.fog.data.constraints.Constraint.eq;
 import static tvestergaard.fog.data.constraints.Constraint.where;
 import static tvestergaard.fog.data.constraints.OrderDirection.DESC;
-import static tvestergaard.fog.data.offers.OfferColumn.CREATED_AT;
-import static tvestergaard.fog.data.orders.OrderColumn.CUSTOMER;
 
 @WebServlet(urlPatterns = "/purchases")
 public class PurchasesServlet extends HttpServlet
@@ -42,7 +40,7 @@ public class PurchasesServlet extends HttpServlet
 
         Customer customer = authentication.getCustomer();
 
-        TableControls<PurchaseColumn> controls = new TableControls<>(req, where(eq(CUSTOMER, customer.getId())).order(CREATED_AT, DESC));
+        TableControls<PurchaseColumn> controls = new TableControls<>(req, where(eq(PurchaseColumn.CUSTOMER, customer.getId())).order(PurchaseColumn.CREATED_AT, DESC));
         controls.add(PurchaseColumn.OFFER, TableControls.Type.INT);
         controls.add(PurchaseColumn.EMPLOYEE_NAME, TableControls.Type.TEXT);
         controls.add(PurchaseColumn.PURCHASE_PRICE, TableControls.Type.INT);

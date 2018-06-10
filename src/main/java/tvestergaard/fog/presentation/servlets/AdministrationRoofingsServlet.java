@@ -1,8 +1,8 @@
 package tvestergaard.fog.presentation.servlets;
 
 import tvestergaard.fog.data.components.Component;
-import tvestergaard.fog.data.components.ComponentDefinition;
 import tvestergaard.fog.data.components.ComponentConnection;
+import tvestergaard.fog.data.components.ComponentDefinition;
 import tvestergaard.fog.data.employees.Employee;
 import tvestergaard.fog.data.employees.Role;
 import tvestergaard.fog.data.roofing.Roofing;
@@ -26,8 +26,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.*;
 
-import static tvestergaard.fog.data.constraints.Constraint.eq;
-import static tvestergaard.fog.data.constraints.Constraint.where;
 import static tvestergaard.fog.data.roofing.RoofingColumn.*;
 import static tvestergaard.fog.logic.roofings.RoofingError.*;
 import static tvestergaard.fog.presentation.PresentationFunctions.*;
@@ -36,10 +34,10 @@ import static tvestergaard.fog.presentation.PresentationFunctions.*;
 public class AdministrationRoofingsServlet extends AdministrationServlet
 {
 
-    private final RoofingFacade             roofingFacade  = Facades.roofingFacade;
-    private final MaterialFacade            materialFacade = Facades.materialFacade;
-    private final ComponentFacade componentFacade = Facades.componentFacade;
-    private final Map<RoofingError, String> errors         = new HashMap<>();
+    private final RoofingFacade             roofingFacade   = Facades.roofingFacade;
+    private final MaterialFacade            materialFacade  = Facades.materialFacade;
+    private final ComponentFacade           componentFacade = Facades.componentFacade;
+    private final Map<RoofingError, String> errors          = new HashMap<>();
 
     public AdministrationRoofingsServlet()
     {
@@ -100,7 +98,7 @@ public class AdministrationRoofingsServlet extends AdministrationServlet
                 return;
             }
 
-            Roofing roofing = roofingFacade.first(where(eq(ID, parameters.getInt("id"))));
+            Roofing roofing = roofingFacade.get(parameters.getInt("id"));
             if (roofing == null) {
                 notifications.error("Unknown roofing.");
                 response.sendRedirect("roofings");
