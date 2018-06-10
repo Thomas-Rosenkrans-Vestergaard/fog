@@ -19,7 +19,7 @@ public interface CustomerUpdater extends CustomerBlueprint
      */
     static CustomerUpdater from(int id, String name, String address, String email, String phone, String password, boolean active, boolean verified)
     {
-        return new CustomerRecord(id, name, address, email, phone, password, active, verified, null);
+        return new CustomerRecord(id, name, address, email, phone, password, active, verified, null, null);
     }
 
     /**

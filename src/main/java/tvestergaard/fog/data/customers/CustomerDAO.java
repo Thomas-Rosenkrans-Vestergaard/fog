@@ -77,19 +77,31 @@ public interface CustomerDAO
     Customer create(CustomerBlueprint blueprint) throws DataAccessException;
 
     /**
-     * Updates the entity in the data storage to match the provided {@code customer}.
+     * Updates the entity in the data storage to match the provided {@code customer}. Note that the password of the
+     * customer is not updated. Use the {@link CustomerDAO#updatePassword(int, String)} method instead.
      *
      * @param updater The cladding updater that contains the information necessary to create the cladding.
-     * @return {@link true} if the record was updated.
+     * @return {@code true} if the record was updated.
      * @throws DataAccessException When a data storage exception occurs while performing the operation.
+     * @see CustomerDAO#updatePassword(int, String)
      */
     boolean update(CustomerUpdater updater) throws DataAccessException;
+
+    /**
+     * Updates the password of the customer with the provided id to the provided password hash.
+     *
+     * @param customer     The customer the update the password of.
+     * @param passwordHash The hash of the new password.
+     * @return {@code true} if the password was updated.
+     * @throws DataAccessException When a data storage exception occurs while performing the operation.
+     */
+    boolean updatePassword(int customer, String passwordHash) throws DataAccessException;
 
     /**
      * Marks the customer active.
      *
      * @param customerId The id of the customer to mark active.
-     * @return {@link true} if the record was updated.
+     * @return {@code true} if the record was updated.
      * @throws DataAccessException      When a data storage exception occurs while performing the operation.
      * @throws UnknownCustomerException When a customer with the provided id does not exist.
      */
@@ -99,7 +111,7 @@ public interface CustomerDAO
      * Marks the customer inactive.
      *
      * @param customerId The id of the customer to mark inactive.
-     * @return {@link true} if the record was updated.
+     * @return {@code true} if the record was updated.
      * @throws DataAccessException      When a data storage exception occurs while performing the operation.
      * @throws UnknownCustomerException When a customer with the provided id does not exist.
      */

@@ -164,7 +164,7 @@ public class EmployeeFacade
      * @param password The new password.
      * @param roles    The roles to assign to the employee.
      * @param active   The new active status.
-     * @return {@link true} if the record was updated.
+     * @return {@code true} if the record was updated.
      * @throws ApplicationException       When an exception occurs while performing the operation.
      * @throws EmployeeValidatorException When the provided employee information is considered invalid.
      */

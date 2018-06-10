@@ -19,7 +19,7 @@ public interface CustomerBlueprint
      */
     static CustomerBlueprint from(String name, String address, String email, String phone, String password, boolean active)
     {
-        return new CustomerRecord(-1, name, address, email, phone, password, active, false, null);
+        return new CustomerRecord(-1, name, address, email, phone, password, active, false, null, null);
     }
 
     /**

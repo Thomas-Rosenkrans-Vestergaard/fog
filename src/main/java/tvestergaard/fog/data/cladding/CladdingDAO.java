@@ -67,7 +67,7 @@ public interface CladdingDAO
      * Updates the entity in the data storage to match the provided {@code cladding}.
      *
      * @param updater The cladding updater that contains the information necessary to create the cladding.
-     * @return {@link true} if the record was updated.
+     * @return {@code true} if the record was updated.
      * @throws DataAccessException When a data storage exception occurs while performing the operation.
      */
     boolean update(CladdingUpdater updater) throws DataAccessException;

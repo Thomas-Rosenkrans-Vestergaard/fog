@@ -158,7 +158,8 @@ public abstract class AbstractMysqlDAO
                 results.getString(tCustomer + ".password"),
                 results.getBoolean(tCustomer + ".active"),
                 results.getBoolean(tCustomer + ".verified"),
-                results.getTimestamp(tCustomer + ".created_at").toLocalDateTime()
+                results.getTimestamp(tCustomer + ".created_at").toLocalDateTime(),
+                results.getTimestamp(tCustomer + ".password_updated_at").toLocalDateTime()
         );
     }
 

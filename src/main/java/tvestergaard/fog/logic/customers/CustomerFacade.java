@@ -163,11 +163,8 @@ public class CustomerFacade
      * @throws UnknownCustomerException   When a customer with the provided id does not exist.
      * @throws CustomerValidatorException When the provided customer information is considered invalid.
      */
-    public boolean update(int id,
-                          String name,
-                          String address,
-                          String email,
-                          String phone) throws UnknownCustomerException, CustomerValidatorException
+    public boolean update(int id, String name, String address, String email, String phone)
+            throws UnknownCustomerException, CustomerValidatorException
     {
         try {
 
@@ -197,7 +194,7 @@ public class CustomerFacade
      * Marks the customer active.
      *
      * @param customerId The id of the customer to mark active.
-     * @return {@link true} if the record was updated.
+     * @return {@code true} if the record was updated.
      * @throws ApplicationException     When a data storage exception occurs while performing the operation.
      * @throws UnknownCustomerException When a customer with the provided id does not exist.
      */
@@ -214,7 +211,7 @@ public class CustomerFacade
      * Marks the customer inactive.
      *
      * @param customerId The id of the customer to mark inactive.
-     * @return {@link true} if the record was updated.
+     * @return {@code true} if the record was updated.
      * @throws ApplicationException     When a data storage exception occurs while performing the operation.
      * @throws UnknownCustomerException When a customer with the provided id does not exist.
      */
@@ -331,8 +328,7 @@ public class CustomerFacade
             if (!check(customer.getPassword(), oldPassword))
                 throw new CustomerAuthenticationException();
 
-            customer.setPassword(hash(newPassword));
-            customerDAO.update(customer);
+            customerDAO.updatePassword(customerId, hash(newPassword));
         } catch (DataAccessException e) {
             throw new ApplicationException(e);
         }

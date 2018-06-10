@@ -18,7 +18,7 @@
     <div class="col s12">
         <table class="bordered highlight">
             <tr>
-                <th>Navn</th>
+                <th style="width: 150px">Navn</th>
                 <td><c:out value="${customer.getName()}"/></td>
             </tr>
             <tr>
@@ -32,6 +32,13 @@
             <tr>
                 <th>Telefon</th>
                 <td><c:out value="${customer.getPhone()}"/></td>
+            </tr>
+            <tr>
+                <th>Adgangskode</th>
+                <td>
+                    <p style="float:left">Sidst opdateret ${f:formatDatetime(customer.getPasswordUpdatedAt())}</p>
+                    <a href="update-password" class="btn" style="float:right">OPDATER</a>
+                </td>
             </tr>
             <tr>
                 <th>Aktiv</th>
@@ -59,14 +66,17 @@
 <div class="row">
     <div class="col s12">
         <p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum
-            tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante.</p>
+            tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas
+            semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo. Quisque sit amet est et sapien
+            ullamcorper pharetra. Vestibulum erat wisi, condimentum sed, commodo vitae, ornare sit amet, wisi. Aenean
+            fermentum, elit eget tincidunt condimentum, eros ipsum rutrum orci, sagittis tempus lacus enim ac dui.</p>
     </div>
 </div>
 <div class="row">
-    <div class="col s12">
+    <div class="col s12 no-padding">
         <form method="POST">
             ${csrf}
-                <input type="hidden" name="action" value="update-information">
+            <input type="hidden" name="action" value="update-information">
             <div class="row">
                 <div class="col s12 input-field">
                     <input type="text" name="name" id="name" class="validate" value="${customer.getName()}"
@@ -88,18 +98,18 @@
                     <label for="email">Email</label>
                 </div>
             </div>
-                <div class="row">
-                    <div class="col s12 input-field">
-                        <input type="text" name="phone" id="phone" class="validate" value="${customer.getPhone()}"
-                               data-length="30" required>
-                        <label for="phone">Telefon</label>
-                    </div>
+            <div class="row">
+                <div class="col s12 input-field">
+                    <input type="text" name="phone" id="phone" class="validate" value="${customer.getPhone()}"
+                           data-length="30" required>
+                    <label for="phone">Telefon</label>
                 </div>
-                <div class="row">
-                    <div class="col s12">
-                        <input type="submit" class="btn-large" value="Opdater">
-                    </div>
+            </div>
+            <div class="row">
+                <div class="col s12">
+                    <input type="submit" class="btn-large" value="Opdater">
                 </div>
+            </div>
         </form>
     </div>
 </div>

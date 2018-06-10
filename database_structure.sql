@@ -197,6 +197,7 @@ CREATE TABLE `customers` (
   `active` bit(1) NOT NULL DEFAULT b'1',
   `verified` bit(1) NOT NULL DEFAULT b'0',
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `password_updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
@@ -511,4 +512,4 @@ CREATE TABLE `tokens` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-06-05 22:03:56
+-- Dump completed on 2018-06-10 21:39:00

@@ -38,7 +38,7 @@ public interface CladdingBlueprint
     String getDescription();
 
     /**
-     * Sets the description of the {@lilnk Cladding}.
+     * Sets the description of the {@link Cladding}.
      *
      * @param description The new description.
      */
@@ -47,7 +47,7 @@ public interface CladdingBlueprint
     /**
      * Returns {@code true} if the cladding can currently be applied to new orders.
      *
-     * @return {@link true} if the cladding can currently be applied to new orders.
+     * @return {@code true} if the cladding can currently be applied to new orders.
      */
     boolean isActive();
 

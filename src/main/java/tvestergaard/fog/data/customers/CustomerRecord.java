@@ -52,20 +52,26 @@ public class CustomerRecord implements Customer
     private LocalDateTime createdAt;
 
     /**
+     * The date time when the password was last updated.
+     */
+    private LocalDateTime passwordUpdatedAt;
+
+    /**
      * Creates a new customer.
      *
-     * @param id        The unique identifier of the customer.
-     * @param name      The name of the customer.
-     * @param address   The address of the customer.
-     * @param email     The email address of the customer.
-     * @param phone     The phone number of the customer.
-     * @param password  The password of the customer.
-     * @param active    Whether or not the customer is active.
-     * @param verified  Whether or not the customer has verified their membership using their email address.
-     * @param createdAt The moment in time when the customer was created.
+     * @param id                The unique identifier of the customer.
+     * @param name              The name of the customer.
+     * @param address           The address of the customer.
+     * @param email             The email address of the customer.
+     * @param phone             The phone number of the customer.
+     * @param password          The password of the customer.
+     * @param active            Whether or not the customer is active.
+     * @param verified          Whether or not the customer has verified their membership using their email address.
+     * @param createdAt         The moment in time when the customer was created.
+     * @param passwordUpdatedAt The date time when the password was last updated.
      */
     public CustomerRecord(int id, String name, String address, String email, String phone, String password,
-                          boolean active, boolean verified, LocalDateTime createdAt)
+                          boolean active, boolean verified, LocalDateTime createdAt, LocalDateTime passwordUpdatedAt)
     {
         this.id = id;
         this.name = name;
@@ -76,6 +82,7 @@ public class CustomerRecord implements Customer
         this.active = active;
         this.verified = verified;
         this.createdAt = createdAt;
+        this.passwordUpdatedAt = passwordUpdatedAt;
     }
 
     /**
@@ -226,6 +233,16 @@ public class CustomerRecord implements Customer
     @Override public LocalDateTime getCreatedAt()
     {
         return this.createdAt;
+    }
+
+    /**
+     * Returns the date time when the password of the customer was last updated.
+     *
+     * @return The date time when the password of the customer was last updated.
+     */
+    @Override public LocalDateTime getPasswordUpdatedAt()
+    {
+        return passwordUpdatedAt;
     }
 
     @Override public boolean equals(Object o)

@@ -94,7 +94,7 @@ public class CladdingRecord implements Cladding
     /**
      * Returns {@code true} if the cladding can currently be applied to new orders.
      *
-     * @return {@link true} if the cladding can currently be applied to new orders.
+     * @return {@code true} if the cladding can currently be applied to new orders.
      */
     @Override public boolean isActive()
     {

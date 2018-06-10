@@ -13,7 +13,7 @@ public class CustomerRecordTest
     public void getId() throws Exception
     {
         int            expected = randomInt();
-        CustomerRecord instance = new CustomerRecord(expected, null, null, null, null, null, false, false, null);
+        CustomerRecord instance = new CustomerRecord(expected, null, null, null, null, null, false, false, null, null);
         assertEquals(expected, instance.getId());
     }
 
@@ -21,14 +21,14 @@ public class CustomerRecordTest
     public void getName() throws Exception
     {
         String         expected = randomString();
-        CustomerRecord instance = new CustomerRecord(-1, expected, null, null, null, null, false, false, null);
+        CustomerRecord instance = new CustomerRecord(-1, expected, null, null, null, null, false, false, null, null);
         assertEquals(expected, instance.getName());
     }
 
     @Test
     public void setName() throws Exception
     {
-        CustomerRecord instance = new CustomerRecord(-1, null, null, null, null, null, false, false, null);
+        CustomerRecord instance = new CustomerRecord(-1, null, null, null, null, null, false, false, null, null);
         assertNull(instance.getName());
         String expected = randomString();
         instance.setName(expected);
@@ -39,14 +39,14 @@ public class CustomerRecordTest
     public void getAddress() throws Exception
     {
         String         expected = randomString();
-        CustomerRecord instance = new CustomerRecord(-1, null, expected, null, null, null, false, false, null);
+        CustomerRecord instance = new CustomerRecord(-1, null, expected, null, null, null, false, false, null, null);
         assertEquals(expected, instance.getAddress());
     }
 
     @Test
     public void setAddress() throws Exception
     {
-        CustomerRecord instance = new CustomerRecord(-1, null, null, null, null, null, false, false, null);
+        CustomerRecord instance = new CustomerRecord(-1, null, null, null, null, null, false, false, null, null);
         assertNull(instance.getAddress());
         String expected = randomString();
         instance.setAddress(expected);
@@ -57,14 +57,14 @@ public class CustomerRecordTest
     public void getEmail() throws Exception
     {
         String         expected = randomString();
-        CustomerRecord instance = new CustomerRecord(-1, null, null, expected, null, null, false, false, null);
+        CustomerRecord instance = new CustomerRecord(-1, null, null, expected, null, null, false, false, null, null);
         assertEquals(expected, instance.getEmail());
     }
 
     @Test
     public void setEmail() throws Exception
     {
-        CustomerRecord instance = new CustomerRecord(-1, null, null, null, null, null, false, false, null);
+        CustomerRecord instance = new CustomerRecord(-1, null, null, null, null, null, false, false, null, null);
         assertNull(instance.getEmail());
         String expected = randomString();
         instance.setEmail(expected);
@@ -75,14 +75,14 @@ public class CustomerRecordTest
     public void getPhone() throws Exception
     {
         String         expected = randomString();
-        CustomerRecord instance = new CustomerRecord(-1, null, null, null, expected, null, false, false, null);
+        CustomerRecord instance = new CustomerRecord(-1, null, null, null, expected, null, false, false, null, null);
         assertEquals(expected, instance.getPhone());
     }
 
     @Test
     public void setPhone() throws Exception
     {
-        CustomerRecord instance = new CustomerRecord(-1, null, null, null, null, null, false, false, null);
+        CustomerRecord instance = new CustomerRecord(-1, null, null, null, null, null, false, false, null, null);
         assertNull(instance.getPhone());
         String expected = randomString();
         instance.setPhone(expected);
@@ -93,14 +93,14 @@ public class CustomerRecordTest
     public void getPassword() throws Exception
     {
         String         expected = randomString();
-        CustomerRecord instance = new CustomerRecord(-1, null, null, null, null, expected, false, false, null);
+        CustomerRecord instance = new CustomerRecord(-1, null, null, null, null, expected, false, false, null, null);
         assertEquals(expected, instance.getPassword());
     }
 
     @Test
     public void setPassword() throws Exception
     {
-        CustomerRecord instance = new CustomerRecord(-1, null, null, null, null, null, false, false, null);
+        CustomerRecord instance = new CustomerRecord(-1, null, null, null, null, null, false, false, null, null);
         assertNull(instance.getPassword());
         String expected = randomString();
         instance.setPassword(expected);
@@ -111,14 +111,14 @@ public class CustomerRecordTest
     public void isActive() throws Exception
     {
         boolean        expected = randomBoolean();
-        CustomerRecord instance = new CustomerRecord(-1, null, null, null, null, null, expected, false, null);
+        CustomerRecord instance = new CustomerRecord(-1, null, null, null, null, null, expected, false, null, null);
         assertEquals(expected, instance.isActive());
     }
 
     @Test
     public void setActive() throws Exception
     {
-        CustomerRecord instance = new CustomerRecord(-1, null, null, null, null, null, false, false, null);
+        CustomerRecord instance = new CustomerRecord(-1, null, null, null, null, null, false, false, null, null);
         assertFalse(instance.isActive());
         boolean expected = randomBoolean();
         instance.setActive(expected);
@@ -129,7 +129,7 @@ public class CustomerRecordTest
     public void isVerified() throws Exception
     {
         boolean        expected = randomBoolean();
-        CustomerRecord instance = new CustomerRecord(-1, null, null, null, null, null, false, expected, null);
+        CustomerRecord instance = new CustomerRecord(-1, null, null, null, null, null, false, expected, null, null);
         assertEquals(expected, instance.isVerified());
     }
 
@@ -137,7 +137,15 @@ public class CustomerRecordTest
     public void getCreatedAt() throws Exception
     {
         LocalDateTime  expected = LocalDateTime.now();
-        CustomerRecord instance = new CustomerRecord(-1, null, null, null, null, null, false, false, expected);
+        CustomerRecord instance = new CustomerRecord(-1, null, null, null, null, null, false, false, expected, null);
         assertEquals(expected, instance.getCreatedAt());
+    }
+
+    @Test
+    public void getPasswordUpdatedAt() throws Exception
+    {
+        LocalDateTime  expected = LocalDateTime.now();
+        CustomerRecord instance = new CustomerRecord(-1, null, null, null, null, null, false, false, null, expected);
+        assertEquals(expected, instance.getPasswordUpdatedAt());
     }
 }

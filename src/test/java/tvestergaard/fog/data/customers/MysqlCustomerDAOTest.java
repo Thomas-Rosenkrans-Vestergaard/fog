@@ -15,6 +15,7 @@ import static tvestergaard.fog.Helpers.randomBoolean;
 import static tvestergaard.fog.Helpers.randomString;
 import static tvestergaard.fog.data.constraints.Constraint.*;
 import static tvestergaard.fog.data.customers.CustomerColumn.ID;
+import static tvestergaard.fog.logic.customers.CustomerAuthentication.hash;
 
 public class MysqlCustomerDAOTest
 {
@@ -154,6 +155,16 @@ public class MysqlCustomerDAOTest
 
         List<Customer> actual = dao.get(where(eq(ID, customer1.getId())));
         assertEquals(customer1, actual.get(0));
+    }
+
+    @Test
+    public void updatePassword() throws Exception
+    {
+        String newPassword = hash(randomString());
+        dao.updatePassword(customer1.getId(), newPassword);
+        Customer updated = dao.get(customer1.getId());
+        assertEquals(newPassword, updated.getPassword());
+        assertTrue(customer1.getPasswordUpdatedAt().isBefore(updated.getPasswordUpdatedAt()));
     }
 
     @Test

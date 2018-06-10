@@ -113,17 +113,19 @@ public class MysqlCustomerDAO extends AbstractMysqlDAO implements CustomerDAO
     }
 
     /**
-     * Updates the entity in the data storage to match the provided {@code customer}.
+     * Updates the entity in the data storage to match the provided {@code customer}. Note that the password of the
+     * customer is not updated. Use the {@link MysqlCustomerDAO#updatePassword(int, String)} method instead.
      *
      * @param updater The cladding updater that contains the information necessary to create the cladding.
-     * @return {@link true} if the record was updated.
+     * @return {@code true} if the record was updated.
      * @throws MysqlDataAccessException When a data storage exception occurs while performing the operation.
+     * @see MysqlCustomerDAO#updatePassword(int, String)
      */
     @Override public boolean update(CustomerUpdater updater) throws MysqlDataAccessException
     {
         try {
 
-            String     SQL        = "UPDATE customers SET name = ?, address = ?, email = ?, phone = ?, active = ?, password = ?, verified = ? WHERE id = ?";
+            String     SQL        = "UPDATE customers SET name = ?, address = ?, email = ?, phone = ?, active = ?, verified = ? WHERE id = ?";
             Connection connection = getConnection();
             try (PreparedStatement statement = connection.prepareStatement(SQL)) {
                 statement.setString(1, updater.getName());
@@ -131,9 +133,37 @@ public class MysqlCustomerDAO extends AbstractMysqlDAO implements CustomerDAO
                 statement.setString(3, updater.getEmail());
                 statement.setString(4, updater.getPhone());
                 statement.setBoolean(5, updater.isActive());
-                statement.setString(6, updater.getPassword());
-                statement.setBoolean(7, updater.isVerified());
-                statement.setInt(8, updater.getId());
+                statement.setBoolean(6, updater.isVerified());
+                statement.setInt(7, updater.getId());
+                int updated = statement.executeUpdate();
+                connection.commit();
+                return updated != 0;
+            } catch (SQLException e) {
+                connection.rollback();
+                throw e;
+            }
+        } catch (SQLException e) {
+            throw new MysqlDataAccessException(e);
+        }
+    }
+
+    /**
+     * Updates the password of the customer with the provided id to the provided password hash.
+     *
+     * @param customer     The customer the update the password of.
+     * @param passwordHash The hash of the new password.
+     * @return {@code true} if the password was updated.
+     * @throws MysqlDataAccessException When a data storage exception occurs while performing the operation.
+     */
+    @Override public boolean updatePassword(int customer, String passwordHash) throws MysqlDataAccessException
+    {
+        try {
+
+            String     SQL        = "UPDATE customers SET password = ?, password_updated_at = now() WHERE id = ?";
+            Connection connection = getConnection();
+            try (PreparedStatement statement = connection.prepareStatement(SQL)) {
+                statement.setString(1, passwordHash);
+                statement.setInt(2, customer);
                 int updated = statement.executeUpdate();
                 connection.commit();
                 return updated != 0;
@@ -150,7 +180,7 @@ public class MysqlCustomerDAO extends AbstractMysqlDAO implements CustomerDAO
      * Marks the customer active.
      *
      * @param customerId The id of the customer to mark active.
-     * @return {@link true} if the record was updated.
+     * @return {@code true} if the record was updated.
      * @throws MysqlDataAccessException When a data storage exception occurs while performing the operation.
      * @throws UnknownCustomerException When a customer with the provided id does not exist.
      */
@@ -179,7 +209,7 @@ public class MysqlCustomerDAO extends AbstractMysqlDAO implements CustomerDAO
      * Marks the customer inactive.
      *
      * @param customerId The id of the customer to mark inactive.
-     * @return {@link true} if the record was updated.
+     * @return {@code true} if the record was updated.
      * @throws MysqlDataAccessException When a data storage exception occurs while performing the operation.
      * @throws UnknownCustomerException When a customer with the provided id does not exist.
      */
@@ -260,7 +290,7 @@ public class MysqlCustomerDAO extends AbstractMysqlDAO implements CustomerDAO
                     statement.executeUpdate();
                 }
 
-                final String deleteSQL = "DELETE FROM tokens WHERE customer = (SELECT customer FROM (SELECT * FROM tokens) as sub WHERE sub.id = ?) AND `use` = 'EMAIL_VERIFICATION'";
+                final String deleteSQL = "DELETE FROM tokens WHERE customer = (SELECT customer FROM (SELECT * FROM tokens) AS sub WHERE sub.id = ?) AND `use` = 'EMAIL_VERIFICATION'";
                 try (PreparedStatement statement = connection.prepareStatement(deleteSQL)) {
                     statement.setInt(1, token);
                     statement.executeUpdate();
