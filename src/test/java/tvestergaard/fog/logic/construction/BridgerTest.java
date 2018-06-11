@@ -46,7 +46,7 @@ public class BridgerTest
         when(material2.getUnit()).thenReturn(1);
         when(material2.getId()).thenReturn(1);
 
-        Bridger<TestCategory> instance    = new Bridger<>(materials, material -> material.getMeasurement());
+        Bridger<TestCategory> instance    = new Bridger<>(materials, TestCategory::getMeasurement);
         MutableMaterials      destination = new MutableMaterials();
         instance.bridge(5, destination);
 

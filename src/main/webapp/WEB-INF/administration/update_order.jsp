@@ -1,19 +1,24 @@
 <%@page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ include file="../includes/top.jspf" %>
 <div class="row">
-    <div class="col s12">
-        <h2><span class="focus">Opdatér ordre</span></h2>
+    <div class="col s8">
+        <h2>Opdatér ordre</h2>
     </div>
-</div>
-<div class="row">
-    <div class="col s12">
+    <div class="col s2" style="margin-top: 20px">
         <form method="post" action="orders">
             ${csrf}
             <input type="hidden" name="id" value="${order.getId()}">
-            <button class="btn-large" type="submit" name="action" value="cancel"
-            ${order.isActive() ? '' : 'disabled'}><i class="material-icons right">clear</i>Aflys
+            <button style="display:block; width: 100%" class="btn-large" type="submit" name="action" value="cancel"
+            ${order.isActive() ? '' : 'disabled'}>Aflys
             </button>
         </form>
+    </div>
+    <div class="col s2" style="margin-top: 20px">
+        <a style="display: block; width: 100%" href="offers?action=create&order=${order.getId()}" ${order.isActive()
+        ? '' :
+        'disabled'}
+           class="btn-large">OPRET TILBUD
+        </a>
     </div>
 </div>
 <div class="row">
@@ -22,54 +27,6 @@
             Mauris dolor felis, sagittis at, luctus sed, aliquam non, tellus. Vivamus luctus egestas leo. Sed elit dui,
             pellentesque a, faucibus vel, interdum nec, diam. Itaque earum rerum hic tenetur a sapiente delectus, ut aut
             reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus asperiores repellat.</p>
-    </div>
-</div>
-<div class="row">
-    <div class="col s12">
-        <h2>Tilbud</h2>
-    </div>
-</div>
-<div class="row">
-    <div class="col 12">
-        <a href="offers?action=create&order=${order.getId()}" ${order.isActive() ? '' : 'disabled'} class="btn-large">
-            <i class="material-icons right">add</i>OPRET TILBUD
-        </a>
-    </div>
-</div>
-<div class="row">
-    <div class="col s12">
-        <table class="bordered highlight">
-            <thead>
-            <tr>
-                <th>Tilbudspris</th>
-                <th>Medarbejder</th>
-                <th>Status</th>
-                <th>Oprettet</th>
-            </tr>
-            <%@ include file="../includes/table_filters.jspf" %>
-            </thead>
-            <tbody>
-            <c:forEach items="${offers}" var="offer">
-                <tr data-link="offer?id=${offer.getId()}">
-                    <td>${f:formatPrice(offer.getPrice())}</td>
-                    <td>${offer.getEmployee().getName()}</td>
-                    <td>${offer.getStatus()}</td>
-                    <td>${f:formatDatetime(offer.getCreatedAt())}</td>
-                </tr>
-            </c:forEach>
-            <c:if test="${empty offers}">
-                <tr>
-                    <td colspan="4">Ingen tilbud for denne ordre.</td>
-                </tr>
-            </c:if>
-            </tbody>
-        </table>
-    </div>
-</div>
-<div class="row">
-    <div class="col s12">
-        <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Nulla non lectus sed nisl molestie malesuada.
-            Mauris dolor felis, sagittis at, luctus sed, aliquam non, tellus. Vivamus luctus egestas leo.</p>
     </div>
 </div>
 <div class="row">
@@ -249,5 +206,48 @@
             });
         </script>
     </form>
+</div>
+<div class="row">
+    <div class="col s12">
+        <h2>Tilbud</h2>
+    </div>
+</div>
+<div class="row">
+    <div class="col s12">
+        <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Nulla non lectus sed nisl molestie malesuada.
+            Mauris dolor felis, sagittis at, luctus sed, aliquam non, tellus. Vivamus luctus egestas leo. Sed elit dui,
+            pellentesque a, faucibus vel, interdum nec, diam. Itaque earum rerum hic tenetur a sapiente delectus, ut aut
+            reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus asperiores repellat.</p>
+    </div>
+</div>
+<div class="row">
+    <div class="col s12">
+        <table class="bordered highlight">
+            <thead>
+            <tr>
+                <th>Tilbudspris</th>
+                <th>Medarbejder</th>
+                <th>Status</th>
+                <th>Oprettet</th>
+            </tr>
+            <%@ include file="../includes/table_filters.jspf" %>
+            </thead>
+            <tbody>
+            <c:forEach items="${offers}" var="offer">
+                <tr data-link="offer?id=${offer.getId()}">
+                    <td>${f:formatPrice(offer.getPrice())}</td>
+                    <td>${offer.getEmployee().getName()}</td>
+                    <td>${offer.getStatus()}</td>
+                    <td>${f:formatDatetime(offer.getCreatedAt())}</td>
+                </tr>
+            </c:forEach>
+            <c:if test="${empty offers}">
+                <tr>
+                    <td colspan="4">Ingen tilbud for denne ordre.</td>
+                </tr>
+            </c:if>
+            </tbody>
+        </table>
+    </div>
 </div>
 <%@ include file="../includes/bottom.jspf" %>
