@@ -37,7 +37,7 @@ public class AdministrationCustomersServlet extends AdministrationServlet
         dispatcher.get("create", new ShowCreateCommand());
         dispatcher.post("create", new HandleCreateCommand());
         dispatcher.post("activate", new HandleActivateCommand());
-        dispatcher.post("inactivate", new HandleInactivateCommand());
+        dispatcher.post("deactivate", new HandleDeactivateCommand());
 
         errors.put(NAME_EMPTY, "Navnet der blev sendt var tomt.");
         errors.put(NAME_LONGER_THAN_255, "Navnet der blev sendt var længere end 255 tegn.");
@@ -168,7 +168,7 @@ public class AdministrationCustomersServlet extends AdministrationServlet
         }
     }
 
-    private class HandleInactivateCommand implements Command
+    private class HandleDeactivateCommand implements Command
     {
         /**
          * Delegates the request and response objects to this command.
@@ -195,7 +195,7 @@ public class AdministrationCustomersServlet extends AdministrationServlet
             }
 
             try {
-                facade.inactivate(parameters.getInt("id"));
+                facade.deactivate(parameters.getInt("id"));
                 notifications.success("Kunden blev inaktiveret.");
                 response.sendRedirect("customers");
             } catch (UnknownCustomerException e) {

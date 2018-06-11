@@ -148,13 +148,18 @@ public class MysqlCustomerDAOTest
         customer1.setAddress(randomString());
         customer1.setEmail(randomString());
         customer1.setPhone(randomString());
-        customer1.setPassword(randomString());
+        customer1.setPassword(randomString()); // Test that password is not updated
         customer1.setActive(false);
 
         assertTrue(dao.update(customer1));
 
-        List<Customer> actual = dao.get(where(eq(ID, customer1.getId())));
-        assertEquals(customer1, actual.get(0));
+        Customer actual = dao.get(where(eq(ID, customer1.getId()))).get(0);
+        assertEquals(customer1.getName(), actual.getName());
+        assertEquals(customer1.getAddress(), actual.getAddress());
+        assertEquals(customer1.getEmail(), actual.getEmail());
+        assertEquals(customer1.getPhone(), actual.getPhone());
+        assertNotEquals(customer1.getPassword(), actual.getPassword()); // Test that password is not updated
+        assertEquals(customer1.isActive(), actual.isActive());
     }
 
     @Test
@@ -176,10 +181,10 @@ public class MysqlCustomerDAOTest
     }
 
     @Test
-    public void inactivate() throws Exception
+    public void deactivate() throws Exception
     {
         assertTrue(customer1.isActive());
-        assertTrue(dao.inactivate(customer1.getId()));
+        assertTrue(dao.deactivate(customer1.getId()));
         assertFalse(dao.first(where(eq(ID, customer1.getId()))).isActive());
     }
 

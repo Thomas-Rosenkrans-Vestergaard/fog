@@ -213,7 +213,7 @@ public class MysqlCustomerDAO extends AbstractMysqlDAO implements CustomerDAO
      * @throws MysqlDataAccessException When a data storage exception occurs while performing the operation.
      * @throws UnknownCustomerException When a customer with the provided id does not exist.
      */
-    @Override public boolean inactivate(int customerId) throws MysqlDataAccessException, UnknownCustomerException
+    @Override public boolean deactivate(int customerId) throws MysqlDataAccessException, UnknownCustomerException
     {
         try {
 

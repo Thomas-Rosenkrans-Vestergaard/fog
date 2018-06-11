@@ -4,7 +4,7 @@ import tvestergaard.fog.data.customers.Customer;
 import tvestergaard.fog.logic.WebsiteContext;
 import tvestergaard.fog.logic.email.ApplicationEmail;
 
-public class InactivateEmail implements ApplicationEmail
+public class DeactivateEmail implements ApplicationEmail
 {
 
     /**
@@ -13,11 +13,11 @@ public class InactivateEmail implements ApplicationEmail
     private final Customer customer;
 
     /**
-     * Creates a new {@link InactivateEmail}.
+     * Creates a new {@link DeactivateEmail}.
      *
      * @param customer The customer the email is sent to.
      */
-    public InactivateEmail(Customer customer)
+    public DeactivateEmail(Customer customer)
     {
         this.customer = customer;
     }

@@ -71,7 +71,8 @@ public class Bridger<T extends CategoryMaterial>
 
         int distanceCovered = 0;
         while (distanceCovered < targetDistance) {
-
+            T best = largest(targetDistance - distanceCovered);
+            distanceCovered += function.apply(best);
         }
     }
 

@@ -115,7 +115,7 @@ public interface CustomerDAO
      * @throws DataAccessException      When a data storage exception occurs while performing the operation.
      * @throws UnknownCustomerException When a customer with the provided id does not exist.
      */
-    boolean inactivate(int customerId) throws DataAccessException, UnknownCustomerException;
+    boolean deactivate(int customerId) throws DataAccessException, UnknownCustomerException;
 
     /**
      * Resets the password of the customer the provided token was issued to. The token is then deleted.

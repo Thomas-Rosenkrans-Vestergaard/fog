@@ -215,12 +215,12 @@ public class CustomerFacade
      * @throws ApplicationException     When a data storage exception occurs while performing the operation.
      * @throws UnknownCustomerException When a customer with the provided id does not exist.
      */
-    public boolean inactivate(int customerId) throws ApplicationException, UnknownCustomerException
+    public boolean deactivate(int customerId) throws ApplicationException, UnknownCustomerException
     {
         try {
-            boolean result = customerDAO.inactivate(customerId);
+            boolean result = customerDAO.deactivate(customerId);
             if (result) {
-                InactivateEmail email = new InactivateEmail(customerDAO.get(customerId));
+                DeactivateEmail email = new DeactivateEmail(customerDAO.get(customerId));
                 mailer.send(email);
             }
 
