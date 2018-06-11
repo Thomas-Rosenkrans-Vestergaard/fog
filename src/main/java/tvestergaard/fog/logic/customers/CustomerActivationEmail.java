@@ -4,20 +4,23 @@ import tvestergaard.fog.data.customers.Customer;
 import tvestergaard.fog.logic.WebsiteContext;
 import tvestergaard.fog.logic.email.ApplicationEmail;
 
-public class DeactivateEmail implements ApplicationEmail
+/**
+ * The email sent to customers when their account is activated.
+ */
+public class CustomerActivationEmail implements ApplicationEmail
 {
 
     /**
-     * The customer the email is sent to.
+     * The recipient of the activation email.
      */
     private final Customer customer;
 
     /**
-     * Creates a new {@link DeactivateEmail}.
+     * Creates a new {@link CustomerActivationEmail}.
      *
-     * @param customer The customer the email is sent to.
+     * @param customer The recipient of the activation email.
      */
-    public DeactivateEmail(Customer customer)
+    public CustomerActivationEmail(Customer customer)
     {
         this.customer = customer;
     }
@@ -29,7 +32,7 @@ public class DeactivateEmail implements ApplicationEmail
      */
     @Override public Customer getRecipient()
     {
-        return customer;
+        return null;
     }
 
     /**
@@ -40,7 +43,7 @@ public class DeactivateEmail implements ApplicationEmail
      */
     @Override public String getSubject(WebsiteContext websiteContext)
     {
-        return "Din konto er blevet deaktiveret.";
+        return "Din konto er blevet aktiveret.";
     }
 
     /**
@@ -54,7 +57,7 @@ public class DeactivateEmail implements ApplicationEmail
         StringBuilder builder = new StringBuilder();
 
         builder.append("<p>");
-        builder.append("Din kundekonto er blevet deaktiveret.");
+        builder.append("Din kundekonto er blevet aktiveret.");
         builder.append("</p>");
 
         return builder.toString();

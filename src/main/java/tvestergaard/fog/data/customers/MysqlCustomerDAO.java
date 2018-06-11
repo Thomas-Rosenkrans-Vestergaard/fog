@@ -182,9 +182,8 @@ public class MysqlCustomerDAO extends AbstractMysqlDAO implements CustomerDAO
      * @param customerId The id of the customer to mark active.
      * @return {@code true} if the record was updated.
      * @throws MysqlDataAccessException When a data storage exception occurs while performing the operation.
-     * @throws UnknownCustomerException When a customer with the provided id does not exist.
      */
-    @Override public boolean activate(int customerId) throws MysqlDataAccessException, UnknownCustomerException
+    @Override public boolean activate(int customerId) throws MysqlDataAccessException
     {
         try {
 
@@ -211,9 +210,8 @@ public class MysqlCustomerDAO extends AbstractMysqlDAO implements CustomerDAO
      * @param customerId The id of the customer to mark inactive.
      * @return {@code true} if the record was updated.
      * @throws MysqlDataAccessException When a data storage exception occurs while performing the operation.
-     * @throws UnknownCustomerException When a customer with the provided id does not exist.
      */
-    @Override public boolean deactivate(int customerId) throws MysqlDataAccessException, UnknownCustomerException
+    @Override public boolean deactivate(int customerId) throws MysqlDataAccessException
     {
         try {
 

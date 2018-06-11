@@ -102,20 +102,18 @@ public interface CustomerDAO
      *
      * @param customerId The id of the customer to mark active.
      * @return {@code true} if the record was updated.
-     * @throws DataAccessException      When a data storage exception occurs while performing the operation.
-     * @throws UnknownCustomerException When a customer with the provided id does not exist.
+     * @throws DataAccessException When a data storage exception occurs while performing the operation.
      */
-    boolean activate(int customerId) throws DataAccessException, UnknownCustomerException;
+    boolean activate(int customerId) throws DataAccessException;
 
     /**
      * Marks the customer inactive.
      *
      * @param customerId The id of the customer to mark inactive.
      * @return {@code true} if the record was updated.
-     * @throws DataAccessException      When a data storage exception occurs while performing the operation.
-     * @throws UnknownCustomerException When a customer with the provided id does not exist.
+     * @throws DataAccessException When a data storage exception occurs while performing the operation.
      */
-    boolean deactivate(int customerId) throws DataAccessException, UnknownCustomerException;
+    boolean deactivate(int customerId) throws DataAccessException;
 
     /**
      * Resets the password of the customer the provided token was issued to. The token is then deleted.

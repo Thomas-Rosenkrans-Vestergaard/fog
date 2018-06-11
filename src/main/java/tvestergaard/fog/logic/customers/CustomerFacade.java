@@ -201,7 +201,14 @@ public class CustomerFacade
     public boolean activate(int customerId) throws ApplicationException, UnknownCustomerException
     {
         try {
-            return customerDAO.activate(customerId);
+            boolean result = customerDAO.activate(customerId);
+            if (!result)
+                throw new UnknownCustomerException();
+
+            CustomerActivationEmail email = new CustomerActivationEmail(customerDAO.get(customerId));
+            mailer.send(email);
+            return result;
+
         } catch (DataAccessException e) {
             throw new ApplicationException(e);
         }
@@ -219,12 +226,13 @@ public class CustomerFacade
     {
         try {
             boolean result = customerDAO.deactivate(customerId);
-            if (result) {
-                DeactivateEmail email = new DeactivateEmail(customerDAO.get(customerId));
-                mailer.send(email);
-            }
+            if (!result)
+                throw new UnknownCustomerException();
 
+            CustomerDeactivationEmail email = new CustomerDeactivationEmail(customerDAO.get(customerId));
+            mailer.send(email);
             return result;
+
         } catch (DataAccessException e) {
             throw new ApplicationException(e);
         }
