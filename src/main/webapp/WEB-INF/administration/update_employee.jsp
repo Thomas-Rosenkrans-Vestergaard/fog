@@ -9,7 +9,8 @@
     <div class="col s12">
         <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Nulla non lectus sed nisl molestie malesuada.
             Mauris dolor felis, sagittis at, luctus sed, aliquam non, tellus. Vivamus luctus egestas leo. Sed elit dui,
-            pellentesque a, faucibus vel, interdum nec, diam.</p>
+            pellentesque a, faucibus vel, interdum nec, diam. Itaque earum rerum hic tenetur a sapiente delectus, ut aut
+            reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus asperiores repellat.</p>
     </div>
 </div>
 <div class="row">
@@ -42,11 +43,11 @@
             </div>
         </div>
         <div class="row">
-            <div class="col s8 input-field">
+            <div class="col s11 input-field">
                 <input type="password" name="password" id="password" class="validate" minlength="4">
                 <label for="password">Adgangskode</label>
             </div>
-            <div class="col s4">
+            <div class="col s1" style="margin-top: 10px">
                 <div class="switch switch-input">
                     <label>
                         <input type="checkbox" id="update-password">

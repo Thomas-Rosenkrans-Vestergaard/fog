@@ -31,7 +31,7 @@
             <c:forEach items="${offers}" var="offer">
                 <c:set var="order" value="${offer.getOrder()}"/>
                 <c:set var="employee" value="${offer.getEmployee()}"/>
-                <tr data-link="?action=update&id=${offer.getId()}">
+                <tr data-link="?action=view&id=${offer.getId()}">
                     <td>
                         <a href="customers?action=update&id=${order.getCustomer().getId()}">
                             <c:out value="${order.getCustomer().getName()}"/>

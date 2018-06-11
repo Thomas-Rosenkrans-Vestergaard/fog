@@ -41,7 +41,7 @@
                             <input type="hidden" name="id" value="${customer.getId()}">
                             <input type="hidden" name="action"
                                    value="${customer.isActive() ? 'deactivate' : 'activate'}">
-                            <input class="btn" type="submit" value="${customer.isActive() ? 'Inaktiver' : 'Aktiver'}">
+                            <input class="btn" type="submit" value="${customer.isActive() ? 'Deaktiver' : 'Aktiver'}">
                         </form>
                         </form>
                     </td>

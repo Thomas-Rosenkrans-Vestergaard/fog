@@ -2,6 +2,7 @@ package tvestergaard.fog.presentation.servlets;
 
 import tvestergaard.fog.data.employees.Employee;
 import tvestergaard.fog.data.employees.Role;
+import tvestergaard.fog.data.offers.Offer;
 import tvestergaard.fog.data.offers.OfferColumn;
 import tvestergaard.fog.data.orders.Order;
 import tvestergaard.fog.logic.construction.ConstructionException;
@@ -42,6 +43,7 @@ public class AdministrationOffersServlet extends AdministrationServlet
         dispatcher.get(null, new ShowTableCommand());
         dispatcher.get("create", new ShowCreateCommand());
         dispatcher.post("create", new HandleCreateCommand());
+        dispatcher.get("view", new ShowOfferCommand());
 
         errors.put(OfferError.NEGATIVE_PRICE, "Prisen må ikke være negativ.");
     }
@@ -164,6 +166,39 @@ public class AdministrationOffersServlet extends AdministrationServlet
             }
 
             response.sendRedirect("?action=create");
+        }
+    }
+
+    private class ShowOfferCommand implements Command
+    {
+
+        /**
+         * Delegates the request and response objects to this command.
+         *
+         * @param request  The request.
+         * @param response The response.
+         */
+        @Override public void dispatch(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
+        {
+            Parameters    parameters    = new Parameters(request);
+            Notifications notifications = notifications(request);
+
+            if (!parameters.isInt("id")) {
+                notifications.error("Missing id.");
+                response.sendRedirect("offers");
+                return;
+            }
+
+            Offer offer = offerFacade.get(parameters.getInt("id"));
+            if (offer == null) {
+                notifications.error("No such offer.");
+                response.sendRedirect("offers");
+                return;
+            }
+
+            request.setAttribute("title", "Se tilbud");
+            request.setAttribute("offer", offer);
+            request.getRequestDispatcher("/WEB-INF/administration/view_offer.jsp").forward(request, response);
         }
     }
 }

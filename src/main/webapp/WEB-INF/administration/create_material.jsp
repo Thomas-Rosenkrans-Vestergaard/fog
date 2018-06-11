@@ -2,18 +2,19 @@
 <%@ include file="../includes/top.jspf" %>
 <div class="row">
     <div class="col s12">
-        <h2><span class="focus">OPRET MATERIALE</span></h2>
+        <h2>OPRET MATERIALE</h2>
     </div>
 </div>
 <div class="row">
     <div class="col s12">
         <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Nulla non lectus sed nisl molestie malesuada.
             Mauris dolor felis, sagittis at, luctus sed, aliquam non, tellus. Vivamus luctus egestas leo. Sed elit dui,
-            pellentesque a, faucibus vel, interdum nec, diam.</p>
+            pellentesque a, faucibus vel, interdum nec, diam. Itaque earum rerum hic tenetur a sapiente delectus, ut aut
+            reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus asperiores repellat.</p>
     </div>
 </div>
 <div class="row">
-    <div class="col s12">
+    <div class="col s12 no-padding">
         <form method="post">
             ${csrf}
             <input type="hidden" name="category" value="${category}">
@@ -50,6 +51,14 @@
                 <div class="row">
                     <div class="col s12">
                         <h2>Attributter</h2>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col s12">
+                        <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Nulla non lectus sed nisl molestie malesuada.
+                            Mauris dolor felis, sagittis at, luctus sed, aliquam non, tellus. Vivamus luctus egestas leo. Sed elit dui,
+                            pellentesque a, faucibus vel, interdum nec, diam. Itaque earum rerum hic tenetur a sapiente delectus, ut aut
+                            reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus asperiores repellat.</p>
                     </div>
                 </div>
                 <c:forEach items="${attributes}" var="attribute">

@@ -34,7 +34,7 @@
                     <c:set var="order" value="${offer.getOrder()}"/>
                     <c:set var="employee" value="${offer.getEmployee()}"/>
                     <c:set var="customer" value="${order.getCustomer()}"/>
-                    <td><a href="offers?action=update&id=${offer.getId()}">${offer.getId()}</a></td>
+                    <td><a href="offers?action=view&id=${offer.getId()}">${offer.getId()}</a></td>
                     <td><a
                             href="customers?action=update&id=${customer.getId()}"><c:out
                             value="${customer.getName()}"/></a></td>
