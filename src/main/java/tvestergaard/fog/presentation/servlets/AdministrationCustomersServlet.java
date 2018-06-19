@@ -67,6 +67,7 @@ public class AdministrationCustomersServlet extends AdministrationServlet
             controls.add(CustomerColumn.EMAIL, TableControls.Type.TEXT);
             controls.add(CustomerColumn.PHONE, TableControls.Type.TEXT);
             controls.add(CustomerColumn.ACTIVE, TableControls.Type.BOOLEAN);
+            controls.add(CustomerColumn.VERIFIED, TableControls.Type.BOOLEAN);
             controls.add(CustomerColumn.CREATED_AT, TableControls.Type.TIMESTAMP);
 
             notifications(request);

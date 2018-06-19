@@ -5,10 +5,28 @@ import tvestergaard.fog.data.materials.attributes.Attribute;
 import tvestergaard.fog.data.materials.categories.Category;
 import tvestergaard.fog.data.materials.categories.IncorrectCategoryException;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
+/**
+ * The component, with both its definition and the selected material.
+ */
 public interface Component extends ComponentConnection, ComponentDefinition, Material
 {
+
+    /**
+     * Creates a new {@link Component} from the provided information.
+     *
+     * @param id         The id of the component value.
+     * @param definition The definition the component value satisfies.
+     * @param materials  The materials used in the component (when multiple materials are used).
+     * @return The resulting {@link ComponentConnection}.
+     */
+    static ComponentConnection from(int id, ComponentDefinition definition, List<Material> materials)
+    {
+        return new ComponentRecord(id, definition.getId(), definition, materials);
+    }
 
     /**
      * Returns the component definition the value is assigned to.
@@ -68,10 +86,30 @@ public interface Component extends ComponentConnection, ComponentDefinition, Mat
     }
 
     /**
-     * Returns the specific type of category the material belongs to.
+     * Whether or not the component contains multiple materials.
+     *
+     * @return {@code true} when the component contains multiple materials. {@code false} otherwise.
+     */
+    @Override default boolean isMultiple()
+    {
+        return getDefinition().isMultiple();
+    }
+
+    /**
+     * Returns the first material assigned to the component.
+     *
+     * @return The first material assigned to the component.
+     */
+    default Material getMaterial()
+    {
+        return getMaterials().get(0);
+    }
+
+    /**
+     * Returns the first material assigned to the component, cast to the provided category.
      *
      * @param category The class of the category.
-     * @return The category instance.
+     * @return The resulting category instance.
      * @throws IncorrectCategoryException When the category could not be converted.
      */
     default <T extends Category> T as(Class<T> category) throws IncorrectCategoryException
@@ -80,11 +118,44 @@ public interface Component extends ComponentConnection, ComponentDefinition, Mat
     }
 
     /**
-     * Returns the material assigned to the component definition.
+     * Returns the materials assigned to the component.
      *
-     * @return The material assigned to the component definition.
+     * @return The materials assigned to the component.
      */
-    Material getMaterial();
+    List<Material> getMaterials();
+
+    /**
+     * Checks if the component contains the provided material.
+     *
+     * @param material The material to check for.
+     * @return The result of the check.
+     */
+    default boolean contains(Material material)
+    {
+        return getMaterials().contains(material);
+    }
+
+    /**
+     * Returns the materials defined in the component as the target category material type.
+     *
+     * @param category
+     * @param <T>
+     * @return Returns a list of the target material type. When the component contains only one materials, this method
+     * returns {@code null}.
+     * @throws IncorrectCategoryException
+     */
+    default <T extends Category> List<T> asMultiple(Class<T> category) throws IncorrectCategoryException
+    {
+        List<Material> before = getMaterials();
+        if (before == null)
+            return null;
+
+        List<T> after = new ArrayList<>();
+        for (Material material : before)
+            after.add(material.as(category));
+
+        return after;
+    }
 
     /**
      * Checks if the material is currently active.

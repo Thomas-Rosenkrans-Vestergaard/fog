@@ -91,7 +91,7 @@ public class AdministrationModelsServlet extends AdministrationServlet
             for (int x = 0; x < components.size(); x++)
                 categories[x] = components.get(x).getDefinition().getCategory().getId();
 
-            request.setAttribute("title", "Opdater tag");
+            request.setAttribute("title", "Opdater model");
             request.setAttribute("model", model);
             request.setAttribute("components", components);
             request.setAttribute("materials", materialFacade.getByCategory(categories).asMap());
@@ -124,19 +124,30 @@ public class AdministrationModelsServlet extends AdministrationServlet
             List<ComponentDefinition> components = modelFacade.getComponentDefinitions(parameters.getInt("id"));
             for (ComponentDefinition definition : components) {
                 String parameterName = "component_" + definition.getIdentifier();
-                if (!parameters.isInt(parameterName)) {
-                    notifications.error("Missing component " + definition.getIdentifier());
-                    response.sendRedirect("models");
-                    return;
-                }
+                if (!definition.isMultiple()) {
+                    if (!parameters.isInt(parameterName)) {
+                        notifications.error("Missing component " + definition.getIdentifier());
+                        response.sendRedirect("models");
+                        return;
+                    }
 
-                values.add(ComponentConnection.from(definition.getId(), parameters.getInt(parameterName)));
+                    values.add(ComponentConnection.from(definition.getId(), parameters.getInt(parameterName)));
+                } else { // Is multiple
+                    if (!parameters.isInts(parameterName)) {
+                        notifications.error("Missing component " + definition.getIdentifier());
+                        response.sendRedirect("models");
+                        return;
+                    }
+
+                    int[] sent = parameters.getInts(parameterName);
+                    for (int x : sent)
+                        values.add(ComponentConnection.from(definition.getId(), x));
+                }
             }
 
             try {
                 modelFacade.update(parameters.getInt("id"), parameters.value("name"), values);
-
-                notifications.success("Taget blev opdateret.");
+                notifications.success("Modelkomponenterne blev opdateret.");
                 response.sendRedirect("?action=update&id=" + parameters.getInt("id"));
 
             } catch (ApplicationException e) {

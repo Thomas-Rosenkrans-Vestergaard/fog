@@ -60,11 +60,12 @@ public class MysqlComponentDAO extends AbstractMysqlDAO implements ComponentDAO
 
             Connection connection = getConnection();
 
-            String SQL = "INSERT INTO component_definitions (identifier, notes, category) VALUES (?,?,?)";
+            String SQL = "INSERT INTO component_definitions (identifier, notes, category, multiple) VALUES (?,?,?,?)";
             try (PreparedStatement statement = connection.prepareStatement(SQL, Statement.RETURN_GENERATED_KEYS)) {
                 statement.setString(1, blueprint.getIdentifier());
                 statement.setString(2, blueprint.getNotes());
                 statement.setInt(3, blueprint.getCategoryId());
+                statement.setBoolean(4, blueprint.isMultiple());
                 statement.executeUpdate();
                 ResultSet generated = statement.getGeneratedKeys();
                 generated.first();

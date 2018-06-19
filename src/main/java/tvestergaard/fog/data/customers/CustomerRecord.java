@@ -278,6 +278,7 @@ public class CustomerRecord implements Customer
                 ", active=" + active +
                 ", verified=" + verified +
                 ", createdAt=" + createdAt +
+                ", passwordUpdatedAt=" + passwordUpdatedAt +
                 '}';
     }
 }

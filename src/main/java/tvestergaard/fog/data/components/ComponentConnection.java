@@ -1,5 +1,8 @@
 package tvestergaard.fog.data.components;
 
+/**
+ * Represents the relationship between a component definition and a selected material for that definition.
+ */
 public interface ComponentConnection
 {
 
@@ -12,7 +15,7 @@ public interface ComponentConnection
      */
     static ComponentConnection from(int definition, int material)
     {
-        return new ComponentRecord(definition, null, material, null);
+        return new ComponentConnectionRecord(-1, definition, material);
     }
 
     /**

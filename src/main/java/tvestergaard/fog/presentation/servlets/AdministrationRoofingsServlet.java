@@ -146,13 +146,25 @@ public class AdministrationRoofingsServlet extends AdministrationServlet
             List<ComponentDefinition> components = roofingFacade.getComponentDefinitions(parameters.getEnum("type", RoofingType.class));
             for (ComponentDefinition definition : components) {
                 String parameterName = "component_" + definition.getIdentifier();
-                if (!parameters.isInt(parameterName)) {
-                    notifications.error("Missing component " + definition.getIdentifier());
-                    response.sendRedirect("roofings");
-                    return;
-                }
+                if (!definition.isMultiple()) {
+                    if (!parameters.isInt(parameterName)) {
+                        notifications.error("Missing component " + definition.getIdentifier());
+                        response.sendRedirect("models");
+                        return;
+                    }
 
-                values.add(ComponentConnection.from(definition.getId(), parameters.getInt(parameterName)));
+                    values.add(ComponentConnection.from(definition.getId(), parameters.getInt(parameterName)));
+                } else { // Is multiple
+                    if (!parameters.isInts(parameterName)) {
+                        notifications.error("Missing component " + definition.getIdentifier());
+                        response.sendRedirect("models");
+                        return;
+                    }
+
+                    int[] sent = parameters.getInts(parameterName);
+                    for (int x : sent)
+                        values.add(ComponentConnection.from(definition.getId(), x));
+                }
             }
 
             try {
@@ -227,16 +239,28 @@ public class AdministrationRoofingsServlet extends AdministrationServlet
             }
 
             List<ComponentConnection> values     = new ArrayList<>();
-            List<ComponentDefinition> components = roofingFacade.getComponentDefinitions(parameters.getEnum("type", RoofingType.class));
+            List<ComponentDefinition>          components = roofingFacade.getComponentDefinitions(parameters.getEnum("type", RoofingType.class));
             for (ComponentDefinition definition : components) {
                 String parameterName = "component_" + definition.getIdentifier();
-                if (!parameters.isInt(parameterName)) {
-                    notifications.error("Missing component " + definition.getIdentifier());
-                    response.sendRedirect("roofings");
-                    return;
-                }
+                if (!definition.isMultiple()) {
+                    if (!parameters.isInt(parameterName)) {
+                        notifications.error("Missing component " + definition.getIdentifier());
+                        response.sendRedirect("models");
+                        return;
+                    }
 
-                values.add(ComponentConnection.from(definition.getId(), parameters.getInt(parameterName)));
+                    values.add(ComponentConnection.from(definition.getId(), parameters.getInt(parameterName)));
+                } else { // Is multiple
+                    if (!parameters.isInts(parameterName)) {
+                        notifications.error("Missing component " + definition.getIdentifier());
+                        response.sendRedirect("models");
+                        return;
+                    }
+
+                    int[] sent = parameters.getInts(parameterName);
+                    for (int x : sent)
+                        values.add(ComponentConnection.from(definition.getId(), x));
+                }
             }
 
             try {

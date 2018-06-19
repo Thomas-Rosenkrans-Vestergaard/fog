@@ -8,6 +8,7 @@ import tvestergaard.fog.data.TestDataSource;
 import tvestergaard.fog.data.constraints.OrderDirection;
 
 import java.sql.Connection;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.junit.Assert.*;
@@ -169,7 +170,10 @@ public class MysqlCustomerDAOTest
         dao.updatePassword(customer1.getId(), newPassword);
         Customer updated = dao.get(customer1.getId());
         assertEquals(newPassword, updated.getPassword());
-        assertTrue(customer1.getPasswordUpdatedAt().isBefore(updated.getPasswordUpdatedAt()));
+
+        LocalDateTime before = customer1.getPasswordUpdatedAt();
+        LocalDateTime after  = updated.getPasswordUpdatedAt();
+        assertTrue(before.isBefore(after) || before.isEqual(after));
     }
 
     @Test
@@ -197,5 +201,6 @@ public class MysqlCustomerDAOTest
     @Test
     public void confirmMembership() throws Exception
     {
+
     }
 }

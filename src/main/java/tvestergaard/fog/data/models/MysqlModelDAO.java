@@ -7,8 +7,8 @@ import tvestergaard.fog.data.AbstractMysqlDAO;
 import tvestergaard.fog.data.DataAccessException;
 import tvestergaard.fog.data.MysqlDataAccessException;
 import tvestergaard.fog.data.components.Component;
-import tvestergaard.fog.data.components.ComponentDefinition;
 import tvestergaard.fog.data.components.ComponentConnection;
+import tvestergaard.fog.data.components.ComponentDefinition;
 import tvestergaard.fog.data.materials.SimpleMaterial;
 
 import java.sql.Connection;
@@ -93,21 +93,22 @@ public class MysqlModelDAO extends AbstractMysqlDAO implements ModelDAO
 
                 int updated = statement.executeUpdate();
 
-                String componentSQL = "UPDATE component_values cv SET material = ? " +
-                        "WHERE definition = ? " +
-                        "AND id IN (SELECT component FROM model_component_values mcv " +
-                        "INNER JOIN model_component_definitions gcd ON gcv.definition = gcd.id WHERE gcd.model = ?)";
-                try (PreparedStatement componentStatement = connection.prepareStatement(componentSQL)) {
-                    componentStatement.setInt(3, updater.getId());
-                    for (ComponentConnection component : components) {
-                        componentStatement.setInt(1, component.getMaterialId());
-                        componentStatement.setInt(2, component.getDefinitionId());
-                        updated += componentStatement.executeUpdate();
+                String deleteSQL = "DELETE FROM component_values WHERE definition IN (SELECT definition FROM model_component_definitions mcd WHERE mcd.model = ?)";
+                try (PreparedStatement deleteStatement = connection.prepareStatement(deleteSQL)) {
+                    deleteStatement.setInt(1, updater.getId());
+                    deleteStatement.executeUpdate();
+                }
+
+                String insertSQL = "INSERT INTO component_values (definition, material) VALUES (?, ?)";
+                try (PreparedStatement insertStatement = connection.prepareStatement(insertSQL)) {
+                    for (ComponentConnection componentValue : components) {
+                        insertStatement.setInt(1, componentValue.getDefinitionId());
+                        insertStatement.setInt(2, componentValue.getMaterialId());
+                        updated += insertStatement.executeUpdate();
                     }
                 }
 
                 connection.commit();
-
                 return updated != 0;
 
             } catch (SQLException e) {
@@ -157,12 +158,15 @@ public class MysqlModelDAO extends AbstractMysqlDAO implements ModelDAO
     {
         List<Component> components = new ArrayList<>();
 
-        String SQL = "SELECT * FROM model_component_values mcv " +
-                "INNER JOIN component_values cv ON mcv.component = cv.id " +
+        String SQL = "SELECT * FROM component_values cv " +
                 "INNER JOIN component_definitions cd ON cv.definition = cd.id " +
+                "INNER JOIN model_component_definitions mcd ON cd.id = mcd.definition " +
                 "INNER JOIN materials ON cv.material = materials.id " +
-                "INNER JOIN categories ON materials.category = categories.id";
+                "INNER JOIN categories ON materials.category = categories.id " +
+                "WHERE mcd.model = ?";
+
         try (PreparedStatement statement = getConnection().prepareStatement(SQL)) {
+            statement.setInt(1, model);
             ResultSet resultSet = statement.executeQuery();
             String attributeSQL = "SELECT * FROM attribute_definitions ad " +
                     "INNER JOIN attribute_values av ON ad.id = av.attribute " +
@@ -171,7 +175,7 @@ public class MysqlModelDAO extends AbstractMysqlDAO implements ModelDAO
                 while (resultSet.next()) {
                     attributeStatement.setInt(1, resultSet.getInt("materials.id"));
                     ResultSet attributes = attributeStatement.executeQuery();
-                    components.add(createComponent(resultSet, "cd", "materials", "categories", attributes, "ad", "av"));
+                    components.add(createComponent(resultSet, "cd", "cv", "materials", "categories", attributes, "ad", "av"));
                 }
             }
 

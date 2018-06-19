@@ -5,8 +5,8 @@ import tvestergaard.fog.data.AbstractMysqlDAO;
 import tvestergaard.fog.data.DataAccessException;
 import tvestergaard.fog.data.MysqlDataAccessException;
 import tvestergaard.fog.data.components.Component;
-import tvestergaard.fog.data.components.ComponentDefinition;
 import tvestergaard.fog.data.components.ComponentConnection;
+import tvestergaard.fog.data.components.ComponentDefinition;
 import tvestergaard.fog.data.constraints.Constraints;
 import tvestergaard.fog.data.constraints.StatementBinder;
 import tvestergaard.fog.data.constraints.StatementGenerator;
@@ -92,7 +92,8 @@ public class MysqlRoofingDAO extends AbstractMysqlDAO implements RoofingDAO
      * @return The roofing instance representing the newly created roofing.
      * @throws MysqlDataAccessException When a data storage exception occurs while performing the operation.
      */
-    @Override public Roofing create(RoofingBlueprint blueprint, List<ComponentConnection> components) throws MysqlDataAccessException
+    @Override public Roofing create(RoofingBlueprint blueprint, List<ComponentConnection> components)
+            throws MysqlDataAccessException
     {
         try {
             final String SQL        = "INSERT INTO roofings (`name`, description, active, `type`) VALUES (?, ?, ?, ?)";
@@ -162,15 +163,26 @@ public class MysqlRoofingDAO extends AbstractMysqlDAO implements RoofingDAO
 
                 int updated = statement.executeUpdate();
 
-                String componentSQL = "UPDATE component_values cv SET material = ? " +
-                        "WHERE definition = ? " +
-                        "AND id IN (SELECT component FROM roofing_component_values rcv WHERE roofing = ?)";
-                try (PreparedStatement componentStatement = connection.prepareStatement(componentSQL)) {
-                    componentStatement.setInt(3, updater.getId());
-                    for (ComponentConnection component : components) {
-                        componentStatement.setInt(1, component.getMaterialId());
-                        componentStatement.setInt(2, component.getDefinitionId());
-                        updated += componentStatement.executeUpdate();
+                String deleteSQL = "DELETE FROM roofing_component_values WHERE roofing = ?";
+                try (PreparedStatement deleteStatement = connection.prepareStatement(deleteSQL)) {
+                    deleteStatement.setInt(1, updater.getId());
+                    deleteStatement.executeUpdate();
+                }
+
+                String insertSQL = "INSERT INTO component_values (definition, material) VALUES (?, ?)";
+                try (PreparedStatement insertStatement = connection.prepareStatement(insertSQL, RETURN_GENERATED_KEYS)) {
+                    String insertRoofingSQL = "INSERT INTO roofing_component_values (roofing, component) VALUES (?, ?)";
+                    try (PreparedStatement insertRoofingStatement = connection.prepareStatement(insertRoofingSQL)) {
+                        insertRoofingStatement.setInt(1, updater.getId());
+                        for (ComponentConnection componentConnection : components) {
+                            insertStatement.setInt(1, componentConnection.getDefinitionId());
+                            insertStatement.setInt(2, componentConnection.getMaterialId());
+                            updated += insertStatement.executeUpdate();
+                            ResultSet generated = insertStatement.getGeneratedKeys();
+                            generated.first();
+                            insertRoofingStatement.setInt(2, generated.getInt(1));
+                            updated += insertRoofingStatement.executeUpdate();
+                        }
                     }
                 }
 
@@ -242,7 +254,7 @@ public class MysqlRoofingDAO extends AbstractMysqlDAO implements RoofingDAO
                 while (resultSet.next()) {
                     attributeStatement.setInt(1, resultSet.getInt("materials.id"));
                     ResultSet attributes = attributeStatement.executeQuery();
-                    components.add(createComponent(resultSet, "cd", "materials", "categories", attributes, "ad", "av"));
+                    components.add(createComponent(resultSet, "cd", "cv", "materials", "categories", attributes, "ad", "av"));
                 }
             }
 

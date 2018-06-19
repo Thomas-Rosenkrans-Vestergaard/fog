@@ -43,7 +43,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import static tvestergaard.fog.data.materials.attributes.DataType.STRING;
@@ -465,7 +467,8 @@ public abstract class AbstractMysqlDAO
                 results.getString(tComponentDefinition + ".identifier"),
                 results.getString(tComponentDefinition + ".notes"),
                 category.getId(),
-                category
+                category,
+                results.getBoolean(tComponentDefinition + ".multiple")
         );
     }
 
@@ -474,6 +477,7 @@ public abstract class AbstractMysqlDAO
      *
      * @param results              The result set containing the information.
      * @param tComponentDefinition The name of the table containing the component definitions.
+     * @param tComponentValue      The name of the table containing the component values.
      * @param tMaterial            The name of the table containing the material.
      * @param tCategory            The name of the table containing the category.
      * @param attributes           The result set containing the attributes for the material.
@@ -484,20 +488,30 @@ public abstract class AbstractMysqlDAO
      */
     protected Component createComponent(ResultSet results,
                                         String tComponentDefinition,
+                                        String tComponentValue,
                                         String tMaterial,
                                         String tCategory,
                                         ResultSet attributes,
                                         String tAttributeDefinition,
                                         String tAttributeValue) throws SQLException
     {
-        ComponentDefinition definition = createComponentDefinition(results, tComponentDefinition, tCategory);
-        Material            material   = createMaterial(results, tMaterial, tCategory, attributes, tAttributeDefinition, tAttributeValue);
+        ComponentDefinition definition       = createComponentDefinition(results, tComponentDefinition, tCategory);
+        int                 componentValueId = results.getInt(tComponentValue + ".id");
+        List<Material>      materials        = new ArrayList<>();
+        materials.add(createMaterial(results, tMaterial, tCategory, attributes, tAttributeDefinition, tAttributeValue));
+
+        if (definition.isMultiple()) {
+            while (results.next() && results.getInt(tComponentDefinition + ".id") == definition.getId())
+                materials.add(createMaterial(results, tMaterial, tCategory, attributes, tAttributeDefinition, tAttributeValue));
+            if (!results.isAfterLast())
+                results.previous();
+        }
 
         return new ComponentRecord(
+                componentValueId,
                 definition.getId(),
                 definition,
-                material.getId(),
-                material
+                materials
         );
     }
 

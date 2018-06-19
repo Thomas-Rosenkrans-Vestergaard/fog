@@ -38,9 +38,10 @@
             <div class="row">
                 <div class="col s12 input-field">
                     <c:set var="definition" value="${component.getDefinition()}"/>
-                    <select name="component_${definition.getIdentifier()}" id="component_${definition.getIdentifier()}">
+                    <select ${definition.isMultiple() ? 'multiple' : ''} name="component_${definition.getIdentifier()}"
+                                                                         id="component_${definition.getIdentifier()}">
                         <c:forEach items="${materials.get(definition.getCategory().getId())}" var="material">
-                            <option ${component.getMaterial().getId() == material.getId() ? 'selected' : ''}
+                            <option ${component.contains(material) ? 'selected' : ''}
                                     value="${material.getId()}">${material.getDescription()}</option>
                         </c:forEach>
                     </select>
@@ -51,7 +52,7 @@
         <div class="row">
             <div class="col s12">
                 <button class="btn-large waves-effect waves-light" type="submit" name="action">
-                    Opret<i class="material-icons right">send</i>
+                    Opdater<i class="material-icons right">send</i>
                 </button>
             </div>
         </div>

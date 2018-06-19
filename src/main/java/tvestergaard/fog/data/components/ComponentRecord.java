@@ -2,6 +2,7 @@ package tvestergaard.fog.data.components;
 
 import tvestergaard.fog.data.materials.Material;
 
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -9,6 +10,11 @@ import java.util.Objects;
  */
 public class ComponentRecord implements Component
 {
+
+    /**
+     * The unique id identifying the value.
+     */
+    private final int id;
 
     /**
      * The id of the definition of the component.
@@ -21,29 +27,34 @@ public class ComponentRecord implements Component
     private final ComponentDefinition definition;
 
     /**
-     * The id of the material selected for the component.
+     * The materials selected for the component.
      */
-    private final int materialId;
-
-    /**
-     * The material selected for the component.
-     */
-    private final Material material;
+    private final List<Material> materials;
 
     /**
      * Creates a new {@link ComponentRecord}.
      *
+     * @param id           The unique id identifying the value.
      * @param definitionId The id of the definition of the component.
      * @param definition   The definition of the component.
-     * @param materialId   The id of the material selected for the component.
-     * @param material     The material selected for the component.
+     * @param materials    The materials selected for the component.
      */
-    public ComponentRecord(int definitionId, ComponentDefinition definition, int materialId, Material material)
+    public ComponentRecord(int id, int definitionId, ComponentDefinition definition, List<Material> materials)
     {
+        this.id = id;
         this.definitionId = definitionId;
         this.definition = definition;
-        this.materialId = materialId;
-        this.material = material;
+        this.materials = materials;
+    }
+
+    /**
+     * Returns the unique id identifying the value.
+     *
+     * @return The unique id identifying the value.
+     */
+    @Override public int getId()
+    {
+        return id;
     }
 
     /**
@@ -63,7 +74,7 @@ public class ComponentRecord implements Component
      */
     @Override public int getMaterialId()
     {
-        return materialId;
+        return getMaterial().getId();
     }
 
     /**
@@ -87,13 +98,14 @@ public class ComponentRecord implements Component
     }
 
     /**
-     * Returns the material assigned to the component definition.
+     * Returns the materials assigned to the component.
      *
-     * @return The material assigned to the component definition.
+     * @return The materials assigned to the component. When the component contains only one materials, this method
+     * returns {@code null}.
      */
-    @Override public Material getMaterial()
+    @Override public List<Material> getMaterials()
     {
-        return material;
+        return materials;
     }
 
     @Override public boolean equals(Object o)
@@ -114,11 +126,11 @@ public class ComponentRecord implements Component
 
     @Override public String toString()
     {
-        return "ComponentRecord{" +
-                "definition=" + definition +
+        return "ComponentValueRecord{" +
+                "id=" + id +
                 ", definitionId=" + definitionId +
-                ", material=" + material +
-                ", materialId=" + materialId +
+                ", definition=" + definition +
+                ", materials=" + materials +
                 '}';
     }
 }

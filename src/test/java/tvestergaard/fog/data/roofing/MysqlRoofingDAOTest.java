@@ -164,17 +164,17 @@ public class MysqlRoofingDAOTest
     @Test
     public void create() throws Exception
     {
-        String                    name                 = "some_random_name";
-        String                    description          = "some_random_description";
-        boolean                   active               = false;
-        RoofingBlueprint          blueprint            = RoofingBlueprint.from(name, description, active, RoofingType.TILED);
-        List<ComponentConnection> componentConnections = new ArrayList<>();
+        String                             name            = "some_random_name";
+        String                             description     = "some_random_description";
+        boolean                            active          = false;
+        RoofingBlueprint                   blueprint       = RoofingBlueprint.from(name, description, active, RoofingType.TILED);
+        List<ComponentConnection> componentValues = new ArrayList<>();
 
-        componentConnections.add(ComponentConnection.from(component3.getId(), material1.getId()));
-        componentConnections.add(ComponentConnection.from(component1.getId(), material1.getId()));
-        componentConnections.add(ComponentConnection.from(component2.getId(), material1.getId()));
+        componentValues.add(ComponentConnection.from(component3.getId(), material1.getId()));
+        componentValues.add(ComponentConnection.from(component1.getId(), material1.getId()));
+        componentValues.add(ComponentConnection.from(component2.getId(), material1.getId()));
 
-        Roofing actual = dao.create(blueprint, componentConnections);
+        Roofing actual = dao.create(blueprint, componentValues);
 
         assertEquals(name, actual.getName());
         assertEquals(description, actual.getDescription());
@@ -182,12 +182,12 @@ public class MysqlRoofingDAOTest
         assertEquals(RoofingType.TILED, actual.getType());
 
         List<Component> components = dao.getComponents(actual.getId());
-        assertEquals(componentConnections.get(0).getDefinitionId(), components.get(0).getDefinitionId());
-        assertEquals(componentConnections.get(0).getDefinitionId(), components.get(0).getDefinition().getId());
-        assertEquals(componentConnections.get(1).getDefinitionId(), components.get(1).getDefinitionId());
-        assertEquals(componentConnections.get(1).getDefinitionId(), components.get(1).getDefinition().getId());
-        assertEquals(componentConnections.get(2).getDefinitionId(), components.get(2).getDefinitionId());
-        assertEquals(componentConnections.get(2).getDefinitionId(), components.get(2).getDefinition().getId());
+        assertEquals(componentValues.get(0).getDefinitionId(), components.get(0).getDefinitionId());
+        assertEquals(componentValues.get(0).getDefinitionId(), components.get(0).getDefinition().getId());
+        assertEquals(componentValues.get(1).getDefinitionId(), components.get(1).getDefinitionId());
+        assertEquals(componentValues.get(1).getDefinitionId(), components.get(1).getDefinition().getId());
+        assertEquals(componentValues.get(2).getDefinitionId(), components.get(2).getDefinitionId());
+        assertEquals(componentValues.get(2).getDefinitionId(), components.get(2).getDefinition().getId());
     }
 
     @Test
@@ -196,7 +196,6 @@ public class MysqlRoofingDAOTest
         roofing1.setName(randomString());
         roofing1.setDescription(randomString());
         roofing1.setActive(true);
-
         assertTrue(dao.update(roofing1, new ArrayList<>()));
 
         List<Roofing> actual = dao.get(where(eq(ID, roofing1.getId())));

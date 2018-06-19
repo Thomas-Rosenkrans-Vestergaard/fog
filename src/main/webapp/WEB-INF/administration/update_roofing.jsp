@@ -1,13 +1,11 @@
 <%@page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ include file="../includes/top.jspf" %>
 <div class="row">
-    <div class="col s12">
+    <div class="col s9">
         <h2>Opdater tag</h2>
     </div>
-</div>
-<div class="row">
-    <div class="col 12">
-        <a class="btn-large btn-large waves-effect waves-light"
+    <div class="col s3">
+        <a class="btn-large btn-large waves-effect waves-light" style="margin-top: 20px"
            href="?action=update_components&roofing=${roofing.getType().name()}">
             Opdater komponent definitioner
         </a>
@@ -62,9 +60,10 @@
             <div class="row">
                 <div class="col s12 input-field">
                     <c:set var="definition" value="${component.getDefinition()}"/>
-                    <select name="component_${definition.getIdentifier()}" id="component_${definition.getIdentifier()}">
+                    <select ${definition.isMultiple() ? 'multiple' : ''} name="component_${definition.getIdentifier()}"
+                                                                         id="component_${definition.getIdentifier()}">
                         <c:forEach items="${materials.get(definition.getCategory().getId())}" var="material">
-                            <option ${component.getMaterial().getId() == material.getId() ? 'selected' : ''}
+                            <option ${component.contains(material) ? 'selected' : ''}
                                     value="${material.getId()}">${material.getDescription()}</option>
                         </c:forEach>
                     </select>

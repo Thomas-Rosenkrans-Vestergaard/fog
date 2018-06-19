@@ -50,15 +50,16 @@
                     leo. Sed elit dui, pellentesque a, faucibus vel, interdum nec, diam.</p>
             </div>
         </div>
-        <c:forEach items="${components}" var="component">
+        <c:forEach items="${components}" var="definition">
             <div class="row">
                 <div class="col s12 input-field">
-                    <select name="component_${component.getIdentifier()}" id="component_${component.getIdentifier()}">
-                        <c:forEach items="${materials.get(component.getCategory().getId())}" var="material">
+                    <select ${definition.isMultiple() ? 'multiple' : ''} name="component_${definition.getIdentifier()}"
+                                                                         id="component_${definition.getIdentifier()}">
+                        <c:forEach items="${materials.get(definition.getCategory().getId())}" var="material">
                             <option value="${material.getId()}">${material.getDescription()}</option>
                         </c:forEach>
                     </select>
-                    <label for="component_${component.getIdentifier()}">${component.getIdentifier()}</label>
+                    <label for="component_${definition.getIdentifier()}">${definition.getIdentifier()}</label>
                 </div>
             </div>
         </c:forEach>

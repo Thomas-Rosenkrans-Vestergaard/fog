@@ -13,6 +13,7 @@ public enum CustomerColumn implements Column<CustomerColumn>, MysqlColumn<Custom
     PHONE,
     PASSWORD,
     ACTIVE,
+    VERIFIED,
     CREATED_AT;
 
     /**

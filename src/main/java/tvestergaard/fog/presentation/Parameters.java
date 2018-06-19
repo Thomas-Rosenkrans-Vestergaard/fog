@@ -99,6 +99,32 @@ public class Parameters
         }
     }
 
+    public boolean isInts(String parameter)
+    {
+        try {
+            String[] parameterValues = provider.getParameterValues(parameter);
+            for (String value : parameterValues)
+                Integer.parseInt(value);
+
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    public int[] getInts(String parameter)
+    {
+        try {
+            String[] parameterValues = provider.getParameterValues(parameter);
+            int[]    result          = new int[parameterValues.length];
+            for (int x = 0; x < parameterValues.length; x++)
+                result[x] = Integer.parseInt(parameterValues[x]);
+            return result;
+        } catch (Exception e) {
+            throw new ParametersConversionException(e);
+        }
+    }
+
     /**
      * Checks that the value of the provided parameter can safely be extracted to a long value using the {@link
      * Parameters#getLong(String)} method.

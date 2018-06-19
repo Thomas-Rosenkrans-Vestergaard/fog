@@ -11,9 +11,9 @@ public interface ComponentDefinitionBlueprint
      * @param category   The id of the category.
      * @return The resulting component definition blueprint.
      */
-    public static ComponentDefinitionBlueprint from(String identifier, String notes, int category)
+    static ComponentDefinitionBlueprint from(String identifier, String notes, int category)
     {
-        return new ComponentDefinitionRecord(-1, identifier, notes, category, null);
+        return new ComponentDefinitionRecord(-1, identifier, notes, category, null, false);
     }
 
     /**
@@ -43,4 +43,11 @@ public interface ComponentDefinitionBlueprint
      * @param notes The new notes.
      */
     void setNotes(String notes);
+
+    /**
+     * Whether or not the component contains multiple materials.
+     *
+     * @return {@code true} when the component contains multiple materials. {@code false} otherwise.
+     */
+    boolean isMultiple();
 }

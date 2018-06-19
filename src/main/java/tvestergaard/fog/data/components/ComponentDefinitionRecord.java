@@ -33,6 +33,12 @@ public class ComponentDefinitionRecord implements ComponentDefinition
     private final Category category;
 
     /**
+     * Whether or not the component contains multiple materials. {@code true} when the component contains multiple
+     * materials. {@code false} otherwise.
+     */
+    private final boolean multiple;
+
+    /**
      * Creates a new {@link ComponentDefinitionRecord}.
      *
      * @param id         The id of the component definition.
@@ -40,14 +46,16 @@ public class ComponentDefinitionRecord implements ComponentDefinition
      * @param notes      The notes of the component definition.
      * @param categoryId The id of the category the component definition expects the material to be a part of.
      * @param category   The category the component definition expects the material to be a part of.
+     * @param multiple   Whether or not the component contains multiple materials.
      */
-    public ComponentDefinitionRecord(int id, String identifier, String notes, int categoryId, Category category)
+    public ComponentDefinitionRecord(int id, String identifier, String notes, int categoryId, Category category, boolean multiple)
     {
         this.id = id;
         this.identifier = identifier;
         this.notes = notes;
         this.categoryId = categoryId;
         this.category = category;
+        this.multiple = multiple;
     }
 
     /**
@@ -108,6 +116,16 @@ public class ComponentDefinitionRecord implements ComponentDefinition
     @Override public Category getCategory()
     {
         return category;
+    }
+
+    /**
+     * Whether or not the component contains multiple materials.
+     *
+     * @return {@code true} when the component contains multiple materials. {@code false} otherwise.
+     */
+    @Override public boolean isMultiple()
+    {
+        return multiple;
     }
 
     @Override public boolean equals(Object o)
