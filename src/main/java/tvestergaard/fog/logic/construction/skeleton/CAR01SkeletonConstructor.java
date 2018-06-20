@@ -91,6 +91,7 @@ public class CAR01SkeletonConstructor extends DrawingUtilities implements Skelet
         this.shedDoorNogging = components.from("SHED_DOOR_NOGGING");
 
         materials = new MutableMaterials();
+        materials.add(components.from("ADDITIONAL_SCREWS"), 1);
         aerialDocument = createDocument(outerLength + PADDING * 2, outerWidth + PADDING * 2);
         sideDocument = createDocument(outerLength + PADDING * 2, height + strapWidth + PADDING * 2);
 
@@ -226,6 +227,7 @@ public class CAR01SkeletonConstructor extends DrawingUtilities implements Skelet
         materials.add(materialCladding, numberOfSideBoards * 2 + numberOfEndBoards * 2, shedCladding.getNotes());
         materials.add(componentMap.from("CLADDING_INNER_SCREWS"), (numberOfEndBoards + numberOfSideBoards) * 4);
         materials.add(componentMap.from("CLADDING_OUTER_SCREWS"), (numberOfEndBoards + numberOfSideBoards) * 4);
+        materials.add(componentMap.from("NOGGING_ANGLED_BRACKET"), 20);
     }
 
     /**
