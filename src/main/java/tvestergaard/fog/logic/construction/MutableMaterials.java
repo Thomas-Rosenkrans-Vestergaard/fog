@@ -1,5 +1,6 @@
 package tvestergaard.fog.logic.construction;
 
+import tvestergaard.fog.data.components.Component;
 import tvestergaard.fog.data.materials.Material;
 
 import java.util.ArrayList;
@@ -31,6 +32,17 @@ public class MutableMaterials implements Materials
         MaterialLine line = new LineImpl(material, amount, notes);
         lines.add(line);
         this.total += line.getTotal();
+    }
+
+    /**
+     * Adds a new component line to the mutable materials instance.
+     *
+     * @param component The component to add.
+     * @param amount    The amount of the component to add.
+     */
+    public void add(Component component, int amount)
+    {
+        add(component, amount, component.getNotes());
     }
 
     /**
@@ -80,6 +92,12 @@ public class MutableMaterials implements Materials
          */
         public LineImpl(Material material, int amount, String notes)
         {
+            int unit = material.getUnit();
+
+            if (unit > 1) {
+                amount = amount % unit != 0 ? amount / unit + 1 : amount / unit;
+            }
+
             this.material = material;
             this.amount = amount;
             this.notes = notes;

@@ -27,7 +27,7 @@ public class MutableMaterialsTest
         MaterialLine line = instance.getLines().get(0);
 
         assertEquals(material, line.getMaterial());
-        assertEquals(10, line.getAmount());
+        assertEquals(2, line.getAmount());
         assertEquals(2000, line.getTotal());
         assertEquals(expectedNotes, line.getNotes());
     }

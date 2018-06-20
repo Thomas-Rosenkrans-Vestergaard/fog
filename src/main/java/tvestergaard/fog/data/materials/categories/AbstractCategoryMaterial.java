@@ -6,6 +6,7 @@ import tvestergaard.fog.data.materials.MaterialUpdater;
 import tvestergaard.fog.data.materials.attributes.Attribute;
 
 import java.util.Set;
+import java.util.function.Function;
 
 public class AbstractCategoryMaterial implements CategoryMaterial, Material
 {
@@ -198,6 +199,19 @@ public class AbstractCategoryMaterial implements CategoryMaterial, Material
     @Override public <T extends Category> T as(Class<T> category) throws IncorrectCategoryException
     {
         return material.as(category);
+    }
+
+    /**
+     * Returns the attribute returned by the provided method reference, after having been converted to the target category.
+     *
+     * @param category The category to convert the material into.
+     * @param function The function that supplies the attribute value to return.
+     * @return The resulting attribute value.
+     * @throws IncorrectCategoryException When the category could not be converted.
+     */
+    @Override public <T extends Category, R> R attribute(Class<T> category, Function<T, R> function) throws IncorrectCategoryException
+    {
+        return material.attribute(category, function);
     }
 
     /**

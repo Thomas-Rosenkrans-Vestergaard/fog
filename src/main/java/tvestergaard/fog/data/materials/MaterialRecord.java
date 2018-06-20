@@ -224,6 +224,22 @@ public class MaterialRecord implements Material
     }
 
     /**
+     * Returns the attribute returned by the provided method reference, after having been converted to the target category.
+     *
+     * @param category The category to convert the material into.
+     * @param function The function that supplies the attribute value to return.
+     * @return The resulting attribute value.
+     * @throws IncorrectCategoryException When the category could not be converted.
+     */
+    @Override public <T extends Category, R> R attribute(Class<T> category, Function<T, R> function)
+            throws IncorrectCategoryException
+    {
+        T cast = as(category);
+
+        return function.apply(cast);
+    }
+
+    /**
      * Returns a complete list of the attributes describing the material.
      *
      * @return The complete list.

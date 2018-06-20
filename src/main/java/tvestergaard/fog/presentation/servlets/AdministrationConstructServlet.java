@@ -89,7 +89,7 @@ public class AdministrationConstructServlet extends AdministrationServlet
 
         if (parameters.isPresent("shed")) {
             if (!parameters.isInt("shed-depth") ||
-                    !parameters.isInt("shed-roofing") ||
+                    !parameters.isInt("shed-flooring") ||
                     !parameters.isInt("shed-cladding")) {
                 notifications.error("Invalid design data.");
                 resp.sendRedirect("construct");
@@ -126,7 +126,7 @@ public class AdministrationConstructServlet extends AdministrationServlet
             return null;
 
         Cladding cladding = claddingFacade.get(parameters.getInt("shed-cladding"));
-        Flooring flooring = flooringFacade.get(parameters.getInt("shed-roofing"));
+        Flooring flooring = flooringFacade.get(parameters.getInt("shed-flooring"));
 
         return new ShedRecord(-1, parameters.getInt("shed-depth"), cladding.getId(), cladding, flooring.getId(), flooring);
     }

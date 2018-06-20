@@ -48,13 +48,13 @@ public class TiledRoofingConstructor extends DrawingUtilities implements Roofing
         this.width = mm(specification.getWidth());
         this.outerWidth = width + SIDE_OVERHANG_MM * 2;
 
-        Materials materials = calculateMaterials(specification, components);
+        MutableMaterials materials = calculateMaterials(specification, components);
         skeletonView = createDocument(this.outerLength + PADDING * 2, this.outerWidth + PADDING * 2);
         tiledView = createDocument(this.outerLength + PADDING * 2, this.outerWidth + PADDING * 2);
 
         copy(skeletonConstructionSummary.getAerialView().getDocument(), skeletonView);
 
-        rafters();
+        rafters(materials, components);
         laths();
         sides();
 
@@ -109,7 +109,7 @@ public class TiledRoofingConstructor extends DrawingUtilities implements Roofing
         rect(tiledView, restRidgeTileLength, ridgeTileHeight, PADDING + restRidgeTileLength * (numberOfRidgeTiles + 1), mid - ridgeTileHeight / 2);
     }
 
-    private Materials calculateMaterials(ConstructionSpecification specification, ComponentMap components)
+    private MutableMaterials calculateMaterials(ConstructionSpecification specification, ComponentMap components)
     {
         MutableMaterials materials = new MutableMaterials();
         int              length    = specification.getLength();
@@ -178,11 +178,14 @@ public class TiledRoofingConstructor extends DrawingUtilities implements Roofing
         filledRect(tiledView, thickness, 20, this.outerLength + PADDING - thickness, PADDING + this.outerWidth / 2);
     }
 
-    private void rafters()
+    private void rafters(MutableMaterials materials, ComponentMap componentMap)
     {
         int thickness       = 45;
         int numberOfRafters = this.outerLength / 1000;
         int rafterDistance  = this.outerLength / numberOfRafters;
+
+        materials.add(componentMap.from("LATH_RIGHT_BRACKET"), numberOfRafters + 1);
+        materials.add(componentMap.from("LATH_LEFT_BRACKET"), numberOfRafters + 1);
 
         for (int i = 1; i < numberOfRafters; i++)
             rect(skeletonView, thickness, this.outerWidth, PADDING + i * (thickness + rafterDistance), PADDING);
@@ -242,7 +245,7 @@ public class TiledRoofingConstructor extends DrawingUtilities implements Roofing
         Component component = components.from("ROOF_GABLE_CLADDING");
         Material  material  = component.getMaterial();
 
-        int roofWidthMM  = roofWidth * 10;
+        int roofWidthMM = roofWidth * 10;
 
         int plankWidth = material.getAttribute("WIDTH_MM").getInt();
 

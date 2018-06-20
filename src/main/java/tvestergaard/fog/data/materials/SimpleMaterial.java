@@ -3,6 +3,8 @@ package tvestergaard.fog.data.materials;
 import tvestergaard.fog.data.materials.categories.Category;
 import tvestergaard.fog.data.materials.categories.IncorrectCategoryException;
 
+import java.util.function.Function;
+
 public interface SimpleMaterial extends MaterialUpdater
 {
 
@@ -29,4 +31,16 @@ public interface SimpleMaterial extends MaterialUpdater
      * @throws IncorrectCategoryException When the category could not be converted.
      */
     <T extends Category> T as(Class<T> category) throws IncorrectCategoryException;
+
+    /**
+     * Returns the attribute returned by the provided method reference, after having been converted to the target category.
+     *
+     * @param category The category to convert the material into.
+     * @param function The function that supplies the attribute value to return.
+     * @param <T>      The type of the category.
+     * @param <R>      The type of the return value.
+     * @return The resulting attribute value.
+     * @throws IncorrectCategoryException When the category could not be converted.
+     */
+    <T extends Category, R> R attribute(Class<T> category, Function<T, R> function) throws IncorrectCategoryException;
 }

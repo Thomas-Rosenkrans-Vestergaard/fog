@@ -91,7 +91,7 @@ UNLOCK TABLES;
 
 LOCK TABLES `component_definitions` WRITE;
 /*!40000 ALTER TABLE `component_definitions` DISABLE KEYS */;
-INSERT INTO `component_definitions` VALUES (1,'ROOF_TILE','\0',5,'Monteres på taglægter'),(2,'ROOF_RIDGE_TILE','\0',6,'Monteres på toplægte med medfølgende beslag se tagstens vejledning'),(3,'ROOF_RIDGE_LATH_HOLDER','\0',7,'Monteres på toppen af spæret (til toplægte)'),(4,'ROOF_RIDGE_TILE_BRACKET','\0',8,'Til	montering af rygsten'),(5,'ROOF_TILE_BINDER_AND_HOOKS','\0',9,'Til	montering af tagsten, alle ydersten + hver anden fastgøres'),(6,'ROOF_GABLE_CLADDING','',1,'Beklædning af gavle 1 på 2'),(7,'POST','',4,'Stolper nedgraves 90 cm. i jord + skråstiver'),(8,'STRAPS_GARAGE','',2,'Remme i sider, sadles ned i stolper Carport del'),(9,'STRAPS_SHED','',2,'Remme i sider, sadles ned i stolper Skur del'),(10,'SHED_SIDE_CLADDING_NOGGING','',2,'Løsholter i siderne af skur'),(11,'SHED_GABLE_CLADDING_NOGGING','',2,'Løsholter i gavle af skur'),(12,'WATER_BOARD','',1,'Vandbræt på vindskeder'),(14,'SHED_CLADDING','',1,'Beklædning af skur 1 på 2'),(15,'SHED_DOOR_NOGGING','',3,'Til z på bagside af dør'),(16,'ROOFING_LATHS','',3,'Til montering på spær, 7 rækker lægter på hver skiftevis 1 hel & 1 halv lægte'),(17,'ROOF_RIDGE_LATH','',3,'Toplægte til montering af rygsten lægges i toplægte holder'),(18,'VINDSKEDER','',1,'Vindskeder på rejsning'),(19,'STERN_BOARD','',1,'Sternbrædder til siderne Carport del');
+INSERT INTO `component_definitions` VALUES (1,'ROOF_TILE','\0',5,'Monteres på taglægter'),(2,'ROOF_RIDGE_TILE','\0',6,'Monteres på toplægte med medfølgende beslag se tagstens vejledning'),(3,'ROOF_RIDGE_LATH_HOLDER','\0',7,'Monteres på toppen af spæret (til toplægte)'),(4,'ROOF_RIDGE_TILE_BRACKET','\0',8,'Til	montering af rygsten'),(5,'ROOF_TILE_BINDER_AND_HOOKS','\0',9,'Til	montering af tagsten, alle ydersten + hver anden fastgøres'),(6,'ROOF_GABLE_CLADDING','',1,'Beklædning af gavle 1 på 2'),(7,'POST','',4,'Stolper nedgraves 90 cm. i jord + skråstiver'),(8,'STRAPS_GARAGE','',2,'Remme i sider, sadles ned i stolper Carport del'),(9,'STRAPS_SHED','',2,'Remme i sider, sadles ned i stolper Skur del'),(10,'SHED_SIDE_CLADDING_NOGGING','',2,'Løsholter i siderne af skur'),(11,'SHED_GABLE_CLADDING_NOGGING','',2,'Løsholter i gavle af skur'),(12,'WATER_BOARD','',1,'Vandbræt på vindskeder'),(14,'SHED_CLADDING','',1,'Beklædning af skur 1 på 2'),(15,'SHED_DOOR_NOGGING','',3,'Til z på bagside af dør'),(16,'ROOFING_LATHS','',3,'Til montering på spær, 7 rækker lægter på hver skiftevis 1 hel & 1 halv lægte'),(17,'ROOF_RIDGE_LATH','',3,'Toplægte til montering af rygsten lægges i toplægte holder'),(18,'VINDSKEDER','',1,'Vindskeder på rejsning'),(19,'STERN_BOARD','',1,'Sternbrædder til siderne Carport del'),(20,'LATH_RIGHT_BRACKET','\0',10,'Til montering af spær på rem'),(21,'LATH_LEFT_BRACKET','\0',10,'Til montering af spær på rem'),(22,'CLADDING_INNER_SCREWS','\0',9,'Til montering af inderste bræt ved beklædning'),(23,'CLADDING_OUTER_SCREWS','\0',9,'Til montering af yderste bræt ved beklædning'),(24,'POLE_STRAPS_SQUARE_BRACKET','\0',10,'Til montering af rem på stolper'),(25,'POLE_STRAPS_BOLT','\0',10,'Til montering af rem på stolper');
 /*!40000 ALTER TABLE `component_definitions` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -101,7 +101,7 @@ UNLOCK TABLES;
 
 LOCK TABLES `component_values` WRITE;
 /*!40000 ALTER TABLE `component_values` DISABLE KEYS */;
-INSERT INTO `component_values` VALUES (1,1,1),(2,2,2),(3,3,3),(4,4,4),(5,5,5),(6,6,6),(14,12,6),(15,16,55),(16,17,55),(17,18,42),(18,19,42),(30,1,26),(31,2,34),(32,3,3),(33,4,4),(34,5,5),(35,6,6),(36,12,6),(37,16,55),(38,17,55),(39,18,42),(40,19,42),(41,1,35),(42,2,36),(43,3,3),(44,4,4),(45,5,5),(46,6,6),(47,12,6),(48,16,55),(49,17,55),(50,18,42),(51,19,42),(237,7,60),(238,7,61),(239,7,62),(240,7,63),(241,7,64),(242,7,65),(243,8,47),(244,8,48),(245,8,49),(246,8,50),(247,8,51),(248,8,52),(249,8,53),(250,9,47),(251,9,48),(252,9,49),(253,9,50),(254,9,51),(255,9,52),(256,9,53),(257,10,67),(258,10,68),(259,10,69),(260,10,70),(261,10,71),(262,10,72),(263,10,73),(264,10,74),(265,10,75),(266,10,76),(267,11,69),(268,11,70),(269,11,71),(270,11,72),(271,11,73),(272,11,74),(273,11,75),(274,11,76),(275,14,41),(276,14,42),(277,14,43),(278,14,44),(279,15,55),(280,15,56),(281,15,57),(282,15,58),(285,1,1),(286,2,2),(287,3,3),(288,4,4),(289,5,5),(290,6,6),(291,12,6),(292,16,55),(293,17,55),(294,18,42),(295,19,41),(296,19,42),(297,19,43),(298,19,44),(299,1,1),(300,2,2),(301,3,3),(302,4,4),(303,5,5),(304,6,6),(305,12,6),(306,16,55),(307,17,55),(308,18,41),(309,18,42),(310,18,43),(311,18,44),(312,19,41),(313,19,42),(314,19,43),(315,19,44),(316,1,1),(317,2,2),(318,3,3),(319,4,4),(320,5,5),(321,6,6),(322,12,6),(323,16,55),(324,17,55),(325,17,56),(326,17,57),(327,17,58),(328,18,41),(329,18,42),(330,18,43),(331,18,44),(332,19,41),(333,19,42),(334,19,43),(335,19,44),(336,1,1),(337,2,2),(338,3,3),(339,4,4),(340,5,5),(341,6,6),(342,12,6),(343,16,55),(344,16,56),(345,16,57),(346,16,58),(347,17,55),(348,17,56),(349,17,57),(350,17,58),(351,18,41),(352,18,42),(353,18,43),(354,18,44),(355,19,41),(356,19,42),(357,19,43),(358,19,44);
+INSERT INTO `component_values` VALUES (1,1,1),(2,2,2),(3,3,3),(4,4,4),(5,5,5),(6,6,6),(14,12,6),(15,16,55),(16,17,55),(17,18,42),(18,19,42),(30,1,26),(31,2,34),(32,3,3),(33,4,4),(34,5,5),(35,6,6),(36,12,6),(37,16,55),(38,17,55),(39,18,42),(40,19,42),(41,1,35),(42,2,36),(43,3,3),(44,4,4),(45,5,5),(46,6,6),(47,12,6),(48,16,55),(49,17,55),(50,18,42),(51,19,42),(237,7,60),(238,7,61),(239,7,62),(240,7,63),(241,7,64),(242,7,65),(243,8,47),(244,8,48),(245,8,49),(246,8,50),(247,8,51),(248,8,52),(249,8,53),(250,9,47),(251,9,48),(252,9,49),(253,9,50),(254,9,51),(255,9,52),(256,9,53),(257,10,67),(258,10,68),(259,10,69),(260,10,70),(261,10,71),(262,10,72),(263,10,73),(264,10,74),(265,10,75),(266,10,76),(267,11,69),(268,11,70),(269,11,71),(270,11,72),(271,11,73),(272,11,74),(273,11,75),(274,11,76),(275,14,41),(276,14,42),(277,14,43),(278,14,44),(279,15,55),(280,15,56),(281,15,57),(282,15,58),(285,1,1),(286,2,2),(287,3,3),(288,4,4),(289,5,5),(290,6,6),(291,12,6),(292,16,55),(293,17,55),(294,18,42),(295,19,41),(296,19,42),(297,19,43),(298,19,44),(299,1,1),(300,2,2),(301,3,3),(302,4,4),(303,5,5),(304,6,6),(305,12,6),(306,16,55),(307,17,55),(308,18,41),(309,18,42),(310,18,43),(311,18,44),(312,19,41),(313,19,42),(314,19,43),(315,19,44),(316,1,1),(317,2,2),(318,3,3),(319,4,4),(320,5,5),(321,6,6),(322,12,6),(323,16,55),(324,17,55),(325,17,56),(326,17,57),(327,17,58),(328,18,41),(329,18,42),(330,18,43),(331,18,44),(332,19,41),(333,19,42),(334,19,43),(335,19,44),(336,1,1),(337,2,2),(338,3,3),(339,4,4),(340,5,5),(341,6,6),(342,12,6),(343,16,55),(344,16,56),(345,16,57),(346,16,58),(347,17,55),(348,17,56),(349,17,57),(350,17,58),(351,18,41),(352,18,42),(353,18,43),(354,18,44),(355,19,41),(356,19,42),(357,19,43),(358,19,44),(359,1,1),(360,2,2),(361,3,3),(362,4,4),(363,5,5),(364,6,42),(365,12,42),(366,16,58),(367,17,58),(368,18,41),(369,19,44),(370,22,22),(371,23,21),(372,20,13),(373,21,14),(374,24,24),(375,25,23);
 /*!40000 ALTER TABLE `component_values` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -151,7 +151,7 @@ UNLOCK TABLES;
 
 LOCK TABLES `model_component_definitions` WRITE;
 /*!40000 ALTER TABLE `model_component_definitions` DISABLE KEYS */;
-INSERT INTO `model_component_definitions` VALUES (1,7,1),(2,8,1),(3,9,1),(4,10,1),(5,11,1),(6,14,1),(7,15,1);
+INSERT INTO `model_component_definitions` VALUES (1,7,1),(2,8,1),(3,9,1),(4,10,1),(5,11,1),(6,14,1),(7,15,1),(8,22,1),(9,23,1),(10,24,1),(11,25,1);
 /*!40000 ALTER TABLE `model_component_definitions` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -211,7 +211,7 @@ UNLOCK TABLES;
 
 LOCK TABLES `roofing_component_definitions` WRITE;
 /*!40000 ALTER TABLE `roofing_component_definitions` DISABLE KEYS */;
-INSERT INTO `roofing_component_definitions` VALUES (1,'TILED',1),(2,'TILED',2),(3,'TILED',3),(4,'TILED',4),(5,'TILED',5),(6,'TILED',6),(7,'TILED',12),(9,'TILED',16),(10,'TILED',17),(11,'TILED',18),(12,'TILED',19);
+INSERT INTO `roofing_component_definitions` VALUES (1,'TILED',1),(2,'TILED',2),(3,'TILED',3),(4,'TILED',4),(5,'TILED',5),(6,'TILED',6),(7,'TILED',12),(9,'TILED',16),(10,'TILED',17),(11,'TILED',18),(12,'TILED',19),(13,'TILED',20),(14,'TILED',21);
 /*!40000 ALTER TABLE `roofing_component_definitions` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -221,7 +221,7 @@ UNLOCK TABLES;
 
 LOCK TABLES `roofing_component_values` WRITE;
 /*!40000 ALTER TABLE `roofing_component_values` DISABLE KEYS */;
-INSERT INTO `roofing_component_values` VALUES (21,2,30),(22,2,31),(23,2,32),(24,2,33),(25,2,34),(26,2,35),(27,2,36),(28,2,37),(29,2,38),(30,2,39),(31,2,40),(32,3,41),(33,3,42),(34,3,43),(35,3,44),(36,3,45),(37,3,46),(38,3,47),(39,3,48),(40,3,49),(41,3,50),(42,3,51),(94,1,336),(95,1,337),(96,1,338),(97,1,339),(98,1,340),(99,1,341),(100,1,342),(101,1,343),(102,1,344),(103,1,345),(104,1,346),(105,1,347),(106,1,348),(107,1,349),(108,1,350),(109,1,351),(110,1,352),(111,1,353),(112,1,354),(113,1,355),(114,1,356),(115,1,357),(116,1,358);
+INSERT INTO `roofing_component_values` VALUES (21,2,30),(22,2,31),(23,2,32),(24,2,33),(25,2,34),(26,2,35),(27,2,36),(28,2,37),(29,2,38),(30,2,39),(31,2,40),(32,3,41),(33,3,42),(34,3,43),(35,3,44),(36,3,45),(37,3,46),(38,3,47),(39,3,48),(40,3,49),(41,3,50),(42,3,51),(94,1,336),(95,1,337),(96,1,338),(97,1,339),(98,1,340),(99,1,341),(100,1,342),(101,1,343),(102,1,344),(103,1,345),(104,1,346),(105,1,347),(106,1,348),(107,1,349),(108,1,350),(109,1,351),(110,1,352),(111,1,353),(112,1,354),(113,1,355),(114,1,356),(115,1,357),(116,1,358),(128,1,372),(129,1,373),(130,2,372),(131,2,373),(132,3,372),(133,3,373);
 /*!40000 ALTER TABLE `roofing_component_values` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -264,4 +264,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-06-19 16:06:23
+-- Dump completed on 2018-06-20 15:55:52

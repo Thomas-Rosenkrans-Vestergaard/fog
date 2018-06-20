@@ -8,6 +8,7 @@ import tvestergaard.fog.data.materials.categories.IncorrectCategoryException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import java.util.function.Function;
 
 /**
  * The component, with both its definition and the selected material.
@@ -115,6 +116,19 @@ public interface Component extends ComponentConnection, ComponentDefinition, Mat
     default <T extends Category> T as(Class<T> category) throws IncorrectCategoryException
     {
         return getMaterial().as(category);
+    }
+
+    /**
+     * Returns the attribute returned by the provided method reference, after having been converted to the target category.
+     *
+     * @param category The category to convert the material into.
+     * @param function The function that supplies the attribute value to return.
+     * @return The resulting attribute value.
+     * @throws IncorrectCategoryException When the category could not be converted.
+     */
+    @Override default <T extends Category, R> R attribute(Class<T> category, Function<T, R> function) throws IncorrectCategoryException
+    {
+        return getMaterial().attribute(category, function);
     }
 
     /**

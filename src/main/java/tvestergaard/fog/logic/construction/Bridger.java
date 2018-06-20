@@ -1,10 +1,9 @@
 package tvestergaard.fog.logic.construction;
 
-import tvestergaard.fog.data.materials.categories.CategoryMaterial;
+import tvestergaard.fog.data.components.Component;
+import tvestergaard.fog.data.materials.Material;
 
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
 
@@ -13,7 +12,7 @@ import java.util.function.Function;
  *
  * @param <T> The category of the materials to build the bridge from.
  */
-public class Bridger<T extends CategoryMaterial>
+public class Bridger<T extends Material & Component>
 {
 
     /**
@@ -41,7 +40,7 @@ public class Bridger<T extends CategoryMaterial>
     public Bridger(List<T> materials, Function<T, Integer> function, BiConsumer<List<T>, MutableMaterials> end)
     {
         this.materials = materials;
-        Collections.sort(materials, Comparator.comparingInt(function::apply));
+        Collections.sort(materials, (o1, o2) -> function.apply(o2) - function.apply(o1));
         this.function = function;
         this.end = end;
     }
@@ -66,19 +65,42 @@ public class Bridger<T extends CategoryMaterial>
      */
     public void bridge(int targetDistance, MutableMaterials destination)
     {
+        Map<T, Integer> amounts = new HashMap<>();
+
         if (materials.size() == 0)
             throw new IllegalStateException("Cannot bridge with no materials.");
 
-        int distanceCovered = 0;
+        List<T> endList         = new ArrayList<>();
+        int     distanceCovered = 0;
         while (distanceCovered < targetDistance) {
-            T best = largest(targetDistance - distanceCovered);
+            T best = findOne(targetDistance - distanceCovered);
             distanceCovered += function.apply(best);
+            amounts.put(best, amounts.getOrDefault(best, 0) + 1);
+            endList.add(best);
         }
+
+        for (Map.Entry<T, Integer> entry : amounts.entrySet())
+            destination.add(entry.getKey(), entry.getValue(), entry.getKey().getNotes());
+        if (end != null)
+            end.accept(endList, destination);
     }
 
-    private T largest(int distance)
+    /**
+     * Finds the largest, best fit for the provided distance.
+     *
+     * @param distance The distance the best fit must cover.
+     * @return The resulting best fit.
+     */
+    private T findOne(int distance)
     {
         T largest = materials.get(0);
+
+        for (int x = 1; x < materials.size(); x++) {
+            T current = materials.get(x);
+            if (function.apply(current) < distance)
+                return largest;
+            largest = current;
+        }
 
         return largest;
     }

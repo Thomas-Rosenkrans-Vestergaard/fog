@@ -3,11 +3,9 @@ package tvestergaard.fog.logic.construction.skeleton;
 import org.w3c.dom.Document;
 import tvestergaard.fog.data.components.Component;
 import tvestergaard.fog.data.materials.Material;
+import tvestergaard.fog.data.materials.categories.Pole;
 import tvestergaard.fog.data.orders.Shed;
 import tvestergaard.fog.logic.construction.*;
-import tvestergaard.fog.logic.construction.skeleton.DefaultSkeletonConstructionSummary;
-import tvestergaard.fog.logic.construction.skeleton.SkeletonConstructionSummary;
-import tvestergaard.fog.logic.construction.skeleton.SkeletonConstructor;
 
 import static tvestergaard.fog.logic.construction.DrawingUtilities.Rotation.HORIZONTAL;
 import static tvestergaard.fog.logic.construction.DrawingUtilities.Rotation.VERTICAL;
@@ -84,7 +82,6 @@ public class CAR01SkeletonConstructor extends DrawingUtilities implements Skelet
         this.height = mm(specification.getHeight());
 
         this.post = components.from("POST");
-        this.postThickness = this.post.getMaterial().getAttribute("THICKNESS_MM").getInt();
         this.strap = components.from("STRAPS_GARAGE");
         this.strapWidth = strap.getMaterial().getAttribute("WIDTH_MM").getInt();
         this.shedSideCladdingNogging = components.from("SHED_SIDE_CLADDING_NOGGING");
@@ -97,7 +94,7 @@ public class CAR01SkeletonConstructor extends DrawingUtilities implements Skelet
         sideDocument = createDocument(outerLength + PADDING * 2, height + strapWidth + PADDING * 2);
 
         straps(specification);
-        posts(specification);
+        posts(specification, components);
 
         return new DefaultSkeletonConstructionSummary(
                 materials,
@@ -134,24 +131,27 @@ public class CAR01SkeletonConstructor extends DrawingUtilities implements Skelet
      *
      * @param specification The specification
      */
-    private void posts(ConstructionSpecification specification)
+    private void posts(ConstructionSpecification specification, ComponentMap componentMap)
     {
         Shed shed            = specification.getShed();
-        int  thickness       = post.getMaterial().getAttribute("THICKNESS_MM").getInt();
+        int  thickness       = post.as(Pole.class).getThickness();
         int  x               = outerLength + PADDING - END_OVERHANG_MM - thickness;
         int  topRow          = PADDING + SIDE_OVERHANG_MM;
         int  bottomRow       = topRow + this.width - thickness;
         int  height          = mm(specification.getHeight());
         int  numberOfColumns = Math.max(2, 1 + specification.getLength() / 200);
 
-        materials.add(post.getMaterial(), numberOfColumns * 2, post.getNotes());
+        materials.add(componentMap.from("POLE_STRAPS_SQUARE_BRACKET"), numberOfColumns * 2 * 2);
+        materials.add(componentMap.from("POLE_STRAPS_BOLT"), numberOfColumns * 2 * 2);
+
+        materials.add(post, numberOfColumns * 2, post.getNotes());
 
         numberOfColumns -= 1;
 
         if (shed != null) {
             int shedDepth = mm(shed.getDepth());
             int xStart    = x - shedDepth - thickness;
-            shed(shed, xStart);
+            shed(shed, xStart, componentMap);
             placePostColumn(thickness, height, x, topRow, bottomRow);
             x = xStart;
             placePostColumn(thickness, height, x, topRow, bottomRow);
@@ -180,7 +180,7 @@ public class CAR01SkeletonConstructor extends DrawingUtilities implements Skelet
      * @param shed   The shed to construct and draw.
      * @param xStart The starting x position of the shed.
      */
-    private void shed(Shed shed, int xStart)
+    private void shed(Shed shed, int xStart, ComponentMap componentMap)
     {
         Material materialCladding  = shedCladding.getMaterial();
         int      claddingThickness = materialCladding.getAttribute("THICKNESS_MM").getInt();
@@ -190,8 +190,12 @@ public class CAR01SkeletonConstructor extends DrawingUtilities implements Skelet
         int      every             = claddingWidth + space;
         int      overlap           = (claddingWidth - space) / 2;
         int      offset            = claddingWidth - overlap;
+        int      postThickness     = post.as(Pole.class).getThickness();
 
-        int numberOfEndBoards = (int) Math.ceil((double) (width - postThickness * 2) / every) - 1;
+        rect(aerialDocument, 45, width, xStart + postThickness / 2, PADDING + SIDE_OVERHANG_MM);
+        rect(aerialDocument, 45, width, xStart + shedDepth + postThickness, PADDING + SIDE_OVERHANG_MM);
+
+        int numberOfEndBoards = (int) Math.ceil((double) (width - postThickness * 2) / every);
         int leftColumn        = xStart;
         int rightColumn       = xStart + shedDepth + postThickness * 2 - claddingThickness;
         for (int endBoard = 0; endBoard < numberOfEndBoards; endBoard++) {
@@ -202,9 +206,13 @@ public class CAR01SkeletonConstructor extends DrawingUtilities implements Skelet
             rect(aerialDocument, claddingThickness, claddingWidth, rightColumn - claddingThickness, y + offset);
         }
 
-        int numberOfSideBoards = (int) Math.ceil((double) shedDepth / every);
+        int numberOfSideBoards = (int) Math.ceil((double) shedDepth / every) - 1;
         int topRow             = PADDING + SIDE_OVERHANG_MM;
         int botRow             = topRow + width - claddingThickness;
+
+        rect(aerialDocument, shedDepth, 45, leftColumn + postThickness, PADDING + SIDE_OVERHANG_MM + postThickness / 2);
+        rect(aerialDocument, shedDepth, 45, leftColumn + postThickness, botRow - postThickness / 2);
+
         for (int sideBoard = 0; sideBoard < numberOfSideBoards; sideBoard++) {
             int x = xStart + postThickness + (sideBoard * every);
             rect(aerialDocument, claddingWidth, claddingThickness, x, topRow);
@@ -215,10 +223,11 @@ public class CAR01SkeletonConstructor extends DrawingUtilities implements Skelet
             rect(sideDocument, claddingWidth, height, x + offset, PADDING + strapWidth);
         }
 
-        materials.add(shedSideCladdingNogging.getMaterial(), 0, shedSideCladdingNogging.getNotes());
-        materials.add(shedGableCladdingNogging.getMaterial(), 0, shedGableCladdingNogging.getNotes());
-        materials.add(shedDoorNogging.getMaterial(), 1, shedDoorNogging.getNotes());
+        materials.add(shedSideCladdingNogging.getMaterial(), 2, shedSideCladdingNogging.getNotes());
+        materials.add(shedGableCladdingNogging.getMaterial(), 2, shedGableCladdingNogging.getNotes());
         materials.add(materialCladding, numberOfSideBoards * 2 + numberOfEndBoards * 2, shedCladding.getNotes());
+        materials.add(componentMap.from("CLADDING_INNER_SCREWS"), (numberOfEndBoards + numberOfSideBoards) * 4);
+        materials.add(componentMap.from("CLADDING_OUTER_SCREWS"), (numberOfEndBoards + numberOfSideBoards) * 4);
     }
 
     /**
