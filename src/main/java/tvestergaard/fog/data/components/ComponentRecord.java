@@ -48,13 +48,13 @@ public class ComponentRecord implements Component
     }
 
     /**
-     * Returns the unique id identifying the value.
+     * Returns the id of the material chosen in the component.
      *
      * @return The unique id identifying the value.
      */
     @Override public int getId()
     {
-        return id;
+        return getMaterialId();
     }
 
     /**

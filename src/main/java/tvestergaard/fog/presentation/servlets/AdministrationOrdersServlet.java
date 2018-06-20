@@ -145,6 +145,7 @@ public class AdministrationOrdersServlet extends AdministrationServlet
                     !parameters.isInt("height") ||
                     !parameters.isInt("roofing") ||
                     !parameters.isInt("slope") ||
+                    !parameters.isBoolean("active") ||
                     !parameters.isPresent("shed-action")) {
                 notifications.error("The provided data is invalid.");
                 response.sendRedirect("orders?action=update&id=" + parameters.getInt("id"));
@@ -186,6 +187,7 @@ public class AdministrationOrdersServlet extends AdministrationServlet
                         parameters.getInt("height"),
                         parameters.getInt("roofing"),
                         parameters.getInt("slope"),
+                        parameters.getBoolean("active"),
                         createShed(parameters),
                         parameters.value("comment"));
 

@@ -39,7 +39,7 @@ public class BridgerTest
 
         BiConsumer<List<TestCategory>, MutableMaterials> end = mock(BiConsumer.class);
 
-        Bridger<TestCategory> instance    = new Bridger<>(materials, TestCategory::getMeasurement, end);
+        Bridger<TestCategory> instance    = new Bridger<>(materials, TestCategory::getMeasurement, "Notes", end);
         MutableMaterials      destination = new MutableMaterials();
         instance.bridge(5, destination);
 
@@ -67,7 +67,7 @@ public class BridgerTest
         when(material2.getPrice()).thenReturn(2);
         materials.add(material2);
 
-        Bridger<TestCategory> instance    = new Bridger<>(materials, TestCategory::getMeasurement);
+        Bridger<TestCategory> instance    = new Bridger<>(materials, TestCategory::getMeasurement, "Notes");
         MutableMaterials      destination = new MutableMaterials();
         instance.bridge(12, destination);
 
@@ -91,7 +91,7 @@ public class BridgerTest
         when(material2.getPrice()).thenReturn(2);
         materials.add(material2);
 
-        Bridger<TestCategory> instance    = new Bridger<>(materials, TestCategory::getMeasurement);
+        Bridger<TestCategory> instance    = new Bridger<>(materials, TestCategory::getMeasurement, "Notes");
         MutableMaterials      destination = new MutableMaterials();
         instance.bridge(16, destination);
 

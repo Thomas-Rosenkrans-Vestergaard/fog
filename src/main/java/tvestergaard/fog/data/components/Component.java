@@ -37,13 +37,13 @@ public interface Component extends ComponentConnection, ComponentDefinition, Mat
     ComponentDefinition getDefinition();
 
     /**
-     * Returns the id of the roofing component definition.
+     * Returns the id of the roofing component material.
      *
-     * @return The id of the roofing component definition.
+     * @return The id of the roofing component material.
      */
     default int getId()
     {
-        return getDefinition().getId();
+        return getMaterial().getId();
     }
 
     /**

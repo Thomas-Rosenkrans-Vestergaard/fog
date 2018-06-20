@@ -177,6 +177,7 @@ public class OrderFacade
      * @param height      The new height of the order.
      * @param roofing     The new roofing of the order.
      * @param slope       The new slope of the roofing on the order.
+     * @param active      Whether or not the order is active.
      * @param shedUpdater The shed built into the order.
      * @param comment     The comment about the order, by the customer.
      * @return {@code true} if the order was updated.
@@ -189,6 +190,7 @@ public class OrderFacade
                           int height,
                           int roofing,
                           int slope,
+                          boolean active,
                           ShedUpdater shedUpdater,
                           String comment) throws OrderValidatorException
     {
@@ -197,7 +199,7 @@ public class OrderFacade
             if (!reasons.isEmpty())
                 throw new OrderValidatorException(reasons);
 
-            return dao.update(OrderUpdater.from(id, -1, width, length, height, roofing, slope, false, shedUpdater, comment));
+            return dao.update(OrderUpdater.from(id, -1, width, length, height, roofing, slope, active, shedUpdater, comment));
         } catch (DataAccessException e) {
             throw new ApplicationException(e);
         }
