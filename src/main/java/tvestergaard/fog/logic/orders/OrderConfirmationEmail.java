@@ -58,7 +58,7 @@ public class OrderConfirmationEmail implements ApplicationEmail
         StringBuilder builder = new StringBuilder();
 
         builder.append("<p>Vi har modtaget din ordre og behandler den nu.");
-        builder.append("<p>Du kan se din order <a target='_blank' href='");
+        builder.append("<p>Du kan se din ordre <a target='_blank' href='");
         builder.append(websiteContext.getBase());
         builder.append("order?id=");
         builder.append(order.getId());
