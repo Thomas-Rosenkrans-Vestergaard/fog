@@ -1,6 +1,5 @@
 package tvestergaard.fog.logic.construction;
 
-import tvestergaard.fog.data.components.Component;
 import tvestergaard.fog.data.materials.Material;
 
 import java.util.*;
@@ -12,7 +11,7 @@ import java.util.function.Function;
  *
  * @param <T> The category of the materials to build the bridge from.
  */
-public class Bridger<T extends Material & Component>
+public class Bridger<T extends Material>
 {
 
     /**
@@ -31,17 +30,24 @@ public class Bridger<T extends Material & Component>
     private final BiConsumer<List<T>, MutableMaterials> end;
 
     /**
+     * The notes on the components.
+     */
+    private final String notes;
+
+    /**
      * Creates a mew {@link Bridger}.
      *
      * @param materials The possible materials there are to construct the bridge.
      * @param function  The function that extracts the distance from the materials the bridge is constructed from.
+     * @param notes     The notes on the components.
      * @param end       A function that is called when the bridge is constructed.
      */
-    public Bridger(List<T> materials, Function<T, Integer> function, BiConsumer<List<T>, MutableMaterials> end)
+    public Bridger(List<T> materials, Function<T, Integer> function, String notes, BiConsumer<List<T>, MutableMaterials> end)
     {
         this.materials = materials;
         Collections.sort(materials, (o1, o2) -> function.apply(o2) - function.apply(o1));
         this.function = function;
+        this.notes = notes;
         this.end = end;
     }
 
@@ -50,10 +56,11 @@ public class Bridger<T extends Material & Component>
      *
      * @param materials The possible materials there are to construct the bridge.
      * @param function  The function that extracts the distance from the materials the bridge is constructed from.
+     * @param notes     The notes on the components.
      */
-    public Bridger(List<T> materials, Function<T, Integer> function)
+    public Bridger(List<T> materials, Function<T, Integer> function, String notes)
     {
-        this(materials, function, null);
+        this(materials, function, notes, null);
     }
 
     /**
@@ -80,7 +87,7 @@ public class Bridger<T extends Material & Component>
         }
 
         for (Map.Entry<T, Integer> entry : amounts.entrySet())
-            destination.add(entry.getKey(), entry.getValue(), entry.getKey().getNotes());
+            destination.add(entry.getKey(), entry.getValue(), notes);
         if (end != null)
             end.accept(endList, destination);
     }

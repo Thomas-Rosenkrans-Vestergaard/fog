@@ -4,6 +4,7 @@ import org.w3c.dom.Document;
 import tvestergaard.fog.data.components.Component;
 import tvestergaard.fog.data.materials.Material;
 import tvestergaard.fog.data.materials.categories.Pole;
+import tvestergaard.fog.data.materials.categories.RafterWood;
 import tvestergaard.fog.data.orders.Shed;
 import tvestergaard.fog.logic.construction.*;
 
@@ -109,15 +110,12 @@ public class CAR01SkeletonConstructor extends DrawingUtilities implements Skelet
      */
     private void straps(ConstructionSpecification specification)
     {
-        Material material = strap.getMaterial();
-        materials.add(material, 2, strap.getNotes());
-
-        int strapThickness = material.getAttribute("THICKNESS_MM").getInt();
-        int strapWidth     = material.getAttribute("WIDTH_MM").getInt();
+        int strapThickness = strap.getMaterial().as(RafterWood.class).getThickness();
+        int strapWidth     = strap.getMaterial().as(RafterWood.class).getWidth();
 
         rect(sideDocument, outerLength, strapWidth, PADDING, PADDING);
         rect(aerialDocument, outerLength, strapThickness, PADDING, PADDING + SIDE_OVERHANG_MM);
-        rect(aerialDocument, outerLength, strapThickness, PADDING, width + PADDING + SIDE_OVERHANG_MM - postThickness / 2);
+        rect(aerialDocument, outerLength, strapThickness, PADDING, width + PADDING + SIDE_OVERHANG_MM - strapThickness);
 
         ruler(HORIZONTAL, outerLength, PADDING, outerWidth + PADDING + PADDING / 2, formatCM(outerLength / 10));
         ruler(HORIZONTAL, END_OVERHANG_MM, PADDING, PADDING / 2, formatCM(END_OVERHANG_MM / 10));

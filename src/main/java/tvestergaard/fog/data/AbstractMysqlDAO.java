@@ -516,12 +516,12 @@ public abstract class AbstractMysqlDAO
     }
 
     /**
-     * Creates a new IN operand. For size 5 returns '(?,?,?,?,?)'.
+     * Structures an SQL prepared statement argument list. For size 5 returns '?,?,?,?,?'.
      *
      * @param size The number of arguments to provided to the in.
      * @return The resulting in parameters.
      */
-    protected String createIn(int size)
+    protected String createArgumentList(int size)
     {
         StringBuilder builder = new StringBuilder();
         for (int x = 0; x < size; x++) {

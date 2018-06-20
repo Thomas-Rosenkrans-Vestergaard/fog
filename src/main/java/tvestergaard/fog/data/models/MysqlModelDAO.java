@@ -10,6 +10,8 @@ import tvestergaard.fog.data.components.Component;
 import tvestergaard.fog.data.components.ComponentConnection;
 import tvestergaard.fog.data.components.ComponentDefinition;
 import tvestergaard.fog.data.materials.SimpleMaterial;
+import tvestergaard.fog.data.materials.attributes.Attribute;
+import tvestergaard.fog.data.materials.attributes.MysqlAttributeDAO;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -21,6 +23,8 @@ import java.util.List;
 public class MysqlModelDAO extends AbstractMysqlDAO implements ModelDAO
 {
 
+    private final MysqlAttributeDAO attributeDAO;
+
     /**
      * Creates a new {@link MysqlModelDAO}.
      *
@@ -29,6 +33,7 @@ public class MysqlModelDAO extends AbstractMysqlDAO implements ModelDAO
     public MysqlModelDAO(MysqlDataSource source)
     {
         super(source);
+        this.attributeDAO = new MysqlAttributeDAO(source);
     }
 
     /**
@@ -171,6 +176,7 @@ public class MysqlModelDAO extends AbstractMysqlDAO implements ModelDAO
             String attributeSQL = "SELECT * FROM attribute_definitions ad " +
                     "INNER JOIN attribute_values av ON ad.id = av.attribute " +
                     "WHERE av.material = ?";
+
             try (PreparedStatement attributeStatement = getConnection().prepareStatement(attributeSQL)) {
                 while (resultSet.next()) {
                     attributeStatement.setInt(1, resultSet.getInt("materials.id"));
